@@ -1,15 +1,26 @@
 # sisref-v2-dashboard
 
-To install dependencies:
+Para instalar o runtime do bun (Windows):
+
+```bash
+powershell -c "irm bun.sh/install.ps1 | iex"
+```
+
+
+Para instalar as dependências:
 
 ```bash
 bun install
 ```
 
-To run:
+Para executar:
 
 ```bash
-bun run index.ts
+cd sisref-v2-dashboard-client
+bun dev
 ```
 
-This project was created using `bun init` in bun v1.1.2. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+Para acessar o cliente web:
+[http://localhost:3000](http://localhost:3000)
+
+Este projeto foi criado usando `bun init` na versão 1.1.2 do bun. [Bun](https://bun.sh) é um runtime JavaScript rápido e completo.
