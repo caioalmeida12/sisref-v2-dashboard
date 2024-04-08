@@ -22,10 +22,5 @@
     },
     "scripts": {
         "cm": "cz"
-    },
-    "commitlint": {
-        "extends": [
-            "@commitlint/config-conventional"
-        ]
     }
 }
