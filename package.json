@@ -1,14 +1,31 @@
 {
     "dependencies": {
-        "typescript": "^5.4.4"
+        "typescript": "^5.0.0"
     },
     "name": "sisref-v2-dashboard",
     "module": "index.ts",
     "type": "module",
     "devDependencies": {
-        "@types/bun": "latest"
+        "@commitlint/cli": "^19.2.1",
+        "@commitlint/config-conventional": "^19.1.0",
+        "@types/bun": "latest",
+        "cz-conventional-changelog": "^3.3.0",
+        "husky": "^9.0.11"
     },
     "peerDependencies": {
         "typescript": "^5.0.0"
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
+    },
+    "scripts": {
+        "cm": "cz"
+    },
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
     }
 }
