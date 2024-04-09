@@ -14,6 +14,18 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
+    colors: {
+      "amarelo-200": "#D7AF70",
+      "azul-400": "0075FF",
+      "branco-400": "#FFFFFF",
+      "cinza-600": "#A29C9B",
+      "cinza-400": "#EFEFEF",
+      "preto-400": "#000000",
+      "verde-400": "#1C5E27",
+      "verde-300": "#359830",
+      "vermelho-400": "#C80B0F",
+      "vermelho-200": "#8E4A49"
+    }
   },
   plugins: [],
 };

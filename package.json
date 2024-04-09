@@ -21,6 +21,7 @@
         }
     },
     "scripts": {
-        "cm": "cz"
+        "cm": "cz",
+        "dev": "cd sisref-v2-dashboard-client; bun dev"
     }
 }
