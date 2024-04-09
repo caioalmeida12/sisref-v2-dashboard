@@ -2,7 +2,8 @@ import React from 'react';
 import { Secao } from './elementos/basicos/Secao';
 import { CabeçalhoDeSecao } from './elementos/basicos/CabecalhoDeSecao';
 import { CabecalhoPrincipal } from './elementos/basicos/CabecalhoPrincipal';
-import { CampoDeSecao } from './elementos/basicos/CampoDeSecao';
+import { CampoDeSecao } from './elementos/componentes/CampoDeSecao';
+import { Badge } from './elementos/basicos/Badge';
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
         <h1>Olá, mundo!</h1>
         <CampoDeSecao titulo="Texto de campo de seção" complemento="Texto de complemento de campo de seção" variante="horizontal" />
         <CampoDeSecao titulo="Texto de campo de seção" complemento="Texto de complemento de campo de seção" variante="vertical" />
-        <CampoDeSecao titulo="Texto de campo de seção" complemento="Texto de complemento de campo de seção" variante="horizontal-com-badge" />
+        <CampoDeSecao titulo="Texto de campo de seção" complemento="Texto de complemento de campo de seção" variante="horizontal-com-badge" corDaBadge="bg-verde-400" />
       </Secao>
     </main>
   );

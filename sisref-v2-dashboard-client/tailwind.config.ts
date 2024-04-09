@@ -16,7 +16,7 @@ const config: Config = {
     },
     colors: {
       "amarelo-200": "#D7AF70",
-      "azul-400": "0075FF",
+      "azul-400": "#0075FF",
       "branco-400": "#FFFFFF",
       "cinza-600": "#A29C9B",
       "cinza-400": "#EFEFEF",
