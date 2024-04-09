@@ -25,7 +25,7 @@ const config: Config = {
       "verde-300": "#359830",
       "vermelho-400": "#C80B0F",
       "vermelho-200": "#8E4A49"
-    }
+    },
   },
   plugins: [],
 };
