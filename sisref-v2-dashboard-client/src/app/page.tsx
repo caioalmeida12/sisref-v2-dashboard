@@ -3,7 +3,7 @@ import { Secao } from './elementos/basicos/Secao';
 import { CabeçalhoDeSecao } from './elementos/basicos/CabecalhoDeSecao';
 import { CabecalhoPrincipal } from './elementos/basicos/CabecalhoPrincipal';
 import { CampoDeSecao } from './elementos/componentes/CampoDeSecao';
-import { Badge } from './elementos/basicos/Badge';
+import { Botao } from './elementos/basicos/Botao';
 
 export default function Home() {
   return (
@@ -15,6 +15,11 @@ export default function Home() {
         <CampoDeSecao titulo="Texto de campo de seção" complemento="Texto de complemento de campo de seção" variante="horizontal" />
         <CampoDeSecao titulo="Texto de campo de seção" complemento="Texto de complemento de campo de seção" variante="vertical" />
         <CampoDeSecao titulo="Texto de campo de seção" complemento="Texto de complemento de campo de seção" variante="horizontal-com-badge" corDaBadge="bg-verde-400" />
+
+        <Botao texto="Adicionar" variante="adicionar"/>
+        <Botao texto="Editar" variante="editar" />
+        <Botao texto="Ocultar" variante="ocultar" />
+        <Botao texto="Remover" variante="remover" />
       </Secao>
     </main>
   );
