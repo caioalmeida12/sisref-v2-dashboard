@@ -4,6 +4,7 @@ import { CabeçalhoDeSecao } from './elementos/basicos/CabecalhoDeSecao';
 import { CabecalhoPrincipal } from './elementos/basicos/CabecalhoPrincipal';
 import { CampoDeSecao } from './elementos/componentes/CampoDeSecao';
 import { Botao } from './elementos/basicos/Botao';
+import { Slider } from './elementos/componentes/Slider';
 
 export default function Home() {
   return (
@@ -20,6 +21,8 @@ export default function Home() {
         <Botao texto="Editar" variante="editar" />
         <Botao texto="Ocultar" variante="ocultar" />
         <Botao texto="Remover" variante="remover" />
+
+        <Slider texto='1/10' />
       </Secao>
     </main>
   );
