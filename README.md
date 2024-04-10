@@ -17,6 +17,7 @@ Para executar:
 
 ```bash
 cd sisref-v2-dashboard-client
+bun install
 bun dev
 ```
 
