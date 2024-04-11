@@ -8,7 +8,7 @@ import { Slider } from './elementos/componentes/Slider';
 import { StatusDaRefeicao } from './elementos/basicos/StatusDaRefeicao';
 import { IconeRefeicao } from './elementos/basicos/icones/IconeRefeicao';
 import { NomeDaRefeicao } from './elementos/basicos/NomeDaRefeicao';
-import { RestricaoAlimentar } from './elementos/basicos/RestricaoAlimentar';
+import { RestricaoAlimentar } from './elementos/componentes/RestricaoAlimentar';
 
 export default function Home() {
   return (

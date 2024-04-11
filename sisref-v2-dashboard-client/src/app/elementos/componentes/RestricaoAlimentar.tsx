@@ -1,4 +1,4 @@
-import { IconeRestricaoAlimentar } from "./icones/IconeRestricaoAlimentar";
+import { IconeRestricaoAlimentar } from "../basicos/icones/IconeRestricaoAlimentar";
 
 interface RestricaoAlimentarProps {
     variante: keyof typeof restricaoPorVariante;
