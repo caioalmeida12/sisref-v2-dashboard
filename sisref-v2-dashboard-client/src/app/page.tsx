@@ -8,6 +8,7 @@ import { Slider } from './elementos/componentes/Slider';
 import { StatusDaRefeicao } from './elementos/basicos/StatusDaRefeicao';
 import { IconeRefeicao } from './elementos/basicos/icones/IconeRefeicao';
 import { NomeDaRefeicao } from './elementos/basicos/NomeDaRefeicao';
+import { RestricaoAlimentar } from './elementos/basicos/RestricaoAlimentar';
 
 export default function Home() {
   return (
@@ -39,6 +40,8 @@ export default function Home() {
         <NomeDaRefeicao variante='almoco'/>
         <NomeDaRefeicao variante='tarde'/>
         <NomeDaRefeicao variante='noite'/>
+
+        <RestricaoAlimentar variante='gluten'/>
       </Secao>
     </main>
   );
