@@ -7,8 +7,6 @@ import { Botao } from './elementos/basicos/Botao';
 import { Slider } from './elementos/componentes/Slider';
 import { StatusDaRefeicao } from './elementos/basicos/StatusDaRefeicao';
 import { NomeDaRefeicao } from './elementos/basicos/NomeDaRefeicao';
-import { RefeicaoAutorizada } from './elementos/componentes/RefeicaoAutorizada';
-import { HorarioDaRefeicao } from './elementos/basicos/HorarioDaRefeicao';
 import { RestricaoAlimentar } from './elementos/basicos/RestricaoAlimentar';
 import { HorarioDaRefeicao } from './elementos/basicos/HorarioDaRefeicao';
 import { Refeicao } from './elementos/componentes/Refeicao';
