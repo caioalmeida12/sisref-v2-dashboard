@@ -10,6 +10,76 @@ import { NomeDaRefeicao } from './elementos/basicos/NomeDaRefeicao';
 import { RestricaoAlimentar } from './elementos/basicos/RestricaoAlimentar';
 import { HorarioDaRefeicao } from './elementos/basicos/HorarioDaRefeicao';
 import { Refeicao } from './elementos/componentes/Refeicao';
+import { IRefeicao } from './elementos/interfaces/IRefeicao';
+
+const mockRefeicoes: IRefeicao[] = [
+  {
+    turno: 1,
+    refeicao: {
+      description: "Lanche da manhã",
+      qtdTimeReservationEnd: 1,
+      qtdTimeReservationStart: 9,
+      timeEnd: "12:00",
+      timeStart: "11:00"
+    },
+  },
+  {
+    turno: 2,
+    refeicao: {
+      description: "Almoço",
+      qtdTimeReservationStart: 17,
+      qtdTimeReservationEnd: 1,
+      timeEnd: "20:00",
+      timeStart: "19:00"
+    },
+    cardapio: {
+      agendado: false,
+      date: "2024-04-12",
+      description: "Arroz parbolizado; Feijão preto; Lombo Suíno frito; Salada de alface e tomate; Suco de laranja; Banana prata; Pão francês;",
+      permission: true,
+      id: 2438,
+      campus_id: 2
+    }
+  },
+  {
+    turno: 3,
+    refeicao: {
+      description: "Lanche da tarde",
+      qtdTimeReservationEnd: 1,
+      qtdTimeReservationStart: 5,
+      timeStart: "20:00",
+      timeEnd: "21:00",
+    },
+    cardapio: {
+      agendado: true,
+      date: new Date().toLocaleDateString().split("/").reverse().join("-"),
+      description: "Suco de laranja + Sanduíche",
+      permission: true,
+      id: 2439,
+      campus_id: 3
+    }
+  },
+  {
+    turno: 4,
+    refeicao: {
+      description: "Jantar",
+      qtdTimeReservationEnd: 4,
+      qtdTimeReservationStart: 19,
+      timeEnd: "21:00",
+      timeStart: "20:00"
+    },
+    cardapio: {
+      agendado: false,
+      date: new Date().toLocaleDateString().split("/").reverse().join("-"),
+      description: "Sopa de legumes",
+      permission: true,
+      id: 2440,
+      campus_id: 4,
+      canceled_by_student: true
+    }
+  }
+];
+
 
 export default function Home() {
   return (
@@ -49,44 +119,12 @@ export default function Home() {
         <HorarioDaRefeicao variante='horario' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} />
         <HorarioDaRefeicao variante='horario-e-data' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} data='12/04/2024' />
 
-        <Refeicao turno={1} />
-        <Refeicao
-          turno={2}
-          cardapio={{
-            "agendado": true,
-            "campus_id": 1,
-            "date": "2024-04-12",
-            "description": "Arroz + Feijão + Bife + Salada",
-            "id": 2437,
-            "permission": true
-
-          }}
-          refeicao={{
-            description: "Vitamina de maçã + Biscoito/Bolacha",
-            qtdTimeReservationEnd: 0,
-            qtdTimeReservationStart: 0,
-            timeEnd: "12:00",
-            timeStart: "11:00"
-          }}
-        />
-        <Refeicao
-          turno={4}
-          cardapio={{
-            "agendado": false,
-            "campus_id": 1,
-            "date": "2024-04-12",
-            "description": "Vitamina de maçã + Biscoito/Bolacha",
-            "id": 2437,
-            "permission": true
-          }}
-          refeicao={{
-            description: "Vitamina de maçã + Biscoito/Bolacha",
-            qtdTimeReservationEnd: 0,
-            qtdTimeReservationStart: 0,
-            timeEnd: "12:00",
-            timeStart: "11:00"
-          }}
-        />
+        {
+          mockRefeicoes.map((refeicao) => (
+            <Refeicao key={refeicao.turno} {...refeicao} />
+          ))
+        }
+        
       </Secao>
     </main>
   );

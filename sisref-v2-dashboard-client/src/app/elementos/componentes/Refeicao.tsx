@@ -1,156 +1,130 @@
+import React from "react";
 import { Botao } from "../basicos/Botao";
 import { HorarioDaRefeicao } from "../basicos/HorarioDaRefeicao";
 import { NomeDaRefeicao } from "../basicos/NomeDaRefeicao";
 import { Secao } from "../basicos/Secao";
 import { StatusDaRefeicao } from "../basicos/StatusDaRefeicao";
+import { IRefeicao } from "../interfaces/IRefeicao";
 
-interface Refeicao {
-    turno: 1 | 2 | 3 | 4;
-    refeicao?: {
-        description: string;
-        qtdTimeReservationEnd: number;
-        qtdTimeReservationStart: number;
-        timeEnd: string;
-        timeStart: string;
-    }
-    cardapio?: {
-        agendado: boolean;
-        date: string;
-        description: string;
-        permission: boolean;
-        id: number;
-        campus_id: number;
-        canceled_by_student?: boolean;
-    }
-}
-
-const varianteDoNomeDaRefeicaoPorTurno = {
+const varianteNomeRefeicaoPorTurno = {
     1: "manha",
     2: "almoco",
     3: "tarde",
     4: "noite"
 } as const;
 
-const descricaoDeCardapioParaArrayDeStrings = (descricao: string) => {
-    return descricao.split(/[;+]/).map((texto) => texto)
+const elementoStatusRefeicaoPorTextoStatusRefeicao = {
+    "disponivel": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Disponível" />,
+    "encerrado": <StatusDaRefeicao cor="cinza-600" icone="circulo-x" texto="Encerrado" />,
+    "bloqueado": <StatusDaRefeicao cor="amarelo-200" icone="cadeado" texto="Bloqueado" />,
+    "cancelado": <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" />,
+    "reservado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Reservado" />,
+    "indisponivel": <StatusDaRefeicao cor="cinza-600" icone="relogio-x" texto="Indisponível" />
+} as const;
+
+/**
+ * Converte a descrição do cardápio em um array de strings.
+ * @param descricao - A descrição do cardápio.
+ * @returns O array de strings.
+ */
+const descricaoCardapioParaArrayStrings = (descricao: string) => {
+    return descricao.split(/[;+]/)
 }
 
-const statusDaRefeicaoPorProps = (props: Refeicao) => {
-    if (!(props.cardapio)) return <StatusDaRefeicao cor="cinza-600" icone="circulo-x" texto="Encerrado" />
-    if (!(props.refeicao)) return <StatusDaRefeicao cor="cinza-600" icone="circulo-x" texto="Encerrado" />
-
-    if (!(props.cardapio.permission)) return <StatusDaRefeicao cor="cinza-600" icone="cadeado" texto="Bloqueado" />
-
-    if (props.cardapio.canceled_by_student) return <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" />
-    if (props.cardapio.agendado) return <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Reservado" />
-
-    // a refeição estará disponível caso o (timeStart - qtdTimeReservationStart * 60) seja menor ou igual à hora atual em formato 09:00:00
-    // e o (timeEnd - qtdTimeReservationEnd * 60) seja maior ou igual à hora atual em formato 09:00:00
-    // ex: timeStart = 19:50:00
-    //     timeEnd = 20:40:00
-    //     qtdTimeReservationStart = 1
-    //     qtdTimeReservationEnd = 1
-    //     horaAtual = 20:00:00
-    //     horaAtualEmMinutos = 1200
-    //     horaInicio = 19:50:00
-    //     horaInicioEmMinutos = 1190
-    //     horaFim = 20:40:00
-    //     horaFimEmMinutos = 1240
-    //     1190 - (1 * 60) <= 1200 && 1240 + (1 * 60) >= 1200
-    //     true && true
-    if (props.refeicao) {
-        const horaAtual = new Date().toLocaleTimeString().split(":").map((numero) => parseInt(numero))
-        const horaAtualEmMinutos = horaAtual[0] * 60 + horaAtual[1]
-
-        const horaInicio = props.refeicao.timeStart.split(":").map((numero) => parseInt(numero))
-        const horaInicioEmMinutos = horaInicio[0] * 60 + horaInicio[1] - props.refeicao.qtdTimeReservationStart * 60
-
-        const horaFim = props.refeicao.timeEnd.split(":").map((numero) => parseInt(numero))
-        const horaFimEmMinutos = horaFim[0] * 60 + horaFim[1] + props.refeicao.qtdTimeReservationEnd * 60
-
-        if (horaInicioEmMinutos <= horaAtualEmMinutos && horaFimEmMinutos >= horaAtualEmMinutos) {
-            return <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Disponível" />
-        }
-    }
-
-    // a refeição estará encerrada caso o (timeEnd - qtdTimeReservationEnd * 60) seja menor que a hora atual em formato 09:00:00
-    // ex: timeEnd = 20:40:00
-    //     qtdTimeReservationEnd = 1
-    //     horaAtual = 21:00:00
-    //     horaAtualEmMinutos = 1260
-    //     horaFim = 20:40:00
-    //     horaFimEmMinutos = 1240
-    //     1240 + (1 * 60) < 1260
-    //     true
-    if (props.refeicao) {
-        const horaAtual = new Date().toLocaleTimeString().split(":").map((numero) => parseInt(numero))
-        const horaAtualEmMinutos = horaAtual[0] * 60 + horaAtual[1]
-
-        const horaFim = props.refeicao.timeEnd.split(":").map((numero) => parseInt(numero))
-        const horaFimEmMinutos = horaFim[0] * 60 + horaFim[1] + props.refeicao.qtdTimeReservationEnd * 60
-
-        if (horaFimEmMinutos < horaAtualEmMinutos) {
-            return <StatusDaRefeicao cor="cinza-600" icone="circulo-x" texto="Encerrado" />
-        }
-    }
-
+/**
+ * Retorna a hora atual em minutos.
+ * @returns A hora atual em minutos.
+ */
+const getHoraAtualEmMinutos = () => {
+    const horaAtual = new Date().toLocaleTimeString().split(":").map((numero) => Number(numero));
+    return horaAtual[0] * 60 + horaAtual[1];
 }
 
-const RefeicaoCurta = (props: Refeicao) => {
+/**
+ * Converte uma string de tempo fornecida em minutos, considerando um ajuste de reserva de tempo.
+ * @param hora - A string de tempo no formato "HH:mm".
+ * @param qtdTimeReservation - A quantidade de reserva de tempo em horas (qtdTimeReservationStart ou qtdTimeReservationEnd).
+ * @param isQtdTimeReservationStart - Indica se o tempo fornecido é um horário de início ou de término.
+ * @returns O tempo convertido em minutos.
+ * @example getHoraEmMinutos("12:00", 1, true) // 660
+ * @example getHoraEmMinutos("12:00", 1, false) // 780
+ */
+const getHoraEmMinutos = (hora: string, qtdTimeReservation: number, isQtdTimeReservationStart: boolean) => {
+    const horaArray = hora.split(":").map((numero) => Number(numero));
+    const ajuste = isQtdTimeReservationStart ? -qtdTimeReservation : qtdTimeReservation;
+    return horaArray[0] * 60 + horaArray[1] + ajuste * 60;
+}
+
+/**
+ * Retorna o status da refeição com base nas props fornecidas.
+ * @param props - As props da refeição.
+ * @returns O status da refeição em string.
+ */
+const textoStatusRefeicaoPorProps = (props: IRefeicao): keyof typeof elementoStatusRefeicaoPorTextoStatusRefeicao => {
+    if (!(props.cardapio) || !(props.refeicao)) return "encerrado";
+    if (!(props.cardapio.permission)) return "bloqueado";
+    if (props.cardapio.canceled_by_student) return "cancelado";
+    if (props.cardapio.agendado) return "reservado";
+
+    const horaAtualEmMinutos = getHoraAtualEmMinutos();
+    const horaInicioEmMinutos = getHoraEmMinutos(props.refeicao.timeStart, props.refeicao.qtdTimeReservationStart, true);
+    const horaFimEmMinutos = getHoraEmMinutos(props.refeicao.timeEnd, props.refeicao.qtdTimeReservationEnd, false);
+
+    if (horaInicioEmMinutos > horaAtualEmMinutos || horaFimEmMinutos < horaAtualEmMinutos) {
+        return "indisponivel";
+    }
+
+    if (horaInicioEmMinutos <= horaAtualEmMinutos && horaAtualEmMinutos <= horaFimEmMinutos) {
+        return "disponivel";
+    }
+
+    return "encerrado";
+}
+
+const RefeicaoCurta = (props: IRefeicao) => {
+    const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[textoStatusRefeicaoPorProps(props)];
+
     return (
         <Secao>
             <div className="flex justify-between">
-                <NomeDaRefeicao variante={varianteDoNomeDaRefeicaoPorTurno[props.turno]} />
-                {statusDaRefeicaoPorProps(props)}
+                <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
+                {StatusRefeicao}
             </div>
         </Secao>
     )
 }
 
-const RefeicaoLongaSemBotao = (props: Refeicao) => {
-    if (!props.refeicao) return <RefeicaoCurta turno={props.turno} />
+const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
+    if (!props.refeicao || !props.cardapio) return <RefeicaoCurta turno={props.turno} />
+
+    const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[textoStatusRefeicaoPorProps(props)];
+    const textoStatus = textoStatusRefeicaoPorProps(props);
 
     return (
         <Secao className="flex flex-col gap-y-2">
             <div className="flex justify-between">
-                <NomeDaRefeicao variante={varianteDoNomeDaRefeicaoPorTurno[props.turno]} />
-                {statusDaRefeicaoPorProps(props)}
+                <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
+                {StatusRefeicao}
             </div>
             <HorarioDaRefeicao variante="horario" horarios={props.refeicao} />
             <p className="leading-6">
-                {descricaoDeCardapioParaArrayDeStrings(props.refeicao.description).map((descricao) => (
-                    <>
-                        {descricao} <br />
-                    </>
+                {descricaoCardapioParaArrayStrings(props.cardapio.description).map((descricao, index) => (
+                    <React.Fragment key={index}>
+                        <span>
+                            {descricao}
+                        </span>
+                        <br />
+                    </React.Fragment>
                 ))}
             </p>
+            {comBotao && textoStatus === "disponivel" && <Botao variante="adicionar" texto="Reservar" />}
+            {comBotao && textoStatus === "reservado" && <Botao variante="remover" texto="Cancelar" />}
         </Secao>
     )
 }
 
-const RefeicaoLongaComBotao = (props: Refeicao) => {
-    if (!props.refeicao) return <RefeicaoCurta turno={props.turno} />
-
-    return (
-        <Secao className="flex flex-col gap-y-2">
-            <div className="flex justify-between">
-                <NomeDaRefeicao variante={varianteDoNomeDaRefeicaoPorTurno[props.turno]} />
-                {statusDaRefeicaoPorProps(props)}
-            </div>
-            <HorarioDaRefeicao variante="horario" horarios={props.refeicao} />
-            <p className="leading-6">
-                {descricaoDeCardapioParaArrayDeStrings(props.refeicao.description).map((descricao) => (
-                    <>
-                        {descricao} <br />
-                    </>
-                ))}
-            </p>
-            <Botao texto="Adicionar" variante="adicionar" />
-        </Secao>
-    )
-}
-
-export const Refeicao = (props: Refeicao) => {
-    if (props.cardapio?.agendado) return <RefeicaoLongaComBotao {...props} />
-    return <RefeicaoLongaSemBotao {...props} />
+export const Refeicao = (props: IRefeicao) => {
+    const textoStatus = textoStatusRefeicaoPorProps(props);
+    const comBotao = textoStatus === "disponivel" || textoStatus === "reservado";
+    return RefeicaoLonga(props, comBotao);
 }

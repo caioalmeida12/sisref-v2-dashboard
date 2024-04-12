@@ -1,9 +1,10 @@
+import { IIconeStatusProps } from "../interfaces/IIconeStatusProps";
 import { IconeStatus } from "./icones/IconeStatus";
 
 interface StatusDaRefeicaoProps {
     texto: string;
     cor: keyof typeof classNamePorCor;
-    icone: "circulo-x" | "circulo-check" | "tag-x" | "cadeado";
+    icone: IIconeStatusProps["variante"];
 }
 
 const classNamePorCor = {
