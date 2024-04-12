@@ -9,6 +9,7 @@ import { StatusDaRefeicao } from './elementos/basicos/StatusDaRefeicao';
 import { IconeRefeicao } from './elementos/basicos/icones/IconeRefeicao';
 import { NomeDaRefeicao } from './elementos/basicos/NomeDaRefeicao';
 import { RestricaoAlimentar } from './elementos/componentes/RestricaoAlimentar';
+import { RefeicaoAutorizada } from './elementos/componentes/RefeicaoAutorizada';
 
 export default function Home() {
   return (
@@ -42,6 +43,7 @@ export default function Home() {
         <NomeDaRefeicao variante='noite'/>
 
         <RestricaoAlimentar variante='gluten'/>
+        <RefeicaoAutorizada variante='manha' />
       </Secao>
     </main>
   );
