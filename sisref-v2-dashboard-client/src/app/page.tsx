@@ -6,10 +6,10 @@ import { CampoDeSecao } from './elementos/componentes/CampoDeSecao';
 import { Botao } from './elementos/basicos/Botao';
 import { Slider } from './elementos/componentes/Slider';
 import { StatusDaRefeicao } from './elementos/basicos/StatusDaRefeicao';
-import { IconeRefeicao } from './elementos/basicos/icones/IconeRefeicao';
 import { NomeDaRefeicao } from './elementos/basicos/NomeDaRefeicao';
-import { RestricaoAlimentar } from './elementos/componentes/RestricaoAlimentar';
 import { RefeicaoAutorizada } from './elementos/componentes/RefeicaoAutorizada';
+import { HorarioDaRefeicao } from './elementos/basicos/HorarioDaRefeicao';
+import { RestricaoAlimentar } from './elementos/basicos/RestricaoAlimentar';
 
 export default function Home() {
   return (
@@ -42,7 +42,11 @@ export default function Home() {
         <NomeDaRefeicao variante='tarde'/>
         <NomeDaRefeicao variante='noite'/>
 
-        <RestricaoAlimentar variante='gluten'/>
+        <RestricaoAlimentar texto='Glúten'/>
+
+        <HorarioDaRefeicao variante='data' data='12/04/2024' />
+        <HorarioDaRefeicao variante='horario' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} />
+        <HorarioDaRefeicao variante='horario-e-data' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} data='12/04/2024' />
         <RefeicaoAutorizada variante='manha' />
       </Secao>
     </main>
