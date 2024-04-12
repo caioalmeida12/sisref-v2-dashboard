@@ -17,7 +17,7 @@ export const RefeicaoAutorizada = ({ variante}: RefeicaoAutorizadaProps) => {
         <div className="flex p-4 flex-col gap-4 rounded border-cinza-600 text-preto-400">
             <div className="flex justify-between items-start">
                 <NomeDaRefeicao variante={variante}/>  
-                <span className="text-cinza-600">{horarioPorVariante[variante]}</span>
+                <span className="flex justify-center items-center text-cinza-600">{horarioPorVariante[variante]}</span>
             </div>
             <div>
                 <b>Dias autorizados:</b> <span>segunda-feira, terça-feira, quarta-feira, quinta-feira, sexta-feira</span>
