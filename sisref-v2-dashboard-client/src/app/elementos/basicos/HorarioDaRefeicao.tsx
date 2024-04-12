@@ -30,7 +30,7 @@ type HorarioDaRefeicaoProps =
 const textoPorVariante = (props: HorarioDaRefeicaoProps) => {
     switch (props.variante) {
         case "horario":
-            return `${props.horarios.timeStart} -${props.horarios.timeEnd}`;
+            return `${props.horarios.timeStart} - ${props.horarios.timeEnd}`;
         case "data":
             return `${props.data}`;
         case "horario-e-data":

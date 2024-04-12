@@ -9,6 +9,7 @@ import { StatusDaRefeicao } from './elementos/basicos/StatusDaRefeicao';
 import { NomeDaRefeicao } from './elementos/basicos/NomeDaRefeicao';
 import { RestricaoAlimentar } from './elementos/basicos/RestricaoAlimentar';
 import { HorarioDaRefeicao } from './elementos/basicos/HorarioDaRefeicao';
+import { Refeicao } from './elementos/componentes/Refeicao';
 
 export default function Home() {
   return (
@@ -29,23 +30,62 @@ export default function Home() {
         <Slider texto='1/10' />
 
         <StatusDaRefeicao texto='Utilizado' cor='verde-300' icone='circulo-check' />
-        <StatusDaRefeicao texto='Reservado' cor='verde-300' icone='circulo-check'/>
-        <StatusDaRefeicao texto='Disponível' cor='cinza-600' icone='circulo-check'/>
-        <StatusDaRefeicao texto='Justificado' cor='azul-400' icone='circulo-check'/>
-        <StatusDaRefeicao texto='Encerrado' cor='cinza-600' icone='circulo-x'/>
-        <StatusDaRefeicao texto='Cancelado' cor='vermelho-400' icone='tag-x'/>
-        <StatusDaRefeicao texto='Não utilizado' cor='amarelo-200' icone='circulo-check'/>
+        <StatusDaRefeicao texto='Reservado' cor='verde-300' icone='circulo-check' />
+        <StatusDaRefeicao texto='Disponível' cor='cinza-600' icone='circulo-check' />
+        <StatusDaRefeicao texto='Justificado' cor='azul-400' icone='circulo-check' />
+        <StatusDaRefeicao texto='Encerrado' cor='cinza-600' icone='circulo-x' />
+        <StatusDaRefeicao texto='Cancelado' cor='vermelho-400' icone='tag-x' />
+        <StatusDaRefeicao texto='Não utilizado' cor='amarelo-200' icone='circulo-check' />
 
-        <NomeDaRefeicao variante='manha'/>
-        <NomeDaRefeicao variante='almoco'/>
-        <NomeDaRefeicao variante='tarde'/>
-        <NomeDaRefeicao variante='noite'/>
+        <NomeDaRefeicao variante='manha' />
+        <NomeDaRefeicao variante='almoco' />
+        <NomeDaRefeicao variante='tarde' />
+        <NomeDaRefeicao variante='noite' />
 
-        <RestricaoAlimentar texto='Glúten'/>
+        <RestricaoAlimentar texto='Glúten' />
 
         <HorarioDaRefeicao variante='data' data='12/04/2024' />
         <HorarioDaRefeicao variante='horario' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} />
         <HorarioDaRefeicao variante='horario-e-data' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} data='12/04/2024' />
+
+        <Refeicao turno={1} />
+        <Refeicao
+          turno={2}
+          cardapio={{
+            "agendado": true,
+            "campus_id": 1,
+            "date": "2024-04-12",
+            "description": "Arroz + Feijão + Bife + Salada",
+            "id": 2437,
+            "permission": true
+
+          }}
+          refeicao={{
+            description: "Vitamina de maçã + Biscoito/Bolacha",
+            qtdTimeReservationEnd: 0,
+            qtdTimeReservationStart: 0,
+            timeEnd: "12:00",
+            timeStart: "11:00"
+          }}
+        />
+        <Refeicao
+          turno={4}
+          cardapio={{
+            "agendado": false,
+            "campus_id": 1,
+            "date": "2024-04-12",
+            "description": "Vitamina de maçã + Biscoito/Bolacha",
+            "id": 2437,
+            "permission": true
+          }}
+          refeicao={{
+            description: "Vitamina de maçã + Biscoito/Bolacha",
+            qtdTimeReservationEnd: 0,
+            qtdTimeReservationStart: 0,
+            timeEnd: "12:00",
+            timeStart: "11:00"
+          }}
+        />
       </Secao>
     </main>
   );
