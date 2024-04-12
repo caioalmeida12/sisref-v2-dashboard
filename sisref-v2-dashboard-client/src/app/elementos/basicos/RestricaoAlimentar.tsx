@@ -1,4 +1,4 @@
-import { IconeRestricaoAlimentar } from "../basicos/icones/IconeRestricaoAlimentar";
+import { IconeRestricaoAlimentar } from "./icones/IconeRestricaoAlimentar";
 
 interface RestricaoAlimentarProps {
     texto: string
