@@ -41,7 +41,7 @@ export default function Home() {
         <NomeDaRefeicao variante='tarde'/>
         <NomeDaRefeicao variante='noite'/>
 
-        <RestricaoAlimentar variante='gluten'/>
+        <RestricaoAlimentar texto='Glúten'/>
 
         <HorarioDaRefeicao variante='data' data='12/04/2024' />
         <HorarioDaRefeicao variante='horario' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} />
