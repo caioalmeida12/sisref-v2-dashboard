@@ -3,7 +3,7 @@ import { IconeStatus } from "./icones/IconeStatus";
 interface StatusDaRefeicaoProps {
     texto: string;
     cor: keyof typeof classNamePorCor;
-    icone: "circulo-x" | "circulo-check" | "tag-x";
+    icone: "circulo-x" | "circulo-check" | "tag-x" | "cadeado";
 }
 
 const classNamePorCor = {

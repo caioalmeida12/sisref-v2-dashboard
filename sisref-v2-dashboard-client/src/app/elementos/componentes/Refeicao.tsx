@@ -36,8 +36,13 @@ const descricaoDeCardapioParaArrayDeStrings = (descricao: string) => {
 }
 
 const statusDaRefeicaoPorProps = (props: Refeicao) => {
-    if (props.cardapio?.canceled_by_student) return <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" />
-    if (props.cardapio?.agendado) return <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Reservado" />
+    if (!(props.cardapio)) return <StatusDaRefeicao cor="cinza-600" icone="circulo-x" texto="Encerrado" />
+    if (!(props.refeicao)) return <StatusDaRefeicao cor="cinza-600" icone="circulo-x" texto="Encerrado" />
+
+    if (!(props.cardapio.permission)) return <StatusDaRefeicao cor="cinza-600" icone="cadeado" texto="Bloqueado" />
+
+    if (props.cardapio.canceled_by_student) return <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" />
+    if (props.cardapio.agendado) return <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Reservado" />
 
     // a refeição estará disponível caso o (timeStart - qtdTimeReservationStart * 60) seja menor ou igual à hora atual em formato 09:00:00
     // e o (timeEnd - qtdTimeReservationEnd * 60) seja maior ou igual à hora atual em formato 09:00:00

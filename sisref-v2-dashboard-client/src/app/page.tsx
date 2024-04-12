@@ -36,6 +36,7 @@ export default function Home() {
         <StatusDaRefeicao texto='Encerrado' cor='cinza-600' icone='circulo-x' />
         <StatusDaRefeicao texto='Cancelado' cor='vermelho-400' icone='tag-x' />
         <StatusDaRefeicao texto='Não utilizado' cor='amarelo-200' icone='circulo-check' />
+        <StatusDaRefeicao texto='Bloqueado' cor='amarelo-200' icone='cadeado' />
 
         <NomeDaRefeicao variante='manha' />
         <NomeDaRefeicao variante='almoco' />
