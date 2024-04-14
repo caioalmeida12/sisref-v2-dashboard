@@ -5,6 +5,7 @@ import { NomeDaRefeicao } from "../basicos/NomeDaRefeicao";
 import { Secao } from "../basicos/Secao";
 import { StatusDaRefeicao } from "../basicos/StatusDaRefeicao";
 import { IRefeicao } from "../interfaces/IRefeicao";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 
 const varianteNomeRefeicaoPorTurno = {
     1: "manha",
@@ -28,31 +29,7 @@ const elementoStatusRefeicaoPorTextoStatusRefeicao = {
  * @returns O array de strings.
  */
 const descricaoCardapioParaArrayStrings = (descricao: string) => {
-    return descricao.split(/[;+]/)
-}
-
-/**
- * Retorna a hora atual em minutos.
- * @returns A hora atual em minutos.
- */
-const getHoraAtualEmMinutos = () => {
-    const horaAtual = new Date().toLocaleTimeString().split(":").map((numero) => Number(numero));
-    return horaAtual[0] * 60 + horaAtual[1];
-}
-
-/**
- * Converte uma string de tempo fornecida em minutos, considerando um ajuste de reserva de tempo.
- * @param hora - A string de tempo no formato "HH:mm".
- * @param qtdTimeReservation - A quantidade de reserva de tempo em horas (qtdTimeReservationStart ou qtdTimeReservationEnd).
- * @param isQtdTimeReservationStart - Indica se o tempo fornecido é um horário de início ou de término.
- * @returns O tempo convertido em minutos.
- * @example getHoraEmMinutos("12:00", 1, true) // 660
- * @example getHoraEmMinutos("12:00", 1, false) // 780
- */
-const getHoraEmMinutos = (hora: string, qtdTimeReservation: number, isQtdTimeReservationStart: boolean) => {
-    const horaArray = hora.split(":").map((numero) => Number(numero));
-    const ajuste = isQtdTimeReservationStart ? -qtdTimeReservation : qtdTimeReservation;
-    return horaArray[0] * 60 + horaArray[1] + ajuste * 60;
+    return descricao.split(/[;+]/).filter(naoVazio => naoVazio)
 }
 
 /**
@@ -66,19 +43,14 @@ const textoStatusRefeicaoPorProps = (props: IRefeicao): keyof typeof elementoSta
     if (props.cardapio.canceled_by_student) return "cancelado";
     if (props.cardapio.agendado) return "reservado";
 
-    const horaAtualEmMinutos = getHoraAtualEmMinutos();
-    const horaInicioEmMinutos = getHoraEmMinutos(props.refeicao.timeStart, props.refeicao.qtdTimeReservationStart, true);
-    const horaFimEmMinutos = getHoraEmMinutos(props.refeicao.timeEnd, props.refeicao.qtdTimeReservationEnd, false);
+    const dataHoraDaRefeicao = DatasHelper.compilarDataHora(props.cardapio.date, props.refeicao.timeStart);
+    const diferencaEmHoras = DatasHelper.getDiferencaEmHoras(dataHoraDaRefeicao);
 
-    if (horaInicioEmMinutos > horaAtualEmMinutos || horaFimEmMinutos < horaAtualEmMinutos) {
-        return "indisponivel";
-    }
+    if (diferencaEmHoras < 0) return "encerrado";
+    if (diferencaEmHoras > props.refeicao?.qtdTimeReservationStart) return "indisponivel";
+    if (diferencaEmHoras < props.refeicao?.qtdTimeReservationEnd) return "indisponivel";
 
-    if (horaInicioEmMinutos <= horaAtualEmMinutos && horaAtualEmMinutos <= horaFimEmMinutos) {
-        return "disponivel";
-    }
-
-    return "encerrado";
+    return "disponivel";
 }
 
 const RefeicaoCurta = (props: IRefeicao) => {
@@ -106,7 +78,7 @@ const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
                 <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
                 {StatusRefeicao}
             </div>
-            <HorarioDaRefeicao variante="horario" horarios={props.refeicao} />
+            <HorarioDaRefeicao variante="horario-e-data" data={props.cardapio.date} horarios={props.refeicao} />
             <p className="leading-6">
                 {descricaoCardapioParaArrayStrings(props.cardapio.description).map((descricao, index) => (
                     <React.Fragment key={index}>
@@ -124,6 +96,8 @@ const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
 }
 
 export const Refeicao = (props: IRefeicao) => {
+    if (props.cardapio?.date) props.cardapio.date = DatasHelper.converterParaFormatoBrasileiro(props.cardapio.date);
+
     const textoStatus = textoStatusRefeicaoPorProps(props);
     const comBotao = textoStatus === "disponivel" || textoStatus === "reservado";
     return RefeicaoLonga(props, comBotao);

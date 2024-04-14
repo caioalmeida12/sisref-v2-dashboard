@@ -27,14 +27,14 @@ const mockRefeicoes: IRefeicao[] = [
     turno: 2,
     refeicao: {
       description: "Almoço",
-      qtdTimeReservationStart: 17,
+      qtdTimeReservationStart: 2,
       qtdTimeReservationEnd: 1,
       timeEnd: "20:00",
-      timeStart: "19:00"
+      timeStart: "18:00"
     },
     cardapio: {
       agendado: false,
-      date: "2024-04-12",
+      date: "2024-04-14",
       description: "Arroz parbolizado; Feijão preto; Lombo Suíno frito; Salada de alface e tomate; Suco de laranja; Banana prata; Pão francês;",
       permission: true,
       id: 2438,
@@ -46,13 +46,13 @@ const mockRefeicoes: IRefeicao[] = [
     refeicao: {
       description: "Lanche da tarde",
       qtdTimeReservationEnd: 1,
-      qtdTimeReservationStart: 5,
+      qtdTimeReservationStart: 10,
       timeStart: "20:00",
       timeEnd: "21:00",
     },
     cardapio: {
-      agendado: true,
-      date: new Date().toLocaleDateString().split("/").reverse().join("-"),
+      agendado: false,
+      date: "2024-04-14",
       description: "Suco de laranja + Sanduíche",
       permission: true,
       id: 2439,
@@ -70,16 +70,15 @@ const mockRefeicoes: IRefeicao[] = [
     },
     cardapio: {
       agendado: false,
-      date: new Date().toLocaleDateString().split("/").reverse().join("-"),
+      date: "2024-04-14",
       description: "Sopa de legumes",
       permission: true,
       id: 2440,
       campus_id: 4,
-      canceled_by_student: true
+      canceled_by_student: false
     }
   }
 ];
-
 
 export default function Home() {
   return (
@@ -120,8 +119,12 @@ export default function Home() {
         <HorarioDaRefeicao variante='horario-e-data' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} data='12/04/2024' />
 
         {
-          mockRefeicoes.map((refeicao) => (
-            <Refeicao key={refeicao.turno} {...refeicao} />
+          ([1, 2, 3, 4] as const).map((turno) => (
+            <Refeicao key={turno} turno={turno} refeicao={
+              mockRefeicoes.find((refeicao) => refeicao.turno === turno)?.refeicao
+            } cardapio={
+              mockRefeicoes.find((refeicao) => refeicao.turno === turno)?.cardapio
+            }/>
           ))
         }
         
