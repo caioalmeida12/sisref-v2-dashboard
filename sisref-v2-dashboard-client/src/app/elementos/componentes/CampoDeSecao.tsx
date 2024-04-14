@@ -12,7 +12,7 @@ const Vertical: React.FC<CampoDeSecaoProps> = ({ titulo, complemento }) => (
 );
 
 const Horizontal: React.FC<CampoDeSecaoProps> = ({ titulo, complemento }) => (
-    <div className="flex gap-1">
+    <div className="flex-col items-start flex gap-1 sm:items-center sm:flex-row">
         <h3 className="font-bold">{titulo}:</h3>
         <p>{complemento}</p>
     </div>
@@ -26,7 +26,7 @@ const HorizontalComBadge: React.FC<CampoDeSecaoProps> = (props) => {
     const { titulo, complemento, corDaBadge } = props;
 
     return (
-        <div className="flex gap-1 items-center">
+        <div className="flex-col items-start flex gap-1 sm:items-center sm:flex-row">
             <h3 className="font-bold">{titulo}:</h3>
             <Badge texto={complemento} corDaBadge={corDaBadge} />
         </div>
