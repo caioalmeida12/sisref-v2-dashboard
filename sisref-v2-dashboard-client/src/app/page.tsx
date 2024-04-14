@@ -11,6 +11,7 @@ import { RestricaoAlimentar } from './elementos/basicos/RestricaoAlimentar';
 import { HorarioDaRefeicao } from './elementos/basicos/HorarioDaRefeicao';
 import { Refeicao } from './elementos/componentes/Refeicao';
 import { IRefeicao } from './elementos/interfaces/IRefeicao';
+import Aviso from './elementos/basicos/Aviso';
 
 const mockRefeicoes: IRefeicao[] = [
   {
@@ -118,16 +119,18 @@ export default function Home() {
         <HorarioDaRefeicao variante='horario' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} />
         <HorarioDaRefeicao variante='horario-e-data' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} data='12/04/2024' />
 
+        <Aviso titulo='Texto de aviso' texto="Devido à queda da internet no campus, todas as reservas de alimentação, exceto a do lanche da noite, serão feitas de maneira presencial na recepção."/>
+
         {
           ([1, 2, 3, 4] as const).map((turno) => (
             <Refeicao key={turno} turno={turno} refeicao={
               mockRefeicoes.find((refeicao) => refeicao.turno === turno)?.refeicao
             } cardapio={
               mockRefeicoes.find((refeicao) => refeicao.turno === turno)?.cardapio
-            }/>
+            } />
           ))
         }
-        
+
       </Secao>
     </main>
   );
