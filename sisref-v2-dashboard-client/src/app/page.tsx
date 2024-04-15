@@ -87,17 +87,28 @@ export default function Home() {
   return (
     <main>
       <Navbar navItems={[
-          { titulo: 'Início', rota: '/inicio', isDropdown: false },
-          {
-            titulo: 'Refeições', isDropdown: true, itens: [
-              { titulo: 'Café da manhã', rota: '/cafe-da-manha' },
-              { titulo: 'Almoço', rota: '/almoco' },
-              { titulo: 'Café da tarde', rota: '/cafe-da-tarde' },
-              { titulo: 'Jantar', rota: '/jantar' },
-            ]
-          },
-          { titulo: 'Sobre', rota: '/sobre', isDropdown: false },
-        ]} />
+        {
+          titulo: 'Estatísticas', itens: [{
+            titulo: 'Hoje', rota: '/hoje',
+          }, {
+            titulo: 'Semana', rota: '/semana',
+          }, {
+            titulo: 'Mês', rota: '/mes',
+          }], isDropdown: true
+        },
+        {
+          titulo: 'Cardápio', rota: '/cardapio',
+        },
+        {
+          titulo: 'Refeições', rota: '/refeicoes',
+        },
+        {
+          titulo: 'Relatórios', rota: '/relatorios',
+        },
+        {
+          titulo: 'Avisos', rota: '/avisos',
+        },
+      ]} />
       <Secao>
         <CabeçalhoDeSecao titulo="Texto de cabeçalho de seção" />
         <CabecalhoPrincipal titulo="Texto de cabeçalho principal" />
@@ -147,7 +158,7 @@ export default function Home() {
 
         <SecaoApenasTexto titulo="Texto de seção apenas com texto" texto="Texto de conteúdo de seção apenas com texto" />
       </Secao>
-      
+
     </main>
   );
 }
