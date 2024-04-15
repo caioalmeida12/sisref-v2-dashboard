@@ -13,6 +13,7 @@ import { Refeicao } from './elementos/componentes/Refeicao';
 import { IRefeicao } from './elementos/interfaces/IRefeicao';
 import Aviso from './elementos/basicos/Aviso';
 import { SecaoApenasTexto } from './elementos/componentes/SecaoApenasTexto';
+import { Navbar } from './elementos/modulos/Navbar';
 
 const mockRefeicoes: IRefeicao[] = [
   {
@@ -85,6 +86,29 @@ const mockRefeicoes: IRefeicao[] = [
 export default function Home() {
   return (
     <main>
+      <Navbar navItems={[
+        {
+          titulo: 'Estatísticas', itens: [{
+            titulo: 'Hoje', rota: '/hoje',
+          }, {
+            titulo: 'Semana', rota: '/semana',
+          }, {
+            titulo: 'Mês', rota: '/mes',
+          }], isDropdown: true
+        },
+        {
+          titulo: 'Cardápio', rota: '/cardapio',
+        },
+        {
+          titulo: 'Refeições', rota: '/refeicoes',
+        },
+        {
+          titulo: 'Relatórios', rota: '/relatorios',
+        },
+        {
+          titulo: 'Avisos', rota: '/avisos',
+        },
+      ]} />
       <Secao>
         <CabeçalhoDeSecao titulo="Texto de cabeçalho de seção" />
         <CabecalhoPrincipal titulo="Texto de cabeçalho principal" />
@@ -120,7 +144,7 @@ export default function Home() {
         <HorarioDaRefeicao variante='horario' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} />
         <HorarioDaRefeicao variante='horario-e-data' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} data='12/04/2024' />
 
-        <Aviso titulo='Texto de aviso' texto="Devido à queda da internet no campus, todas as reservas de alimentação, exceto a do lanche da noite, serão feitas de maneira presencial na recepção."/>
+        <Aviso titulo='Texto de aviso' texto="Devido à queda da internet no campus, todas as reservas de alimentação, exceto a do lanche da noite, serão feitas de maneira presencial na recepção." />
 
         {
           ([1, 2, 3, 4] as const).map((turno) => (
@@ -134,6 +158,7 @@ export default function Home() {
 
         <SecaoApenasTexto titulo="Texto de seção apenas com texto" texto="Texto de conteúdo de seção apenas com texto" />
       </Secao>
+
     </main>
   );
 }
