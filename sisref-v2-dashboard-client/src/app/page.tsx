@@ -12,6 +12,7 @@ import { HorarioDaRefeicao } from './elementos/basicos/HorarioDaRefeicao';
 import { Refeicao } from './elementos/componentes/Refeicao';
 import { IRefeicao } from './elementos/interfaces/IRefeicao';
 import Aviso from './elementos/basicos/Aviso';
+import { SecaoApenasTexto } from './elementos/componentes/SecaoApenasTexto';
 
 const mockRefeicoes: IRefeicao[] = [
   {
@@ -131,6 +132,7 @@ export default function Home() {
           ))
         }
 
+        <SecaoApenasTexto titulo="Texto de seção apenas com texto" texto="Texto de conteúdo de seção apenas com texto" />
       </Secao>
     </main>
   );
