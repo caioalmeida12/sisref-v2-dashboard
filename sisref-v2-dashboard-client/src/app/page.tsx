@@ -14,6 +14,7 @@ import { IRefeicao } from './elementos/interfaces/IRefeicao';
 import Aviso from './elementos/basicos/Aviso';
 import { SecaoApenasTexto } from './elementos/componentes/SecaoApenasTexto';
 import { Navbar } from './elementos/modulos/Navbar';
+import { Footer } from './elementos/componentes/Footer';
 
 const mockRefeicoes: IRefeicao[] = [
   {
@@ -158,6 +159,9 @@ export default function Home() {
 
         <SecaoApenasTexto titulo="Texto de seção apenas com texto" texto="Texto de conteúdo de seção apenas com texto" />
       </Secao>
+
+      <Footer />
+
 
     </main>
   );
