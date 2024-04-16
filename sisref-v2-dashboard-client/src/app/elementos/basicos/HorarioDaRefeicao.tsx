@@ -1,31 +1,9 @@
-interface Horarios {
-    qtdTimeReservationEnd: number;
-    qtdTimeReservationStart: number;
-    timeEnd: string;
-    timeStart: string;
-
-}
-
-type ApenasHorario = {
-    variante: "horario",
-    horarios: Horarios
-}
-
-type ApenasData = {
-    variante: "data",
-    data: string,
-}
-
-type HorarioEData = {
-    variante: "horario-e-data",
-    horarios: Horarios,
-    data: string,
-}
+import { IApenasHorario, IApenasData, IHorarioEData } from "../interfaces/IHorarios";
 
 type HorarioDaRefeicaoProps =
-    | ApenasHorario
-    | ApenasData
-    | HorarioEData;
+    | IApenasHorario
+    | IApenasData
+    | IHorarioEData;
 
 const textoPorVariante = (props: HorarioDaRefeicaoProps) => {
     switch (props.variante) {
