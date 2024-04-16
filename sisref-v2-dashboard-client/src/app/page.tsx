@@ -16,6 +16,8 @@ import { SecaoApenasTexto } from './elementos/componentes/SecaoApenasTexto';
 import { Navbar } from './elementos/modulos/Navbar';
 import { Footer } from './elementos/componentes/Footer';
 import { RefeicaoAutorizada } from './elementos/componentes/RefeicaoAutorizada';
+import { InformacoesPessoais } from './elementos/modulos/InformacoesPessoais';
+import { IInformacoesPessoais } from './elementos/interfaces/IInformacoesPessoais';
 
 const mockRefeicoes: IRefeicao[] = [
   {
@@ -85,9 +87,24 @@ const mockRefeicoes: IRefeicao[] = [
   }
 ];
 
+const mockInformacoesEstudante: IInformacoesPessoais = {
+  name: 'João da Silva',
+  mat: '1234',
+  course: {
+    description: 'Ciência da Computação'
+  },
+  campus: {
+    description: 'Juazeiro do Norte'
+  },
+  shift_id: 1,
+  id: '5678',
+  dateValid: '2023-12-31',
+  active: 1
+}
+
 export default function Home() {
   return (
-    <main>
+    <>
       <Navbar navItems={[
         {
           titulo: 'Estatísticas', itens: [{
@@ -111,65 +128,68 @@ export default function Home() {
           titulo: 'Avisos', rota: '/avisos',
         },
       ]} />
-      <Secao>
-        <CabeçalhoDeSecao titulo="Texto de cabeçalho de seção" />
-        <CabecalhoPrincipal titulo="Texto de cabeçalho principal" />
-        <h1>Olá, mundo!</h1>
-        <CampoDeSecao titulo="Texto de campo de seção" complemento="Texto de complemento de campo de seção" variante="horizontal" />
-        <CampoDeSecao titulo="Texto de campo de seção" complemento="Texto de complemento de campo de seção" variante="vertical" />
-        <CampoDeSecao titulo="Texto de campo de seção" complemento="Texto de complemento de campo de seção" variante="horizontal-com-badge" corDaBadge="bg-verde-400" />
+      <main className='grid gap-y-8 px-6 my-8'>
+        <InformacoesPessoais {...mockInformacoesEstudante} />
+        <Secao>
+          <CabeçalhoDeSecao titulo="Texto de cabeçalho de seção" />
+          <CabecalhoPrincipal titulo="Texto de cabeçalho principal" />
+          <h1>Olá, mundo!</h1>
+          <CampoDeSecao titulo="Texto de campo de seção" complemento="Texto de complemento de campo de seção" variante="horizontal" />
+          <CampoDeSecao titulo="Texto de campo de seção" complemento="Texto de complemento de campo de seção" variante="vertical" />
+          <CampoDeSecao titulo="Texto de campo de seção" complemento="Texto de complemento de campo de seção" variante="horizontal-com-badge" corDaBadge="bg-verde-400" />
 
-        <Botao texto="Adicionar" variante="adicionar" />
-        <Botao texto="Editar" variante="editar" />
-        <Botao texto="Ocultar" variante="ocultar" />
-        <Botao texto="Remover" variante="remover" />
+          <Botao texto="Adicionar" variante="adicionar" />
+          <Botao texto="Editar" variante="editar" />
+          <Botao texto="Ocultar" variante="ocultar" />
+          <Botao texto="Remover" variante="remover" />
 
-        <Slider texto='1/10' />
+          <Slider texto='1/10' />
 
-        <StatusDaRefeicao texto='Utilizado' cor='verde-300' icone='circulo-check' />
-        <StatusDaRefeicao texto='Reservado' cor='verde-300' icone='circulo-check' />
-        <StatusDaRefeicao texto='Disponível' cor='cinza-600' icone='circulo-check' />
-        <StatusDaRefeicao texto='Justificado' cor='azul-400' icone='circulo-check' />
-        <StatusDaRefeicao texto='Encerrado' cor='cinza-600' icone='circulo-x' />
-        <StatusDaRefeicao texto='Cancelado' cor='vermelho-400' icone='tag-x' />
-        <StatusDaRefeicao texto='Não utilizado' cor='amarelo-200' icone='circulo-check' />
-        <StatusDaRefeicao texto='Bloqueado' cor='amarelo-200' icone='cadeado' />
+          <StatusDaRefeicao texto='Utilizado' cor='verde-300' icone='circulo-check' />
+          <StatusDaRefeicao texto='Reservado' cor='verde-300' icone='circulo-check' />
+          <StatusDaRefeicao texto='Disponível' cor='cinza-600' icone='circulo-check' />
+          <StatusDaRefeicao texto='Justificado' cor='azul-400' icone='circulo-check' />
+          <StatusDaRefeicao texto='Encerrado' cor='cinza-600' icone='circulo-x' />
+          <StatusDaRefeicao texto='Cancelado' cor='vermelho-400' icone='tag-x' />
+          <StatusDaRefeicao texto='Não utilizado' cor='amarelo-200' icone='circulo-check' />
+          <StatusDaRefeicao texto='Bloqueado' cor='amarelo-200' icone='cadeado' />
 
-        <NomeDaRefeicao variante='manha' />
-        <NomeDaRefeicao variante='almoco' />
-        <NomeDaRefeicao variante='tarde' />
-        <NomeDaRefeicao variante='noite' />
+          <NomeDaRefeicao variante='manha' />
+          <NomeDaRefeicao variante='almoco' />
+          <NomeDaRefeicao variante='tarde' />
+          <NomeDaRefeicao variante='noite' />
 
-        <RestricaoAlimentar texto='Glúten' />
+          <RestricaoAlimentar texto='Glúten' />
 
-        <HorarioDaRefeicao variante='data' data='12/04/2024' />
-        <HorarioDaRefeicao variante='horario' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} />
-        <HorarioDaRefeicao variante='horario-e-data' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} data='12/04/2024' />
+          <HorarioDaRefeicao variante='data' data='12/04/2024' />
+          <HorarioDaRefeicao variante='horario' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} />
+          <HorarioDaRefeicao variante='horario-e-data' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} data='12/04/2024' />
 
-        <RefeicaoAutorizada 
-        variante="almoco"
-        horarios={{ qtdTimeReservationEnd: 11, qtdTimeReservationStart: 20, timeEnd: "13:00", timeStart: "11:20" }}
-        dias={['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira']}
-        />
+          <RefeicaoAutorizada
+            variante="almoco"
+            horarios={{ qtdTimeReservationEnd: 11, qtdTimeReservationStart: 20, timeEnd: "13:00", timeStart: "11:20" }}
+            dias={['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira']}
+          />
 
-        <Aviso titulo='Texto de aviso' texto="Devido à queda da internet no campus, todas as reservas de alimentação, exceto a do lanche da noite, serão feitas de maneira presencial na recepção." />
+          <Aviso titulo='Texto de aviso' texto="Devido à queda da internet no campus, todas as reservas de alimentação, exceto a do lanche da noite, serão feitas de maneira presencial na recepção." />
 
-        {
-          ([1, 2, 3, 4] as const).map((turno) => (
-            <Refeicao key={turno} turno={turno} refeicao={
-              mockRefeicoes.find((refeicao) => refeicao.turno === turno)?.refeicao
-            } cardapio={
-              mockRefeicoes.find((refeicao) => refeicao.turno === turno)?.cardapio
-            } />
-          ))
-        }
+          {
+            ([1, 2, 3, 4] as const).map((turno) => (
+              <Refeicao key={turno} turno={turno} refeicao={
+                mockRefeicoes.find((refeicao) => refeicao.turno === turno)?.refeicao
+              } cardapio={
+                mockRefeicoes.find((refeicao) => refeicao.turno === turno)?.cardapio
+              } />
+            ))
+          }
 
-        <SecaoApenasTexto titulo="Texto de seção apenas com texto" texto="Texto de conteúdo de seção apenas com texto" />
-      </Secao>
+          <SecaoApenasTexto titulo="Texto de seção apenas com texto" texto="Texto de conteúdo de seção apenas com texto" />
+        </Secao>
 
+
+
+      </main>
       <Footer />
-
-
-    </main>
+    </>
   );
 }
