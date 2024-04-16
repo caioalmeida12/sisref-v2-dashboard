@@ -15,6 +15,7 @@ import Aviso from './elementos/basicos/Aviso';
 import { SecaoApenasTexto } from './elementos/componentes/SecaoApenasTexto';
 import { Navbar } from './elementos/modulos/Navbar';
 import { Footer } from './elementos/componentes/Footer';
+import { RefeicaoAutorizada } from './elementos/componentes/RefeicaoAutorizada';
 
 const mockRefeicoes: IRefeicao[] = [
   {
@@ -144,6 +145,12 @@ export default function Home() {
         <HorarioDaRefeicao variante='data' data='12/04/2024' />
         <HorarioDaRefeicao variante='horario' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} />
         <HorarioDaRefeicao variante='horario-e-data' horarios={{ qtdTimeReservationEnd: 0, qtdTimeReservationStart: 0, timeEnd: '12:00', timeStart: '11:00' }} data='12/04/2024' />
+
+        <RefeicaoAutorizada 
+        variante="almoco"
+        horarios={{ qtdTimeReservationEnd: 11, qtdTimeReservationStart: 20, timeEnd: "13:00", timeStart: "11:20" }}
+        dias={['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira']}
+        />
 
         <Aviso titulo='Texto de aviso' texto="Devido à queda da internet no campus, todas as reservas de alimentação, exceto a do lanche da noite, serão feitas de maneira presencial na recepção." />
 
