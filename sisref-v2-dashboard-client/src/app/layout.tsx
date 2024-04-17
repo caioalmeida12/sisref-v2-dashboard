@@ -12,6 +12,8 @@ export const metadata: Metadata = {
 };
 
 process.env.TZ = "America/Sao_Paulo";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+
 
 export default function RootLayout({
   children,
