@@ -1,10 +1,12 @@
-interface CabecalhoPrincipalProps {
+import { HTMLAttributes } from "react";
+
+interface CabecalhoPrincipalProps extends HTMLAttributes<HTMLElement> {
     titulo: string;
 }
 
-export const CabecalhoPrincipal: React.FC<CabecalhoPrincipalProps> = ({ titulo }) => {
+export const CabecalhoPrincipal = ({ titulo, ...rest } : CabecalhoPrincipalProps) => {
     return (
-        <header>
+        <header {...rest}>
             <h2 className="font-bold text-verde-400">{titulo}</h2>
         </header>
     );

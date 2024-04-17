@@ -8,7 +8,7 @@ export interface IInformacoesPessoais {
     campus: {
         description: string;
     };
-    shift_id: number;
+    shift_id: 1 | 2 | 3 | 4;
     id: string;
     dateValid: string;
     active: number;
