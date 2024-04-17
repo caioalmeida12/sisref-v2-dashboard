@@ -1,6 +1,6 @@
-import { NomeDaRefeicao } from "../basicos/NomeDaRefeicao";
-import { HorarioDaRefeicao } from "../basicos/HorarioDaRefeicao";
-import { Secao } from "../basicos/Secao";
+import { NomeDaRefeicao } from "@elementos/basicos/NomeDaRefeicao";
+import { HorarioDaRefeicao } from "@elementos/basicos/HorarioDaRefeicao";
+import { Secao } from "@elementos/basicos/Secao";
 import { IHorarios } from "../interfaces/IHorarios";
 
 interface RefeicaoAutorizadaProps {

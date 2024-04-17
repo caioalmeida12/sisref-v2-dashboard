@@ -1,4 +1,4 @@
-import { IApenasHorario, IApenasData, IHorarioEData } from "../interfaces/IHorarios";
+import { IApenasHorario, IApenasData, IHorarioEData } from "@elementos/interfaces/IHorarios";
 
 type HorarioDaRefeicaoProps =
     | IApenasHorario

@@ -1,9 +1,9 @@
 import React from "react";
-import { Botao } from "../basicos/Botao";
-import { HorarioDaRefeicao } from "../basicos/HorarioDaRefeicao";
-import { NomeDaRefeicao } from "../basicos/NomeDaRefeicao";
-import { Secao } from "../basicos/Secao";
-import { StatusDaRefeicao } from "../basicos/StatusDaRefeicao";
+import { Botao } from "@elementos/basicos/Botao";
+import { HorarioDaRefeicao } from "@elementos/basicos/HorarioDaRefeicao";
+import { NomeDaRefeicao } from "@elementos/basicos/NomeDaRefeicao";
+import { Secao } from "@elementos/basicos/Secao";
+import { StatusDaRefeicao } from "@elementos/basicos/StatusDaRefeicao";
 import { IRefeicao } from "../interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 

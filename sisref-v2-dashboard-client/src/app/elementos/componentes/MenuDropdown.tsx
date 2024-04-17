@@ -1,7 +1,7 @@
 "use client"
 
 import { Dropdown, Menu as BaseMenu, MenuButton, MenuItem } from '@mui/base';
-import { IconeDropdown } from '../basicos/icones/IconeDropdown'
+import { IconeDropdown } from '@elementos/basicos/icones/IconeDropdown'
 import { INavItemComDropdown } from '../interfaces/INavbarProps';
 
 export const MenuDropdown = ({ titulo, itens }: INavItemComDropdown) => {

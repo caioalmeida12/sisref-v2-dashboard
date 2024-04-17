@@ -1,9 +1,9 @@
 "use client"
 
-import { IconeMenu } from "../basicos/icones/IconeMenu";
+import { IconeMenu } from "@elementos/basicos/icones/IconeMenu";
 import { INavbarProps } from "../interfaces/INavbarProps";
 import { useState } from "react";
-import { IconeFechar } from "../basicos/icones/IconeFechar";
+import { IconeFechar } from "@elementos/basicos/icones/IconeFechar";
 import { MenuDropdown } from "./MenuDropdown";
 import { MenuNavItem } from "./MenuNavItem";
 

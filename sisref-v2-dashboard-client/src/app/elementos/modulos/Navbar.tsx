@@ -1,6 +1,6 @@
 import React from 'react';
-import { IconeLogout } from "../basicos/icones/IconeLogout";
-import { IconeMenu } from "../basicos/icones/IconeMenu";;
+import { IconeLogout } from "@elementos/basicos/icones/IconeLogout";
+import { IconeMenu } from "@elementos/basicos/icones/IconeMenu";;
 import { INavbarProps } from '../interfaces/INavbarProps';
 import { MenuDropdown } from '../componentes/MenuDropdown';
 import { MenuNavItem } from '../componentes/MenuNavItem';

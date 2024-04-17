@@ -1,9 +1,9 @@
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper"
-import { CabecalhoPrincipal } from "../basicos/CabecalhoPrincipal"
-import { Secao } from "../basicos/Secao"
+import { CabecalhoPrincipal } from "@elementos/basicos/CabecalhoPrincipal"
+import { Secao } from "@elementos/basicos/Secao"
 import { CampoDeSecao } from "../componentes/CampoDeSecao"
 import { IInformacoesPessoais } from "../interfaces/IInformacoesPessoais"
-import { CabeçalhoDeSecao } from "../basicos/CabecalhoDeSecao"
+import { CabeçalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao"
 
 const shiftIdParaTurno = {
     1: "Integral",
