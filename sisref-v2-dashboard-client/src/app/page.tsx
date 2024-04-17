@@ -18,6 +18,7 @@ import { Footer } from './elementos/componentes/Footer';
 import { RefeicaoAutorizada } from './elementos/componentes/RefeicaoAutorizada';
 import { InformacoesPessoais } from './elementos/modulos/InformacoesPessoais';
 import { IInformacoesPessoais } from './elementos/interfaces/IInformacoesPessoais';
+import LoginPage from './elementos/modulos/Login';
 
 const mockRefeicoes: IRefeicao[] = [
   {
@@ -185,6 +186,7 @@ export default function Home() {
 
           <SecaoApenasTexto titulo="Texto de seção apenas com texto" texto="Texto de conteúdo de seção apenas com texto" />
         </Secao>
+        <LoginPage />
 
 
 
