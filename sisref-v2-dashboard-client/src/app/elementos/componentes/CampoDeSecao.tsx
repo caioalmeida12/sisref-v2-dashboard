@@ -2,7 +2,7 @@ import { Badge } from "../basicos/Badge";
 
 type CampoDeSecaoProps = 
     | { variante: "vertical" | "horizontal", titulo: string, complemento: string }
-    | { variante: "horizontal-com-badge", titulo: string, complemento: string, corDaBadge: string };
+    | { variante: "horizontal-com-badge" | "vertical-com-badge", titulo: string, complemento: string, corDaBadge: string };
 
 const Vertical: React.FC<CampoDeSecaoProps> = ({ titulo, complemento }) => (
     <div>
@@ -32,6 +32,22 @@ const HorizontalComBadge: React.FC<CampoDeSecaoProps> = (props) => {
         </div>
     );
 };
+
+const VerticalComBadge: React.FC<CampoDeSecaoProps> = (props) => {
+    if (props.variante !== "vertical-com-badge") {
+        throw new Error("Invalid variant for VerticalComBadge");
+    }
+
+    const { titulo, complemento, corDaBadge } = props;
+
+    return (
+        <div className="grid gap-y-1">
+            <h3 className="font-bold">{titulo}:</h3>
+            <Badge texto={complemento} corDaBadge={corDaBadge} />
+        </div>
+    );
+}
+
 export const CampoDeSecao: React.FC<CampoDeSecaoProps> = (props) => {
     switch (props.variante) {
         case "vertical":
@@ -40,5 +56,7 @@ export const CampoDeSecao: React.FC<CampoDeSecaoProps> = (props) => {
             return <Horizontal {...props} />;
         case "horizontal-com-badge":
             return <HorizontalComBadge {...props} />;
+        case "vertical-com-badge":
+            return <VerticalComBadge {...props} />;
     }
 };
