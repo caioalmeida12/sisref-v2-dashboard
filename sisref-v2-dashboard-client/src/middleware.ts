@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
+import { cookies } from 'next/headers';
 
 interface ITokenDecodificado {
   iss: string;
@@ -18,9 +19,12 @@ const redirecionarParaLogin = (base: string) => {
 }
 
 export default async function middleware(req: NextRequest) {
-  const bearer = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3J1YXBpLmNlZHJvLmlmY2UuZWR1LmJyL2FwaS9sb2dpbiIsImlhdCI6MTcxMzM1NzkwMSwiZXhwIjoxNzEzNDY1OTAxLCJuYmYiOjE3MTMzNTc5MDEsImp0aSI6IndFVFF6Q1pjdUtVNjN6azMiLCJzdWIiOiIyODgiLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIiwicm9sZSI6IiIsIm5hbWUiOiIifQ.LN7hftXiKNJm0I2pLFhM_NhO8-OOyYnYkzEJhnrWt3o"
+  if (!Boolean(process.env.AUTENTICACAO_ATIVA)) return NextResponse.next()
 
-  const token = bearer.split(' ')[1]
+  const bearer = cookies().get("authorization")
+  if (!bearer) return redirecionarParaLogin(req.url)
+
+  const token = bearer.value.split(" ")[1]
 
   const decodificado = jwt.decode(token) as Partial<ITokenDecodificado>
 
@@ -34,11 +38,12 @@ export default async function middleware(req: NextRequest) {
     const fetchAuth = await fetch(`https://ruapi.cedro.ifce.edu.br/api/all/show-student/${Number(decodificado.sub)}`);
     if (!fetchAuth.ok) redirecionarParaLogin(req.url)
   } catch (error) {
+    console.log("Erro ao buscar informações do estudante (middleware.ts): ")
     console.error(error)
   }
 }
 
-// Routes Middleware should not run on
+// Whitelist de rotas que não devem passar pelo middleware
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$|login).*)'],
 }
