@@ -17,10 +17,6 @@ import { Navbar } from '@elementos/modulos/Navbar';
 import { Footer } from '@elementos/componentes/Footer';
 import { RefeicaoAutorizada } from '@elementos/componentes/RefeicaoAutorizada';
 import { InformacoesDeEstudante } from '@/app/elementos/modulos/InformacoesDeEstudante';
-import { fetchInformacoesDeEstudante } from '@/app/lib/middlewares/FetchInformacoesDoEstudante';
-import { redirecionarParaLogin } from '@/app/lib/middlewares/RedirecionarParaLogin';
-import { validarTokenDosCookies } from '@/app/lib/middlewares/ValidarTokenDosCookies';
-import { fetchInformacoesDoCampus } from '@/app/lib/elementos/FetchInformacoesDoCampus';
 
 const mockRefeicoes: IRefeicao[] = [
   {
@@ -91,15 +87,6 @@ const mockRefeicoes: IRefeicao[] = [
 ];
 
 export default async function Home() {
-  const validado = validarTokenDosCookies()
-  if (!validado) return redirecionarParaLogin()
-
-  const informacoesDeEstudante = await fetchInformacoesDeEstudante(validado.sub);
-  if (!informacoesDeEstudante) return redirecionarParaLogin()
-
-  const informacoesDoCampus = await fetchInformacoesDoCampus(informacoesDeEstudante.campus_id.toString());
-  if (!informacoesDoCampus) return redirecionarParaLogin()
-
   return (
     <>
       <Navbar navItems={[
@@ -126,7 +113,7 @@ export default async function Home() {
         },
       ]} />
       <main className='grid gap-y-8 px-6 my-8'>
-        <InformacoesDeEstudante estudante={informacoesDeEstudante} campus={informacoesDoCampus} />
+        <InformacoesDeEstudante />
         <Secao>
           <CabeçalhoDeSecao titulo="Texto de cabeçalho de seção" />
           <CabecalhoPrincipal titulo="Texto de cabeçalho principal" />

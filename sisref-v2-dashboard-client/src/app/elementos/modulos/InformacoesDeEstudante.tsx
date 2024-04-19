@@ -5,6 +5,13 @@ import { CampoDeSecao } from "../componentes/CampoDeSecao"
 import { IInformacoesDeEstudante } from "../interfaces/IInformacoesDeEstudante"
 import { CabeçalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao"
 import { IInformacoesDoCampus } from "../interfaces/IInformacoesDoCampus"
+import { fetchInformacoesDoCampus } from "@/app/lib/elementos/FetchInformacoesDoCampus"
+import { fetchInformacoesDeEstudante } from "@/app/lib/middlewares/FetchInformacoesDoEstudante"
+import { redirecionarParaLogin } from "@/app/lib/middlewares/RedirecionarParaLogin"
+import { validarTokenDosCookies } from "@/app/lib/middlewares/ValidarTokenDosCookies"
+import { ErroDeValidacao } from "../basicos/ErroDeValidacao"
+import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 
 interface InformacoesDeEstudanteProps {
     estudante: IInformacoesDeEstudante
@@ -32,7 +39,7 @@ const Mobile = ({ estudante }: InformacoesDeEstudanteProps) => {
     )
 }
 
-const Desktop = ({estudante, campus}: InformacoesDeEstudanteProps) => {
+const Desktop = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
     return (
         <Secao className="grid gap-y-4">
             <CabeçalhoDeSecao titulo="Informações pessoais" />
@@ -51,14 +58,23 @@ const Desktop = ({estudante, campus}: InformacoesDeEstudanteProps) => {
     )
 }
 
-export const InformacoesDeEstudante = ({ ...rest }: InformacoesDeEstudanteProps) => {
+export const InformacoesDeEstudante = async () => {
+    const validado = validarTokenDosCookies()
+    if (!validado) return redirect("/")
+
+    const informacoesDeEstudante = await fetchInformacoesDeEstudante(validado.sub);
+    if (!informacoesDeEstudante) return redirect("/")
+
+    const informacoesDoCampus = await fetchInformacoesDoCampus(informacoesDeEstudante.campus_id.toString());
+    if (!informacoesDoCampus) return redirect("/")
+
     return (
         <>
             <div className="md:hidden">
-                <Mobile {...rest} />
+                <Mobile estudante={informacoesDeEstudante} campus={informacoesDoCampus} />
             </div>
             <div className="hidden md:block">
-                <Desktop {...rest} />
+                <Desktop estudante={informacoesDeEstudante} campus={informacoesDoCampus} />
             </div>
         </>
     )
