@@ -1,5 +1,5 @@
-import { CabecalhoPrincipal } from "../basicos/CabecalhoPrincipal";
-import { Secao } from "../basicos/Secao";
+import { CabecalhoPrincipal } from "@elementos/basicos/CabecalhoPrincipal";
+import { Secao } from "@elementos/basicos/Secao";
 
 interface SecaoApenasTextoProps {
     titulo: string;

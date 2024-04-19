@@ -1,4 +1,4 @@
-import { Badge } from "../basicos/Badge";
+import { Badge } from "@elementos/basicos/Badge";
 
 type CampoDeSecaoProps = 
     | { variante: "vertical" | "horizontal", titulo: string, complemento: string }

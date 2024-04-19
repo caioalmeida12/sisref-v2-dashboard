@@ -1,4 +1,4 @@
-import { IIconeStatusProps } from "../interfaces/IIconeStatusProps";
+import { IIconeStatusProps } from "@elementos/interfaces/IIconeStatusProps";
 import { IconeStatus } from "./icones/IconeStatus";
 
 interface StatusDaRefeicaoProps {

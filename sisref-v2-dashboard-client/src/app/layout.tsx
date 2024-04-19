@@ -12,6 +12,10 @@ export const metadata: Metadata = {
 };
 
 process.env.TZ = "America/Sao_Paulo";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+process.env.AUTENTICACAO_ATIVA = 'true'
+process.env.URL_BASE = 'http://localhost:3000'
+
 
 export default function RootLayout({
   children,

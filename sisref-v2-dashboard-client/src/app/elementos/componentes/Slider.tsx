@@ -1,4 +1,4 @@
-import { IconeSeta } from "../basicos/icones/IconeSeta";
+import { IconeSeta } from "@elementos/basicos/icones/IconeSeta";
 
 interface SliderProps {
     texto: string;

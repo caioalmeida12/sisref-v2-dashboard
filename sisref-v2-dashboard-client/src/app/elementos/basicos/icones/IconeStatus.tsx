@@ -1,4 +1,4 @@
-import { IIconeStatusProps } from "../../interfaces/IIconeStatusProps"
+import { IIconeStatusProps } from "@elementos/interfaces/IIconeStatusProps"
 
 const CirculoComX = ({ fill }: { fill: IIconeStatusProps["fill"] }) => {
     return (
