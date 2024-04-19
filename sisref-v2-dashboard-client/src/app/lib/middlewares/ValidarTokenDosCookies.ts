@@ -11,9 +11,10 @@ export const validarTokenDosCookies = () => {
     if (!bearer) return null;
 
     const token = bearer.value.split(" ")[1];
-    const decodificado = jwt.decode(token) as Partial<ITokenDecodificado>;
+    const decodificado = jwt.decode(token)
 
-
-
-    return decodificado && decodificado.sub && decodificado.exp && decodificado.exp * 1000 >= Date.now() ? decodificado : null;
+    if (!decodificado) return null;
+    if (typeof decodificado.sub === "undefined") return null;
+    
+    return decodificado as ITokenDecodificado;
 }

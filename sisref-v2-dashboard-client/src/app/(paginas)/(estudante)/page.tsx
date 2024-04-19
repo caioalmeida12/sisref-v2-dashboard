@@ -92,13 +92,13 @@ const mockRefeicoes: IRefeicao[] = [
 
 export default async function Home() {
   const validado = validarTokenDosCookies()
-  if (!validado || !validado.sub) return redirecionarParaLogin(process.env.URL_BASE + '/login')
+  if (!validado) return redirecionarParaLogin()
 
   const informacoesDeEstudante = await fetchInformacoesDeEstudante(validado.sub);
-  if (!informacoesDeEstudante) return redirecionarParaLogin(process.env.URL_BASE + '/login')
+  if (!informacoesDeEstudante) return redirecionarParaLogin()
 
   const informacoesDoCampus = await fetchInformacoesDoCampus(informacoesDeEstudante.campus_id.toString());
-  if (!informacoesDoCampus) return redirecionarParaLogin(process.env.URL_BASE + '/login')
+  if (!informacoesDoCampus) return redirecionarParaLogin()
 
   return (
     <>
