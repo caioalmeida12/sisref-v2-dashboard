@@ -1,10 +1,9 @@
 import React from 'react';
-import { IconeLogout } from "@elementos/basicos/icones/IconeLogout";
-import { IconeMenu } from "@elementos/basicos/icones/IconeMenu";;
 import { INavbarProps } from '../interfaces/INavbarProps';
 import { MenuDropdown } from '../componentes/MenuDropdown';
 import { MenuNavItem } from '../componentes/MenuNavItem';
 import { MenuDrawer } from '../componentes/MenuDrawer';
+import { Logout } from '../basicos/Logout';
 
 export const Navbar = ({ navItems }: INavbarProps) => {
     return (
@@ -22,7 +21,7 @@ export const Navbar = ({ navItems }: INavbarProps) => {
                     </li>
                 ))}
             </ul>
-            <IconeLogout />
+            <Logout />
         </nav>
     );
 }
