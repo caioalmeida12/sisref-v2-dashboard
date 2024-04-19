@@ -17,6 +17,7 @@ import { Navbar } from '@elementos/modulos/Navbar';
 import { Footer } from '@elementos/componentes/Footer';
 import { RefeicaoAutorizada } from '@elementos/componentes/RefeicaoAutorizada';
 import { InformacoesDeEstudante } from '@/app/elementos/modulos/InformacoesDeEstudante';
+import { RefeicoesPorDia } from '@/app/elementos/modulos/RefeicoesPorDia';
 
 const mockRefeicoes: IRefeicao[] = [
   {
@@ -157,15 +158,7 @@ export default async function Home() {
 
           <Aviso titulo='Texto de aviso' texto="Devido à queda da internet no campus, todas as reservas de alimentação, exceto a do lanche da noite, serão feitas de maneira presencial na recepção." />
 
-          {
-            ([1, 2, 3, 4] as const).map((turno) => (
-              <Refeicao key={turno} turno={turno} refeicao={
-                mockRefeicoes.find((refeicao) => refeicao.turno === turno)?.refeicao
-              } cardapio={
-                mockRefeicoes.find((refeicao) => refeicao.turno === turno)?.cardapio
-              } />
-            ))
-          }
+          <RefeicoesPorDia />
 
           <SecaoApenasTexto titulo="Texto de seção apenas com texto" texto="Texto de conteúdo de seção apenas com texto" />
         </Secao>
