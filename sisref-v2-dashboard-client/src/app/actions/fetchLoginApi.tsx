@@ -39,6 +39,7 @@ export async function fetchLoginAPI(formData: FormData) {
     const informacoesLogin: IInformacoesLogin = { ...data }
 
     cookies().set("authorization", `Bearer ${informacoesLogin.access_token}`)
+    cookies().set("classification", informacoesLogin.classfication)
 
     return redirect(process.env.URL_BASE + "/")
 }

@@ -1,8 +1,10 @@
-import { NextRequest } from 'next/server'
-import { requerLoginMiddleware } from './app/lib/middlewares/RequerLoginMiddleware';
+import { NextRequest} from 'next/server'
+import { requerAutorizacaoMiddleware } from './app/lib/middlewares/RequerAutorizacaoMiddleware';
 
 export default async function middleware(requisicao: NextRequest) {
-  return await requerLoginMiddleware(requisicao);
+  let resposta = await requerAutorizacaoMiddleware(requisicao)
+
+  return resposta
 }
 
 // Whitelist de rotas que não devem passar pelo middleware
