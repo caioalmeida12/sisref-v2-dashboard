@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { redirecionarParaLogin } from "./RedirecionarParaLogin";
 import { validarTokenDosCookies } from "./ValidarTokenDosCookies";
-import { fetchInformacoesPessoais } from "./FetchInformacoesPessoais";
+import { fetchInformacoesDeEstudante } from "./FetchInformacoesDoEstudante";
 import { cookies } from "next/headers";
 
 /**
@@ -49,7 +49,7 @@ export const requerAutorizacaoMiddleware = async (req: NextRequest) => {
     if (rotasQueNaoRequeremAutenticacao.includes(pathname)) return NextResponse.next();
 
     const validado = validarTokenDosCookies()
-    if (!validado) return redirecionarParaLogin(req.url);
+    if (!validado || !validado.sub) return redirecionarParaLogin(req.url);
 
     const classification = cookies().get("classification")?.value
     if (!classification) return redirecionarParaLogin(req.url);
@@ -59,7 +59,7 @@ export const requerAutorizacaoMiddleware = async (req: NextRequest) => {
 
     try {
         if (classification === "STUDENT") {
-            const fetchAuth = await fetchInformacoesPessoais(Number(validado.sub));
+            const fetchAuth = await fetchInformacoesDeEstudante(validado.sub);
             if (!fetchAuth) return redirecionarParaLogin(req.url);
         }
 

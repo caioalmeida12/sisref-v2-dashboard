@@ -16,8 +16,11 @@ import { SecaoApenasTexto } from '@elementos/componentes/SecaoApenasTexto';
 import { Navbar } from '@elementos/modulos/Navbar';
 import { Footer } from '@elementos/componentes/Footer';
 import { RefeicaoAutorizada } from '@elementos/componentes/RefeicaoAutorizada';
-import { InformacoesPessoais } from '@elementos/modulos/InformacoesPessoais';
-import { IInformacoesPessoais } from '@elementos/interfaces/IInformacoesPessoais';
+import { InformacoesDeEstudante } from '@/app/elementos/modulos/InformacoesDeEstudante';
+import { fetchInformacoesDeEstudante } from '@/app/lib/middlewares/FetchInformacoesDoEstudante';
+import { redirecionarParaLogin } from '@/app/lib/middlewares/RedirecionarParaLogin';
+import { validarTokenDosCookies } from '@/app/lib/middlewares/ValidarTokenDosCookies';
+import { fetchInformacoesDoCampus } from '@/app/lib/elementos/FetchInformacoesDoCampus';
 
 const mockRefeicoes: IRefeicao[] = [
   {
@@ -87,22 +90,16 @@ const mockRefeicoes: IRefeicao[] = [
   }
 ];
 
-const mockInformacoesEstudante: IInformacoesPessoais = {
-  name: 'João da Silva',
-  mat: '1234',
-  course: {
-    description: 'Ciência da Computação'
-  },
-  campus: {
-    description: 'Juazeiro do Norte'
-  },
-  shift_id: 1,
-  id: '5678',
-  dateValid: '2023-12-31',
-  active: 1
-}
+export default async function Home() {
+  const validado = validarTokenDosCookies()
+  if (!validado || !validado.sub) return redirecionarParaLogin(process.env.URL_BASE + '/login')
 
-export default function Home() {
+  const informacoesDeEstudante = await fetchInformacoesDeEstudante(validado.sub);
+  if (!informacoesDeEstudante) return redirecionarParaLogin(process.env.URL_BASE + '/login')
+
+  const informacoesDoCampus = await fetchInformacoesDoCampus(informacoesDeEstudante.campus_id.toString());
+  if (!informacoesDoCampus) return redirecionarParaLogin(process.env.URL_BASE + '/login')
+
   return (
     <>
       <Navbar navItems={[
@@ -129,7 +126,7 @@ export default function Home() {
         },
       ]} />
       <main className='grid gap-y-8 px-6 my-8'>
-        <InformacoesPessoais {...mockInformacoesEstudante} />
+        <InformacoesDeEstudante estudante={informacoesDeEstudante} campus={informacoesDoCampus} />
         <Secao>
           <CabeçalhoDeSecao titulo="Texto de cabeçalho de seção" />
           <CabecalhoPrincipal titulo="Texto de cabeçalho principal" />
