@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Inter, Roboto_Slab } from "next/font/google";
+import { Roboto_Slab } from "next/font/google";
 import "./globals.css";
 
-const inter = Roboto_Slab({
+const fontFamily = Roboto_Slab({
   subsets: ["latin"],
 });
 
@@ -24,7 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className + " bg-cinza-400"}>{children}</body>
+      <body className={`bg-cinza-400 ${fontFamily.className}`}>
+        {children}
+      </body>
     </html>
   );
 }
