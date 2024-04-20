@@ -19,12 +19,12 @@ export const requerAutenticacaoMiddleware = async (req: NextRequest) => {
     const pathname = new URL(req.url).pathname
     if (rotasQueNaoRequeremAutenticacao.includes(pathname)) return NextResponse.next();
 
-    const validado = validarTokenDosCookies(req)
-    if (!validado) return redirecionarParaLogin(req.url);
+    const validado = validarTokenDosCookies()
+    if (!validado) return redirecionarParaLogin();
 
     try {
-        const fetchAuth = await fetch(`https://ruapi.cedro.ifce.edu.br/api/all/show-student/${Number(validado.sub)}`);
-        if (!fetchAuth.ok) redirecionarParaLogin(req.url);
+        const fetchAuth = await fetch(`https://ruapi.cedro.ifce.edu.br/api/all/show-student/${validado.sub}`);
+        if (!fetchAuth.ok) redirecionarParaLogin();
     } catch (error) {
         console.log("Erro ao buscar informações do estudante (middleware.ts): ")
         console.error(error)

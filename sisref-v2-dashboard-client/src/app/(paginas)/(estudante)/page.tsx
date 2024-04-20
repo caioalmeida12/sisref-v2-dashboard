@@ -16,8 +16,8 @@ import { SecaoApenasTexto } from '@elementos/componentes/SecaoApenasTexto';
 import { Navbar } from '@elementos/modulos/Navbar';
 import { Footer } from '@elementos/componentes/Footer';
 import { RefeicaoAutorizada } from '@elementos/componentes/RefeicaoAutorizada';
-import { InformacoesPessoais } from '@elementos/modulos/InformacoesPessoais';
-import { IInformacoesPessoais } from '@elementos/interfaces/IInformacoesPessoais';
+import { InformacoesDeEstudante } from '@/app/elementos/modulos/InformacoesDeEstudante';
+import { RefeicoesPorDia } from '@/app/elementos/modulos/RefeicoesPorDia';
 
 const mockRefeicoes: IRefeicao[] = [
   {
@@ -87,22 +87,7 @@ const mockRefeicoes: IRefeicao[] = [
   }
 ];
 
-const mockInformacoesEstudante: IInformacoesPessoais = {
-  name: 'João da Silva',
-  mat: '1234',
-  course: {
-    description: 'Ciência da Computação'
-  },
-  campus: {
-    description: 'Juazeiro do Norte'
-  },
-  shift_id: 1,
-  id: '5678',
-  dateValid: '2023-12-31',
-  active: 1
-}
-
-export default function Home() {
+export default async function Home() {
   return (
     <>
       <Navbar navItems={[
@@ -128,8 +113,10 @@ export default function Home() {
           titulo: 'Avisos', rota: '/avisos',
         },
       ]} />
-      <main className='grid gap-y-8 px-6 my-8'>
-        <InformacoesPessoais {...mockInformacoesEstudante} />
+      <main className='w-full grid gap-y-8 px-6 my-8'>
+        <InformacoesDeEstudante />
+        <RefeicoesPorDia />
+
         <Secao>
           <CabeçalhoDeSecao titulo="Texto de cabeçalho de seção" />
           <CabecalhoPrincipal titulo="Texto de cabeçalho principal" />
@@ -173,15 +160,6 @@ export default function Home() {
 
           <Aviso titulo='Texto de aviso' texto="Devido à queda da internet no campus, todas as reservas de alimentação, exceto a do lanche da noite, serão feitas de maneira presencial na recepção." />
 
-          {
-            ([1, 2, 3, 4] as const).map((turno) => (
-              <Refeicao key={turno} turno={turno} refeicao={
-                mockRefeicoes.find((refeicao) => refeicao.turno === turno)?.refeicao
-              } cardapio={
-                mockRefeicoes.find((refeicao) => refeicao.turno === turno)?.cardapio
-              } />
-            ))
-          }
 
           <SecaoApenasTexto titulo="Texto de seção apenas com texto" texto="Texto de conteúdo de seção apenas com texto" />
         </Secao>

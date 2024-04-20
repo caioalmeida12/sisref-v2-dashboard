@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { redirecionarParaLogin } from "./RedirecionarParaLogin";
 import { validarTokenDosCookies } from "./ValidarTokenDosCookies";
-import { fetchInformacoesPessoais } from "./FetchInformacoesPessoais";
+import { fetchInformacoesDeEstudante } from "./FetchInformacoesDoEstudante";
 import { cookies } from "next/headers";
 
 /**
@@ -49,18 +49,18 @@ export const requerAutorizacaoMiddleware = async (req: NextRequest) => {
     if (rotasQueNaoRequeremAutenticacao.includes(pathname)) return NextResponse.next();
 
     const validado = validarTokenDosCookies()
-    if (!validado) return redirecionarParaLogin(req.url);
+    if (!validado) return redirecionarParaLogin()
 
     const classification = cookies().get("classification")?.value
-    if (!classification) return redirecionarParaLogin(req.url);
+    if (!classification) return redirecionarParaLogin();
 
     const rotasPermitidas = rotasPermitidasPorClassification.find((r) => r.classification === classification)?.permissions.includes(pathname)
-    if (!rotasPermitidas) return redirecionarParaLogin(req.url);
+    if (!rotasPermitidas) return redirecionarParaLogin();
 
     try {
         if (classification === "STUDENT") {
-            const fetchAuth = await fetchInformacoesPessoais(Number(validado.sub));
-            if (!fetchAuth) return redirecionarParaLogin(req.url);
+            const fetchAuth = await fetchInformacoesDeEstudante(validado.sub);
+            if (!fetchAuth) return redirecionarParaLogin();
         }
 
     } catch (error) {
