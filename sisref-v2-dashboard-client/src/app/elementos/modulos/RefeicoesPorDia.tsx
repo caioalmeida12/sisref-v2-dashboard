@@ -1,38 +1,63 @@
-import { cookies } from "next/headers";
+"use client"
+
 import { Refeicao } from "../componentes/Refeicao";
-import { redirect } from "next/navigation";
 import { Secao } from "../basicos/Secao";
 import { Slider } from "../componentes/Slider";
+import { useEffect, useState } from "react";
+import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
+import { IRefeicao } from "../interfaces/IRefeicao";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 
-export const RefeicoesPorDia = async ({ data = new Date().toISOString().split('T')[0] }: { data?: string }) => {
-    const API_URL = new URL("https://ruapi.cedro.ifce.edu.br/api/all/menus-today")
-    API_URL.searchParams.append('date', data);
+const cache: { [data: string]: IRefeicao[] } = {};
 
-    const response = await fetch(`${API_URL}`, {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": cookies().get("authorization")?.value || redirect("/login")
-        }
-    });
+export const RefeicoesPorDia = () => {
+    const [data, setData] = useState(new Date().toISOString().split('T')[0]);
+    const [refeicoes, setRefeicoes] = useState<IRefeicao[]>([]);
 
-    const refeicoes = await response.json();
+    // Limitar a distância de dias entre a data atual e a data selecionada
+    const dataSelecionada = new Date(data).toISOString().split('T')[0];
+    const diferencaDias = DatasHelper.getDiferenciaEmDias(dataSelecionada);
 
-    const array = Array.isArray(refeicoes) ? refeicoes : [refeicoes];
+    useEffect(() => {
+        if (cache[data]) return setRefeicoes(cache[data]);
 
-    const elementosRefeicoes = ([1, 2, 3, 4] as const).map((turno) => (
+        fetchRefeicoesPorDia({ data })
+            .then((refeicoes) => {
+                setRefeicoes(refeicoes);
+
+                cache[data] = refeicoes;
+            })
+            .catch((erro) => console.error(erro));
+    }, [data])
+
+    const elementosRefeicao = ([1, 2, 3, 4] as const).map((turno) => (
         <Refeicao key={turno} turno={turno} refeicao={
-            array.find((refeicao) => refeicao.turno === turno)?.refeicao
+            refeicoes.find((refeicao) => refeicao.turno === turno)?.refeicao
         } cardapio={
-            array.find((refeicao) => refeicao.turno === turno)?.cardapio
+            refeicoes.find((refeicao) => refeicao.turno === turno)?.cardapio
         } />
     ));
 
+    const textoData = new Date().toISOString().split('T')[0] === data ? "hoje" : DatasHelper.converterParaFormatoBrasileiro(data);
+
     return (
         <Secao className="flex flex-col gap-y-4 md:grid md:grid-cols-2 md:gap-4">
-            <Slider texto="Refeições por dia" className="bg-preto-400 col-span-2"/>
-            {elementosRefeicoes}
+            <Slider texto={`Refeições para ${textoData}`} className="bg-preto-400 col-span-2"
+                onNext={() => {
+                    if (diferencaDias > 7) return;
 
+                    const amanha = DatasHelper.getDataPosterior(data);
+                    setData(amanha);
+                }}
 
+                onPrevious={() => {
+                    if (diferencaDias < -7) return;
+
+                    const ontem = DatasHelper.getDataAnterior(data);
+                    setData(ontem);
+                }}
+            />
+            {elementosRefeicao}
         </Secao>
     )
 }
