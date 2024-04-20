@@ -12,7 +12,7 @@ const Vertical: React.FC<CampoDeSecaoProps> = ({ titulo, complemento }) => (
 );
 
 const Horizontal: React.FC<CampoDeSecaoProps> = ({ titulo, complemento }) => (
-    <div className="flex-col items-start flex gap-1 sm:items-center sm:flex-row">
+    <div className="flex-col items-start flex gap-1 md:items-center md:flex-row">
         <h3 className="font-bold">{titulo}:</h3>
         <p>{complemento}</p>
     </div>

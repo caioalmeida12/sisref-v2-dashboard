@@ -113,8 +113,10 @@ export default async function Home() {
           titulo: 'Avisos', rota: '/avisos',
         },
       ]} />
-      <main className='grid gap-y-8 px-6 my-8'>
+      <main className='w-full grid gap-y-8 px-6 my-8'>
         <InformacoesDeEstudante />
+        <RefeicoesPorDia />
+
         <Secao>
           <CabeçalhoDeSecao titulo="Texto de cabeçalho de seção" />
           <CabecalhoPrincipal titulo="Texto de cabeçalho principal" />
@@ -158,7 +160,6 @@ export default async function Home() {
 
           <Aviso titulo='Texto de aviso' texto="Devido à queda da internet no campus, todas as reservas de alimentação, exceto a do lanche da noite, serão feitas de maneira presencial na recepção." />
 
-          <RefeicoesPorDia />
 
           <SecaoApenasTexto titulo="Texto de seção apenas com texto" texto="Texto de conteúdo de seção apenas com texto" />
         </Secao>

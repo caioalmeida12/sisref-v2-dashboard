@@ -27,12 +27,12 @@ const shiftIdParaTurno = {
 
 const Mobile = ({ estudante }: InformacoesDeEstudanteProps) => {
     return (
-        <Secao className="grid gap-y-4">
+        <Secao className="grid gap-y-4 md:hidden">
             <CabecalhoPrincipal titulo="Informações pessoais" />
             <CampoDeSecao titulo="Nome" complemento={estudante.name} variante="horizontal" />
             <CampoDeSecao titulo='Curso' complemento={estudante.course.description} variante='horizontal' />
             <div className="flex gap-x-4">
-                <CampoDeSecao titulo="Código" complemento={estudante.mat} variante='horizontal-com-badge' corDaBadge='bg-azul-400' />
+                <CampoDeSecao titulo="Código" complemento={String(estudante.id)} variante='horizontal-com-badge' corDaBadge='bg-azul-400' />
                 <CampoDeSecao titulo="Validade" complemento={DatasHelper.converterParaFormatoBrasileiro(estudante.dateValid)} variante='horizontal-com-badge' corDaBadge='bg-verde-300' />
             </div>
         </Secao>
@@ -41,7 +41,7 @@ const Mobile = ({ estudante }: InformacoesDeEstudanteProps) => {
 
 const Desktop = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
     return (
-        <Secao className="grid gap-y-4">
+        <Secao className="hidden md:grid md:gap-y-4 container">
             <CabeçalhoDeSecao titulo="Informações pessoais" />
             <CampoDeSecao titulo="Nome" complemento={estudante.name} variante="vertical" />
             <CampoDeSecao titulo="Matrícula" complemento="20211035000020" variante="vertical" />
@@ -70,12 +70,8 @@ export const InformacoesDeEstudante = async () => {
 
     return (
         <>
-            <div className="md:hidden">
                 <Mobile estudante={informacoesDeEstudante} campus={informacoesDoCampus} />
-            </div>
-            <div className="hidden md:block">
                 <Desktop estudante={informacoesDeEstudante} campus={informacoesDoCampus} />
-            </div>
         </>
     )
 }
