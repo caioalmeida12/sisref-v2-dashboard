@@ -1,8 +1,9 @@
 import { NextResponse, NextRequest } from "next/server";
-import { redirecionarParaLogin } from "./RedirecionarParaLogin";
 import { validarTokenDosCookies } from "./ValidarTokenDosCookies";
 import { fetchInformacoesDeEstudante } from "./FetchInformacoesDoEstudante";
 import { cookies } from "next/headers";
+import { redirecionarViaMiddleware } from "./RedirecionarViaMiddleware";
+
 
 /**
  * Armazena as rotas que não requerem autenticação
@@ -49,18 +50,16 @@ export const requerAutorizacaoMiddleware = async (req: NextRequest) => {
     if (rotasQueNaoRequeremAutenticacao.includes(pathname)) return NextResponse.next();
 
     const validado = validarTokenDosCookies()
-    if (!validado) return redirecionarParaLogin()
 
     const classification = cookies().get("classification")?.value
-    if (!classification) return redirecionarParaLogin();
 
     const rotasPermitidas = rotasPermitidasPorClassification.find((r) => r.classification === classification)?.permissions.includes(pathname)
-    if (!rotasPermitidas) return redirecionarParaLogin();
+    if (!rotasPermitidas) return redirecionarViaMiddleware()
 
     try {
         if (classification === "STUDENT") {
             const fetchAuth = await fetchInformacoesDeEstudante(validado.sub);
-            if (!fetchAuth) return redirecionarParaLogin();
+            if (!fetchAuth) return redirecionarViaMiddleware()
         }
 
     } catch (error) {

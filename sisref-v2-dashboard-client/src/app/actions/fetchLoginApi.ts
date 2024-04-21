@@ -1,7 +1,7 @@
 "use server"
 
 import { cookies } from "next/headers"
-import { redirect } from "next/navigation"
+import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction"
 
 interface IInformacoesLogin {
     access_token: string
@@ -41,5 +41,5 @@ export async function fetchLoginAPI(formData: FormData) {
     cookies().set("authorization", `Bearer ${informacoesLogin.access_token}`)
     cookies().set("classification", informacoesLogin.classfication)
 
-    return redirect(process.env.URL_BASE + "/")
+    return redirecionarViaAction("/")
 }

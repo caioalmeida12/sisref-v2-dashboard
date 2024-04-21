@@ -1,27 +1,25 @@
 import { IInformacoesDoCampus } from "@/app/elementos/interfaces/IInformacoesDoCampus";
 import { cookies } from "next/headers";
+import { redirecionarViaAction } from "../actions/RedirecionarViaAction";
 
 export const fetchInformacoesDoCampus = async (id: string) => {
     const API_URL = "https://ruapi.cedro.ifce.edu.br/api/all/campus"
 
-    const cookie = cookies().get("authorization")
-    if (!cookie?.value) return null
-
     const response = await fetch(API_URL, {
         headers: {
             "Content-Type": "application/json",
-            "Authorization": cookie.value
+            "Authorization": cookies().get("authorization")?.value || redirecionarViaAction()
         },
     })
 
-    if (!response.ok) return null
+    if (!response.ok) return redirecionarViaAction()
 
     const data: Array<IInformacoesDoCampus> = await response.json()
 
     const array = Array.isArray(data) ? data : [data]
 
     const campus = array.find((campus) => campus.id === Number(id))
-    if(!campus) return null
+    if(!campus) return redirecionarViaAction()
 
     return campus
 };
