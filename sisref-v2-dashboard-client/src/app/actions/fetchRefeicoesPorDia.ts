@@ -1,8 +1,9 @@
 "use server"
 
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+
 import { IRefeicao } from "../elementos/interfaces/IRefeicao";
+import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
 
 export async function fetchRefeicoesPorDia({ data = new Date().toISOString().split('T')[0] }: { data?: string }) {
     const API_URL = new URL("https://ruapi.cedro.ifce.edu.br/api/all/menus-today")
@@ -11,7 +12,7 @@ export async function fetchRefeicoesPorDia({ data = new Date().toISOString().spl
     const resposta = await fetch(`${API_URL}`, {
         headers: {
             "Content-Type": "application/json",
-            "Authorization": cookies().get("authorization")?.value || redirect("/login")
+            "Authorization": cookies().get("authorization")?.value || redirecionarViaAction()
         }
     });
 
