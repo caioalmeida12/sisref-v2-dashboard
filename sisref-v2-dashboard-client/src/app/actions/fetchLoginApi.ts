@@ -41,5 +41,5 @@ export async function fetchLoginAPI(formData: FormData) {
     cookies().set("authorization", `Bearer ${informacoesLogin.access_token}`)
     cookies().set("classification", informacoesLogin.classfication)
 
-    return redirecionarViaAction()
+    return redirecionarViaAction("/")
 }
