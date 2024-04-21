@@ -18,6 +18,7 @@ import { Footer } from '@elementos/componentes/Footer';
 import { RefeicaoAutorizada } from '@elementos/componentes/RefeicaoAutorizada';
 import { InformacoesDeEstudante } from '@/app/elementos/modulos/InformacoesDeEstudante';
 import { RefeicoesPorDia } from '@/app/elementos/modulos/RefeicoesPorDia';
+import { RestricoesAlimentares } from '@/app/elementos/modulos/RestricoesAlimentares/RestricoesAlimentares';
 
 const mockRefeicoes: IRefeicao[] = [
   {
@@ -116,6 +117,7 @@ export default async function Home() {
       <main className='w-full grid gap-y-8 px-6 my-8'>
         <InformacoesDeEstudante />
         <RefeicoesPorDia />
+        <RestricoesAlimentares />
 
         <Secao>
           <CabeçalhoDeSecao titulo="Texto de cabeçalho de seção" />
