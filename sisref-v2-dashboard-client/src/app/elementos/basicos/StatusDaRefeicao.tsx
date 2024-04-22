@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { IIconeStatusProps } from "@elementos/interfaces/IIconeStatusProps";
 import { IconeStatus } from "./icones/IconeStatus";
 

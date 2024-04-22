@@ -1,5 +1,7 @@
 "use client"
 
+import React from "react";
+
 import { Refeicao } from "../componentes/Refeicao";
 import { Secao } from "../basicos/Secao";
 import { Slider } from "../componentes/Slider";

@@ -1,5 +1,7 @@
 "use client"
 
+import React from 'react'
+
 import { Dropdown, Menu as BaseMenu, MenuButton, MenuItem } from '@mui/base';
 import { IconeDropdown } from '@elementos/basicos/icones/IconeDropdown'
 import { INavItemComDropdown } from '../interfaces/INavbarProps';

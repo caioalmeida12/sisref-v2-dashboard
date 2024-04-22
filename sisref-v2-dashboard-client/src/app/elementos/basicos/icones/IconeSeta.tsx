@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { SVGProps } from "react";
 
 interface IconeSetaProps extends SVGProps<SVGSVGElement> {

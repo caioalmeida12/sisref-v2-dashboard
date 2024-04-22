@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Botao } from "./Botao";
 import { IconeAviso } from "./icones/IconeAviso";
 
@@ -7,7 +9,7 @@ interface AvisoProps {
     textoBotao?: string;
 }
 
-export default function Aviso({ titulo, texto, textoBotao }: AvisoProps) {
+export const Aviso = ({ titulo, texto, textoBotao }: AvisoProps) => {
     return (
         <div className="bg-vermelho-400 p-4 rounded gap-x-2 gap-y-4 grid">
             <h2 className="font-bold text-branco-400 flex gap-x-2 items-center text-lg"><IconeAviso />{titulo}</h2>

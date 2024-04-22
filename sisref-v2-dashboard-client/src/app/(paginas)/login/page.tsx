@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Footer } from "@/app/elementos/componentes/Footer"
 import { Login } from "@/app/elementos/modulos/Login"
 import { Navbar } from "@/app/elementos/modulos/Navbar"

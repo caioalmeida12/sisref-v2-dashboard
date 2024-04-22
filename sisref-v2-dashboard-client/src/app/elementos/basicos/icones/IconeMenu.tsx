@@ -1,3 +1,5 @@
+import React from 'react'
+
 interface IconeMenuProps extends React.SVGProps<SVGSVGElement> {
 
 }

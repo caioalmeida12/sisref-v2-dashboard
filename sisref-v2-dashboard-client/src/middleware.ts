@@ -2,7 +2,7 @@ import { NextRequest} from 'next/server'
 import { requerAutorizacaoMiddleware } from './app/lib/middlewares/RequerAutorizacaoMiddleware';
 
 export default async function middleware(requisicao: NextRequest) {
-  let resposta = await requerAutorizacaoMiddleware(requisicao)
+  const resposta = await requerAutorizacaoMiddleware(requisicao)
 
   return resposta
 }

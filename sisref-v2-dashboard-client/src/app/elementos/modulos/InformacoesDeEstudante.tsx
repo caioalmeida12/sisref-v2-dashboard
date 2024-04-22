@@ -1,3 +1,5 @@
+import React from "react"
+
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper"
 import { CabecalhoPrincipal } from "@elementos/basicos/CabecalhoPrincipal"
 import { Secao } from "@elementos/basicos/Secao"

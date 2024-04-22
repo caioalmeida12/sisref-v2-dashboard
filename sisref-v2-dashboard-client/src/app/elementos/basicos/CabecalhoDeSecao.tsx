@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { HTMLAttributes } from "react";
 
 interface CabeçalhoDeSecaoProps extends HTMLAttributes<HTMLElement> {

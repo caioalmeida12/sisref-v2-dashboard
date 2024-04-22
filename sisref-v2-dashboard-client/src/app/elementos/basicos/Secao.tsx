@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { HTMLAttributes } from "react";
 
 interface SecaoProps extends HTMLAttributes<HTMLDivElement> {

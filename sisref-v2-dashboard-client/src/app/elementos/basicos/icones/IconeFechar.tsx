@@ -1,3 +1,5 @@
+import React from 'react'
+
 interface IconeFecharProps extends React.SVGProps<SVGSVGElement> {
 
 }

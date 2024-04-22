@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { IIconeStatusProps } from "@elementos/interfaces/IIconeStatusProps"
 
 const CirculoComX = ({ fill }: { fill: IIconeStatusProps["fill"] }) => {
@@ -34,7 +36,7 @@ const Cadeado = ({ fill }: { fill: IIconeStatusProps["fill"] }) => {
 
 const RelogioComX = ({ fill }: { fill: IIconeStatusProps["fill"] }) => {
     return (
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className={fill}>
             <path d="M6.84713 11.591C6.51996 11.6495 6.18695 11.6845 5.84226 11.6845C2.62902 11.6845 0 9.0555 0 5.84226C0 2.62902 2.62902 0 5.84226 0C9.0555 0 11.6845 2.62902 11.6845 5.84226C11.6845 6.18695 11.6495 6.51996 11.591 6.84713C11.1003 6.57838 10.5336 6.42648 9.93184 6.42648C9.19572 6.42648 8.51217 6.65433 7.94547 7.04576L6.13437 5.9591V2.92113H5.25803V6.42648L7.26193 7.6592C6.74197 8.27264 6.42648 9.0555 6.42648 9.93184C6.42648 10.5336 6.57838 11.1003 6.84713 11.591ZM11.1704 7.86368L9.93184 9.10808L8.69328 7.86952L7.86952 8.69328L9.10808 9.93184L7.86952 11.1704L8.69328 12L9.93184 10.7556L11.1704 12L12 11.1704L10.7556 9.93184L12 8.69328L11.1704 7.86368Z" fill="#A29C9B" />
         </svg>
 

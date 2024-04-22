@@ -2,10 +2,12 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@microsoft/eslint-formatter-sarif": "2.1.7",
     "@mui/base": "^5.0.0-beta.40",
-    "@types/jsonwebtoken": "^9.0.6",
-    "jsonwebtoken": "^9.0.2",
     "@mui/material": "^5.15.15",
+    "@types/jsonwebtoken": "^9.0.6",
+    "eslint": "8.57.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "^14.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -17,9 +19,13 @@
   "devDependencies": {
     "@commitlint/cli": "^19.2.1",
     "@commitlint/config-conventional": "^19.1.0",
+    "@eslint/js": "^8.57.0",
     "@types/bun": "latest",
     "cz-conventional-changelog": "^3.3.0",
-    "husky": "^9.0.11"
+    "eslint-plugin-react": "^7.34.1",
+    "globals": "^15.0.0",
+    "husky": "^9.0.11",
+    "typescript-eslint": "^7.7.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -31,6 +37,7 @@
   },
   "scripts": {
     "cm": "cz",
-    "dev": "cd sisref-v2-dashboard-client; bun dev"
+    "dev": "cd sisref-v2-dashboard-client; bun dev",
+    "lint": "npx eslint ./sisref-v2-dashboard-client/src/ --format @microsoft/eslint-formatter-sarif > eslint-results.sarif"
   }
 }

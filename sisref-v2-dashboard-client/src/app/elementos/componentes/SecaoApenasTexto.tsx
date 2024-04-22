@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { CabecalhoPrincipal } from "@elementos/basicos/CabecalhoPrincipal";
 import { Secao } from "@elementos/basicos/Secao";
 
