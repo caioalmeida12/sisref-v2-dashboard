@@ -9,9 +9,7 @@ import { StatusDaRefeicao } from '@elementos/basicos/StatusDaRefeicao';
 import { NomeDaRefeicao } from '@elementos/basicos/NomeDaRefeicao';
 import { RestricaoAlimentar } from '@elementos/basicos/RestricaoAlimentar';
 import { HorarioDaRefeicao } from '@elementos/basicos/HorarioDaRefeicao';
-import { Refeicao } from '@elementos/componentes/Refeicao';
-import { IRefeicao } from '@elementos/interfaces/IRefeicao';
-import Aviso from '@elementos/basicos/Aviso';
+import { Aviso } from '@elementos/basicos/Aviso';
 import { SecaoApenasTexto } from '@elementos/componentes/SecaoApenasTexto';
 import { Navbar } from '@elementos/modulos/Navbar';
 import { Footer } from '@elementos/componentes/Footer';
@@ -19,74 +17,6 @@ import { RefeicaoAutorizada } from '@elementos/componentes/RefeicaoAutorizada';
 import { InformacoesDeEstudante } from '@/app/elementos/modulos/InformacoesDeEstudante';
 import { RefeicoesPorDia } from '@/app/elementos/modulos/RefeicoesPorDia';
 import { RestricoesAlimentares } from '@/app/elementos/modulos/RestricoesAlimentares/RestricoesAlimentares';
-
-const mockRefeicoes: IRefeicao[] = [
-  {
-    turno: 1,
-    refeicao: {
-      description: "Lanche da manhã",
-      qtdTimeReservationEnd: 1,
-      qtdTimeReservationStart: 9,
-      timeEnd: "12:00",
-      timeStart: "11:00"
-    },
-  },
-  {
-    turno: 2,
-    refeicao: {
-      description: "Almoço",
-      qtdTimeReservationStart: 2,
-      qtdTimeReservationEnd: 1,
-      timeEnd: "20:00",
-      timeStart: "18:00"
-    },
-    cardapio: {
-      agendado: false,
-      date: "2024-04-14",
-      description: "Arroz parbolizado; Feijão preto; Lombo Suíno frito; Salada de alface e tomate; Suco de laranja; Banana prata; Pão francês;",
-      permission: true,
-      id: 2438,
-      campus_id: 2
-    }
-  },
-  {
-    turno: 3,
-    refeicao: {
-      description: "Lanche da tarde",
-      qtdTimeReservationEnd: 1,
-      qtdTimeReservationStart: 10,
-      timeStart: "20:00",
-      timeEnd: "21:00",
-    },
-    cardapio: {
-      agendado: false,
-      date: "2024-04-14",
-      description: "Suco de laranja + Sanduíche",
-      permission: true,
-      id: 2439,
-      campus_id: 3
-    }
-  },
-  {
-    turno: 4,
-    refeicao: {
-      description: "Jantar",
-      qtdTimeReservationEnd: 4,
-      qtdTimeReservationStart: 19,
-      timeEnd: "21:00",
-      timeStart: "20:00"
-    },
-    cardapio: {
-      agendado: false,
-      date: "2024-04-14",
-      description: "Sopa de legumes",
-      permission: true,
-      id: 2440,
-      campus_id: 4,
-      canceled_by_student: false
-    }
-  }
-];
 
 export default async function Home() {
   return (

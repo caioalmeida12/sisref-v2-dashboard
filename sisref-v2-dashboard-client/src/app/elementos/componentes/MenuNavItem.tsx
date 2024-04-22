@@ -12,7 +12,7 @@ export const MenuNavItem = ({ titulo, rota }: INavItemSemDropdown) => {
     }
 
     return (
-        <a className="flex items-center gap-x-2 cursor-pointer" onClick={createHandleMenuClick(titulo)}>
+        <a className="flex items-center gap-x-2 cursor-pointer" onClick={createHandleMenuClick(titulo)} href={rota}>
             {titulo}
         </a>
     );
