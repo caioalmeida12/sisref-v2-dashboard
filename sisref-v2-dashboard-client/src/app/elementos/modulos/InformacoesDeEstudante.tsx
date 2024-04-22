@@ -25,7 +25,7 @@ const shiftIdParaTurno = {
 
 const Mobile = ({ estudante }: InformacoesDeEstudanteProps) => {
     return (
-        <Secao className="grid gap-y-4 md:hidden">
+        <Secao className="flex flex-col gap-y-4 md:hidden">
             <CabecalhoPrincipal titulo="Informações pessoais" />
             <CampoDeSecao titulo="Nome" complemento={estudante.name} variante="horizontal" />
             <CampoDeSecao titulo='Curso' complemento={estudante.course.description} variante='horizontal' />
@@ -39,7 +39,7 @@ const Mobile = ({ estudante }: InformacoesDeEstudanteProps) => {
 
 const Desktop = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
     return (
-        <Secao className="hidden md:grid md:gap-y-4 container">
+        <Secao className="hidden md:flex md:flex-col md:gap-y-4">
             <CabeçalhoDeSecao titulo="Informações pessoais" />
             <CampoDeSecao titulo="Nome" complemento={estudante.name} variante="vertical" />
             <CampoDeSecao titulo="Matrícula" complemento="20211035000020" variante="vertical" />

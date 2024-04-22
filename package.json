@@ -38,6 +38,7 @@
   "scripts": {
     "cm": "cz",
     "dev": "cd sisref-v2-dashboard-client; bun dev",
-    "lint": "npx eslint ./sisref-v2-dashboard-client/src/ --format @microsoft/eslint-formatter-sarif > eslint-results.sarif"
+    "lint": "bun eslint ./sisref-v2-dashboard-client/src/ --fix",
+    "lint-ci": "npx eslint ./sisref-v2-dashboard-client/src/ --format @microsoft/eslint-formatter-sarif > eslint-results.sarif"
   }
 }
