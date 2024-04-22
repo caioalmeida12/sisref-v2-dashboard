@@ -3,11 +3,9 @@ import React from "react"
 import { NomeDaRefeicao } from "@elementos/basicos/NomeDaRefeicao";
 import { HorarioDaRefeicao } from "@elementos/basicos/HorarioDaRefeicao";
 import { Secao } from "@elementos/basicos/Secao";
-import { IHorarios } from "../interfaces/IHorarios";
 
 interface RefeicaoAutorizadaProps {
     variante: keyof typeof horarioPorVariante;
-    horarios: IHorarios;
     dias: string[];
 }
 
@@ -19,6 +17,8 @@ const horarioPorVariante = {
 } as const;
 
 export const RefeicaoAutorizada = ({ variante, dias }: RefeicaoAutorizadaProps) => {
+    const diasAutorizados = dias.map((dia) => dia.toLocaleLowerCase()).join(', ')
+
     return (
         <Secao>
             <div className="flex flex-col gap-y-4 rounded">
@@ -27,7 +27,7 @@ export const RefeicaoAutorizada = ({ variante, dias }: RefeicaoAutorizadaProps) 
                     <HorarioDaRefeicao variante="horario" horarios={horarioPorVariante[variante]} />
                 </div>
                 <div>
-                    <b>Dias autorizados:</b> <span>{dias.map((dia) => dia.toLocaleLowerCase()).join(', ')}</span>
+                    <b>Dias autorizados:</b> <span>{diasAutorizados === "" ? "nenhum" : diasAutorizados}</span>
                 </div>
             </div>
         </Secao>
