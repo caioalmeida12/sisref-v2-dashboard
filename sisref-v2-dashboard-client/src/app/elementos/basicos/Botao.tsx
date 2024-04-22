@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { ButtonHTMLAttributes } from "react";
 
 interface BotaoProps extends ButtonHTMLAttributes<HTMLButtonElement> {

@@ -1,5 +1,7 @@
 "use client"
 
+import React from 'react'
+
 import { IconeMenu } from "@elementos/basicos/icones/IconeMenu";
 import { INavbarProps } from "../interfaces/INavbarProps";
 import { useState } from "react";

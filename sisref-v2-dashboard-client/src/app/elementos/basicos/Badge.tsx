@@ -1,3 +1,5 @@
+import React from 'react'
+
 interface BadgeProps {
     texto: string;
     corDaBadge: string;

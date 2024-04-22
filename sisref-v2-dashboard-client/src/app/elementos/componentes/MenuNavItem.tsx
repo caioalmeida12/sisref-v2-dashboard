@@ -1,5 +1,7 @@
 "use client"
 
+import React from 'react'
+
 import { INavItemSemDropdown } from "../interfaces/INavbarProps";
 
 export const MenuNavItem = ({ titulo, rota }: INavItemSemDropdown) => {

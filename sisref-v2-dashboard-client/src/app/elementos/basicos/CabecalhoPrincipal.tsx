@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { HTMLAttributes } from "react";
 
 interface CabecalhoPrincipalProps extends HTMLAttributes<HTMLElement> {

@@ -1,3 +1,5 @@
+import React from "react"
+
 import { NomeDaRefeicao } from "@elementos/basicos/NomeDaRefeicao";
 import { HorarioDaRefeicao } from "@elementos/basicos/HorarioDaRefeicao";
 import { Secao } from "@elementos/basicos/Secao";

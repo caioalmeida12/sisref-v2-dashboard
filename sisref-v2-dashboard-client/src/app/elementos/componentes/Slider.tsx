@@ -1,5 +1,7 @@
 "use client"
 
+import React from 'react'
+
 import { IconeSeta } from "@elementos/basicos/icones/IconeSeta";
 
 interface SliderProps extends React.HTMLAttributes<HTMLDivElement> {

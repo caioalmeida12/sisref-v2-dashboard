@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Badge } from "@elementos/basicos/Badge";
 
 type CampoDeSecaoProps = 

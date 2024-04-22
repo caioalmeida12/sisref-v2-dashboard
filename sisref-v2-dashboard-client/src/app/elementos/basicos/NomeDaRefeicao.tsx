@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { IconeRefeicao } from "./icones/IconeRefeicao";
 
 interface NomeDaRefeicaoProps {

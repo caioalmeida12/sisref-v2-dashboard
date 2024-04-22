@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { IApenasHorario, IApenasData, IHorarioEData } from "@elementos/interfaces/IHorarios";
 
 type HorarioDaRefeicaoProps =
