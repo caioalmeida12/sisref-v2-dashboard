@@ -6,6 +6,8 @@ import { Botao } from "../basicos/Botao";
 import { IconeAviso } from "../basicos/icones/IconeAviso";
 import { IconeDropdown } from '../basicos/icones/IconeDropdown';
 
+import { toggle } from "slide-element"
+
 interface AvisoProps {
     titulo: string;
     texto: string;
@@ -13,34 +15,32 @@ interface AvisoProps {
 }
 
 export const Aviso = ({ titulo, texto, textoBotao }: AvisoProps) => {
+    const conteudoEstaVisivel = useRef(false);
     const elementoPai = useRef<HTMLDivElement>(null);
+    const elementoConteudo = useRef<HTMLParagraphElement>(null);
 
-    const lerVisibilidade = () => {
-        if (!elementoPai.current) return false;
+    const alterarVisibilidade = (elemento: HTMLElement | null) => {
+        if (!elemento) return;
+        
+        conteudoEstaVisivel.current = !conteudoEstaVisivel.current;
+        elementoPai.current?.setAttribute('data-aberto', conteudoEstaVisivel.current.toString());
 
-        const aberto = elementoPai.current!.getAttribute("data-aberto");
-
-        return aberto === "true";
-    }
-
-    const alterarVisibilidade = (visibilidade: boolean) => {
-        if (!elementoPai.current) return false;
-
-        elementoPai.current.dataset.aberto = visibilidade.toString();
+        toggle(elemento);
     }
 
     return (
-        <div className="bg-vermelho-400 text-branco-400 p-4 rounded gap-x-2 gap-y-4 grid group transition" ref={elementoPai} data-aberto={"true"}>
+        <div className="bg-vermelho-400 text-branco-400 p-4 rounded gap-x-2 gap-y-4 group" ref={elementoPai} data-aberto={conteudoEstaVisivel}>
             <div className='flex justify-between items-center'>
                 <h2 className="font-bold text-branco-400 flex gap-x-2 items-center"><IconeAviso />{titulo}</h2>
-                <IconeDropdown variante='circulo' className='rotate-0 group-data-[aberto=true]:rotate-180 transition' onClick={() => alterarVisibilidade(!lerVisibilidade())} />
+                <IconeDropdown variante='circulo' className='rotate-0 group-data-[aberto=true]:rotate-180 transition' onClick={() => alterarVisibilidade(elementoConteudo.current)} />
             </div>
-            <p className="hidden opacity-0 transition-opacity group-data-[aberto=true]:block group-data-[aberto=true]:opacity-100">
-                {texto}
-            </p>
-            <div className="hidden opacity-0 transition-opacity group-data-[aberto=true]:block group-data-[aberto=true]:opacity-100">
-                <Botao texto={textoBotao || "Entendido"} variante="ocultar" onClick={() => alterarVisibilidade(false)} />
+            <div className='group-data-[aberto]:mt-4' ref={elementoConteudo}>
+                <p className='mb-4 transition-opacity opacity-0 group-data-[aberto]:opacity-100'>
+                    {texto}
+                </p>
+                <Botao texto={textoBotao || "Entendido"} variante="ocultar" onClick={() => alterarVisibilidade(elementoConteudo.current)} />
             </div>
+
         </div>
     );
 }
