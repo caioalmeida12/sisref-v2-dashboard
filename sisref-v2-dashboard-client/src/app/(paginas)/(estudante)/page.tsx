@@ -5,6 +5,7 @@ import { InformacoesDeEstudante } from '@/app/elementos/modulos/InformacoesDeEst
 import { RefeicoesPorDia } from '@/app/elementos/modulos/RefeicoesPorDia';
 import { RestricoesAlimentares } from '@/app/elementos/modulos/RestricoesAlimentares/RestricoesAlimentares';
 import { RefeicoesAutorizadas } from '@/app/elementos/modulos/RefeicoesAutorizadas';
+import { Aviso } from '@/app/elementos/modulos/Aviso';
 
 export default async function Home() {
   return (
@@ -34,6 +35,7 @@ export default async function Home() {
       ]} />
       <main className='w-full grid gap-y-8 px-6 my-8'>
         <InformacoesDeEstudante />
+        <Aviso titulo='Aviso' texto='Você possui uma refeição pendente. Por favor, vá até a cantina para retirá-la.' />
         <RefeicoesPorDia />
         <RestricoesAlimentares />
         <RefeicoesAutorizadas />

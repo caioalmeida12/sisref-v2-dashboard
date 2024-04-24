@@ -13,6 +13,9 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      transitionProperty: {
+        'height': 'height'
+      }
     },
     colors: {
       "amarelo-200": "#D7AF70",

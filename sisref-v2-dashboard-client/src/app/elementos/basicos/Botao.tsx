@@ -16,7 +16,7 @@ const classNamePorVariante = {
 
 export function Botao({ texto, variante, ...rest }: BotaoProps) {
     return (
-        <button className={`p-4 rounded-md text-branco-400 font-bold w-full ${classNamePorVariante[variante]}`} {...rest}>
+        <button className={`p-4 rounded-md text-branco-400 font-bold w-full ${classNamePorVariante[variante]} ${rest.className}`} {...rest}>
             {texto}
         </button>
     );
