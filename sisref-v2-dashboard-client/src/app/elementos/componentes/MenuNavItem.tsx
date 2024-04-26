@@ -3,6 +3,7 @@
 import React from 'react'
 
 import { INavItemSemDropdown } from "../interfaces/INavbarProps";
+import Link from 'next/link';
 
 export const MenuNavItem = ({ titulo, rota }: INavItemSemDropdown) => {
     const createHandleMenuClick = (menuItem: string) => {
@@ -12,8 +13,8 @@ export const MenuNavItem = ({ titulo, rota }: INavItemSemDropdown) => {
     }
 
     return (
-        <a className="flex items-center gap-x-2 cursor-pointer" onClick={createHandleMenuClick(titulo)} href={rota}>
+        <Link className="flex items-center gap-x-2 cursor-pointer" onClick={createHandleMenuClick(titulo)} href={rota}>
             {titulo}
-        </a>
+        </Link>
     );
 }
