@@ -1,3 +1,4 @@
+import React from "react";
 import { RestricoesAlimentares } from "@/app/elementos/modulos/RestricoesAlimentares/RestricoesAlimentares";
 
 export default function RestricoesAlimentaresParallelPage(){
