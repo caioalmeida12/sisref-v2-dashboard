@@ -2,6 +2,7 @@
 
 import { Footer } from "@/app/elementos/componentes/Footer";
 import { Navbar } from "@/app/elementos/modulos/Navbar";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 interface EstudanteLayoutProps { 
@@ -15,6 +16,7 @@ interface EstudanteLayoutProps {
 export default function EstudanteLayout({ children, refeicoesPorDia, restricoesAlimentares, historicoDeRefeicoes, refeicoesAutorizadas }: EstudanteLayoutProps) {
     const [versaoMobile, setVersaoMobile] = useState(true);
     const [paginaParaMostrar, setPaginaParaMostrar] = useState<React.ReactNode>();
+    const searchParams = useSearchParams();
 
     useEffect(() => {
         const detectarVersaoMobile = () => {
@@ -22,7 +24,7 @@ export default function EstudanteLayout({ children, refeicoesPorDia, restricoesA
                 setVersaoMobile(true);
             } else {
                 setVersaoMobile(false);
-                if (window.location.search) {
+                if (searchParams.toString()) {
                     window.history.replaceState({}, document.title, window.location.pathname);
                 }
             }
@@ -31,7 +33,7 @@ export default function EstudanteLayout({ children, refeicoesPorDia, restricoesA
         detectarVersaoMobile();
 
         window.addEventListener('resize', detectarVersaoMobile);
-    }, []);
+    }, [searchParams]);
 
     useEffect(() => {
         const elementoPorPagina = {
@@ -41,12 +43,10 @@ export default function EstudanteLayout({ children, refeicoesPorDia, restricoesA
             historicoDeRefeicoes,
         } as const
 
-        const searchParams = new URLSearchParams(window.location.search);
-
         const paginaSolicitada = searchParams.get('pagina');
 
         setPaginaParaMostrar(elementoPorPagina[paginaSolicitada as keyof typeof elementoPorPagina] || refeicoesPorDia)
-    }, [historicoDeRefeicoes, refeicoesAutorizadas, refeicoesPorDia, restricoesAlimentares, versaoMobile]);
+    }, [historicoDeRefeicoes, refeicoesAutorizadas, refeicoesPorDia, restricoesAlimentares, versaoMobile, searchParams]);
 
     return (
         <>
