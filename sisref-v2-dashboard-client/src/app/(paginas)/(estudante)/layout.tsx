@@ -2,24 +2,19 @@
 
 import { Footer } from "@/app/elementos/componentes/Footer";
 import { Navbar } from "@/app/elementos/modulos/Navbar";
-import React, { Suspense, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function RootLayout({
-    children,
-    refeicoesPorDia,
-    restricoesAlimentares,
-    historicoDeRefeicoes,
-    refeicoesAutorizadas,
-
-}: Readonly<{
+interface EstudanteLayoutProps { 
     children: React.ReactNode;
     refeicoesPorDia: React.ReactNode;
     restricoesAlimentares: React.ReactNode;
     historicoDeRefeicoes: React.ReactNode;
     refeicoesAutorizadas: React.ReactNode;
-}>) {
-    const [versaoMobile, setVersaoMobile] = React.useState(true);
-    const [paginaParaMostrar, setPaginaParaMostrar] = React.useState<React.ReactNode>();
+}
+
+export default function EstudanteLayout({ children, refeicoesPorDia, restricoesAlimentares, historicoDeRefeicoes, refeicoesAutorizadas }: EstudanteLayoutProps) {
+    const [versaoMobile, setVersaoMobile] = useState(true);
+    const [paginaParaMostrar, setPaginaParaMostrar] = useState<React.ReactNode>();
 
     useEffect(() => {
         const detectarVersaoMobile = () => {
@@ -27,6 +22,9 @@ export default function RootLayout({
                 setVersaoMobile(true);
             } else {
                 setVersaoMobile(false);
+                if (window.location.search) {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
             }
         }
 
@@ -69,16 +67,14 @@ export default function RootLayout({
 
             <main className='w-full grid gap-y-8 px-6 my-8'>
                 {children}
-                <Suspense fallback={<div>Carregando suspense...</div>}>
-                    {versaoMobile ? (paginaParaMostrar) : (
-                        <>
-                            {refeicoesPorDia}
-                            {restricoesAlimentares}
-                            {historicoDeRefeicoes}
-                            {refeicoesAutorizadas}
-                        </>
-                    )}
-                </Suspense>
+                {versaoMobile ? (paginaParaMostrar) : (
+                    <>
+                        {refeicoesPorDia}
+                        {restricoesAlimentares}
+                        {historicoDeRefeicoes}
+                        {refeicoesAutorizadas}
+                    </>
+                )}
             </main>
             <Footer />
         </>
