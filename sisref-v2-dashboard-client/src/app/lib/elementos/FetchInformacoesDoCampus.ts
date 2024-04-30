@@ -5,10 +5,13 @@ import { redirecionarViaAction } from "../actions/RedirecionarViaAction";
 export const fetchInformacoesDoCampus = async (id: string) => {
     const API_URL = "https://ruapi.cedro.ifce.edu.br/api/all/campus"
 
+    const auth = cookies().get("authorization")?.value
+    if (!auth) return redirecionarViaAction()
+
     const response = await fetch(API_URL, {
         headers: {
             "Content-Type": "application/json",
-            "Authorization": cookies().get("authorization")?.value || redirecionarViaAction()
+            "Authorization": auth
         },
     })
 

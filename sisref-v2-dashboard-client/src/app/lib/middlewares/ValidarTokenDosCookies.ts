@@ -18,7 +18,7 @@ export const validarTokenDosCookies = (): ITokenDecodificado => {
     if (typeof decodificado.sub === "undefined") return redirecionarViaMiddleware()
 
     if (typeof decodificado.exp === "undefined") return redirecionarViaMiddleware()
-    if (Date.now() >= decodificado.exp * 1000) return redirecionarViaMiddleware()
+    if (Date.now() >= decodificado.exp) return redirecionarViaMiddleware()
     
     return decodificado as ITokenDecodificado;
 }

@@ -9,12 +9,15 @@ export async function fetchRefeicoesPorDia({ data = new Date().toISOString().spl
     const API_URL = new URL("https://ruapi.cedro.ifce.edu.br/api/all/menus-today")
     API_URL.searchParams.append('date', data);
 
+    const auth = cookies().get("authorization")?.value
+    if (!auth) return redirecionarViaAction()
+
     const resposta = await fetch(`${API_URL}`, {
         headers: {
             "Content-Type": "application/json",
-            "Authorization": cookies().get("authorization")?.value || redirecionarViaAction()
+            "Authorization": auth
         }
-    });
+    })
 
     const refeicoes = await resposta.json();
 
