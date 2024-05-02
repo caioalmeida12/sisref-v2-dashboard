@@ -3,8 +3,6 @@ import type { Metadata } from "next";
 import { Roboto_Slab } from "next/font/google";
 import "./globals.css";
 
-import { ErrorScreen } from "./elementos/componentes/ErrorScreen";
-
 const fontFamily = Roboto_Slab({
   subsets: ["latin"],
 });
