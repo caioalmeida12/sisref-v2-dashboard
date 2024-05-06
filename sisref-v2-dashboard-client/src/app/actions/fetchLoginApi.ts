@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers"
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction"
+import { redirect } from "next/navigation"
 
 interface IInformacoesLogin {
     access_token: string
@@ -31,9 +32,7 @@ export async function fetchLoginAPI(formData: FormData) {
     const data = await resposta.json()
 
     // Erro ao autenticar
-    if (typeof data.access_token == "undefined") return {
-        error: data
-    }
+    if (typeof data.access_token == "undefined") return redirect(`/login?erro=${encodeURIComponent(data.message)}`)
 
     // Autenticado com sucesso
     const informacoesLogin: IInformacoesLogin = { ...data }
