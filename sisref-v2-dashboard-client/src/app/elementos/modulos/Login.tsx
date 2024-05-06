@@ -32,7 +32,6 @@ const MensagemCarregando = () => {
 
 export const Login = () => {
     const params = useSearchParams()
-    const texto = decodeURIComponent(params.get("erro") || "")
 
     return (
         <>
