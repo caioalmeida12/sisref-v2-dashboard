@@ -34,7 +34,7 @@ export const Aviso = ({ titulo, texto, textoBotao }: AvisoProps) => {
                 <h2 className="font-bold text-branco-400 flex gap-x-2 items-center"><IconeAviso />{titulo}</h2>
                 <IconeDropdown variante='circulo' className='rotate-180 group-data-[aberto=true]:rotate-0 transition' onClick={() => alterarVisibilidade(elementoConteudo.current)} />
             </div>
-            <div className='group-data-[aberto]:mt-4' ref={elementoConteudo}>
+            <div className='group-data-[aberto]:mt-0' ref={elementoConteudo}>
                 <p className='mb-4 transition-opacity opacity-0 group-data-[aberto]:opacity-100'>
                     {texto}
                 </p>
