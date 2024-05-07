@@ -35,10 +35,6 @@ export const Login = () => {
 
     return (
         <>
-            <Head>
-                <title>Login</title>
-                <link rel="icon" href="./assets/img/sisrefIcon.png" />
-            </Head>
             <div className="flex flex-col items-center gap-14 col-span-2">
                 <Image src={sisrefLogo} alt="Sisref" />
                 <div className="flex flex-col">
