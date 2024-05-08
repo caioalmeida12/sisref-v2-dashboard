@@ -4,7 +4,6 @@ import React from 'react';
 import { TextField } from '@mui/material';
 import Image from 'next/image';
 import sisrefLogo from '@/app/elementos/assets/img/sisrefLogo.png';
-import Head from 'next/head';
 import { Botao } from '../basicos/Botao';
 import { fetchLoginAPI } from '@/app/actions/fetchLoginApi';
 import { useSearchParams } from 'next/navigation';
