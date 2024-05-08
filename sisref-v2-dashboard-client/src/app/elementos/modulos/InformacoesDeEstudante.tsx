@@ -5,7 +5,7 @@ import { CabecalhoPrincipal } from "@elementos/basicos/CabecalhoPrincipal"
 import { Secao } from "@elementos/basicos/Secao"
 import { CampoDeSecao } from "../componentes/CampoDeSecao"
 import { IInformacoesDeEstudante } from "../interfaces/IInformacoesDeEstudante"
-import { CabeçalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao"
+import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao"
 import { IInformacoesDoCampus } from "../interfaces/IInformacoesDoCampus"
 import { fetchInformacoesDoCampus } from "@/app/lib/elementos/FetchInformacoesDoCampus"
 import { fetchInformacoesDeEstudante } from "@/app/lib/middlewares/FetchInformacoesDoEstudante"
@@ -40,7 +40,7 @@ const Mobile = ({ estudante }: InformacoesDeEstudanteProps) => {
 const Desktop = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
     return (
         <Secao className="hidden md:flex md:flex-col md:gap-y-4">
-            <CabeçalhoDeSecao titulo="Informações pessoais" />
+            <CabecalhoDeSecao titulo="Informações pessoais" />
             <CampoDeSecao titulo="Nome" complemento={estudante.name} variante="vertical" />
             <CampoDeSecao titulo="Matrícula" complemento="20211035000020" variante="vertical" />
             <div className="flex gap-x-4 justify-between">

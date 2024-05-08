@@ -2,11 +2,11 @@ import React from 'react'
 
 import { HTMLAttributes } from "react";
 
-interface CabeçalhoDeSecaoProps extends HTMLAttributes<HTMLElement> {
+interface CabecalhoDeSecaoProps extends HTMLAttributes<HTMLElement> {
     titulo: string;
 }
 
-export const CabeçalhoDeSecao = ({ titulo, ...rest }: CabeçalhoDeSecaoProps) => {
+export const CabecalhoDeSecao = ({ titulo, ...rest }: CabecalhoDeSecaoProps) => {
     const className = rest.className ? rest.className : '';
 
     return (
