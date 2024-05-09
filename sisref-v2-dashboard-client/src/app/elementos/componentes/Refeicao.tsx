@@ -76,9 +76,28 @@ const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
         <Secao className="flex flex-col gap-y-2">
             <div className="flex justify-between">
                 <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
+                <HorarioDaRefeicao
+                    variante="horario-e-data"
+                    data={DatasHelper.converterParaFormatoBrasileiro(props.cardapio.date)}
+                    horarios={{
+                        qtdTimeReservationEnd: props.refeicao.qtdTimeReservationEnd,
+                        qtdTimeReservationStart: props.refeicao.qtdTimeReservationStart,
+                        timeEnd: DatasHelper.removerSegundosDoHorario(props.refeicao.timeEnd),
+                        timeStart: DatasHelper.removerSegundosDoHorario(props.refeicao.timeStart)
+                    }}
+                />
                 {StatusRefeicao}
             </div>
-            <HorarioDaRefeicao variante="horario-e-data" data={props.cardapio.date} horarios={props.refeicao} />
+            <HorarioDaRefeicao
+                variante="horario-e-data"
+                data={DatasHelper.converterParaFormatoBrasileiro(props.cardapio.date)}
+                horarios={{
+                    qtdTimeReservationEnd: props.refeicao.qtdTimeReservationEnd,
+                    qtdTimeReservationStart: props.refeicao.qtdTimeReservationStart,
+                    timeEnd: DatasHelper.removerSegundosDoHorario(props.refeicao.timeEnd),
+                    timeStart: DatasHelper.removerSegundosDoHorario(props.refeicao.timeStart)
+                }}
+            />
             <p className="leading-6">
                 {descricaoCardapioParaArrayStrings(props.cardapio.description).map((descricao, index) => (
                     <React.Fragment key={index}>
@@ -96,8 +115,6 @@ const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
 }
 
 export const Refeicao = (props: IRefeicao) => {
-    if (props.cardapio?.date) props.cardapio.date = DatasHelper.converterParaFormatoBrasileiro(props.cardapio.date);
-
     const textoStatus = textoStatusRefeicaoPorProps(props);
     const comBotao = textoStatus === "disponivel" || textoStatus === "reservado";
     return RefeicaoLonga(props, comBotao);
