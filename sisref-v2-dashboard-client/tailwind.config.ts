@@ -30,6 +30,7 @@ const config: Config = {
       "vermelho-200": "#8E4A49"
     },
   },
+  darkMode: 'class',
   plugins: [],
 };
 export default config;

@@ -2,6 +2,7 @@
 
 import { Footer } from "@/app/elementos/componentes/Footer";
 import { Navbar } from "@/app/elementos/modulos/Navbar";
+import DarkModeToggle from "@/app/elementos/componentes/DarkModeToggle";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -64,6 +65,7 @@ export default function EstudanteLayout({ children, refeicoesPorDia, restricoesA
                     titulo: 'Refeições autorizadas', rota: '?pagina=refeicoesAutorizadas',
                 },
             ]} />
+            <DarkModeToggle />
 
             <main className='w-full grid gap-y-8 px-6 my-8'>
                 {children}
