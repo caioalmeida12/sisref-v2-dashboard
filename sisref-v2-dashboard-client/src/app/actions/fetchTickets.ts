@@ -24,6 +24,8 @@ export const fetchTickets = async (tipo: keyof typeof urlPorTipoDeTicket) => {
         }
     })
 
+    if (resposta.status === 401) return redirecionarViaAction()
+
     const refeicoes = await resposta.json()
 
     const data = refeicoes.data

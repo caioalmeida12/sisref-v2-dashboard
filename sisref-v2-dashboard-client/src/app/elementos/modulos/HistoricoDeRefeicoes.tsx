@@ -28,6 +28,9 @@ export const HistoricoDeRefeicoesProps = () => {
     }, [])
 
     useEffect(() => {
+        const todosSaoArray = [aSerUtilizado, utilizado, cancelado, naoUtilizado].every(Array.isArray)
+        if (!todosSaoArray) return
+
         // Adiciona o status de cada ticket para que possa ser exibido no componente.
         aSerUtilizado.forEach(ticket => ticket.status = 'a-ser-utilizado')
         utilizado.forEach(ticket => ticket.status = 'utilizado')
