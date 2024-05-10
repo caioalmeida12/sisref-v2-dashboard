@@ -10,6 +10,7 @@ import { IInformacoesDoCampus } from "../interfaces/IInformacoesDoCampus"
 import { fetchInformacoesDoCampus } from "@/app/lib/elementos/FetchInformacoesDoCampus"
 import { fetchInformacoesDeEstudante } from "@/app/lib/middlewares/FetchInformacoesDoEstudante"
 import { validarTokenDosCookies } from "@/app/lib/middlewares/ValidarTokenDosCookies"
+import Image from "next/image"
 
 interface InformacoesDeEstudanteProps {
     estudante: IInformacoesDeEstudante
@@ -56,17 +57,43 @@ const Desktop = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
     )
 }
 
-export const InformacoesDeEstudante = async () => {
+const MobileCompleta = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
+    return (
+        <Secao className="flex flex-col gap-y-4 md:hidden">
+            <CabecalhoDeSecao titulo="Informações pessoais" />
+            <div className="flex justify-center p-4">
+            <Image className="rounded-full" src={estudante.photo || "/imgs/usuario.png"} width={100} height={100} alt="Imagem de usuário" />
+            </div>
+            <CampoDeSecao titulo="Nome" complemento={estudante.name} variante="vertical" />
+            <CampoDeSecao titulo="Matrícula" complemento="20211035000020" variante="vertical" />
+            <div className="flex gap-x-4 justify-between">
+                <CampoDeSecao titulo="Código" complemento={String(estudante.id)} variante='vertical-com-badge' corDaBadge='bg-azul-400' />
+                <CampoDeSecao titulo="Validade" complemento={DatasHelper.converterParaFormatoBrasileiro(estudante.dateValid)} variante='vertical-com-badge' corDaBadge='bg-verde-300' />
+            </div>
+            <CampoDeSecao titulo='Curso' complemento={estudante.course.description} variante='vertical' />
+            <div className="flex gap-x-4 justify-between">
+                <CampoDeSecao titulo="Campus" complemento={campus.description} variante="vertical" />
+                <CampoDeSecao titulo="Turno" complemento={shiftIdParaTurno[estudante.shift_id]} variante="vertical" />
+            </div>
+        </Secao>
+    )
+}
+
+export const InformacoesDeEstudante = async ({ versaoMobileCompleta = false } : { versaoMobileCompleta?: boolean }) => {
     const validado = validarTokenDosCookies()
 
     const informacoesDeEstudante = await fetchInformacoesDeEstudante(validado.sub);
 
     const informacoesDoCampus = await fetchInformacoesDoCampus(String(informacoesDeEstudante.campus_id));
 
+    if (versaoMobileCompleta) return (
+        <MobileCompleta estudante={informacoesDeEstudante} campus={informacoesDoCampus} />
+    )
+
     return (
         <>
-                <Mobile estudante={informacoesDeEstudante} campus={informacoesDoCampus} />
-                <Desktop estudante={informacoesDeEstudante} campus={informacoesDoCampus} />
+            <Mobile estudante={informacoesDeEstudante} campus={informacoesDoCampus} />
+            <Desktop estudante={informacoesDeEstudante} campus={informacoesDoCampus} />
         </>
     )
 }
