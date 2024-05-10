@@ -5,6 +5,7 @@
     "@microsoft/eslint-formatter-sarif": "2.1.7",
     "@mui/base": "^5.0.0-beta.40",
     "@mui/material": "^5.15.15",
+    "@radix-ui/react-tooltip": "^1.0.7",
     "@types/jsonwebtoken": "^9.0.6",
     "eslint": "8.57.0",
     "jsonwebtoken": "^9.0.2",

@@ -10,6 +10,16 @@ export class DatasHelper {
     }
 
     /**
+     * Remove os segundos de um horário.
+     * @param horario - O horário.
+     * @returns O horário sem os segundos.
+     * @example removerSegundosDoHorario("12:00:00") // "12:00"
+     */
+    static removerSegundosDoHorario(horario: string): string {
+        return horario.split(":").slice(0, 2).join(":");
+    }
+
+    /**
      * Converte a data fornecida no formato dd/MM/yyyy para o formato yyyy-MM-dd.
      * @param data - A data no formato dd/MM/yyyy.
      * @returns A data convertida no formato yyyy-MM-dd.

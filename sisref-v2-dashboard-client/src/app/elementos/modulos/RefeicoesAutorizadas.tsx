@@ -1,13 +1,13 @@
 import React from "react";
 import { Secao } from "../basicos/Secao";
-import { CabeçalhoDeSecao } from "../basicos/CabecalhoDeSecao";
+import { CabecalhoDeSecao } from "../basicos/CabecalhoDeSecao";
 import { RefeicaoAutorizada } from "../componentes/RefeicaoAutorizada";
 
 export const RefeicoesAutorizadas = () => {
 
     return (
         <Secao className="flex flex-col gap-y-4">
-            <CabeçalhoDeSecao titulo="Refeições autorizadas"/>
+            <CabecalhoDeSecao titulo="Refeições autorizadas"/>
 
             {
                 (["manha", "almoco", "tarde", "noite"] as const).map((variante, index) => (

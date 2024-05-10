@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
 import { IRefeicao } from "../interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { IconeInformacao } from "../basicos/icones/IconeInformacao";
 
 const cache: { [data: string]: IRefeicao[] } = {};
 
@@ -58,6 +59,12 @@ export const RefeicoesPorDia = () => {
                     const ontem = DatasHelper.getDataAnterior(data);
                     setData(ontem);
                 }}
+
+                tooltip={
+                    (refeicoes.length) ? null : (
+                        <IconeInformacao texto="Nenhuma refeição encontrada para esta data" />
+                    )
+                }
             />
             {elementosRefeicao}
         </Secao>

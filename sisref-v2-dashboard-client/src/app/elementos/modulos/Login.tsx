@@ -1,20 +1,39 @@
+"use client"
 import React from 'react';
 
 import { TextField } from '@mui/material';
 import Image from 'next/image';
 import sisrefLogo from '@/app/elementos/assets/img/sisrefLogo.png';
-import Head from 'next/head';
 import { Botao } from '../basicos/Botao';
 import { fetchLoginAPI } from '@/app/actions/fetchLoginApi';
+import { useSearchParams } from 'next/navigation';
+import { useFormStatus } from 'react-dom';
+
+const MensagemErro = ({ texto }: { texto: string | null }) => {
+    const { pending } = useFormStatus()
+
+    if (pending) return null
+
+    return (
+        <div className="text-red-500 text-sm text-vermelho-400 text-center">{texto}</div>
+    )
+}
+
+const MensagemCarregando = () => {
+    const { pending } = useFormStatus()
+
+    if (!pending) return null
+
+    return (
+        <div className="text-blue-500 text-sm text-center text-azul-400">Carregando...</div>
+    )
+}
 
 export const Login = () => {
+    const params = useSearchParams()
 
     return (
         <>
-            <Head>
-                <title>Login</title>
-                <link rel="icon" href="./assets/img/sisrefIcon.png" />
-            </Head>
             <div className="flex flex-col items-center gap-14 col-span-2">
                 <Image src={sisrefLogo} alt="Sisref" />
                 <div className="flex flex-col">
@@ -55,6 +74,8 @@ export const Login = () => {
                         <a href="#" className="text-red-500 text-sm no-underline">Esqueceu a senha?</a>
                     </div>
                     <Botao variante='adicionar' texto='Entrar' type='submit'></Botao>
+                    <MensagemCarregando />
+                    <MensagemErro texto={params.get("erro")} />
                 </form>
             </div>
         </>
