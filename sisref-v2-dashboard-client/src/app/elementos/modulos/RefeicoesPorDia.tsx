@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
 import { IRefeicao } from "../interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { redirecionarViaAction } from "@/app/lib/actions/RedirecionarViaAction";
 
 const cache: { [data: string]: IRefeicao[] } = {};
 
