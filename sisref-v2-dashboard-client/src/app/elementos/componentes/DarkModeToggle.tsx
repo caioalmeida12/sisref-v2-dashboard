@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const DarkModeToggle = () => {
   const [darkMode, setDarkMode] = useState(false);
-  const [userSelectedDarkMode, setUserSelectedDarkMode] = useState(null);
+  const [userSelectedDarkMode, setUserSelectedDarkMode] = useState<boolean | null>(null);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -11,27 +11,28 @@ const DarkModeToggle = () => {
     // Se o usuário ainda não fez uma escolha, use a preferência do sistema
     if (userSelectedDarkMode === null) {
       setDarkMode(systemPrefersDark);
+    } else {
+      setDarkMode(userSelectedDarkMode);
     }
-  }, [userSelectedDarkMode]);
+
+    // Adiciona ou remove a classe 'dark' dependendo da preferência do usuário ou do sistema
+    const root = window.document.documentElement;
+    if (darkMode) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }, [userSelectedDarkMode, darkMode]);
 
   const toggleDarkMode = () => {
-    const root = window.document.documentElement;
     const toggledDarkMode = !darkMode;
     setDarkMode(toggledDarkMode);
     setUserSelectedDarkMode(toggledDarkMode);
-
-    if (toggledDarkMode) {
-      root.classList.add('dark');
-      console.log('dark mode enabled');
-    } else {
-      root.classList.remove('dark');
-      console.log('dark mode disabled');
-    }
   };
 
   return (
-    <button onClick={toggleDarkMode} className="p-2 bg-blue-500 text-white">
-      Toggle Dark Mode
+    <button onClick={toggleDarkMode} className="p-2 bg-blue-500 text-white dark:bg-darkMode-textoPrimario">
+      Mudar Dark Mode
     </button>
   );
 };
