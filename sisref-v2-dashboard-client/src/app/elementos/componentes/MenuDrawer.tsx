@@ -6,8 +6,7 @@ import { IconeMenu } from "@elementos/basicos/icones/IconeMenu";
 import { INavbarProps } from "../interfaces/INavbarProps";
 import { useState } from "react";
 import { IconeFechar } from "@elementos/basicos/icones/IconeFechar";
-import { MenuDropdown } from "./MenuDropdown";
-import { MenuNavItem } from "./MenuNavItem";
+import { NavbarNavigation } from '../modulos/Navbar';
 
 export const MenuDrawer = ({ navItems }: INavbarProps) => {
     const [aberto, setAberto] = useState(false);
@@ -19,21 +18,8 @@ export const MenuDrawer = ({ navItems }: INavbarProps) => {
     )
 
     const ConteudoSeAberto = aberto && (
-        <div className={`flex flex-col gap-y-4 px-4 transition-all 
-                         ${aberto? "opacity-100" : "opacity-0"}
-                         md:px-[3em]
-                        `}>
-            {
-                navItems.map((navItem, index) => (
-                    <li key={index} className="flex items-center gap-x-2 cursor-pointer">
-                        {navItem.isDropdown ? (
-                            <MenuDropdown titulo={navItem.titulo} itens={navItem.itens} isDropdown={true} />
-                        ) : (
-                            <MenuNavItem titulo={navItem.titulo} rota={navItem.rota} />
-                        )}
-                    </li>
-                ))
-            }
+        <div className={`flex flex-col gap-y-4 px-4 transition-all ${aberto ? "opacity-100" : "opacity-0"} md:px-[3em] `}>
+            <NavbarNavigation navItems={navItems} />
         </div>
     )
 
