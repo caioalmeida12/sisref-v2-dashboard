@@ -63,6 +63,15 @@ export default function EstudanteLayout({ children, refeicoesPorDia, restricoesA
                 {
                     titulo: 'Refeições autorizadas', rota: '?pagina=refeicoesAutorizadas',
                 },
+                {
+                    titulo: 'Dropdown',
+                    isDropdown: true,
+                    itens: [
+                        { titulo: 'Item 1', rota: '#' },
+                        { titulo: 'Item 2', rota: '#' },
+                        { titulo: 'Item 3', rota: '#' },
+                    ],
+                },
             ]} />
 
             <main className='w-full grid gap-y-8 px-6 my-8'>

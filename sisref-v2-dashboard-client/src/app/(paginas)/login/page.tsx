@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react'
 
 import { Footer } from "@/app/elementos/componentes/Footer"
