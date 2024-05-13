@@ -30,7 +30,7 @@ export const Aviso = ({ titulo, texto, textoBotao }: AvisoProps) => {
 
     return (
         
-        <div className="bg-vermelho-400 text-branco-400 p-4 rounded gap-x-2 gap-y-4 group" ref={elementoPai} data-aberto={conteudoEstaVisivel}>
+        <div className="bg-vermelho-400 dark:bg-cinza-600 text-branco-400 dark:text-preto-400 p-4 rounded gap-x-2 gap-y-4 group" ref={elementoPai} data-aberto={conteudoEstaVisivel}>
             <div className='flex justify-between items-center'>
                 <h2 className="font-bold text-branco-400 flex gap-x-2 items-center"><IconeAviso />{titulo}</h2>
                 <IconeDropdown variante='circulo' className='rotate-180 group-data-[aberto=true]:rotate-0 transition' onClick={() => alterarVisibilidade(elementoConteudo.current)} />
