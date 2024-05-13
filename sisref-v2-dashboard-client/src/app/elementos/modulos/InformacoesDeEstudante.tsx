@@ -43,7 +43,7 @@ const stringParaCamelCase = (string: string) => {
 
 const Mobile = ({ estudante }: InformacoesDeEstudanteProps) => {
     return (
-        <Secao className="flex flex-col gap-y-4 md:hidden">
+        <Secao className="flex flex-col gap-y-4 md:hidden" id="informacoesDeEstudante">
             <CabecalhoPrincipal titulo="Informações pessoais" />
             <CampoDeSecao titulo="Nome" complemento={stringParaCamelCase(estudante.name)} variante="horizontal" />
             <CampoDeSecao titulo='Curso' complemento={estudante.course.description} variante='horizontal' />
@@ -76,7 +76,7 @@ const Desktop = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
 
 const MobileCompleta = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
     return (
-        <Secao className="flex flex-col gap-y-4 md:hidden">
+        <Secao className="flex flex-col gap-y-4 md:hidden" id="informacoesDeEstudante">
             <CabecalhoDeSecao titulo="Informações pessoais" />
             <div className="flex justify-center p-4">
             <Image className="rounded-full" src={estudante.photo || "/imgs/usuario.png"} width={100} height={100} alt="Imagem de usuário" />
