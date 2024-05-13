@@ -57,7 +57,7 @@ const RefeicaoCurta = (props: IRefeicao) => {
     const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[textoStatusRefeicaoPorProps(props)];
 
     return (
-        <Secao>
+        <Secao className="bg-white dark:bg-darkMode-bg text-black dark:text-darkMode-textoPrimario">
             <div className="flex justify-between">
                 <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
                 {StatusRefeicao}
@@ -73,7 +73,7 @@ const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
     const textoStatus = textoStatusRefeicaoPorProps(props);
 
     return (
-        <Secao className="flex flex-col gap-y-2">
+        <Secao className="flex flex-col gap-y-2 bg-white dark:bg-darkMode-bg text-black dark:text-darkMode-textoPrimario">
             <div className="flex justify-between">
                 <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
                 <HorarioDaRefeicao
