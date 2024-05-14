@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`bg-cinza-400 dark:bg-darkMode-bg ${fontFamily.className}`}>
+      <body className={`bg-cinza-400 dark:bg-preto-400 ${fontFamily.className}`}>
         {children}
       </body>
     </html>

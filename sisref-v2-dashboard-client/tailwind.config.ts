@@ -24,16 +24,14 @@ const config: Config = {
       "cinza-600": "#A29C9B",
       "cinza-400": "#EFEFEF",
       "preto-400": "#000000",
+      "preto-300": "#222222",
+      "preto-100": "#333333",
       "verde-400": "#1C5E27",
       "verde-300": "#359830",
       "vermelho-400": "#C80B0F",
       "vermelho-200": "#8E4A49",
-      // "darkMode-bg": "#000000",
-      // "darkMode-plano" : "#363636",
-      "darkMode-bg": "#363636",
-      "darkMode-plano" : "#000000",
-      "darkMode-textoPrimario": "#EEEEEE",
-      "darkMode-textoSecundario": "#A7A6A6"
+      
+      
       
     },
   },

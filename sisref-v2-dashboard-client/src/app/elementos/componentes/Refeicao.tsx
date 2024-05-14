@@ -57,7 +57,7 @@ const RefeicaoCurta = (props: IRefeicao) => {
     const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[textoStatusRefeicaoPorProps(props)];
 
     return (
-        <Secao className="bg-white dark:bg-darkMode-bg text-black dark:text-darkMode-textoPrimario">
+        <Secao className="bg-white dark:bg-darkMode-bg text-black dark:bg-preto-100 dark:text-cinza-400">
             <div className="flex justify-between">
                 <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
                 {StatusRefeicao}
@@ -73,7 +73,7 @@ const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
     const textoStatus = textoStatusRefeicaoPorProps(props);
 
     return (
-        <Secao className="flex flex-col gap-y-2 bg-white dark:bg-darkMode-bg text-black dark:text-darkMode-textoPrimario">
+        <Secao className="flex flex-col gap-y-2 bg-white text-black ">
             <div className="flex justify-between">
                 <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
                 <HorarioDaRefeicao
@@ -98,7 +98,7 @@ const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
                     timeStart: DatasHelper.removerSegundosDoHorario(props.refeicao.timeStart)
                 }}
             />
-            <p className="leading-6">
+            <p className="leading-6 dark:text-cinza-400">
                 {descricaoCardapioParaArrayStrings(props.cardapio.description).map((descricao, index) => (
                     <React.Fragment key={index}>
                         <span>
