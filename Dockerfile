@@ -4,17 +4,14 @@ FROM node:20.13.1
 # Defina o diretório de trabalho no contêiner
 WORKDIR /app
 
-# Copie o arquivo package.json para o diretório de trabalho
-COPY package.json /app
+# Copie o restante dos arquivos para o diretório de trabalho
+COPY . /app
 
 # Instalar o bun
 RUN npm install -g bun
 
 # Instale as dependências
 RUN bun install
-
-# Copie o restante dos arquivos para o diretório de trabalho
-COPY . /app
 
 # Entre no diretorio do cliente (sisref-v2-dashboard-client)
 WORKDIR /app/sisref-v2-dashboard-client
