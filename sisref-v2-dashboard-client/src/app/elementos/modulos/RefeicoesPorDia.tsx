@@ -44,7 +44,7 @@ export const RefeicoesPorDia = () => {
     const textoData = new Date().toISOString().split('T')[0] === data ? "hoje" : DatasHelper.converterParaFormatoBrasileiro(data);
 
     return (
-        <Secao className="flex flex-col gap-y-4 md:grid md:grid-cols-2 md:gap-4 bg-branco-400 text-preto-400 dark:bg-cinza-600">
+        <Secao className="flex flex-col gap-y-4 md:grid md:grid-cols-2 md:gap-4 bg-branco-400 text-preto-400 dark:bg-preto-300">
             <Slider texto={`Refeições para ${textoData}`} className="bg-preto-400 col-span-2 dark:text-cinza-400 dark:bg-verde-400"
                 onNext={() => {
                     if (diferencaDias > 7) return;
