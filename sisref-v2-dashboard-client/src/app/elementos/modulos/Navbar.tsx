@@ -9,12 +9,14 @@ import { MenuDrawer } from '../componentes/MenuDrawer';
 
 export const Navbar = ({ navItems }: INavbarProps) => {
     return (
-        <NavigationMenu.Root className="bg-verde-400 text-branco-400 font-medium px-6 py-4 sticky top-0 z-10 flex justify-between items-center">
+        <NavigationMenu.Root className="bg-verde-400 text-branco-400 font-medium sticky top-0 z-10">
+            <div className='max-w-screen-xl mx-auto flex justify-between items-center px-6 py-4'>
             <MenuDrawer navItems={navItems} />
             <NavigationMenu.List className="hidden gap-x-8 md:flex">
                 <NavbarNavigation navItems={navItems} />
             </NavigationMenu.List>
             <Logout />
+            </div>
         </NavigationMenu.Root>
     );
 };

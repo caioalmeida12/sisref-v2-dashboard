@@ -5,7 +5,7 @@ import { Navbar } from "@/app/elementos/modulos/Navbar";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-interface EstudanteLayoutProps { 
+interface EstudanteLayoutProps {
     children: React.ReactNode;
     refeicoesPorDia: React.ReactNode;
     restricoesAlimentares: React.ReactNode;
@@ -20,7 +20,7 @@ export default function EstudanteLayout({ children, refeicoesPorDia, restricoesA
 
     useEffect(() => {
         const detectarVersaoMobile = () => {
-            if (window.innerWidth < 768) {
+            if (window.innerWidth < 1024) {
                 setVersaoMobile(true);
             } else {
                 setVersaoMobile(false);
@@ -72,16 +72,21 @@ export default function EstudanteLayout({ children, refeicoesPorDia, restricoesA
                         { titulo: 'Item 3', rota: '#' },
                     ],
                 },
-            ]} />
+            ]} 
+            />
 
-            <main className='w-full grid gap-y-8 px-6 my-8'>
+            <main className='w-full grid gap-y-8 px-6 my-8 lg:grid lg:grid-cols-12 lg:gap-x-8 max-w-screen-xl mx-auto'>
                 {children}
                 {versaoMobile ? (paginaParaMostrar) : (
                     <>
-                        {refeicoesPorDia}
-                        {restricoesAlimentares}
-                        {historicoDeRefeicoes}
-                        {refeicoesAutorizadas}
+                        <div className="col-left flex flex-col gap-y-8">
+                            {restricoesAlimentares}
+                            {refeicoesAutorizadas}
+                        </div>
+                        <div className="col-right flex flex-col gap-y-8 lg:row-start-1 lg:row-span-3">
+                            {refeicoesPorDia}
+                            {historicoDeRefeicoes}
+                        </div>
                     </>
                 )}
             </main>

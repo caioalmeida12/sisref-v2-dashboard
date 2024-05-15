@@ -43,7 +43,7 @@ const stringParaCamelCase = (string: string) => {
 
 const Mobile = ({ estudante }: InformacoesDeEstudanteProps) => {
     return (
-        <Secao className="flex flex-col gap-y-4 md:hidden" id="informacoesDeEstudante">
+        <Secao className="flex flex-col gap-y-4 lg:hidden" id="informacoesDeEstudante">
             <CabecalhoPrincipal titulo="Informações pessoais" />
             <CampoDeSecao titulo="Nome" complemento={stringParaCamelCase(estudante.name)} variante="horizontal" />
             <CampoDeSecao titulo='Curso' complemento={estudante.course.description} variante='horizontal' />
@@ -57,7 +57,7 @@ const Mobile = ({ estudante }: InformacoesDeEstudanteProps) => {
 
 const Desktop = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
     return (
-        <Secao className="hidden md:flex md:flex-col md:gap-y-4">
+        <Secao className="hidden lg:flex lg:flex-col lg:gap-y-4 col-left">
             <CabecalhoDeSecao titulo="Informações pessoais" />
             <CampoDeSecao titulo="Nome" complemento={stringParaCamelCase(estudante.name)} variante="vertical" />
             <CampoDeSecao titulo="Matrícula" complemento="20211035000020" variante="vertical" />
