@@ -9,7 +9,7 @@ export const RefeicoesAutorizadas = () => {
     return (
         <>
             <InformacoesDeEstudante versaoMobileCompleta />
-            <Secao className="flex flex-col gap-y-4">
+            <Secao className="flex flex-col gap-y-4 col-left">
                 <CabecalhoDeSecao titulo="Refeições autorizadas" />
 
                 {

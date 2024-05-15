@@ -20,4 +20,12 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  .col-left {
+    @apply lg:col-start-1 lg:col-span-4;
+  }
+
+  .col-right {
+    @apply lg:col-start-5 lg:col-span-8;
+  }
 }
