@@ -33,7 +33,7 @@ const descricaoCardapioParaArrayStrings = (descricao: string) => {
 export const RefeicaoDoHistorico = (props: IRefeicaoDoHistorico) => {
     return (
         <Secao className="flex flex-col gap-4">
-            <div className="flex justify-between">
+            <div className="flex justify-between gap-x-2">
                 <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
                 {elementoStatusRefeicaoPorTextoStatusRefeicao[props.status]}
             </div>
