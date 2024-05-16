@@ -35,7 +35,7 @@ export const Aviso = ({ titulo, texto, textoBotao }: AvisoProps) => {
         <div className="bg-vermelho-400 text-branco-400 p-4 rounded gap-x-2 gap-y-4 group col-left peer" ref={elementoPai} data-state="open">
             <div className='flex justify-between items-center'>
                 <h2 className="font-bold text-branco-400 flex gap-x-2 items-center"><IconeAviso />{titulo}</h2>
-                <IconeDropdown variante='circulo' onClick={() => alterarVisibilidade(elementoConteudo.current)} />
+                <IconeDropdown variante='sem-circulo' onClick={() => alterarVisibilidade(elementoConteudo.current)} />
             </div>
             <div className='transition-all duration-300' ref={elementoConteudo}>
                 <p className='mb-4 mt-4 transition-opacity opacity-0 group-data-[state=open]:opacity-100'>
