@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { IconeDropdown } from '../basicos/icones/IconeDropdown';
 import { Logout } from '../basicos/Logout';
 import { MenuDrawer } from '../componentes/MenuDrawer';
-import Image from 'next/image';
 
 export const Navbar = ({ navItems }: INavbarProps) => {
     return (
