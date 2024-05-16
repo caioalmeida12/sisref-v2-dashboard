@@ -1,29 +1,44 @@
 # Escolha a imagem base
-FROM node:20.13.1
+FROM node:22-alpine
 
-# Defina o diretório de trabalho no contêiner
+# Verificar a versão do Node.js
+RUN node -v
+
+# Verificar a versão do npm
+RUN npm -v
+
+# Instalar o curl
+RUN apk add --no-cache curl
+
+# Instalar o bash
+RUN apk add --no-cache bash
+
+# Verificar a versão do curl
+RUN curl --version
+
+# Verificar a versão do bash
+RUN bash --version
+
+# Criar um diretório de trabalho
 WORKDIR /app
 
-# Copie o restante dos arquivos para o diretório de trabalho
-COPY . /app
+# Copiar o arquivo package.json
+COPY package.json .
 
-# Instalar o bun
-RUN npm install -g bun
+# Instalar as dependências
+RUN npm install
 
-# Instale as dependências
-RUN bun install
+# Copiar o restante dos arquivos
+COPY . .
 
-# Entre no diretorio do cliente (sisref-v2-dashboard-client)
+# Entrar na pasta sisref-v2-dashboard-client
 WORKDIR /app/sisref-v2-dashboard-client
 
-# Instale as dependências do cliente
-RUN bun install
+# Instalar as dependências
+RUN npm install
 
-# Volte para o diretório de trabalho
-WORKDIR /app
-
-# Exponha a porta 3000
+# Expor a porta 3000
 EXPOSE 3000
 
-# Inicie o aplicativo
-CMD ["bun", "dev"]
+# Iniciar a aplicação
+CMD ["npx", "next"]
