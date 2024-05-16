@@ -35,7 +35,7 @@ const classNamePorCor = {
 export const StatusDaRefeicao = ({ texto, cor, icone }: StatusDaRefeicaoProps) => {
     return (
         <div className="flex items-center gap-x-2 leading-normal">
-            <p className={`${classNamePorCor[cor].text}`}>{texto}</p>
+            <p className={`${classNamePorCor[cor].text} w-min`}>{texto}</p>
             <IconeStatus fill={classNamePorCor[cor].fill || "fill-cinza-600"} variante={icone} />
         </div>
     )
