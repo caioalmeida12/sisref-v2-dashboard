@@ -1,19 +1,17 @@
 "use client"
 
-import React from "react";
-
+import React, { useEffect, useState } from "react";
 import { Refeicao } from "../componentes/Refeicao";
-import { Secao } from "../basicos/Secao";
 import { Slider } from "../componentes/Slider";
-import { useEffect, useState } from "react";
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
 import { IRefeicao } from "../interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { IconeInformacao } from "../basicos/icones/IconeInformacao";
+import { Secao } from "../basicos/Secao";
 
 const cache: { [data: string]: IRefeicao[] } = {};
 
-export const RefeicoesPorDia = () => {
+export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
     const [data, setData] = useState(new Date().toISOString().split('T')[0]);
     const [refeicoes, setRefeicoes] = useState<IRefeicao[]>([]);
 
@@ -22,6 +20,8 @@ export const RefeicoesPorDia = () => {
     const diferencaDias = DatasHelper.getDiferenciaEmDias(dataSelecionada);
 
     useEffect(() => {
+        console.log(forcarExibicao)
+
         if (cache[data]) return setRefeicoes(cache[data]);
 
         fetchRefeicoesPorDia({ data })
@@ -44,7 +44,7 @@ export const RefeicoesPorDia = () => {
     const textoData = new Date().toISOString().split('T')[0] === data ? "hoje" : DatasHelper.converterParaFormatoBrasileiro(data);
 
     return (
-        <Secao className="flex flex-col gap-y-4 md:grid md:grid-cols-2 md:gap-4">
+        <Secao className={`${forcarExibicao ? "flex" : "hidden"} flex-col gap-y-4 lg:grid lg:grid-cols-2 lg:gap-4`}>
             <Slider texto={`Refeições para ${textoData}`} className="bg-preto-400 col-span-2"
                 onNext={() => {
                     if (diferencaDias > 7) return;

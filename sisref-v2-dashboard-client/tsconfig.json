@@ -24,6 +24,6 @@
       "@lib/*": ["./src/app/lib/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(paginas)/(estudante)/layout.tsx"],
   "exclude": ["node_modules"]
 }

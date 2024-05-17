@@ -9,7 +9,7 @@ import { Secao } from "../../basicos/Secao"
 import { TextoDescritivo } from "./TextoDescritivo"
 import { RestricaoAlimentar } from "../../basicos/RestricaoAlimentar"
 
-export const RestricoesAlimentares = () => {
+export const RestricoesAlimentares = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
     const [restricoes, setRestricoes] = useState<string[]>([])
 
     useEffect(() => {
@@ -31,7 +31,7 @@ export const RestricoesAlimentares = () => {
     }
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className={`${forcarExibicao ? "flex" : "hidden"} lg:flex flex-col gap-4 `}>
             <TextoDescritivo />
             <Secao className="flex flex-col gap-4">
                 <CabecalhoDeSecao titulo="Suas restrições alimentares" />
