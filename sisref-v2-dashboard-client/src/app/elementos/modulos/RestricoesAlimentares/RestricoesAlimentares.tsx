@@ -1,6 +1,6 @@
 "use client"
 
-import React, { Suspense } from "react"
+import React from "react"
 
 import { useEffect, useState } from "react"
 import { Botao } from "../../basicos/Botao"

@@ -2,6 +2,7 @@ import { RestricoesAlimentares } from "@/app/elementos/modulos/RestricoesAliment
 import React from "react";
 
 export default function RestricoesAlimentaresParallelPage({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     params,
     searchParams,
 }: {

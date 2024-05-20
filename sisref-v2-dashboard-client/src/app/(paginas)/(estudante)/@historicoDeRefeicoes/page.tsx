@@ -2,6 +2,7 @@ import { HistoricoDeRefeicoes } from "@/app/elementos/modulos/HistoricoDeRefeico
 import React from "react";
 
 export default function HistoricoDeRefeicoesParallelPage({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     params,
     searchParams,
 }: {
