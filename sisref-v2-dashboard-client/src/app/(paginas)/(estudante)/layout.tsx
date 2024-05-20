@@ -39,14 +39,14 @@ export default function EstudanteLayout({ children, restricoesAlimentares, refei
             />
 
             <main className='w-full grid gap-y-8 px-6 my-8 lg:grid lg:grid-cols-12 lg:gap-x-8 max-w-screen-xl mx-auto'>
-                {children}
+                <div className="col-left flex flex-col gap-y-8">
+                    {children}
+                    {restricoesAlimentares}
+                    {refeicoesAutorizadas}
+                </div>
                 <div className="col-right flex flex-col gap-y-8 lg:row-start-1 lg:row-span-3">
                     {refeicoesPorDia}
                     {historicoDeRefeicoes}
-                </div>
-                <div className="col-left flex flex-col gap-y-8">
-                    {restricoesAlimentares}
-                    {refeicoesAutorizadas}
                 </div>
             </main>
             <Footer />
