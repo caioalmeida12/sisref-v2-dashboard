@@ -20,8 +20,6 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
     const diferencaDias = DatasHelper.getDiferenciaEmDias(dataSelecionada);
 
     useEffect(() => {
-        console.log(forcarExibicao)
-
         if (cache[data]) return setRefeicoes(cache[data]);
 
         fetchRefeicoesPorDia({ data })
