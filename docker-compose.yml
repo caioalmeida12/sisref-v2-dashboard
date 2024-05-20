@@ -1,0 +1,22 @@
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    command: ["npx", "next"]
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+        - action: rebuild
+          path: "*.js"
+        - action: rebuild
+          path: "*.ts"
+        - action: rebuild
+          path: "*.jsx"
+        - action: rebuild
+          path: "*.tsx"
