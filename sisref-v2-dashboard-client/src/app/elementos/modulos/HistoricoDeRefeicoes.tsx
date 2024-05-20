@@ -9,7 +9,7 @@ import { RefeicaoDoHistorico } from '../componentes/RefeicaoDoHistorico'
 
 const QUANTOS_TICKETS_MOSTRAR = 10
 
-export const HistoricoDeRefeicoesProps = () => {
+export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
     const [aSerUtilizado, setASerUtilizado] = useState<IRefeicaoDoHistorico[]>([])
     const [utilizado, setUtilizado] = useState<IRefeicaoDoHistorico[]>([])
     const [cancelado, setCancelado] = useState<IRefeicaoDoHistorico[]>([])
@@ -48,14 +48,14 @@ export const HistoricoDeRefeicoesProps = () => {
     }, [aSerUtilizado, utilizado, cancelado, naoUtilizado])
 
     return (
-        <Secao className='flex flex-col gap-y-4'>
+        <Secao className={`${forcarExibicao ? "flex" : "hidden"} lg:flex flex-col gap-y-4`}>
             <CabecalhoDeSecao titulo='Histórico de Refeições' />
             <div className='flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-4'>
-            {
-                ticketsMaisRecentes.map((refeicao, index) => (
-                    <RefeicaoDoHistorico key={index} {...refeicao} />
-                ))
-            }
+                {
+                    ticketsMaisRecentes.map((refeicao, index) => (
+                        <RefeicaoDoHistorico key={index} {...refeicao} />
+                    ))
+                }
             </div>
         </Secao>
     )

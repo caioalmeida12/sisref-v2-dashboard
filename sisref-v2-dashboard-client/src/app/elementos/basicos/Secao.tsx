@@ -8,7 +8,7 @@ interface SecaoProps extends HTMLAttributes<HTMLDivElement> {
 
 export const Secao: React.FC<SecaoProps> = ({ children, ...rest }: SecaoProps) => {
     return (
-        <section className={`p-4 bg-branco-400 rounded border-cinza-600 border-[1px] ${rest.className}`} >
+        <section className={`p-4 bg-branco-400 rounded border-cinza-600 border-[1px] h-min ${rest.className}`} >
             {children}
         </section>
     );

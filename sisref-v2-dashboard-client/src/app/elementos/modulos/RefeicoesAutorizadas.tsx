@@ -4,12 +4,14 @@ import { CabecalhoDeSecao } from "../basicos/CabecalhoDeSecao";
 import { RefeicaoAutorizada } from "../componentes/RefeicaoAutorizada";
 import { InformacoesDeEstudante } from "./InformacoesDeEstudante";
 
-export const RefeicoesAutorizadas = () => {
+export const RefeicoesAutorizadas = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
 
     return (
         <>
-            <InformacoesDeEstudante versaoMobileCompleta />
-            <Secao className="flex flex-col gap-y-4 col-left">
+            <div className={`${forcarExibicao ? "block" : "hidden"}`}>
+                <InformacoesDeEstudante versaoMobileCompleta />
+            </div>
+            <Secao className={`${forcarExibicao ? "flex" : "hidden"} flex-col gap-y-4 col-left`}>
                 <CabecalhoDeSecao titulo="Refeições autorizadas" />
 
                 {
