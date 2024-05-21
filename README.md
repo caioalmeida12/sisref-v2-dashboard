@@ -1,19 +1,27 @@
 # sisref-v2-dashboard
+----------------------------
+## Para rodar via Docker:
+```bash
+docker compose eup
+```
 
-Para instalar o runtime do bun (Windows):
+----------------------------
+## Para rodar localmente no Windows:
+
+Instalar o runtime do bun (Windows):
 
 ```bash
 powershell -c "irm bun.sh/install.ps1 | iex"
 ```
 
 
-Para instalar as dependências:
+Instalar as dependências:
 
 ```bash
 bun install
 ```
 
-Para executar:
+Executar:
 
 ```bash
 cd sisref-v2-dashboard-client
