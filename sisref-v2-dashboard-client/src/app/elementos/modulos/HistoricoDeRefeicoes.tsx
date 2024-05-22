@@ -1,11 +1,11 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { Secao } from '../basicos/Secao'
 import { CabecalhoDeSecao } from '../basicos/CabecalhoDeSecao'
 import { fetchTickets } from '@/app/actions/fetchTickets'
 import { IRefeicaoDoHistorico } from '../interfaces/IRefeicaoDoDoHistorico'
-import { RefeicaoDoHistorico } from '../componentes/RefeicaoDoHistorico'
+import { RefeicaoDoHistorico, RefeicaoDoHistoricoLoading } from '../componentes/RefeicaoDoHistorico'
 
 const QUANTOS_TICKETS_MOSTRAR = 10
 
@@ -14,6 +14,7 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
     const [utilizado, setUtilizado] = useState<IRefeicaoDoHistorico[]>([])
     const [cancelado, setCancelado] = useState<IRefeicaoDoHistorico[]>([])
     const [naoUtilizado, setNaoUtilizado] = useState<IRefeicaoDoHistorico[]>([])
+    const [carregando, setCarregando] = useState(true)
 
     /**
      * Armazena os n tickets mais recentes dentre os 40 que são retornados pela API.
@@ -45,6 +46,11 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
         const ticketsMaisRecentes = todosTicketsOrdenados.slice(0, QUANTOS_TICKETS_MOSTRAR)
 
         setTicketsMaisRecentes(ticketsMaisRecentes)
+        
+        // Se todos os tickets já foram carregados, então não está mais carregando.
+        const todosForamCarregados = todosTickets.length === QUANTOS_TICKETS_MOSTRAR
+        if (todosForamCarregados) setCarregando(false)
+    
     }, [aSerUtilizado, utilizado, cancelado, naoUtilizado])
 
     return (
@@ -52,9 +58,17 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
             <CabecalhoDeSecao titulo='Histórico de Refeições' />
             <div className='flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-4'>
                 {
-                    ticketsMaisRecentes.map((refeicao, index) => (
-                        <RefeicaoDoHistorico key={index} {...refeicao} />
-                    ))
+                    carregando ?
+                        (
+                            Array.from({ length: QUANTOS_TICKETS_MOSTRAR }).map((_, index) => (
+                                <RefeicaoDoHistoricoLoading key={index} />
+                            ))
+                        ) :
+                        (
+                            ticketsMaisRecentes.map((refeicao, index) => (
+                                <RefeicaoDoHistorico key={index} {...refeicao} />
+                            ))
+                        )
                 }
             </div>
         </Secao>

@@ -5,6 +5,7 @@ import { Secao } from "@elementos/basicos/Secao";
 import { StatusDaRefeicao } from "@elementos/basicos/StatusDaRefeicao";
 import { IRefeicaoDoHistorico } from "../interfaces/IRefeicaoDoDoHistorico";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { Skeleton } from "@mui/material";
 
 const varianteNomeRefeicaoPorTurno = {
     1: "manha",
@@ -37,15 +38,15 @@ export const RefeicaoDoHistorico = (props: IRefeicaoDoHistorico) => {
                 <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
                 {elementoStatusRefeicaoPorTextoStatusRefeicao[props.status]}
             </div>
-            <HorarioDaRefeicao 
-            variante="horario-e-data"
-            data={DatasHelper.converterParaFormatoBrasileiro(props.cardapio.date)} 
-            horarios={{
-                qtdTimeReservationEnd: props.refeicao.qtdTimeReservationEnd,
-                qtdTimeReservationStart: props.refeicao.qtdTimeReservationStart,
-                timeEnd: DatasHelper.removerSegundosDoHorario(props.refeicao.timeEnd),
-                timeStart: DatasHelper.removerSegundosDoHorario(props.refeicao.timeStart)
-            }}
+            <HorarioDaRefeicao
+                variante="horario-e-data"
+                data={DatasHelper.converterParaFormatoBrasileiro(props.cardapio.date)}
+                horarios={{
+                    qtdTimeReservationEnd: props.refeicao.qtdTimeReservationEnd,
+                    qtdTimeReservationStart: props.refeicao.qtdTimeReservationStart,
+                    timeEnd: DatasHelper.removerSegundosDoHorario(props.refeicao.timeEnd),
+                    timeStart: DatasHelper.removerSegundosDoHorario(props.refeicao.timeStart)
+                }}
             />
             <p className="leading-6">
                 {descricaoCardapioParaArrayStrings(props.cardapio.description).map((descricao, index) => (
@@ -56,6 +57,27 @@ export const RefeicaoDoHistorico = (props: IRefeicaoDoHistorico) => {
                         <br />
                     </React.Fragment>
                 ))}
+            </p>
+        </Secao>
+    )
+}
+
+export const RefeicaoDoHistoricoLoading = () => {
+    return (
+        <Secao className="flex flex-col gap-4">
+            <div className="flex justify-between gap-x-2">
+                <Skeleton height={24} width="60%" variant="rounded" />
+                <Skeleton height={24} width="40%" variant="rounded" />
+            </div>
+            <div className="flex justify-between gap-x-2">
+                <Skeleton height={24} width="50%" variant="rounded" />
+                <Skeleton height={24} width="50%" variant="rounded" />
+            </div>
+            <p className="leading-6">
+                <Skeleton width="80%" />
+                <Skeleton width="60%" />
+                <Skeleton width="70%" />
+                <Skeleton width="40%" />
             </p>
         </Secao>
     )
