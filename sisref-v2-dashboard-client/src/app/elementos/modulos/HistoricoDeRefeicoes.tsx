@@ -1,6 +1,6 @@
 "use client"
 
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Secao } from '../basicos/Secao'
 import { CabecalhoDeSecao } from '../basicos/CabecalhoDeSecao'
 import { fetchTickets } from '@/app/actions/fetchTickets'
