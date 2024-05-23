@@ -1,10 +1,6 @@
 {
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
     "@microsoft/eslint-formatter-sarif": "2.1.7",
-    "@mui/base": "^5.0.0-beta.40",
-    "@mui/material": "^5.15.17",
     "@radix-ui/react-form": "^0.0.3",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-navigation-menu": "^1.1.4",
