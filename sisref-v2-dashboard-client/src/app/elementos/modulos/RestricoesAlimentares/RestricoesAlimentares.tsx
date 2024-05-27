@@ -8,7 +8,7 @@ import { CabecalhoDeSecao } from "../../basicos/CabecalhoDeSecao"
 import { Secao } from "../../basicos/Secao"
 import { TextoDescritivo } from "./TextoDescritivo"
 import { RestricaoAlimentar } from "../../basicos/RestricaoAlimentar"
-import { Skeleton } from "@mui/material"
+import Skeleton from "react-loading-skeleton"
 
 const TEMPO_DE_CARREGAMENTO = 2000
 
@@ -55,5 +55,5 @@ export const RestricoesAlimentares = ({ forcarExibicao = false }: { forcarExibic
 }
 
 const LoadingSkeletons = () => {
-    return Array.from({ length: 3 }).map((_, index) => <Skeleton key={index} variant="rounded" height={58} />)
+    return Array.from({ length: 3 }).map((_, index) => <Skeleton key={index}  height={58} />)
 }

@@ -63,7 +63,7 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
                         <IconeInformacao texto="Nenhuma refeição encontrada para esta data" />
                     )
                 }
-            />
+           />
             {elementosRefeicao}
         </Secao>
     )
