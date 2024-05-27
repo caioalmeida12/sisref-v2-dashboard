@@ -5,7 +5,8 @@ import { Secao } from "@elementos/basicos/Secao";
 import { StatusDaRefeicao } from "@elementos/basicos/StatusDaRefeicao";
 import { IRefeicaoDoHistorico } from "../interfaces/IRefeicaoDoDoHistorico";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { Skeleton } from "@mui/material";
+import Skeleton from "react-loading-skeleton";
+
 
 const varianteNomeRefeicaoPorTurno = {
     1: "manha",
@@ -47,7 +48,7 @@ export const RefeicaoDoHistorico = (props: IRefeicaoDoHistorico) => {
                     timeEnd: DatasHelper.removerSegundosDoHorario(props.refeicao.timeEnd),
                     timeStart: DatasHelper.removerSegundosDoHorario(props.refeicao.timeStart)
                 }}
-            />
+           />
             <p className="leading-6">
                 {descricaoCardapioParaArrayStrings(props.cardapio.description).map((descricao, index) => (
                     <React.Fragment key={index}>
@@ -66,18 +67,18 @@ export const RefeicaoDoHistoricoLoading = () => {
     return (
         <Secao className="flex flex-col gap-4">
             <div className="flex justify-between gap-x-2">
-                <Skeleton height={24} width="60%" variant="rounded" />
-                <Skeleton height={24} width="40%" variant="rounded" />
+                <Skeleton containerClassName="w-[60%]" />
+                <Skeleton containerClassName="w-[40%]" />
             </div>
             <div className="flex justify-between gap-x-2">
-                <Skeleton height={24} width="50%" variant="rounded" />
-                <Skeleton height={24} width="50%" variant="rounded" />
+                <Skeleton containerClassName="w-[50%]" />
+                <Skeleton containerClassName="w-[50%]" />
             </div>
             <p className="leading-6">
-                <Skeleton width="80%" />
-                <Skeleton width="60%" />
-                <Skeleton width="70%" />
-                <Skeleton width="40%" />
+                <Skeleton width={"80%"} />
+                <Skeleton width={"60%"} />
+                <Skeleton width={"70%"} />
+                <Skeleton width={"40%"} />
             </p>
         </Secao>
     )

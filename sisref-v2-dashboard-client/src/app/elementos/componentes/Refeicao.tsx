@@ -85,7 +85,7 @@ const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
                         timeEnd: DatasHelper.removerSegundosDoHorario(props.refeicao.timeEnd),
                         timeStart: DatasHelper.removerSegundosDoHorario(props.refeicao.timeStart)
                     }}
-                />
+               />
                 {StatusRefeicao}
             </div>
             <HorarioDaRefeicao
@@ -97,7 +97,7 @@ const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
                     timeEnd: DatasHelper.removerSegundosDoHorario(props.refeicao.timeEnd),
                     timeStart: DatasHelper.removerSegundosDoHorario(props.refeicao.timeStart)
                 }}
-            />
+           />
             <p className="leading-6">
                 {descricaoCardapioParaArrayStrings(props.cardapio.description).map((descricao, index) => (
                     <React.Fragment key={index}>

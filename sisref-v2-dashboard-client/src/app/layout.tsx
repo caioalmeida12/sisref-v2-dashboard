@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { Roboto_Slab } from "next/font/google";
 import "./globals.css";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const fontFamily = Roboto_Slab({
   subsets: ["latin"],
