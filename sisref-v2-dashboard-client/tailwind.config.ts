@@ -24,7 +24,7 @@ const config: Config = {
         },
       },
       animation: {
-        outline: "outline .5s ease-in-out ",
+        outline: "outline .25s ease-in-out ",
       },
     },
     colors: {
