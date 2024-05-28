@@ -45,7 +45,9 @@ export const Aviso = ({ titulo, texto, textoBotao }: AvisoProps) => {
         <div className="bg-vermelho-400 text-branco-400 p-4 rounded gap-x-2 gap-y-4 group col-left peer" ref={elementoPai} data-state="open" onMouseDown={iniciarPressionamento} onMouseUp={finalizarPressionamento}>
             <div className='flex justify-between items-center'>
                 <h2 className="font-bold text-branco-400 flex gap-x-2 items-center"><IconeAviso />{titulo}</h2>
+                <button className='relative before:content-[""] before:inset-[-.5em] before:rounded before:opacity-10 before:bg-branco-400 hover:before:absolute'>
                 <IconeDropdown variante='sem-circulo' />
+                </button>
             </div>
             <div className='transition-all duration-300' ref={elementoConteudo}>
                 <p className='mb-4 mt-4 transition-opacity opacity-0 group-data-[state=open]:opacity-100'>
