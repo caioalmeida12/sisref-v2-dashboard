@@ -15,7 +15,17 @@ const config: Config = {
       },
       transitionProperty: {
         'height': 'height'
-      }
+      },
+      keyframes: {
+        outline: {
+          "0%": {
+            outlineColor: "transparent",
+          },
+        },
+      },
+      animation: {
+        outline: "outline .5s ease-in-out ",
+      },
     },
     colors: {
       "amarelo-200": "#D7AF70",
