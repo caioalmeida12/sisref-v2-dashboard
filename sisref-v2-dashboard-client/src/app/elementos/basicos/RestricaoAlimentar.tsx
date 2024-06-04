@@ -1,6 +1,6 @@
 "use client"
 
-import React, { EventHandler } from 'react'
+import React from 'react'
 
 import { MouseEventHandler } from "react";
 import { IconeRestricaoAlimentar } from "./icones/IconeRestricaoAlimentar";

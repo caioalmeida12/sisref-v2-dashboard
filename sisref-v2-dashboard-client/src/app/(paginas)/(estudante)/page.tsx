@@ -1,7 +1,6 @@
 import React from 'react';
 import { Aviso } from '@/app/elementos/modulos/Aviso';
 import { InformacoesDeEstudante } from '@/app/elementos/modulos/InformacoesDeEstudante';
-import { Botao } from '@/app/elementos/basicos/Botao';
 
 export default async function Home() {
   return (
