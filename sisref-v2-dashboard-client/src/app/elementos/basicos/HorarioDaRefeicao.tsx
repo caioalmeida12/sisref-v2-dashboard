@@ -5,7 +5,7 @@ import { IApenasHorario, IApenasData, IHorarioEData } from "@elementos/interface
 type HorarioDaRefeicaoProps =
     | IApenasHorario
     | IApenasData
-    | IHorarioEData;
+    | IHorarioEData
 
 const textoPorVariante = (props: HorarioDaRefeicaoProps) => {
     switch (props.variante) {
@@ -18,9 +18,9 @@ const textoPorVariante = (props: HorarioDaRefeicaoProps) => {
     }
 }
 
-export const HorarioDaRefeicao = (props: HorarioDaRefeicaoProps) => {
+export const HorarioDaRefeicao = (props: HorarioDaRefeicaoProps & Partial<HTMLParagraphElement>) => {
     return (
-        <p className="text-cinza-600">
+        <p className={`text-cinza-600 ${props.className}`}>
             {textoPorVariante(props)}
         </p>
     )
