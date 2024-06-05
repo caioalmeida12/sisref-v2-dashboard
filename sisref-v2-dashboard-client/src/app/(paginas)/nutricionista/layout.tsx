@@ -2,6 +2,7 @@ import { Footer } from "@/app/elementos/componentes/Footer";
 import { Cardapios } from "@/app/elementos/modulos/Cardapios";
 import { InformacoesDeEstudante } from "@/app/elementos/modulos/InformacoesDeEstudante";
 import { Navbar } from "@/app/elementos/modulos/Navbar";
+import { RelatoriosDeDesperdicio } from "@/app/elementos/modulos/RelatoriosDeDesperdicio";
 import React from "react";
 
 interface NutricionistaLayoutProps {
@@ -41,6 +42,7 @@ export default function NutricionistaLayout({ children }: NutricionistaLayoutPro
                     {children}
                     <InformacoesDeEstudante />
                     <Cardapios />
+                    <RelatoriosDeDesperdicio />
                 </div>
                 <div className="col-right flex flex-col gap-y-8 lg:row-start-1 lg:row-span-3">
                 </div>
