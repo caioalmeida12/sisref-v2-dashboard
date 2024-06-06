@@ -30,7 +30,7 @@ interface IRotasEAutorizacoes {
 const rotasPermitidasPorClassification: IRotasEAutorizacoes[] = [
     {
         classification: "STUDENT",
-        permissions: ["/", "/login", "/logout"]
+        permissions: ["/", "/login", "/logout", "/nutricionista"]
     }, {
         classification: "NUTRI",
         permissions: ["/", "/login", "/logout"]
