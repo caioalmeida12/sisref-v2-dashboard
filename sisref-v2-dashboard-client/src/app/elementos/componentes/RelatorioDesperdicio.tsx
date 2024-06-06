@@ -1,28 +1,35 @@
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { Secao } from "../basicos/Secao";
 import { Botao } from "../basicos/Botao";
+import { fetchRelatorioDeDesperdicio } from "@/app/lib/actions/FetchRelatorioDeDesperdicio";
+import DOMPurify from "dompurify";
+import { JSDOM } from "jsdom";
 
-interface RelatorioDesperdicioProps {
-        "id": 8,
-        "startDate": "2024-06-01",
-        "endDate": "2024-06-30",
-        "content": "<figure class=\"table\"><table><tbody><tr><td>&nbsp;<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><\/tr><tr><td>&nbsp;<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><\/tr><tr><td>&nbsp;<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><\/tr><\/tbody><\/table><\/figure>",
-        "created_at": "2024-06-05 08:32:29",
-        "updated_at": "2024-06-05 08:32:29"
-}
+const Card = async ({ data }: { data?: string }) => {
+    const relatorio = await fetchRelatorioDeDesperdicio({
+        data: data || new Date().toISOString()
+    })
 
-const Card = ({ content, date }: RelatorioDesperdicioProps) => {
+
+    if (!relatorio || 'message' in relatorio) return <p>{relatorio?.message || "Relatório não encontrado para data"}</p>
+
     return (
         <Secao className="flex flex-col gap-y-2">
-            <p className="font-bold">{DatasHelper.converterParaFormatoBrasileiro(date)}</p>
+            <p className="font-bold">{DatasHelper.converterParaFormatoBrasileiro("2024-06-06")}</p>
 
-            <p>{content}</p>
+            <div
+                dangerouslySetInnerHTML={{
+                    __html: DOMPurify(new JSDOM("<!DOCTYPE html>").window).sanitize(
+                        relatorio.content
+                    ),
+                }}
+            />
 
             <Botao variante="remover" texto="Remover"></Botao>
         </Secao>
     )
 }
 
-export const RelatorioDesperdicio = ({ content, date, variante }: RelatorioDesperdicioProps & { variante: "card" | "modal" }) => {
-    return variante === "card" ? <Card content={content} date={date} /> : null
+export const RelatorioDesperdicio = ({ data, variante }: { data?: string, variante: "card" | "modal" }) => {
+    return variante === "card" ? <Card data={"2023-03-10"} /> : null
 }
