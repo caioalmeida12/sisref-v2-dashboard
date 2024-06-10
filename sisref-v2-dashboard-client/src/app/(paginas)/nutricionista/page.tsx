@@ -1,6 +1,12 @@
+import { RelatoriosDeDesperdicio } from "@/app/elementos/modulos/RelatoriosDeDesperdicio";
 
-export default function NutricionistaPage() {
+interface NutricionistaPageProps {
+  params: { slug: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default function NutricionistaPage({params, searchParams}: NutricionistaPageProps) {
   return (
-    <p></p>
+    <RelatoriosDeDesperdicio data={searchParams.data?.toString()} />
   );
 }

@@ -12,7 +12,7 @@ const Card = async ({ data }: { data: string }) => {
 
     return (
         <Secao className="flex flex-col gap-y-2">
-            <p className="font-bold">{DatasHelper.converterParaFormatoBrasileiro("2024-06-06")}</p>
+            <p className="font-bold">{DatasHelper.converterParaFormatoBrasileiro(data)}</p>
 
             <div
                 dangerouslySetInnerHTML={{
