@@ -5,11 +5,8 @@ import { fetchRelatorioDeDesperdicio } from "@/app/lib/actions/FetchRelatorioDeD
 import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 
-const Card = async ({ data }: { data?: string }) => {
-    const relatorio = await fetchRelatorioDeDesperdicio({
-        data: data || new Date().toISOString()
-    })
-
+const Card = async ({ data }: { data: string }) => {
+    const relatorio = await fetchRelatorioDeDesperdicio({ data })
 
     if (!relatorio || 'message' in relatorio) return <p>{relatorio?.message || "Relatório não encontrado para data"}</p>
 
@@ -30,6 +27,6 @@ const Card = async ({ data }: { data?: string }) => {
     )
 }
 
-export const RelatorioDesperdicio = ({ data, variante }: { data?: string, variante: "card" | "modal" }) => {
-    return variante === "card" ? <Card data={"2023-03-10"} /> : null
+export const RelatorioDesperdicio = ({ data, variante }: { data: string, variante: "card" | "modal" }) => {
+    return variante === "card" ? <Card data={data} /> : null
 }

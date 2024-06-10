@@ -42,7 +42,7 @@ export default function NutricionistaLayout({ children }: NutricionistaLayoutPro
                     {children}
                     <InformacoesDeEstudante />
                     <Cardapios />
-                    <RelatoriosDeDesperdicio />
+                    <RelatoriosDeDesperdicio  data="2023-03-03"/>
                 </div>
                 <div className="col-right flex flex-col gap-y-8 lg:row-start-1 lg:row-span-3">
                 </div>
