@@ -103,4 +103,30 @@ export class DatasHelper {
         dataAtual.setDate(dataAtual.getDate() + 1);
         return dataAtual.toISOString().split('T')[0];
     }
+
+    /**
+     * Retorna o mês anterior à data fornecida
+     * @param data A data de referência no formato yyyy-MM-dd
+     * @returns Data do mês anterior no formato yyyy-MM-dd
+     * @example getMesAnterior("2024-04-13") // "2024-03-13"
+     * @example getMesAnterior("2024-01-01") // "2023-12-01"
+     */
+    static getMesAnterior(data: string): string {
+        const dataAtual = new Date(data);
+        dataAtual.setDate(0);
+        return dataAtual.toISOString().split('T')[0];
+    }
+
+    /**
+     * Retorna o mês posterior à data fornecida
+     * @param data A data de referência no formato yyyy-MM-dd
+     * @returns Data do mês posterior no formato yyyy-MM-dd
+     * @example getMesPosterior("2024-04-13") // "2024-05-13"
+     * @example getMesPosterior("2024-12-31") // "2025-01-31"
+     */
+    static getMesPosterior(data: string): string {
+        const dataAtual = new Date(data);
+        const proximoMes = new Date(dataAtual.getFullYear(), dataAtual.getMonth()+2, 1)
+        return proximoMes.toISOString().split('T')[0];
+    }
 }
