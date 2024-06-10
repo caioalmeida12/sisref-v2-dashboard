@@ -2,7 +2,6 @@ import { Footer } from "@/app/elementos/componentes/Footer";
 import { Cardapios } from "@/app/elementos/modulos/Cardapios";
 import { InformacoesDeEstudante } from "@/app/elementos/modulos/InformacoesDeEstudante";
 import { Navbar } from "@/app/elementos/modulos/Navbar";
-import { RelatoriosDeDesperdicio } from "@/app/elementos/modulos/RelatoriosDeDesperdicio";
 import React from "react";
 
 interface NutricionistaLayoutProps {

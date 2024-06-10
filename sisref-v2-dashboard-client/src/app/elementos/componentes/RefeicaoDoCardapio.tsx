@@ -1,8 +1,7 @@
 import React from "react";
-import { HorarioDaRefeicao } from "../basicos/HorarioDaRefeicao";
+
 import { Secao } from "../basicos/Secao";
 import { IRefeicao } from "../interfaces/IRefeicao";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { NomeDaRefeicao } from "../basicos/NomeDaRefeicao";
 
 const varianteNomeRefeicaoPorTurno = {
