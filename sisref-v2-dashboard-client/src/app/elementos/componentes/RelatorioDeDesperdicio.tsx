@@ -6,6 +6,7 @@ import { Botao } from "../basicos/Botao";
 import { fetchRelatorioDeDesperdicio } from "@/app/lib/actions/FetchRelatorioDeDesperdicio";
 import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
+import { Modal } from "./Modal";
 
 const Card = async ({ data }: { data: string }) => {
     const relatorio = await fetchRelatorioDeDesperdicio({ data })
@@ -29,6 +30,24 @@ const Card = async ({ data }: { data: string }) => {
     )
 }
 
+const ModalWrapper = async ({ data }: { data: string }) => {
+    const relatorio = await fetchRelatorioDeDesperdicio({ data })
+
+    if (!relatorio || 'message' in relatorio) return null
+
+    return (
+        <Modal titulo="Relatório de desperdício">
+            <div
+                dangerouslySetInnerHTML={{
+                    __html: DOMPurify(new JSDOM("<!DOCTYPE html>").window).sanitize(
+                        relatorio.content
+                    ),
+                }}
+            />
+        </Modal>
+    )
+}
+
 export const RelatorioDeDesperdicio = ({ data, variante }: { data: string, variante: "card" | "modal" }) => {
-    return variante === "card" ? <Card data={data} /> : null
+    return variante === "card" ? <Card data={data} /> : <ModalWrapper data={data} />
 }
