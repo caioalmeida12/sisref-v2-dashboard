@@ -29,6 +29,6 @@ const Card = async ({ data }: { data: string }) => {
     )
 }
 
-export const RelatorioDesperdicio = ({ data, variante }: { data: string, variante: "card" | "modal" }) => {
+export const RelatorioDeDesperdicio = ({ data, variante }: { data: string, variante: "card" | "modal" }) => {
     return variante === "card" ? <Card data={data} /> : null
 }

@@ -3,7 +3,7 @@ import React from "react";
 import { Botao } from "../basicos/Botao";
 import { CabecalhoDeSecao } from "../basicos/CabecalhoDeSecao";
 import { Secao } from "../basicos/Secao"
-import { RelatorioDesperdicio } from "../componentes/RelatorioDesperdicio";
+import { RelatorioDeDesperdicio } from "../componentes/RelatorioDeDesperdicio";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { SliderServerSide } from "../componentes/SliderServerSide";
 
@@ -22,7 +22,7 @@ export const RelatoriosDeDesperdicio = ({data} : {data?: string}) => {
     return (
         <Secao className="flex flex-col gap-y-4">
             <CabecalhoDeSecao titulo="Relatórios de desperdício" />
-            <RelatorioDesperdicio variante="card" data={data}/>
+            <RelatorioDeDesperdicio variante="card" data={data}/>
             <Botao variante="adicionar" texto="Adicionar relatório" />
             <SliderServerSide texto={DatasHelper.converterParaFormatoBrasileiro(data)} onNext={handleNext} onPrevious={handlePrevious}/>
         </Secao>
