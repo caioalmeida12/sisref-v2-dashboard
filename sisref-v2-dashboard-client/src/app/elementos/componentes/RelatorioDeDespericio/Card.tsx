@@ -23,7 +23,7 @@ export default function Card({ children, data }: { children: React.ReactNode, da
                 {children}
             </Modal>
 
-            <Secao className="flex flex-col gap-y-2 bg-azul-400 cursor-pointer" onClick={handleClick}>
+            <Secao className="flex flex-col gap-y-2 bg-azul-400 cursor-pointer hover:outline outline-preto-400 outline-1" onClick={handleClick}>
                 <p className="font-bold">{DatasHelper.converterParaFormatoBrasileiro(data)}</p>
 
                 {children}
