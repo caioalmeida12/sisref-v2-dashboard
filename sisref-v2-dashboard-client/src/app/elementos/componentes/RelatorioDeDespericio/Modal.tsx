@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react";
 import { useLayoutEffect, useRef } from "react"
 import { IconeFechar } from "../../basicos/icones/IconeFechar";
 

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useLayoutEffect } from "react";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { Botao } from "../../basicos/Botao";
 import { Secao } from "../../basicos/Secao";
