@@ -1,7 +1,7 @@
 "use client"
 
 import { useLayoutEffect, useRef } from "react"
-import { IconeFechar } from "../basicos/icones/IconeFechar";
+import { IconeFechar } from "../../basicos/icones/IconeFechar";
 
 const useModal = () => {
   const modalRef = useRef<HTMLDialogElement>(null);
