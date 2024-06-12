@@ -16,8 +16,8 @@ export const RelatoriosDeDesperdicio = ({data} : {data?: string}) => {
     const anterior = DatasHelper.getMesAnterior(data);
     const posterior = DatasHelper.getMesPosterior(data);
     
-    const handleNext = `/nutricionista?data=${posterior}`;
-    const handlePrevious = `/nutricionista?data=${anterior}`;
+    const handleNext = `/nutricionista?dataRelatorio=${posterior}`;
+    const handlePrevious = `/nutricionista?dataRelatorio=${anterior}`;
 
     return (
         <Secao className="flex flex-col gap-y-4">

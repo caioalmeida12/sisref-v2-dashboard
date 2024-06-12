@@ -13,6 +13,6 @@ export default function NutricionistaPage({
   searchParams
 }: NutricionistaPageProps) {
   return (
-    <RelatoriosDeDesperdicio data={searchParams.data?.toString()} />
+    <RelatoriosDeDesperdicio data={searchParams.dataRelatorio?.toString()} />
   );
 }
