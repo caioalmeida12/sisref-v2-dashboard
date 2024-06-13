@@ -1,4 +1,5 @@
 import { Footer } from "@/app/elementos/componentes/Footer";
+import EstatisticasDeHoje from "@/app/elementos/modulos/EstatisticasDeHoje";
 import { InformacoesDeEstudante } from "@/app/elementos/modulos/InformacoesDeEstudante";
 import { Navbar } from "@/app/elementos/modulos/Navbar";
 import React from "react";
@@ -41,6 +42,7 @@ export default function NutricionistaLayout({ children }: NutricionistaLayoutPro
                     {children}
                 </div>
                 <div className="col-right flex flex-col gap-y-8 lg:row-start-1 lg:row-span-3">
+                    <EstatisticasDeHoje />
                 </div>
             </main>
             <Footer />
