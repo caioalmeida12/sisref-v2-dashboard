@@ -26,13 +26,13 @@ export default function NutricionistaPage({
 }: NutricionistaPageProps) {
 
   // Sempre passar um novo objeto para evitar mutações
-  const parsedSearchParams = searchParamsToURLSearchParams(searchParams)
+  const passarSearchParams = () => new URLSearchParams(searchParamsToURLSearchParams(searchParams).toString())
 
   return (
     <>
-      <Cardapios searchParams={new URLSearchParams(parsedSearchParams)}/>
-      <RelatoriosDeDesperdicio searchParams={new URLSearchParams(parsedSearchParams)} />
-      <QuadroDeAvisos searchParams={new URLSearchParams(parsedSearchParams)} />
+      <Cardapios searchParams={passarSearchParams()}/>
+      <RelatoriosDeDesperdicio searchParams={passarSearchParams()} />
+      <QuadroDeAvisos searchParams={passarSearchParams()} />
     </>
   );
 }
