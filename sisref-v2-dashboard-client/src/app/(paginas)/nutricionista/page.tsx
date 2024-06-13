@@ -2,13 +2,14 @@ import React from "react";
 
 import { RelatoriosDeDesperdicio } from "@/app/elementos/modulos/RelatoriosDeDesperdicio";
 import { QuadroDeAvisos } from "@/app/elementos/modulos/QuadroDeAvisos";
+import { Cardapios } from "@/app/elementos/modulos/Cardapios";
 
 interface NutricionistaPageProps {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-const searchParamsToURLSearchParams = (searchParams: { [key: string]: string | string[] | undefined }) : URLSearchParams => {
+const searchParamsToURLSearchParams = (searchParams: { [key: string]: string | string[] | undefined }): URLSearchParams => {
   const urlSearchParams = new URLSearchParams()
   for (const key in searchParams) {
     if (searchParams[key] !== undefined) {
@@ -29,6 +30,7 @@ export default function NutricionistaPage({
 
   return (
     <>
+      <Cardapios searchParams={new URLSearchParams(parsedSearchParams)}/>
       <RelatoriosDeDesperdicio searchParams={new URLSearchParams(parsedSearchParams)} />
       <QuadroDeAvisos searchParams={new URLSearchParams(parsedSearchParams)} />
     </>

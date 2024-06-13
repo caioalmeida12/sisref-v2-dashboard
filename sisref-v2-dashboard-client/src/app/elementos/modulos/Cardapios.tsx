@@ -3,12 +3,20 @@ import { CabecalhoDeSecao } from "../basicos/CabecalhoDeSecao";
 import { Secao } from "../basicos/Secao"
 import { RefeicaoDoCardapio } from "../componentes/RefeicaoDoCardapio";
 import { Botao } from "../basicos/Botao";
-import { Slider } from "../componentes/Slider";
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
+import { SliderServerSide } from "../componentes/SliderServerSide";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 
-export const Cardapios = async ({ data }: { data?: string }) => {
+export const Cardapios = async ({searchParams} : {searchParams: URLSearchParams}) => {
+    const data = searchParams.get('dataCardapio') || new Date().toISOString().split('T')[0];
 
     const cardapios = await fetchRefeicoesPorDia({ data });
+    
+    const anterior = DatasHelper.getDataAnterior(data);
+    const posterior = DatasHelper.getDataPosterior(data);
+
+    const handlePrevious: string = (searchParams.set("dataCardapio", anterior), `/nutricionista?${searchParams.toString()}`);
+    const handleNext: string = (searchParams.set("dataCardapio", posterior), `/nutricionista?${searchParams.toString()}`);
 
     return (
         <Secao className="flex flex-col gap-y-4">
@@ -21,7 +29,7 @@ export const Cardapios = async ({ data }: { data?: string }) => {
                     <p>Não há cardápios para esta data.</p>
             }
             <Botao variante="adicionar" texto="Adicionar Cardápio" />
-            <Slider texto="20/01/2024" />
+            <SliderServerSide onNext={handleNext} onPrevious={handlePrevious} texto={DatasHelper.converterParaFormatoBrasileiro(data)} />
         </Secao>
     );
 }

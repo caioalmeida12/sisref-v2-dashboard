@@ -1,8 +1,6 @@
 import { Footer } from "@/app/elementos/componentes/Footer";
-import { Cardapios } from "@/app/elementos/modulos/Cardapios";
 import { InformacoesDeEstudante } from "@/app/elementos/modulos/InformacoesDeEstudante";
 import { Navbar } from "@/app/elementos/modulos/Navbar";
-import { QuadroDeAvisos } from "@/app/elementos/modulos/QuadroDeAvisos";
 import React from "react";
 
 interface NutricionistaLayoutProps {
@@ -40,7 +38,6 @@ export default function NutricionistaLayout({ children }: NutricionistaLayoutPro
             <main className='w-full grid gap-y-8 px-6 my-8 lg:grid lg:grid-cols-12 lg:gap-x-8 max-w-screen-xl mx-auto'>
                 <div className="col-left flex flex-col gap-y-8">
                     <InformacoesDeEstudante />
-                    <Cardapios />
                     {children}
                 </div>
                 <div className="col-right flex flex-col gap-y-8 lg:row-start-1 lg:row-span-3">
