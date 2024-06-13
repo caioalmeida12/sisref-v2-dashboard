@@ -6,7 +6,7 @@ import { SliderServerSide } from "../componentes/SliderServerSide";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 
 export const QuadroDeAvisos = async ({searchParams} : {searchParams: URLSearchParams}) => {
-    let data = searchParams.get("dataAviso") || new Date().toISOString().split("T")[0];
+    const data = searchParams.get("dataAviso") || new Date().toISOString().split("T")[0];
 
     const anterior = DatasHelper.getDataAnterior(data);
     const posterior = DatasHelper.getDataPosterior(data);

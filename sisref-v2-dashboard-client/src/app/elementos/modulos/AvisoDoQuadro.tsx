@@ -3,8 +3,6 @@
 import React from 'react'
 
 import { Botao } from "../basicos/Botao";
-import { IconeAviso } from "../basicos/icones/IconeAviso";
-import { IconeDropdown } from '../basicos/icones/IconeDropdown';
 
 
 interface AvisoProps {

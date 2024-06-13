@@ -10,8 +10,6 @@ import { SliderServerSide } from "../componentes/SliderServerSide";
 export const RelatoriosDeDesperdicio = ({ searchParams }: { searchParams: URLSearchParams }) => {
     let data = searchParams.get("dataRelatorio") || new Date().toISOString().split("T")[0];
 
-    const localSearch = new URLSearchParams(searchParams.toString());
-
     // Resetar a data para o dia primeiro do mês
     data = data.split("-").slice(0, 2).join("-") + "-01";
 
