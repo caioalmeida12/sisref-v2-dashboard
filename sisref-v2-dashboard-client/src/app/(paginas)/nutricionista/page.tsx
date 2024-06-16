@@ -3,6 +3,7 @@ import React from "react";
 import { RelatoriosDeDesperdicio } from "@/app/elementos/modulos/RelatoriosDeDesperdicio";
 import { QuadroDeAvisos } from "@/app/elementos/modulos/QuadroDeAvisos";
 import { Cardapios } from "@/app/elementos/modulos/Cardapios";
+import BarChart from "@/app/elementos/componentes/BarChart";
 
 interface NutricionistaPageProps {
   params: { slug: string }
@@ -33,6 +34,7 @@ export default function NutricionistaPage({
       <Cardapios searchParams={passarSearchParams()}/>
       <RelatoriosDeDesperdicio searchParams={passarSearchParams()} />
       <QuadroDeAvisos searchParams={passarSearchParams()} />
+      <BarChart />
     </>
   );
 }
