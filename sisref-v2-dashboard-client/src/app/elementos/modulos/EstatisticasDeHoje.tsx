@@ -8,6 +8,7 @@ import { Slider } from "../componentes/Slider"
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
 import { IRefeicao } from "../interfaces/IRefeicao";
 import { Refeicao } from "../componentes/Refeicao";
+import ReservasPorDia from "../componentes/ReservasPorDia";
 
 const cache: { [data: string]: IRefeicao[] } = {};
 
@@ -57,6 +58,12 @@ export default function EstatisticasDeHoje() {
                 }
            />
            {elementosRefeicao}
+           <ReservasPorDia textoDoCabecalho="Reservas por dia" data="16/06/2024" refeicoes={[
+                        { nome: "Lanche da manhã", quantidade: 10 },
+                        { nome: "Almoço", quantidade: 15 },
+                        { nome: "Lanche da tarde", quantidade: 5 },
+                        { nome: "Lanche da noite", quantidade: 20}
+                    ]} />
         </Secao>
     )
 }
