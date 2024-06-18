@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { CanvasHTMLAttributes, DetailedHTMLProps } from "react"
 import { Chart, registerables } from "chart.js"
 import { useLayoutEffect, useRef } from "react"
 import { coresDosGraficos } from "@/app/lib/elementos/CoresDosGraficos"
@@ -14,7 +14,7 @@ interface ReservasPorDiaProps {
     }[]
 }
 
-export default function ReservasPorDia({ textoDoCabecalho, data, refeicoes }: ReservasPorDiaProps) {
+export default function ReservasPorDia({ textoDoCabecalho, data, refeicoes, ...rest }: ReservasPorDiaProps & DetailedHTMLProps<CanvasHTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
     const elementoCanvas = useRef<HTMLCanvasElement>(null)
     const chartRef = useRef<Chart | null>(null)
 
@@ -59,7 +59,7 @@ export default function ReservasPorDia({ textoDoCabecalho, data, refeicoes }: Re
                         font: {
                             weight: "bold",
                         },
-                },
+                    },
                     legend: {
                         display: false,
                     }
@@ -68,12 +68,14 @@ export default function ReservasPorDia({ textoDoCabecalho, data, refeicoes }: Re
                     y: {
                         beginAtZero: true
                     },
-                }
+                },
             }
         })
     }, [textoDoCabecalho, refeicoes])
 
     return (
-        <canvas ref={elementoCanvas} />
+        <div {...rest}>
+            <canvas ref={elementoCanvas}/>
+        </div>
     )
 }

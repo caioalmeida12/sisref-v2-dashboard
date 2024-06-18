@@ -9,6 +9,7 @@ import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
 import { IRefeicao } from "../interfaces/IRefeicao";
 import { Refeicao } from "../componentes/Refeicao";
 import ReservasPorDia from "../componentes/ReservasPorDia";
+import { TicketsPorDia } from "../componentes/TicketsPorDia";
 
 const cache: { [data: string]: IRefeicao[] } = {};
 
@@ -56,14 +57,22 @@ export default function EstatisticasDeHoje() {
                         <IconeInformacao texto="Nenhuma refeição encontrada para esta data" />
                     )
                 }
-           />
-           {elementosRefeicao}
-           <ReservasPorDia textoDoCabecalho="Reservas por dia" data="16/06/2024" refeicoes={[
-                        { nome: "Lanche da manhã", quantidade: 10 },
-                        { nome: "Almoço", quantidade: 15 },
-                        { nome: "Lanche da tarde", quantidade: 5 },
-                        { nome: "Lanche da noite", quantidade: 20}
-                    ]} />
+            />
+            {elementosRefeicao}
+            <div className="grid col-span-2 grid-cols-3">
+                <ReservasPorDia className="col-start-1 col-end-3" textoDoCabecalho="Reservas por dia" data="16/06/2024" refeicoes={[
+                    { nome: "Lanche da manhã", quantidade: 10 },
+                    { nome: "Almoço", quantidade: 15 },
+                    { nome: "Lanche da tarde", quantidade: 5 },
+                    { nome: "Lanche da noite", quantidade: 20 }
+                ]} />
+                <TicketsPorDia className="col-start-3 col-end-4" tickets={[
+                    { estado: "Utilizados", quantidade: 33 },
+                    { estado: "Não utilizados", quantidade: 27 },
+                    { estado: "Cancelados", quantidade: 11 },
+                    { estado: "Faltosos", quantidade: 5 },
+                ]} />
+            </div>
         </Secao>
     )
 }
