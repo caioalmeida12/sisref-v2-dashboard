@@ -36,7 +36,7 @@ export default function NutricionistaLayout({ children }: NutricionistaLayoutPro
             ]}
             />
 
-            <main className='w-full grid gap-y-8 px-6 my-8 lg:grid lg:grid-cols-12 lg:gap-x-8 max-w-screen-xl mx-auto'>
+            <main className='w-full grid gap-y-8 px-6 my-8 lg:grid lg:grid-cols-12 lg:gap-x-8 max-w-screen-2xl mx-auto'>
                 <div className="col-left flex flex-col gap-y-8">
                     <InformacoesDeEstudante />
                     {children}

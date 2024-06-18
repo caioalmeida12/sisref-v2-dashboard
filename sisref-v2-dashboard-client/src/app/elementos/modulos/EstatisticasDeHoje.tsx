@@ -10,6 +10,7 @@ import { IRefeicao } from "../interfaces/IRefeicao";
 import { Refeicao } from "../componentes/Refeicao";
 import ReservasPorDia from "../componentes/ReservasPorDia";
 import { TicketsPorDia } from "../componentes/TicketsPorDia";
+import { TicketsPorRefeicao } from "../componentes/TicketsPorRefeicao";
 
 const cache: { [data: string]: IRefeicao[] } = {};
 
@@ -70,6 +71,32 @@ export default function EstatisticasDeHoje() {
                     { estado: "Utilizados", quantidade: 33 },
                     { estado: "Não utilizados", quantidade: 27 },
                     { estado: "Cancelados", quantidade: 11 },
+                    { estado: "Faltosos", quantidade: 5 },
+                ]} />
+            </div>
+            <div className="grid col-span-2 grid-cols-4">
+                <TicketsPorRefeicao refeicao="Lanche da manhã" tickets={[
+                    { estado: "Utilizados", quantidade: 15 },
+                    { estado: "Não utilizados", quantidade: 10 },
+                    { estado: "Cancelados", quantidade: 5 },
+                    { estado: "Faltosos", quantidade: 2 },
+                ]} />
+                <TicketsPorRefeicao refeicao="Almoço" tickets={[
+                    { estado: "Utilizados", quantidade: 20 },
+                    { estado: "Não utilizados", quantidade: 15 },
+                    { estado: "Cancelados", quantidade: 6 },
+                    { estado: "Faltosos", quantidade: 4 },
+                ]} />
+                <TicketsPorRefeicao refeicao="Lanche da tarde" tickets={[
+                    { estado: "Utilizados", quantidade: 10 },
+                    { estado: "Não utilizados", quantidade: 5 },
+                    { estado: "Cancelados", quantidade: 0 },
+                    { estado: "Faltosos", quantidade: 0 },
+                ]} />
+                <TicketsPorRefeicao refeicao="Lanche da noite" tickets={[
+                    { estado: "Utilizados", quantidade: 25 },
+                    { estado: "Não utilizados", quantidade: 20 },
+                    { estado: "Cancelados", quantidade: 0 },
                     { estado: "Faltosos", quantidade: 5 },
                 ]} />
             </div>
