@@ -8,7 +8,7 @@ interface IconeInformacaoProps extends HTMLAttributes<HTMLElement> {
 export const IconeInformacao = ({ texto }: IconeInformacaoProps) => {
     return (
         <div className="w-min">
-            <Tooltip.Provider>
+            <Tooltip.Provider delayDuration={100}>
                 <Tooltip.Root>
                     <Tooltip.Trigger asChild>
                         <button>
@@ -18,7 +18,10 @@ export const IconeInformacao = ({ texto }: IconeInformacaoProps) => {
                         </button>
                     </Tooltip.Trigger>
                     <Tooltip.Portal>
-                        <Tooltip.Content className="bg-branco-400 px-3 py-2 rounded border-cinza-600 border-[1px]" sideOffset={5}>
+                        <Tooltip.Content
+                            className="bg-branco-400 border data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade text-violet11 select-none rounded-[4px] px-[15px] py-[10px] text-[15px] leading-none shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity]"
+                            sideOffset={5}
+                        >
                             <div>{texto}</div>
                             <Tooltip.Arrow className="fill-branco-400" />
                         </Tooltip.Content>
@@ -28,4 +31,3 @@ export const IconeInformacao = ({ texto }: IconeInformacaoProps) => {
         </div>
     )
 }
-
