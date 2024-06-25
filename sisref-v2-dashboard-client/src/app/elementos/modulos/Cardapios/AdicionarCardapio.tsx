@@ -111,11 +111,11 @@ const SelectRefeicao = () => (
                     <ChevronUpIcon />
                 </Select.ScrollUpButton>
                 <Select.Viewport className="py-2 px-2">
-                        <SelectItem className='py-2 hover:bg-cinza-400' value="apple">Apple</SelectItem>
-                        <SelectItem className='py-2 hover:bg-cinza-400' value="banana">Banana</SelectItem>
-                        <SelectItem className='py-2 hover:bg-cinza-400' value="blueberry">Blueberry</SelectItem>
-                        <SelectItem className='py-2 hover:bg-cinza-400' value="grapes">Grapes</SelectItem>
-                        <SelectItem className='py-2 hover:bg-cinza-400' value="pineapple">Pineapple</SelectItem>
+                        <SelectItem className='py-2 hover:bg-cinza-400 focus-visible:bg-cinza-400' value="apple">Apple</SelectItem>
+                        <SelectItem className='py-2 hover:bg-cinza-400 focus-visible:bg-cinza-400' value="banana">Banana</SelectItem>
+                        <SelectItem className='py-2 hover:bg-cinza-400 focus-visible:bg-cinza-400' value="blueberry">Blueberry</SelectItem>
+                        <SelectItem className='py-2 hover:bg-cinza-400 focus-visible:bg-cinza-400' value="grapes">Grapes</SelectItem>
+                        <SelectItem className='py-2 hover:bg-cinza-400 focus-visible:bg-cinza-400' value="pineapple">Pineapple</SelectItem>
                 </Select.Viewport>
                 <Select.ScrollDownButton className="flex items-center justify-center bg-branco-400 cursor-default">
                     <ChevronDownIcon />
