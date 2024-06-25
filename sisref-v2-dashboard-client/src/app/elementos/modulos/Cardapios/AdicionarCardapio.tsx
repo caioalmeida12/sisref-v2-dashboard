@@ -2,7 +2,9 @@
 
 import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Cross2Icon } from '@radix-ui/react-icons';
+import * as Select from '@radix-ui/react-select';
+import classnames from 'classnames';
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon, Cross2Icon } from '@radix-ui/react-icons';
 import { Botao } from '../../basicos/Botao';
 import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker';
 import { useState } from 'react';
@@ -54,7 +56,7 @@ const Modal = () => {
                         <label htmlFor="date">
                             Data
                         </label>
-                        <div className='outline outline-1 rounded '>
+                        <div className='outline outline-1 rounded'>
                             <Datepicker
                                 primaryColor='red'
                                 value={data}
@@ -67,14 +69,20 @@ const Modal = () => {
                             />
                         </div>
                     </fieldset>
-                    <div className="mt-[25px] flex justify-end">
+                    <fieldset className='flex flex-col gap-y-2 justify-start'>
+                        <label htmlFor="meal">
+                            Refeição
+                        </label>
+                        <SelectRefeicao />
+                    </fieldset>
+                    <div className="mt-6 flex justify-end">
                         <Dialog.Close asChild>
                             <Botao texto='Salvar' variante='adicionar' />
                         </Dialog.Close>
                     </div>
                     <Dialog.Close asChild>
                         <button
-                            className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+                            className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-[10px] right-[10px] inline-flex w-6 appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                             aria-label="Close"
                         >
                             <Cross2Icon />
@@ -86,6 +94,64 @@ const Modal = () => {
     )
 };
 
+const SelectRefeicao = () => (
+    <Select.Root>
+        <Select.Trigger
+            className="shadow-preto-400 focus:shadow-preto-400 inline-flex h-8 w-full flex-1 items-center rounded-[4px] px-4 py-2 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px] bg-branco-400"
+            aria-label="Refeição"
+        >
+            <Select.Value placeholder="Selecione uma opção…" />
+            <Select.Icon>
+                <ChevronDownIcon />
+            </Select.Icon>
+        </Select.Trigger>
+        <Select.Portal>
+            <Select.Content className="overflow-hidden border-preto-400 border-[1px] bg-branco-400 rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
+                <Select.ScrollUpButton className="flex items-center justify-center bg-branco-400 cursor-default">
+                    <ChevronUpIcon />
+                </Select.ScrollUpButton>
+                <Select.Viewport className="py-2 px-2">
+                        <SelectItem className='py-2 hover:bg-cinza-400' value="apple">Apple</SelectItem>
+                        <SelectItem className='py-2 hover:bg-cinza-400' value="banana">Banana</SelectItem>
+                        <SelectItem className='py-2 hover:bg-cinza-400' value="blueberry">Blueberry</SelectItem>
+                        <SelectItem className='py-2 hover:bg-cinza-400' value="grapes">Grapes</SelectItem>
+                        <SelectItem className='py-2 hover:bg-cinza-400' value="pineapple">Pineapple</SelectItem>
+                </Select.Viewport>
+                <Select.ScrollDownButton className="flex items-center justify-center bg-branco-400 cursor-default">
+                    <ChevronDownIcon />
+                </Select.ScrollDownButton>
+            </Select.Content>
+        </Select.Portal>
+    </Select.Root>
+);
+
+interface SelectItemProps {
+    children: React.ReactNode;
+    value: string;
+    className?: string;
+    disabled?: boolean;
+}
+
+const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
+    ({ children, className, disabled, ...props }, forwardedRef) => {
+        return (
+            <Select.Item
+                className={classnames(
+                    'text-[13px] leading-none rounded-[3px] flex items-center pr-[35px] pl-6 relative select-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1',
+                    className
+                )}
+                {...props}
+                ref={forwardedRef}
+                disabled={disabled}
+            >
+                <Select.ItemText>{children}</Select.ItemText>
+                <Select.ItemIndicator className="absolute left-0 w-6 inline-flex items-center justify-center">
+                    <CheckIcon />
+                </Select.ItemIndicator>
+            </Select.Item>
+        );
+    }
+);
 
 export const AdicionarCardapio = () => (
     <Dialog.Root>
