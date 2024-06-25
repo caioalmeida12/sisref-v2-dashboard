@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@microsoft/eslint-formatter-sarif": "2.1.7",
+    "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-form": "^0.0.3",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-navigation-menu": "^1.1.4",
@@ -11,6 +12,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "canvas": "^2.11.2",
     "chart.js": "^4.4.3",
+    "dayjs": "^1.11.11",
     "dompurify": "^3.1.5",
     "eslint": "8.57.0",
     "jsdom": "^24.1.0",
@@ -19,6 +21,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-loading-skeleton": "^3.4.0",
+    "react-tailwindcss-datepicker": "^1.6.6",
     "slide-element": "^2.3.1",
     "typescript": "^5.0.0"
   },

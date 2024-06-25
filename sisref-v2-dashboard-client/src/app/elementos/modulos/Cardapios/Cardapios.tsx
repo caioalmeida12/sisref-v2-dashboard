@@ -1,11 +1,11 @@
 import React from "react";
-import { CabecalhoDeSecao } from "../basicos/CabecalhoDeSecao";
-import { Secao } from "../basicos/Secao"
-import { RefeicaoDoCardapio } from "../componentes/RefeicaoDoCardapio";
-import { Botao } from "../basicos/Botao";
+import { CabecalhoDeSecao } from "../../basicos/CabecalhoDeSecao";
+import { Secao } from "../../basicos/Secao"
+import { RefeicaoDoCardapio } from "../../componentes/RefeicaoDoCardapio";
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
-import { SliderServerSide } from "../componentes/SliderServerSide";
+import { SliderServerSide } from "../../componentes/SliderServerSide";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { AdicionarCardapio } from "./AdicionarCardapio";
 
 export const Cardapios = async ({searchParams} : {searchParams: URLSearchParams}) => {
     const data = searchParams.get('dataCardapio') || new Date().toISOString().split('T')[0];
@@ -28,7 +28,7 @@ export const Cardapios = async ({searchParams} : {searchParams: URLSearchParams}
                     )) :
                     <p>Não há cardápios para esta data.</p>
             }
-            <Botao variante="adicionar" texto="Adicionar Cardápio" />
+            <AdicionarCardapio />
             <SliderServerSide onNext={handleNext} onPrevious={handlePrevious} texto={DatasHelper.converterParaFormatoBrasileiro(data)} />
         </Secao>
     );
