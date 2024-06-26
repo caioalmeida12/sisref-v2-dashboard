@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Select from '@radix-ui/react-select';
 import classnames from 'classnames';
@@ -9,12 +9,20 @@ import { Botao } from '../../basicos/Botao';
 import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker';
 import { useState } from 'react';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
+import { fetchRefeicoesParaCardapio } from '@/app/actions/fetchRefeicoesParaCardapio';
+import { IInformacoesDeRefeicao } from '../../interfaces/IInformacoesDeRefeicao';
 
 const Modal = () => {
     const [data, setData] = useState({
         startDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
         endDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
     });
+
+    const [refeicoes, setRefeicoes] = useState<IInformacoesDeRefeicao[]>([]);
+
+    useEffect(() => {
+        // fetchRefeicoesParaCardapio().then((refeicoes) => setRefeicoes(refeicoes));
+    }, [data]);
 
     const handleDataChange = (novaData: DateValueType) => {
         if (!novaData?.startDate || !novaData?.endDate) return;
@@ -73,7 +81,7 @@ const Modal = () => {
                         <label htmlFor="meal">
                             Refeição
                         </label>
-                        <SelectRefeicao />
+                        <SelectRefeicao refeicoes={refeicoes} />
                     </fieldset>
                     <div className="mt-6 flex justify-end">
                         <Dialog.Close asChild>
@@ -94,10 +102,11 @@ const Modal = () => {
     )
 };
 
-const SelectRefeicao = () => (
+const SelectRefeicao = ({ refeicoes }: { refeicoes: IInformacoesDeRefeicao[] }) => (
     <Select.Root>
         <Select.Trigger
-            className="shadow-preto-400 focus:shadow-preto-400 inline-flex h-8 w-full flex-1 items-center rounded-[4px] px-4 py-2 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px] bg-branco-400"
+            disabled={refeicoes.length === 0}
+            className="disabled:text-cinza-600 disabled:cursor-not-allowed shadow-preto-400 focus:shadow-preto-400 inline-flex h-8 w-full flex-1 items-center rounded-[4px] px-4 py-2 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px] bg-branco-400"
             aria-label="Refeição"
         >
             <Select.Value placeholder="Selecione uma opção…" />
@@ -111,11 +120,13 @@ const SelectRefeicao = () => (
                     <ChevronUpIcon />
                 </Select.ScrollUpButton>
                 <Select.Viewport className="py-2 px-2">
-                        <SelectItem className='py-2 hover:bg-cinza-400 focus-visible:bg-cinza-400' value="apple">Apple</SelectItem>
-                        <SelectItem className='py-2 hover:bg-cinza-400 focus-visible:bg-cinza-400' value="banana">Banana</SelectItem>
-                        <SelectItem className='py-2 hover:bg-cinza-400 focus-visible:bg-cinza-400' value="blueberry">Blueberry</SelectItem>
-                        <SelectItem className='py-2 hover:bg-cinza-400 focus-visible:bg-cinza-400' value="grapes">Grapes</SelectItem>
-                        <SelectItem className='py-2 hover:bg-cinza-400 focus-visible:bg-cinza-400' value="pineapple">Pineapple</SelectItem>
+                    {
+                        refeicoes.map((refeicao, index) => (
+                            <SelectItem key={index} value={String(refeicao.id)}>
+                                {refeicao.nome}
+                            </SelectItem>
+                        ))
+                    }
                 </Select.Viewport>
                 <Select.ScrollDownButton className="flex items-center justify-center bg-branco-400 cursor-default">
                     <ChevronDownIcon />
