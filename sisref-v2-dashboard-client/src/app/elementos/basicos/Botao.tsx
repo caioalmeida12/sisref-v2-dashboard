@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 
 import { ButtonHTMLAttributes } from "react";
 
@@ -14,10 +14,10 @@ const classNamePorVariante = {
     ocultar: "bg-branco-400 text-preto-400 hover:outline-preto-400",
 };
 
-export function Botao({ texto, variante, ...rest }: BotaoProps) {
+export const Botao = forwardRef<HTMLButtonElement, BotaoProps>(({ texto, variante, ...rest }, ref) => {
     return (
-        <button className={`p-4 rounded-md text-branco-400 font-bold w-full outline-2 hover:outline hover:animate-outline ${classNamePorVariante[variante]} ${rest.className}`} {...rest}>
+        <button ref={ref} className={`p-4 rounded-md text-branco-400 font-bold w-full outline-2 hover:outline hover:animate-outline ${classNamePorVariante[variante]} ${rest.className}`} {...rest}>
             {texto}
         </button>
     );
-}
+});
