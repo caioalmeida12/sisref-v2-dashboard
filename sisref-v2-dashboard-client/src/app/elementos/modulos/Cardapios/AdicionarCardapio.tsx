@@ -9,7 +9,6 @@ import { Botao } from '../../basicos/Botao';
 import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker';
 import { useState } from 'react';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
-import { fetchRefeicoesParaCardapio } from '@/app/actions/fetchRefeicoesParaCardapio';
 import { IInformacoesDeRefeicao } from '../../interfaces/IInformacoesDeRefeicao';
 
 const Modal = () => {
@@ -43,7 +42,7 @@ const Modal = () => {
         <Dialog.Portal>
             <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
             <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none ">
-                <Dialog.Title className="m-0 font-medium">
+                <Dialog.Title className="m-0 font-medium text-lg">
                     Adicionar cardápio
                 </Dialog.Title>
                 <Dialog.Description className="mt-2 mb-5 leading-normal">
@@ -51,7 +50,7 @@ const Modal = () => {
                 </Dialog.Description>
                 <form className='flex flex-col gap-y-4'>
                     <fieldset className='flex flex-col gap-y-2 justify-start'>
-                        <label htmlFor="description">
+                        <label className='font-medium' htmlFor="description">
                             Descrição
                         </label>
                         <input
@@ -61,7 +60,7 @@ const Modal = () => {
                         />
                     </fieldset>
                     <fieldset className='flex flex-col gap-y-2 justify-start' >
-                        <label htmlFor="date">
+                        <label className='font-medium' htmlFor="date">
                             Data
                         </label>
                         <div className='outline outline-1 rounded'>
@@ -78,7 +77,7 @@ const Modal = () => {
                         </div>
                     </fieldset>
                     <fieldset className='flex flex-col gap-y-2 justify-start'>
-                        <label htmlFor="meal">
+                        <label className='font-medium' htmlFor="meal">
                             Refeição
                         </label>
                         <SelectRefeicao refeicoes={refeicoes} />
@@ -90,8 +89,8 @@ const Modal = () => {
                     </div>
                     <Dialog.Close asChild>
                         <button
-                            className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-[10px] right-[10px] inline-flex w-6 appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
-                            aria-label="Close"
+                            className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-2 right-2 inline-flex p-[0.25em] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+                            aria-label="Fechar"
                         >
                             <Cross2Icon />
                         </button>
