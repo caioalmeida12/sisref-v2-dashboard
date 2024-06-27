@@ -17,7 +17,7 @@ const MensagemErro = ({ texto }: { texto: string | null }) => {
     if (pending || !texto) return null
 
     return (
-        <div className="text-red-500 text-sm text-vermelho-400 text-center">{texto}</div>
+        <div className="text-sm text-vermelho-400 text-center">{texto}</div>
     )
 }
 
@@ -27,7 +27,7 @@ const MensagemCarregando = () => {
     if (!pending) return null
 
     return (
-        <div className="text-blue-500 text-sm text-center text-azul-400">Carregando...</div>
+        <div className="text-sm text-center text-azul-400">Carregando...</div>
     )
 }
 
