@@ -4,35 +4,35 @@ import { Navbar } from '../modulos/Navbar';
 import { Footer } from './Footer';
 import { Botao } from '../basicos/Botao';
 
-interface ErrorScreenProps {
-    statusCode: number;
+type TelaDeErroProps = {
+    statusCode: keyof typeof mensagensErro | keyof typeof mensagensDetalhadas | keyof typeof mensagensBotao;
 }
 
-const messages = {
+const mensagensErro = {
     400: 'Acesso não autorizado',
     404: 'Recurso não encontrado',
     500: 'Erro do nosso servidor',
-    default: 'Ocorreu um erro',
+    default: 'Erro desconhecido',
 } as const;
 
-const variableMessages = {
+const mensagensDetalhadas = {
     400: 'Você precisa ter permissão para acessar esta página.',
     404: 'O recurso que você buscou não foi encontrado',
     500: 'Ocorreu um erro no nosso servidor.',
-    default: 'Mensagem padrão',
+    default: 'Ocorreu um erro desconhecido.',
 } as const;
 
-const buttonVariableMessages = {
+const mensagensBotao = {
     400: 'Fazer login',
     404: 'Voltar para pagina anterior',
     500: 'Voltar para pagina anterior',
-    default: 'Segunda mensagem padrão',
+    default: 'Voltar para pagina anterior',
 } as const;
 
-export const ErrorScreen = ({ statusCode }: ErrorScreenProps) => {
-    const message = messages[statusCode] || messages.default;
-    const variableMessage = variableMessages[statusCode] || variableMessages.default;
-    const buttonVariableMessage = buttonVariableMessages[statusCode] || buttonVariableMessages.default;
+export const TelaDeErro = ({ statusCode }: TelaDeErroProps) => {
+    const mensagem = mensagensErro[statusCode] || mensagensErro.default;
+    const mensagemDetalhada = mensagensDetalhadas[statusCode] || mensagensDetalhadas.default;
+    const mensagemBotao = mensagensBotao[statusCode] || mensagensBotao.default;
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -40,14 +40,14 @@ export const ErrorScreen = ({ statusCode }: ErrorScreenProps) => {
             <main className="flex-grow">
                 <div className='flex flex-col items-center gap-64 p-12'>
                     <div className='flex flex-col items-center gap-12  '>
-                        <span className='text-4xl font-bold text-verde-400 md:text-5xl'>Error <br/> <span className='text-5xl md:text-6xl'>{statusCode}</span></span>
-                        <span className='text-base font-bold text-verde-400 md:text-lg'> {message}</span>
-                    <div className="text-center text-base font-normal md:text-lg">{variableMessage}<br/>
+                        <span className='text-4xl font-bold text-verde-400 md:text-5xl'>Erro <br/> <span className='text-5xl md:text-6xl'>{statusCode}</span></span>
+                        <span className='text-base font-bold text-verde-400 md:text-lg'> {mensagem}</span>
+                    <div className="text-center text-base font-normal md:text-lg">{mensagemDetalhada}<br/>
                     </div>
                     </div>
                     <div className='flex flex-col items-center gap-4'>
                     <span className='text-base font-normal md:text-lg'>Caso deseje,</span>
-                    <Botao texto={buttonVariableMessage} variante='adicionar'/>
+                    <Botao texto={mensagemBotao} variante='adicionar'/>
                     </div>
                 </div>
             </main>
