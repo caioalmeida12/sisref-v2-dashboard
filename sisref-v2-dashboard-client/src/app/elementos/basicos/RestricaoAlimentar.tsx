@@ -10,7 +10,6 @@ interface RestricaoAlimentarProps {
     onRemove?: MouseEventHandler<HTMLButtonElement>
 }
 
-
 export const RestricaoAlimentar = ({ texto, onRemove }: RestricaoAlimentarProps) => {
     return (
         <div className="flex p-4 justify-between item-center relative rounded border-[1px] border-cinza-600">

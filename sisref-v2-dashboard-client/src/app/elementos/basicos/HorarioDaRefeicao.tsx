@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { IApenasHorario, IApenasData, IHorarioEData } from "@elementos/interfaces/IHorarios";
+import classnames from 'classnames';
 
 type HorarioDaRefeicaoProps =
     | IApenasHorario
@@ -20,7 +21,7 @@ const textoPorVariante = (props: HorarioDaRefeicaoProps) => {
 
 export const HorarioDaRefeicao = (props: HorarioDaRefeicaoProps & Partial<HTMLParagraphElement>) => {
     return (
-        <p className={`text-cinza-600 ${props.className}`}>
+        <p className={classnames('text-cinza-600', props.className)}>
             {textoPorVariante(props)}
         </p>
     )
