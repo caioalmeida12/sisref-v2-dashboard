@@ -1,9 +1,8 @@
 import React from "react";
 
 import { RelatoriosDeDesperdicio } from "@/app/elementos/modulos/RelatoriosDeDesperdicio";
-import { QuadroDeAvisos } from "@/app/elementos/modulos/QuadroDeAvisos";
 import { Cardapios } from "@/app/elementos/modulos/Cardapios/Cardapios";
-import ReservasPorDia from "@/app/elementos/componentes/ReservasPorDia";
+import { QuadroDeAvisos } from "@/app/elementos/modulos/QuadroDeAvisos/QuadroDeAvisos";
 
 interface NutricionistaPageProps {
   params: { slug: string }

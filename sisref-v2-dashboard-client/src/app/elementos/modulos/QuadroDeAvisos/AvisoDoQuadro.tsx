@@ -1,9 +1,7 @@
 "use client"
 
 import React from 'react'
-
-import { Botao } from "../basicos/Botao";
-
+import { Botao } from '../../basicos/Botao';
 
 interface AvisoProps {
     titulo: string;

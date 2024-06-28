@@ -1,9 +1,9 @@
 import React from "react";
-import { Secao } from "../basicos/Secao"
-import { AvisoDoQuadro } from "./AvisoDoQuadro";
-import { CabecalhoDeSecao } from "../basicos/CabecalhoDeSecao";
-import { SliderServerSide } from "../componentes/SliderServerSide";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { CabecalhoDeSecao } from "../../basicos/CabecalhoDeSecao";
+import { Secao } from "../../basicos/Secao";
+import { SliderServerSide } from "../../componentes/SliderServerSide";
+import { AvisoDoQuadro } from "./AvisoDoQuadro";
 
 export const QuadroDeAvisos = async ({searchParams} : {searchParams: URLSearchParams}) => {
     const data = searchParams.get("dataAviso") || new Date().toISOString().split("T")[0];
