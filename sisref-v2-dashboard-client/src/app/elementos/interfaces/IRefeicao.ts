@@ -1,6 +1,7 @@
-export interface IRefeicao {
+export type IRefeicao = {
     turno: 1 | 2 | 3 | 4;
     refeicao?: {
+        id?: number;
         description: string;
         qtdTimeReservationEnd: number;
         qtdTimeReservationStart: number;

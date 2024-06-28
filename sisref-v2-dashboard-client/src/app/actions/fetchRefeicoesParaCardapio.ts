@@ -3,7 +3,7 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCodigoHTTP"
-import { IInformacoesDeRefeicao } from "../elementos/interfaces/IInformacoesDeRefeicao"
+import { IRefeicao["refeicao"] } from "../elementos/interfaces/IRefeicao["refeicao"]"
 
 // [ 'Erro 401' ]
 const respostaFoiErroDeAutenticacao = (resposta: any) => resposta[0] === 'Erro 401'
@@ -32,7 +32,7 @@ export async function fetchRefeicoesParaCardapio() {
     if (respostaFoiErroDeAutenticacao(resposta)) return redirect(`/login?erro=${encodeURIComponent(mensagemDeErroPorCodigoHTTP(401))}`)
 
     // Refeições buscadas com sucesso
-    const informacoesRefeicoes: IInformacoesDeRefeicao[] = resposta.map((refeicao: any) => ({
+    const informacoesRefeicoes: IRefeicao["refeicao"][] = resposta.map((refeicao: any) => ({
         id: refeicao.id,
         nome: refeicao.nome,
         descricao: refeicao.descricao,

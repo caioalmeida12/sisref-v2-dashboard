@@ -2,7 +2,7 @@ import React from 'react';
 import * as Select from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import classnames from 'classnames';
-import { IInformacoesDeRefeicao } from '../../interfaces/IInformacoesDeRefeicao';
+import { IRefeicao } from '../../interfaces/IRefeicao';
 
 interface SelectItemProps {
     children: React.ReactNode;
@@ -32,7 +32,7 @@ const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
     }
 );
 
-const SelectRefeicao = ({ refeicoes }: { refeicoes: IInformacoesDeRefeicao[] }) => (
+const SelectRefeicao = ({ refeicoes }: { refeicoes: IRefeicao["refeicao"][] }) => (
     <Select.Root>
         <Select.Trigger
             disabled={refeicoes.length === 0}
@@ -52,8 +52,8 @@ const SelectRefeicao = ({ refeicoes }: { refeicoes: IInformacoesDeRefeicao[] }) 
                 <Select.Viewport className="py-2 px-2">
                     {
                         refeicoes.length ? refeicoes.map((refeicao, index) => (
-                            <SelectItem key={index} value={String(refeicao.id)}>
-                                {refeicao.nome}
+                            <SelectItem key={index} value={String(refeicao?.id)}>
+                                {refeicao?.description}
                             </SelectItem>
                         )) : <SelectItem value="null" disabled>Não há refeições cadastradas.</SelectItem>
                     }

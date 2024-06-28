@@ -1,13 +1,14 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
-import { IInformacoesDeRefeicao } from '../../interfaces/IInformacoesDeRefeicao';
 import SelectRefeicao from './SelectRefeicao';
 import { Botao } from '../../basicos/Botao';
 import { Cross2Icon } from '@radix-ui/react-icons';
+import { criarCardapio } from '@/app/actions/criarCardapio';
+import { IRefeicao } from '../../interfaces/IRefeicao';
 
 const Modal = () => {
     const [data, setData] = useState({
@@ -15,7 +16,10 @@ const Modal = () => {
         endDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
     });
 
-    const [refeicoes, setRefeicoes] = useState<IInformacoesDeRefeicao[]>([]);
+    const [refeicoes, setRefeicoes] = useState<IRefeicao["refeicao"][]>([]);
+    const [salvando, setSalvando] = useState(false);
+
+    const mensagemDeResposta = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         // fetchRefeicoesParaCardapio().then((refeicoes) => setRefeicoes(refeicoes));
@@ -36,6 +40,30 @@ const Modal = () => {
         setData({ startDate, endDate });
     };
 
+    const handleSalvar = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setSalvando(true);
+
+        // Atualiza a mensagem para mostrar "Salvando..." enquanto a operação está em andamento
+        mensagemDeResposta.current!.textContent = 'Salvando...';
+        mensagemDeResposta.current!.classList.remove('hidden', 'text-verde-400', 'text-vermelho-400');
+        mensagemDeResposta.current!.classList.add('text-azul-400');
+
+        const formData = new FormData(e.currentTarget);
+
+        const { sucesso, mensagem } = await criarCardapio(formData);
+
+        setSalvando(false);
+
+        if (sucesso) {
+            mensagemDeResposta.current!.classList.add('text-verde-400');
+        } else {
+            mensagemDeResposta.current!.classList.add('text-vermelho-400');
+        }
+
+        mensagemDeResposta.current!.textContent = mensagem;
+    };
+
     return (
         <Dialog.Portal>
             <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
@@ -46,7 +74,7 @@ const Modal = () => {
                 <Dialog.Description className="mt-2 mb-5 leading-normal">
                     Preencha os campos abaixo para adicionar um novo cardápio.
                 </Dialog.Description>
-                <form className='flex flex-col gap-y-4'>
+                <form className='flex flex-col gap-y-4' onSubmit={handleSalvar}>
                     <fieldset className='flex flex-col gap-y-2 justify-start'>
                         <label className='font-medium' htmlFor="description">
                             Descrição
@@ -80,10 +108,9 @@ const Modal = () => {
                         </label>
                         <SelectRefeicao refeicoes={refeicoes} />
                     </fieldset>
-                    <div className="mt-4 flex justify-end">
-                        <Dialog.Close asChild>
-                            <Botao texto='Salvar' variante='adicionar' />
-                        </Dialog.Close>
+                    <div className="flex justify-end flex-col items-center gap-y-2">
+                        <div className="text-center" ref={mensagemDeResposta}></div>
+                        <Botao texto='Salvar' variante='adicionar' type='submit' className='mt-4' disabled={salvando} />
                     </div>
                     <Dialog.Close asChild>
                         <button
