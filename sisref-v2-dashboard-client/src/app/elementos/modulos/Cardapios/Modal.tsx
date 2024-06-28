@@ -80,7 +80,7 @@ const Modal = () => {
                         </label>
                         <SelectRefeicao refeicoes={refeicoes} />
                     </fieldset>
-                    <div className="mt-6 flex justify-end">
+                    <div className="mt-4 flex justify-end">
                         <Dialog.Close asChild>
                             <Botao texto='Salvar' variante='adicionar' />
                         </Dialog.Close>
