@@ -43,7 +43,7 @@ export const TicketsPorRefeicao = ({ tickets, refeicao, ...rest }: TicketsPorRef
                 plugins: {
                     title: {
                         display: true,
-                        text: `Utilização dos tickets para o ${refeicao}`,
+                        text: `Tickets para o ${refeicao}`,
                     },
                 },
             },
