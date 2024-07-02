@@ -1,11 +1,10 @@
-import React from "react";
-
-import { Botao } from "../basicos/Botao";
-import { CabecalhoDeSecao } from "../basicos/CabecalhoDeSecao";
-import { Secao } from "../basicos/Secao"
-import { RelatorioDeDesperdicio } from "../componentes/RelatorioDeDespericio/RelatorioDeDesperdicio";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { SliderServerSide } from "../componentes/SliderServerSide";
+import React from "react";
+import { Botao } from "../../basicos/Botao";
+import { CabecalhoDeSecao } from "../../basicos/CabecalhoDeSecao";
+import { Secao } from "../../basicos/Secao";
+import { RelatorioDeDesperdicio } from "../../componentes/RelatorioDeDespericio/RelatorioDeDesperdicio";
+import { SliderServerSide } from "../../componentes/SliderServerSide";
 
 export const RelatoriosDeDesperdicio = ({ searchParams }: { searchParams: URLSearchParams }) => {
     let data = searchParams.get("dataRelatorio") || new Date().toISOString().split("T")[0];

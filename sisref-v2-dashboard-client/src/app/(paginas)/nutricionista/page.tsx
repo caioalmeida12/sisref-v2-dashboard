@@ -1,8 +1,9 @@
 import React from "react";
 
-import { RelatoriosDeDesperdicio } from "@/app/elementos/modulos/RelatoriosDeDesperdicio";
 import { Cardapios } from "@/app/elementos/modulos/Cardapios/Cardapios";
 import { QuadroDeAvisos } from "@/app/elementos/modulos/QuadroDeAvisos/QuadroDeAvisos";
+import { RelatoriosDeDesperdicio } from "@/app/elementos/modulos/RelatoriosDeDersperdicio/RelatoriosDeDesperdicio";
+import EditorDeTexto from "@/app/elementos/modulos/RelatoriosDeDersperdicio/EditorDeTexto";
 
 interface NutricionistaPageProps {
   params: { slug: string }
@@ -30,7 +31,8 @@ export default function NutricionistaPage({
 
   return (
     <>
-      <Cardapios searchParams={passarSearchParams()}/>
+      <EditorDeTexto />
+      <Cardapios searchParams={passarSearchParams()} />
       <RelatoriosDeDesperdicio searchParams={passarSearchParams()} />
       <QuadroDeAvisos searchParams={passarSearchParams()} />
     </>
