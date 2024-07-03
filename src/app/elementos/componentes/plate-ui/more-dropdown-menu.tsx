@@ -43,7 +43,7 @@ export function MoreDropdownMenu(props: DropdownMenuProps) {
         >
           <Icons.superscript className="mr-2 size-5" />
           Superscript
-          {/* (⌘+,) */}
+          {/* (ctrl+,) */}
         </DropdownMenuItem>
         <DropdownMenuItem
           onSelect={() => {
@@ -56,7 +56,7 @@ export function MoreDropdownMenu(props: DropdownMenuProps) {
         >
           <Icons.subscript className="mr-2 size-5" />
           Subscript
-          {/* (⌘+.) */}
+          {/* (ctrl+.) */}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

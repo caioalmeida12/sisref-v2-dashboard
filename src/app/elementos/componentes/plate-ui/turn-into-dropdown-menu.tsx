@@ -54,7 +54,7 @@ const items = [
     value: ELEMENT_H3,
   },
   {
-    description: 'Quote (⌘+⇧+.)',
+    description: 'Quote (ctrl+⇧+.)',
     icon: Icons.blockquote,
     label: 'Quote',
     value: ELEMENT_BLOCKQUOTE,
