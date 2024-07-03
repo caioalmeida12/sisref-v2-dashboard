@@ -2,6 +2,7 @@ import { Footer } from "@/app/elementos/componentes/Footer";
 import EstatisticasDeHoje from "@/app/elementos/modulos/EstatisticasDeHoje";
 import { InformacoesDeEstudante } from "@/app/elementos/modulos/InformacoesDeEstudante";
 import { Navbar } from "@/app/elementos/modulos/Navbar";
+import { EditorDeTexto } from "@/app/elementos/modulos/RelatoriosDeDersperdicio/EditorDeTexto";
 import React from "react";
 
 interface NutricionistaLayoutProps {
@@ -43,6 +44,8 @@ export default function NutricionistaLayout({ children }: NutricionistaLayoutPro
                 </div>
                 <div className="col-right flex flex-col gap-y-8 lg:row-start-1 lg:row-span-3">
                     <EstatisticasDeHoje />
+      <EditorDeTexto />
+
                 </div>
             </main>
             <Footer />
