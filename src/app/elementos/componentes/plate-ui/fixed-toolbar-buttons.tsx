@@ -115,7 +115,6 @@ export function FixedToolbarButtons() {
         <div className="grow" />
 
         <ToolbarGroup noSeparator>
-          <CommentToolbarButton />
           <ModeDropdownMenu />
         </ToolbarGroup>
       </div>
