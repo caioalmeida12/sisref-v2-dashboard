@@ -44,7 +44,7 @@ export function ColorsCustom({
           })}
           {...menuItemProps}
         >
-          CUSTOM
+          Personalizada
         </DropdownMenuItem>
       </ColorInput>
 

@@ -12,7 +12,7 @@ export const IndentToolbarButton = withRef<typeof ToolbarButton>(
     const { props } = useIndentButton();
 
     return (
-      <ToolbarButton ref={ref} tooltip="Indent" {...props} {...rest}>
+      <ToolbarButton ref={ref} tooltip="Avançar" {...props} {...rest}>
         <Icons.indent />
       </ToolbarButton>
     );

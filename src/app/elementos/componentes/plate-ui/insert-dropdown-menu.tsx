@@ -6,15 +6,41 @@ import type { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
 
 import { ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote';
 import {
+  ELEMENT_CODE_BLOCK,
+  insertEmptyCodeBlock,
+} from '@udecode/plate-code-block';
+import {
   focusEditor,
   insertEmptyElement,
   useEditorRef,
 } from '@udecode/plate-common';
-import { ELEMENT_H1, ELEMENT_H2, ELEMENT_H3 } from '@udecode/plate-heading';
+import { ELEMENT_EXCALIDRAW } from '@udecode/plate-excalidraw';
+import {
+  ELEMENT_H1,
+  ELEMENT_H2,
+  ELEMENT_H3,
+  ELEMENT_H4,
+  ELEMENT_H5,
+  ELEMENT_H6,
+} from '@udecode/plate-heading';
+import { ELEMENT_HR } from '@udecode/plate-horizontal-rule';
+import {
+  KEY_LIST_STYLE_TYPE,
+  toggleIndentList,
+} from '@udecode/plate-indent-list';
+import { ELEMENT_COLUMN_GROUP, insertColumnGroup } from '@udecode/plate-layout';
+import { ELEMENT_LINK, triggerFloatingLink } from '@udecode/plate-link';
+import { toggleList } from '@udecode/plate-list';
+import {
+  ELEMENT_IMAGE,
+  ELEMENT_MEDIA_EMBED,
+  insertMedia,
+} from '@udecode/plate-media';
 import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph';
+import { ELEMENT_TABLE, insertTable } from '@udecode/plate-table';
 
-import { Icons } from '../icons';
-
+import { settingsStore } from '@/components/context/settings-store';
+import { Icons } from '@/components/icons';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,8 +49,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   useOpenState,
-} from './dropdown-menu';
-import { ToolbarButton } from './toolbar';
+} from '@/registry/default/plate-ui/dropdown-menu';
+import { ToolbarButton } from '@/registry/default/plate-ui/toolbar';
 
 const items = [
   {
@@ -54,81 +80,105 @@ const items = [
         value: ELEMENT_H3,
       },
       {
-        description: 'Quote (ctrl+⇧+.)',
+        description: 'Heading 4',
+        icon: Icons.h4,
+        label: 'Heading 4',
+        value: ELEMENT_H4,
+      },
+      {
+        description: 'Heading 5',
+        icon: Icons.h5,
+        label: 'Heading 5',
+        value: ELEMENT_H5,
+      },
+      {
+        description: 'Heading 6',
+        icon: Icons.h6,
+        label: 'Heading 6',
+        value: ELEMENT_H6,
+      },
+      {
+        description: 'Table',
+        icon: Icons.table,
+        label: 'Table',
+        value: ELEMENT_TABLE,
+      },
+      {
+        description: 'Bulleted list',
+        icon: Icons.ul,
+        label: 'Bulleted list',
+        value: 'ul',
+      },
+      {
+        description: 'Numbered list',
+        icon: Icons.ol,
+        label: 'Numbered list',
+        value: 'ol',
+      },
+      {
+        description: 'Quote (⌘+⇧+.)',
         icon: Icons.blockquote,
         label: 'Quote',
         value: ELEMENT_BLOCKQUOTE,
       },
-      // {
-      //   value: ELEMENT_TABLE,
-      //   label: 'Table',
-      //   description: 'Table',
-      //   icon: Icons.table,
-      // },
-      // {
-      //   value: 'ul',
-      //   label: 'Bulleted list',
-      //   description: 'Bulleted list',
-      //   icon: Icons.ul,
-      // },
-      // {
-      //   value: 'ol',
-      //   label: 'Numbered list',
-      //   description: 'Numbered list',
-      //   icon: Icons.ol,
-      // },
-      // {
-      //   value: ELEMENT_HR,
-      //   label: 'Divider',
-      //   description: 'Divider (---)',
-      //   icon: Icons.hr,
-      // },
+      {
+        description: 'Divider (---)',
+        icon: Icons.hr,
+        label: 'Divider',
+        value: ELEMENT_HR,
+      },
+      {
+        description: 'Columns',
+        icon: Icons.LayoutIcon,
+        label: 'Columns',
+        value: ELEMENT_COLUMN_GROUP,
+      },
     ],
     label: 'Basic blocks',
   },
-  // {
-  //   label: 'Media',
-  //   items: [
-  //     {
-  //       value: ELEMENT_CODE_BLOCK,
-  //       label: 'Code',
-  //       description: 'Code (```)',
-  //       icon: Icons.codeblock,
-  //     },
-  //     {
-  //       value: ELEMENT_IMAGE,
-  //       label: 'Image',
-  //       description: 'Image',
-  //       icon: Icons.image,
-  //     },
-  //     {
-  //       value: ELEMENT_MEDIA_EMBED,
-  //       label: 'Embed',
-  //       description: 'Embed',
-  //       icon: Icons.embed,
-  //     },
-  //     {
-  //       value: ELEMENT_EXCALIDRAW,
-  //       label: 'Excalidraw',
-  //       description: 'Excalidraw',
-  //       icon: Icons.excalidraw,
-  //     },
-  //   ],
-  // },
-  // {
-  //   label: 'Inline',
-  //   items: [
-  //     {
-  //       value: ELEMENT_LINK,
-  //       label: 'Link',
-  //       description: 'Link',
-  //       icon: Icons.link,
-  //     },
-  //   ],
-  // },
+  {
+    items: [
+      {
+        description: 'Code (```)',
+        icon: Icons.codeblock,
+        label: 'Code',
+        value: ELEMENT_CODE_BLOCK,
+      },
+      {
+        description: 'Image',
+        icon: Icons.image,
+        label: 'Image',
+        value: ELEMENT_IMAGE,
+      },
+      {
+        description: 'Embed',
+        icon: Icons.embed,
+        label: 'Embed',
+        value: ELEMENT_MEDIA_EMBED,
+      },
+      {
+        description: 'Excalidraw',
+        icon: Icons.excalidraw,
+        label: 'Excalidraw',
+        value: ELEMENT_EXCALIDRAW,
+      },
+    ],
+    label: 'Media',
+  },
+  {
+    items: [
+      {
+        description: 'Link',
+        icon: Icons.link,
+        label: 'Link',
+        value: ELEMENT_LINK,
+      },
+    ],
+    label: 'Inline',
+  },
 ];
 
-export function InsertDropdownMenu(props: DropdownMenuProps) {
+export function PlaygroundInsertDropdownMenu(props: DropdownMenuProps) {
   const editor = useEditorRef();
   const openState = useOpenState();
 
@@ -154,52 +204,57 @@ export function InsertDropdownMenu(props: DropdownMenuProps) {
                 <DropdownMenuItem
                   className="min-w-[180px]"
                   key={type}
-                  onSelect={() => {
+                  onSelect={async () => {
                     switch (type) {
-                      // case ELEMENT_CODE_BLOCK: {
-                      //   insertEmptyCodeBlock(editor);
-                      //
-                      //   break;
-                      // }
-                      // case ELEMENT_IMAGE: {
-                      //   await insertMedia(editor, { type: ELEMENT_IMAGE });
-                      //
-                      //   break;
-                      // }
-                      // case ELEMENT_MEDIA_EMBED: {
-                      //   await insertMedia(editor, {
-                      //     type: ELEMENT_MEDIA_EMBED,
-                      //   });
-                      //
-                      //   break;
-                      // }
-                      // case 'ul':
-                      // case 'ol': {
-                      //   insertEmptyElement(editor, ELEMENT_PARAGRAPH, {
-                      //     select: true,
-                      //     nextBlock: true,
-                      //   });
-                      //
-                      //   if (settingsStore.get.checkedId(KEY_LIST_STYLE_TYPE)) {
-                      //     toggleIndentList(editor, {
-                      //       listStyleType: type === 'ul' ? 'disc' : 'decimal',
-                      //     });
-                      //   } else if (settingsStore.get.checkedId('list')) {
-                      //     toggleList(editor, { type });
-                      //   }
-                      //
-                      //   break;
-                      // }
-                      // case ELEMENT_TABLE: {
-                      //   insertTable(editor);
-                      //
-                      //   break;
-                      // }
-                      // case ELEMENT_LINK: {
-                      //   triggerFloatingLink(editor, { focused: true });
-                      //
-                      //   break;
-                      // }
+                      case ELEMENT_COLUMN_GROUP: {
+                        insertColumnGroup(editor);
+
+                        break;
+                      }
+                      case ELEMENT_CODE_BLOCK: {
+                        insertEmptyCodeBlock(editor);
+
+                        break;
+                      }
+                      case ELEMENT_IMAGE: {
+                        await insertMedia(editor, { type: ELEMENT_IMAGE });
+
+                        break;
+                      }
+                      case ELEMENT_MEDIA_EMBED: {
+                        await insertMedia(editor, {
+                          type: ELEMENT_MEDIA_EMBED,
+                        });
+
+                        break;
+                      }
+                      case 'ul':
+                      case 'ol': {
+                        insertEmptyElement(editor, ELEMENT_PARAGRAPH, {
+                          nextBlock: true,
+                          select: true,
+                        });
+
+                        if (settingsStore.get.checkedId(KEY_LIST_STYLE_TYPE)) {
+                          toggleIndentList(editor, {
+                            listStyleType: type === 'ul' ? 'disc' : 'decimal',
+                          });
+                        } else if (settingsStore.get.checkedId('list')) {
+                          toggleList(editor, { type });
+                        }
+
+                        break;
+                      }
+                      case ELEMENT_TABLE: {
+                        insertTable(editor);
+
+                        break;
+                      }
+                      case ELEMENT_LINK: {
+                        triggerFloatingLink(editor, { focused: true });
+
+                        break;
+                      }
                       default: {
                         insertEmptyElement(editor, type, {
                           nextBlock: true,

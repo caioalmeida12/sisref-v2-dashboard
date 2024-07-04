@@ -157,8 +157,8 @@ export function CodeBlockCombobox() {
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search language..." />
-          <CommandEmpty>No language found.</CommandEmpty>
+          <CommandInput placeholder="Procurar linguagem..." />
+          <CommandEmpty>Nenhuma linguagem encontrada.</CommandEmpty>
 
           <CommandList>
             {languages.map((language) => (

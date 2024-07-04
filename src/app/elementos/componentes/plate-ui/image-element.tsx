@@ -59,7 +59,7 @@ export const ImageElement = withHOC(
 
               <Caption align={align} style={{ width }}>
                 <CaptionTextarea
-                  placeholder="Write a caption..."
+                  placeholder="Escreva uma legenda..."
                   readOnly={readOnly}
                 />
               </Caption>

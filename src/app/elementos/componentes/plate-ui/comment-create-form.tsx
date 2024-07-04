@@ -26,7 +26,7 @@ export function CommentCreateForm() {
         <CommentNewSubmitButton
           className={cn(buttonVariants({ size: 'sm' }), 'w-[90px]')}
         >
-          Comment
+          Comentário
         </CommentNewSubmitButton>
       </div>
     </div>

@@ -48,7 +48,7 @@ export const EmojiInputElement = withRef<typeof PlateElement>(
 
           <InlineComboboxContent>
             {!isPending && (
-              <InlineComboboxEmpty>No matching emoji found</InlineComboboxEmpty>
+              <InlineComboboxEmpty>Nenhum emoji encontrado</InlineComboboxEmpty>
             )}
 
             {filteredEmojis.map((emoji) => (

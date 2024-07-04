@@ -69,7 +69,7 @@ export function MediaPopover({ children, pluginKey }: MediaPopoverProps) {
                 options={{
                   pluginKey,
                 }}
-                placeholder="Paste the embed link..."
+                placeholder="Cole o link..."
               />
             </div>
           </div>
@@ -78,10 +78,10 @@ export function MediaPopover({ children, pluginKey }: MediaPopoverProps) {
             <FloatingMediaPrimitive.EditButton
               className={buttonVariants({ size: 'sm', variant: 'ghost' })}
             >
-              Edit link
+              Editar link
             </FloatingMediaPrimitive.EditButton>
 
-            <CaptionButton variant="ghost">Caption</CaptionButton>
+            <CaptionButton variant="ghost">Legenda</CaptionButton>
 
             <Separator className="my-1" orientation="vertical" />
 

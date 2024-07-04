@@ -101,7 +101,7 @@ const DragHandle = () => {
         />
       </TooltipTrigger>
       <TooltipPortal>
-        <TooltipContent>Drag to move</TooltipContent>
+        <TooltipContent>Arraste para mover</TooltipContent>
       </TooltipPortal>
     </Tooltip>
   );
