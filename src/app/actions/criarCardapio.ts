@@ -1,5 +1,6 @@
 "use server"
 
+import { cookies } from "next/headers";
 import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCodigoHTTP"
 
 interface ErroDeAutenticacao {
@@ -28,6 +29,7 @@ export async function criarCardapio(formData: FormData) {
                 meal_id: formData.get('meal_id')
             }),
             headers: {
+                'Authorization': `Bearer ${cookies().get("authorization")?.value}`,
                 'Content-Type': 'application/json'
             },
         });

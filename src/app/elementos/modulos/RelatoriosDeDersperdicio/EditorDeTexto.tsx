@@ -1,7 +1,7 @@
 'use client';
 
 import { withProps } from '@udecode/cn';
-import { createPlugins, Plate, RenderAfterEditable, PlateLeaf } from '@udecode/plate-common';
+import { createPlugins, Plate, RenderAfterEditable, PlateLeaf, createPlateEditor } from '@udecode/plate-common';
 import { createParagraphPlugin, ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph';
 import { createHeadingPlugin, ELEMENT_H1, ELEMENT_H2, ELEMENT_H3, ELEMENT_H4, ELEMENT_H5, ELEMENT_H6 } from '@udecode/plate-heading';
 import { createBlockquotePlugin, ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote';
@@ -40,6 +40,7 @@ import { createDeserializeMdPlugin } from '@udecode/plate-serializer-md';
 import { createJuicePlugin } from '@udecode/plate-juice';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { serializeHtml } from '@udecode/plate-serializer-html';
 
 import { BlockquoteElement } from '@/components/plate-ui/blockquote-element';
 import { CodeBlockElement } from '@/components/plate-ui/code-block-element';
@@ -74,6 +75,7 @@ import { withPlaceholders } from '@/components/plate-ui/placeholder';
 import { withDraggables } from '@/components/plate-ui/with-draggables';
 import { EmojiInputElement } from '@/components/plate-ui/emoji-input-element';
 import { TooltipProvider } from '@/components/plate-ui/tooltip';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 const plugins = createPlugins(
   [
@@ -174,7 +176,7 @@ const plugins = createPlugins(
       },
     }),
     createDndPlugin({
-        options: { enableScroller: true },
+      options: { enableScroller: true },
     }),
     createEmojiPlugin(),
     createExitBreakPlugin({
@@ -274,18 +276,34 @@ const plugins = createPlugins(
   }
 );
 
-export function EditorDeTexto() {
+
+export function EditorDeTexto({ setParentState }: { setParentState: React.Dispatch<React.SetStateAction<{}[] | undefined>> }) {
+
+  const handleChange = (editor: any) => {
+    
+    let editorLocal = createPlateEditor({ plugins })
+
+    editorLocal.children = [...editor];
+
+    const html = serializeHtml(editorLocal, {
+      nodes: editorLocal.children,
+      dndWrapper: (props) => <DndProvider backend={HTML5Backend} {...props} />,
+    });
+
+    console.log(html);
+  };
+
   return (
     <TooltipProvider>
       <DndProvider backend={HTML5Backend}>
         <CommentsProvider users={{}} myUserId="1">
-          <Plate plugins={plugins} >
-            <FixedToolbar>
+          <Plate plugins={plugins} onChange={handleChange} >
+            <FixedToolbar >
               <FixedToolbarButtons />
             </FixedToolbar>
-            
-            <Editor />
-            
+
+            <Editor className='overflow-y-scroll max-h-[400px]'/>
+
             <FloatingToolbar>
               <FloatingToolbarButtons />
             </FloatingToolbar>
