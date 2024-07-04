@@ -25,12 +25,13 @@ import {
   useOpenState,
 } from './dropdown-menu';
 import { ToolbarButton } from './toolbar';
-import { ELEMENT_TABLE } from '@udecode/plate-table';
+import { ELEMENT_TABLE, insertTable } from '@udecode/plate-table';
 import { ELEMENT_HR } from '@udecode/plate-horizontal-rule';
-import { ELEMENT_CODE_BLOCK } from '@udecode/plate-code-block';
+import { ELEMENT_CODE_BLOCK, insertEmptyCodeBlock } from '@udecode/plate-code-block';
 import { ELEMENT_EXCALIDRAW } from '@udecode/plate-excalidraw';
-import { ELEMENT_LINK } from '@udecode/plate-link';
-import { ELEMENT_IMAGE } from '@udecode/plate-media';
+import { ELEMENT_LINK, triggerFloatingLink } from '@udecode/plate-link';
+import { ELEMENT_IMAGE, ELEMENT_MEDIA_EMBED, insertMedia } from '@udecode/plate-media';
+import { toggleIndentList } from '@udecode/plate-indent-list';
 
 const items = [
   {
@@ -107,12 +108,12 @@ const items = [
         description: 'Imagem',
         icon: Icons.image,
       },
-      // {
-      //   value: ELEMENT_MEDIA_EMBED,
-      //   label: 'Incorporar',
-      //   description: 'Incorporar',
-      //   icon: Icons.embed,
-      // },
+      {
+        value: ELEMENT_MEDIA_EMBED,
+        label: 'Incorporar',
+        description: 'Incorporar',
+        icon: Icons.embed,
+      },
       {
         value: ELEMENT_EXCALIDRAW,
         label: 'Excalidraw',
@@ -161,50 +162,46 @@ export function InsertDropdownMenu(props: DropdownMenuProps) {
                   key={type}
                   onSelect={() => {
                     switch (type) {
-                      // case ELEMENT_CODE_BLOCK: {
-                      //   insertEmptyCodeBlock(editor);
-                      //
-                      //   break;
-                      // }
-                      // case ELEMENT_IMAGE: {
-                      //   await insertMedia(editor, { type: ELEMENT_IMAGE });
-                      //
-                      //   break;
-                      // }
-                      // case ELEMENT_MEDIA_EMBED: {
-                      //   await insertMedia(editor, {
-                      //     type: ELEMENT_MEDIA_EMBED,
-                      //   });
-                      //
-                      //   break;
-                      // }
-                      // case 'ul':
-                      // case 'ol': {
-                      //   insertEmptyElement(editor, ELEMENT_PARAGRAPH, {
-                      //     select: true,
-                      //     nextBlock: true,
-                      //   });
-                      //
-                      //   if (settingsStore.get.checkedId(KEY_LIST_STYLE_TYPE)) {
-                      //     toggleIndentList(editor, {
-                      //       listStyleType: type === 'ul' ? 'disc' : 'decimal',
-                      //     });
-                      //   } else if (settingsStore.get.checkedId('list')) {
-                      //     toggleList(editor, { type });
-                      //   }
-                      //
-                      //   break;
-                      // }
-                      // case ELEMENT_TABLE: {
-                      //   insertTable(editor);
-                      //
-                      //   break;
-                      // }
-                      // case ELEMENT_LINK: {
-                      //   triggerFloatingLink(editor, { focused: true });
-                      //
-                      //   break;
-                      // }
+                      case ELEMENT_CODE_BLOCK: {
+                        insertEmptyCodeBlock(editor);
+
+                        break;
+                      }
+                      case ELEMENT_IMAGE: {
+                        insertMedia(editor, { type: ELEMENT_IMAGE });
+
+                        break;
+                      }
+                      case ELEMENT_MEDIA_EMBED: {
+                        insertMedia(editor, {
+                          type: ELEMENT_MEDIA_EMBED,
+                        });
+
+                        break;
+                      }
+                      case 'ul':
+                      case 'ol': {
+                        insertEmptyElement(editor, ELEMENT_PARAGRAPH, {
+                          select: true,
+                          nextBlock: true,
+                        });
+
+                        toggleIndentList(editor, {
+                          listStyleType: type === 'ul' ? 'disc' : 'decimal',
+                        });
+
+                        break;
+                      }
+                      case ELEMENT_TABLE: {
+                        insertTable(editor);
+
+                        break;
+                      }
+                      case ELEMENT_LINK: {
+                        triggerFloatingLink(editor, { focused: true });
+
+                        break;
+                      }
                       default: {
                         insertEmptyElement(editor, type, {
                           nextBlock: true,

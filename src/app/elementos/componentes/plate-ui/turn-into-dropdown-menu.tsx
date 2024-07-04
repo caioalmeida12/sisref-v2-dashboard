@@ -30,47 +30,47 @@ import { ToolbarButton } from './toolbar';
 
 const items = [
   {
-    description: 'Paragraph',
+    description: 'Parágrafo',
     icon: Icons.paragraph,
-    label: 'Paragraph',
+    label: 'Parágrafo',
     value: ELEMENT_PARAGRAPH,
   },
   {
-    description: 'Heading 1',
+    description: 'Título 1',
     icon: Icons.h1,
-    label: 'Heading 1',
+    label: 'Título 1',
     value: ELEMENT_H1,
   },
   {
-    description: 'Heading 2',
+    description: 'Título 2',
     icon: Icons.h2,
-    label: 'Heading 2',
+    label: 'Título 2',
     value: ELEMENT_H2,
   },
   {
-    description: 'Heading 3',
+    description: 'Título 3',
     icon: Icons.h3,
-    label: 'Heading 3',
+    label: 'Título 3',
     value: ELEMENT_H3,
   },
   {
-    description: 'Quote (ctrl+⇧+.)',
+    description: 'Citação (ctrl+⇧+.)',
     icon: Icons.blockquote,
-    label: 'Quote',
+    label: 'Citação',
     value: ELEMENT_BLOCKQUOTE,
   },
-  // {
-  //   value: 'ul',
-  //   label: 'Bulleted list',
-  //   description: 'Bulleted list',
-  //   icon: Icons.ul,
-  // },
-  // {
-  //   value: 'ol',
-  //   label: 'Numbered list',
-  //   description: 'Numbered list',
-  //   icon: Icons.ol,
-  // },
+  {
+    value: 'ul',
+    label: 'Lista com marcadores',
+    description: 'Lista com marcadores',
+    icon: Icons.ul,
+  },
+  {
+    value: 'ol',
+    label: 'Lista numerada',
+    description: 'Lista numerada',
+    icon: Icons.ol,
+  },
 ];
 
 const defaultItem = items.find((item) => item.value === ELEMENT_PARAGRAPH)!;
@@ -111,7 +111,7 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
           className="lg:min-w-[130px]"
           isDropdown
           pressed={openState.open}
-          tooltip="Turn into"
+          tooltip="Transformar em"
         >
           <SelectedItemIcon className="size-5 lg:hidden" />
           <span className="max-lg:hidden">{selectedItemLabel}</span>
@@ -119,7 +119,7 @@ export function TurnIntoDropdownMenu(props: DropdownMenuProps) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="start" className="min-w-0">
-        <DropdownMenuLabel>Turn into</DropdownMenuLabel>
+        <DropdownMenuLabel>Transformar em</DropdownMenuLabel>
 
         <DropdownMenuRadioGroup
           className="flex flex-col gap-0.5"

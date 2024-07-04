@@ -39,7 +39,7 @@ export const withPlaceholders = (components: any) =>
     {
       hideOnBlur: true,
       key: ELEMENT_PARAGRAPH,
-      placeholder: 'Type a paragraph',
+      placeholder: 'Escreva um parágrafo',
       query: {
         maxLevel: 1,
       },
@@ -47,6 +47,6 @@ export const withPlaceholders = (components: any) =>
     {
       hideOnBlur: false,
       key: ELEMENT_H1,
-      placeholder: 'Untitled',
+      placeholder: 'Sem título',
     },
   ]);
