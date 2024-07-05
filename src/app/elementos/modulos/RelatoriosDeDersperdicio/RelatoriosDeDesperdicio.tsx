@@ -5,6 +5,7 @@ import { CabecalhoDeSecao } from "../../basicos/CabecalhoDeSecao";
 import { Secao } from "../../basicos/Secao";
 import { RelatorioDeDesperdicio } from "../../componentes/RelatorioDeDespericio/RelatorioDeDesperdicio";
 import { SliderServerSide } from "../../componentes/SliderServerSide";
+import { AdicionarRelatorio } from "./AdicionarRelatorio";
 
 export const RelatoriosDeDesperdicio = ({ searchParams }: { searchParams: URLSearchParams }) => {
     let data = searchParams.get("dataRelatorio") || new Date().toISOString().split("T")[0];
@@ -22,7 +23,7 @@ export const RelatoriosDeDesperdicio = ({ searchParams }: { searchParams: URLSea
         <Secao className="flex flex-col gap-y-4">
             <CabecalhoDeSecao titulo="Relatórios de desperdício" />
             <RelatorioDeDesperdicio variante="card" data={data} />
-            <Botao variante="adicionar" texto="Adicionar relatório" />
+            <AdicionarRelatorio />
             <SliderServerSide texto={DatasHelper.converterParaFormatoBrasileiro(data)} onNext={handleNext} onPrevious={handlePrevious} />
         </Secao>
     );

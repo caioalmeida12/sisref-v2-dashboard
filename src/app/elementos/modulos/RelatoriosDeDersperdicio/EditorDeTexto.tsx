@@ -25,20 +25,13 @@ const toolbarOptions = [
   ['clean']                                         // remove formatting button
 ];
 
-export default function EditorDeTexto() {
-  // valor - string html do editor
-  const [valor, setValor] = useState('');
+export default function EditorDeTexto({setHtml}: {setHtml: React.Dispatch<React.SetStateAction<string>>}){
   // importação dinâmica do react-quill para evitar erro de 'document is not defined'
   const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false, }), []);
 
-  useEffect(() => {
-    console.log(valor);
-  }, [valor])
-
   return <ReactQuill
     theme="snow"
-    value={valor}
-    onChange={setValor}
+    onChange={setHtml}
     placeholder='Escreva aqui...'
     modules={{
       toolbar: toolbarOptions
