@@ -10,9 +10,9 @@ const toolbarOptions = [
   ['link', 'image', 'video'],
 
   [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-  [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
-  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+  [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
+  [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+  [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
   [{ 'direction': 'rtl' }],                         // text direction
 
   [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
@@ -25,11 +25,12 @@ const toolbarOptions = [
   ['clean']                                         // remove formatting button
 ];
 
-export default function EditorDeTexto({setHtml}: {setHtml: React.Dispatch<React.SetStateAction<string>>}){
+export default function EditorDeTexto({ setHtml }: { setHtml: React.Dispatch<React.SetStateAction<string>> }) {
   // importação dinâmica do react-quill para evitar erro de 'document is not defined'
   const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false, }), []);
 
   return <ReactQuill
+    className='flex-grow'
     theme="snow"
     onChange={setHtml}
     placeholder='Escreva aqui...'
