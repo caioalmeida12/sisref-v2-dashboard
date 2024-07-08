@@ -41,9 +41,6 @@ jobs:
           npm install eslint@8.57.0
           npm install @microsoft/eslint-formatter-sarif@2.1.7
 
-      - name: Install Lint-ci
-        run: npm install lint-ci
-
       - name: Run ESLint
         run: npm run lint-ci
         continue-on-error: true 
