@@ -6,8 +6,6 @@ import { InformacoesDeEstudante } from "./InformacoesDeEstudante";
 import { fetchRefeicoesAutorizadas } from "@/app/actions/fetchRefeicoesAutorizadas";
 import { IFetchRefeicoesAutorizadas } from "../interfaces/IFetchRefeicoesAutorizadas";
 
-
-
 const pegarOsDiasDaSemanaAutorizados = (refeicoesAutorizadas: IFetchRefeicoesAutorizadas[], idDaRefeicao: number) => {
     const diasQueSaoAutorizados: string[] = [];
     refeicoesAutorizadas
@@ -49,10 +47,10 @@ export const RefeicoesAutorizadas = async ({ forcarExibicao = false }: { forcarE
 
     return (
         <>
-            <div className={`${true ? "block" : "hidden"}`}>
+            <div className={`${forcarExibicao ? "block lg:hidden" : "hidden"}`}>
                 <InformacoesDeEstudante versaoMobileCompleta />
             </div>
-            <Secao className={`${true ? "flex" : "hidden"} flex-col gap-y-4 col-left`}>
+            <Secao className={`${forcarExibicao ? "flex" : "hidden"} lg:flex flex-col gap-y-4 col-left`}>
                 <CabecalhoDeSecao titulo="Refeições autorizadas" />
                 {
                     Object.values(refeicoes).map((refeicao, index) => (
