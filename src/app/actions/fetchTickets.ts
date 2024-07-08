@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers"
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction"
-import { IRefeicaoDoHistorico } from "../elementos/interfaces/IRefeicaoDoDoHistorico"
+import { IRefeicaoDoHistorico } from "../elementos/interfaces/IRefeicaoDoHistorico"
 
 const urlPorTipoDeTicket = {
     "a-ser-utilizado": "/to-use",

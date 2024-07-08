@@ -3,7 +3,7 @@ import { HorarioDaRefeicao } from "@elementos/basicos/HorarioDaRefeicao";
 import { NomeDaRefeicao } from "@elementos/basicos/NomeDaRefeicao";
 import { Secao } from "@elementos/basicos/Secao";
 import { StatusDaRefeicao } from "@elementos/basicos/StatusDaRefeicao";
-import { IRefeicaoDoHistorico } from "../interfaces/IRefeicaoDoDoHistorico";
+import { IRefeicaoDoHistorico } from "../interfaces/IRefeicaoDoHistorico";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import Skeleton from "react-loading-skeleton";
 
