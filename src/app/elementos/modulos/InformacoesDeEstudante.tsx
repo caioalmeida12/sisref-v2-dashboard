@@ -60,7 +60,7 @@ const Desktop = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
         <Secao className="hidden lg:flex lg:flex-col lg:gap-y-4 col-left">
             <CabecalhoDeSecao titulo="Informações pessoais" />
             <CampoDeSecao titulo="Nome" complemento={stringParaCamelCase(estudante.name)} variante="vertical" />
-            <CampoDeSecao titulo="Matrícula" complemento="20211035000020" variante="vertical" />
+            <CampoDeSecao titulo="Matrícula" complemento={estudante.mat} variante="vertical" />
             <div className="flex gap-x-4 justify-between">
                 <CampoDeSecao titulo="Código" complemento={String(estudante.id)} variante='vertical-com-badge' corDaBadge='bg-azul-400' />
                 <CampoDeSecao titulo="Validade" complemento={DatasHelper.converterParaFormatoBrasileiro(estudante.dateValid)} variante='vertical-com-badge' corDaBadge='bg-verde-300' />
