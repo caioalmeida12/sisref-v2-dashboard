@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "bun eslint .src/ --fix",
+    "lint-ci": "npx eslint .src/ --format @microsoft/eslint-formatter-sarif > eslint-results.sarif"
   },
   "dependencies": {
     "@ariakit/react": "^0.4.7",
