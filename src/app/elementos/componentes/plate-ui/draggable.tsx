@@ -78,7 +78,9 @@ export interface DraggableProps
 }
 
 const DragHandle = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const editor = useEditorRef();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const element = useElement<TElement>();
 
   return (

@@ -15,6 +15,7 @@ import {
 } from './inline-combobox';
 
 export const EmojiInputElement = withRef<typeof PlateElement>(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ className, ...props }, ref) => {
     const { children, editor, element } = props;
     const [value, setValue] = useState('');

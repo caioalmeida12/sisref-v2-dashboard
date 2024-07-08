@@ -40,6 +40,7 @@ const items = [
   },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function AlignDropdownMenu({ children, ...props }: DropdownMenuProps) {
   const state = useAlignDropdownMenuState();
   const { radioGroupProps } = useAlignDropdownMenu(state);
