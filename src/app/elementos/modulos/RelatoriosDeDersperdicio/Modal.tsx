@@ -101,6 +101,7 @@ const Modal = () => {
                 <Botao variante='adicionar' texto='Salvar' onClick={handleSalvar} />
                 <Dialog.Close asChild>
                     <button
+                        name='Fechar'
                         className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-2 right-2 inline-flex p-[0.25em] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                         aria-label="Fechar"
                     >
