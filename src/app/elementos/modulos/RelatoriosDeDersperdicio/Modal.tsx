@@ -17,6 +17,7 @@ const Modal = () => {
 
     const [html, setHtml] = useState('');
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [salvando, setSalvando] = useState(false);
 
     const mensagemDeResposta = useRef<HTMLDivElement>(null);
@@ -86,7 +87,7 @@ const Modal = () => {
                         <Datepicker
                             primaryColor='red'
                             value={data}
-                            onChange={(novaData, e) => handleDataChange(novaData)}
+                            onChange={(novaData) => handleDataChange(novaData)}
                             asSingle={true}
                             useRange={false}
                             placeholder='AAAA-MM-DD'

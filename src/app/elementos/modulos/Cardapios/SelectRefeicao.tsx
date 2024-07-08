@@ -32,6 +32,8 @@ const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
     }
 );
 
+SelectItem.displayName = 'SelectItem';
+
 const SelectRefeicao = ({ refeicoes }: { refeicoes: IRefeicao["refeicao"][] }) => (
     <Select.Root>
         <Select.Trigger

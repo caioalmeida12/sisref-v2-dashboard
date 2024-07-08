@@ -3,7 +3,7 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCodigoHTTP"
-import { IRefeicao["refeicao"] } from "../elementos/interfaces/IRefeicao["refeicao"]"
+import { IRefeicao } from "../elementos/interfaces/IRefeicao"
 
 // [ 'Erro 401' ]
 const respostaFoiErroDeAutenticacao = (resposta: any) => resposta[0] === 'Erro 401'

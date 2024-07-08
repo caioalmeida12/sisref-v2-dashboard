@@ -1,7 +1,7 @@
 "use client"
 
 import dynamic from 'next/dynamic';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import 'react-quill/dist/quill.snow.css';
 
 const toolbarOptions = [

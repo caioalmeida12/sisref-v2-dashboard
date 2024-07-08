@@ -48,7 +48,7 @@ export const TicketsPorDia = ({ tickets, ...rest }: TicketsPorDiaProps & Detaile
             },
         })
 
-    }, [])
+    }, [tickets])
 
     return (
         <div {...rest}>

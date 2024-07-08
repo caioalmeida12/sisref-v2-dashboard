@@ -22,3 +22,5 @@ export const Botao = forwardRef<HTMLButtonElement, BotaoProps>(({ texto, variant
         </button>
     );
 });
+
+Botao.displayName = 'Botao';

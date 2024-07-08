@@ -1,6 +1,5 @@
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import React from "react";
-import { Botao } from "../../basicos/Botao";
 import { CabecalhoDeSecao } from "../../basicos/CabecalhoDeSecao";
 import { Secao } from "../../basicos/Secao";
 import { RelatorioDeDesperdicio } from "../../componentes/RelatorioDeDespericio/RelatorioDeDesperdicio";

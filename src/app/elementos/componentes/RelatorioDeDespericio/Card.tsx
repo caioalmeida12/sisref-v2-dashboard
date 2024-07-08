@@ -10,7 +10,7 @@ export default function Card({ children, data }: { children: React.ReactNode, da
     useLayoutEffect(() => {
         const modal = document.querySelector(`#modal-${data}`) as HTMLDialogElement;
         modal.close();
-    }, [])
+    }, [data])
 
     const handleClick = () => {
         const modal = document.querySelector(`#modal-${data}`) as HTMLDialogElement;
