@@ -8,7 +8,7 @@ interface IconeDropdownProps extends HTMLAttributes<HTMLElement> {
 
 const SemCirculo = ({ ...rest }) =>
     <CaretDownIcon
-        className="relative top-[1px] transition-transform ease-in-out duration-[100ms] group-data-[state=open]:-rotate-180 stroke-branco-400 stroke-1"
+        className="relative top-[1px] transition-transform ease-in-out group-data-[state=open]:-rotate-180 stroke-branco-400 stroke-1"
         aria-hidden
         {...rest} />
 
