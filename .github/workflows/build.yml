@@ -31,8 +31,9 @@ jobs:
               run: npm run build
 
             - name: Start
-              run: npm start
-              continue-on-error: true
+              run: |
+                nohup npm start &
+                sleep 10
 
             - name: Fetch the URL
               run: curl http://localhost:3000
