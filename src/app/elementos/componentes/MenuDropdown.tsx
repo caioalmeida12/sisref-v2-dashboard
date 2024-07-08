@@ -1,9 +1,8 @@
 "use client"
 
-import React from 'react'
-
-import { Dropdown, Menu as BaseMenu, MenuButton, MenuItem } from '@mui/base';
-import { IconeDropdown } from '@elementos/basicos/icones/IconeDropdown'
+import React from 'react';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { IconeDropdown } from '@elementos/basicos/icones/IconeDropdown';
 import { INavItemComDropdown } from '../interfaces/INavbarProps';
 
 export const MenuDropdown = ({ titulo, itens }: INavItemComDropdown) => {
@@ -15,16 +14,18 @@ export const MenuDropdown = ({ titulo, itens }: INavItemComDropdown) => {
 
     return (
         <div className="cursor-pointer">
-            <Dropdown>
-                <MenuButton className="flex gap-x-2 items-center">{titulo}<IconeDropdown /></MenuButton>
-                <BaseMenu className="bg-verde-400 rounded z-20 p-4 py-2 font-medium text-branco-400">
-                    {
-                        itens.map((item, index) => (
-                            <MenuItem key={index} onClick={createHandleMenuClick(item.titulo)}>{item.titulo}</MenuItem>
-                        ))
-                    }
-                </BaseMenu>
-            </Dropdown>
+            <DropdownMenu.Root>
+                <DropdownMenu.Trigger className="flex gap-x-2 items-center">{titulo}<IconeDropdown /></DropdownMenu.Trigger>
+                <DropdownMenu.Portal>
+                    <DropdownMenu.Content className="bg-verde-400 rounded z-20 p-4 py-2 font-medium text-branco-400">
+                        {
+                            itens.map((item, index) => (
+                                <DropdownMenu.Item key={index} onSelect={createHandleMenuClick(item.titulo)}>{item.titulo}</DropdownMenu.Item>
+                            ))
+                        }
+                    </DropdownMenu.Content>
+                </DropdownMenu.Portal>
+            </DropdownMenu.Root>
         </div>
-    )
-}
+    );
+};

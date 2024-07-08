@@ -23,7 +23,8 @@
       "@/components/*": ["./src/app/elementos/componentes/*"],
       "@elementos/*": ["./src/app/elementos/*"],
       "@lib/*": ["./src/app/lib/*"],
-    }
+    },
+    "outDir": "./dist",
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(paginas)/(estudante)/layout.tsx"],
   "exclude": ["node_modules"]
