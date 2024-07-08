@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Secao } from '../basicos/Secao'
 import { CabecalhoDeSecao } from '../basicos/CabecalhoDeSecao'
 import { fetchTickets } from '@/app/actions/fetchTickets'
-import { IRefeicaoDoHistorico } from '../interfaces/IRefeicaoDoDoHistorico'
+import { IRefeicaoDoHistorico } from '../interfaces/IRefeicaoDoHistorico'
 import { RefeicaoDoHistorico, RefeicaoDoHistoricoLoading } from '../componentes/RefeicaoDoHistorico'
 
 const QUANTOS_TICKETS_MOSTRAR = 10
