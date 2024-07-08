@@ -49,7 +49,7 @@ export const TicketsPorRefeicao = ({ tickets, refeicao, ...rest }: TicketsPorRef
             },
         })
 
-    }, [])
+    }, [tickets, refeicao])
 
     return (
         <div {...rest}>

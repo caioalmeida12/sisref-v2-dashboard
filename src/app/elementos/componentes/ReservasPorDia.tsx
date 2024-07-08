@@ -71,7 +71,7 @@ export default function ReservasPorDia({ textoDoCabecalho, data, refeicoes, ...r
                 },
             }
         })
-    }, [textoDoCabecalho, refeicoes])
+    }, [textoDoCabecalho, refeicoes, data])
 
     return (
         <div {...rest}>
