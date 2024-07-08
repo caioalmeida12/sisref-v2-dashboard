@@ -1,14 +1,12 @@
 "use client"
 
-import React from 'react';
-
+import React, { Suspense } from 'react';
 import Image from 'next/image';
 import sisrefLogo from '@/app/elementos/assets/img/sisrefLogo.png';
 import { Botao } from '../basicos/Botao';
 import { fetchLoginAPI } from '@/app/actions/fetchLoginApi';
 import { useSearchParams } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
-
 import * as Form from '@radix-ui/react-form';
 
 const MensagemErro = ({ texto }: { texto: string | null }) => {
@@ -31,9 +29,21 @@ const MensagemCarregando = () => {
     )
 }
 
-export const Login = () => {
-    const params = useSearchParams()
+const LoginContent = () => {
+    const params = useSearchParams();
 
+    return (
+        <>
+            <MensagemErro texto={params.get("erro")} />
+            <MensagemCarregando />
+            <Form.Submit asChild>
+                <Botao variante='adicionar' texto='Entrar' type='submit' />
+            </Form.Submit>
+        </>
+    );
+};
+
+export const Login = () => {
     return (
         <main className='flex flex-col items-center gap-y-8 flex-grow h-full'>
             <Image src={sisrefLogo} alt="Sisref" />
@@ -50,11 +60,9 @@ export const Login = () => {
                     <Form.Control type='checkbox' className='rounded border-2 border-cinza-600' />
                     <Form.Label>Lembre-se de mim</Form.Label>
                 </Form.Field>
-                <MensagemErro texto={params.get("erro")} />
-                <MensagemCarregando />
-                <Form.Submit asChild>
-                    <Botao variante='adicionar' texto='Entrar' type='submit' />
-                </Form.Submit>
+                <Suspense fallback={<div>Carregando...</div>}>
+                    <LoginContent />
+                </Suspense>
             </Form.Root>
        </main>
     );
