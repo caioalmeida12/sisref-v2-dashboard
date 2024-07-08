@@ -2,7 +2,6 @@ import { Footer } from "@/app/elementos/componentes/Footer";
 import EstatisticasDeHoje from "@/app/elementos/modulos/EstatisticasDeHoje";
 import { InformacoesDeEstudante } from "@/app/elementos/modulos/InformacoesDeEstudante";
 import { Navbar } from "@/app/elementos/modulos/Navbar";
-import { EditorDeTexto } from "@/app/elementos/modulos/RelatoriosDeDersperdicio/EditorDeTexto";
 import React from "react";
 
 interface NutricionistaLayoutProps {
