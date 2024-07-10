@@ -5,7 +5,8 @@ import { redirect } from "next/navigation"
 import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCodigoHTTP"
 import { IFetchRefeicoesAutorizadas } from "../elementos/interfaces/IFetchRefeicoesAutorizadas"
 
-const respostaFoiErroDeAutenticacao = (resposta: unknown): resposta is { message: string } => (resposta as { message: string }).message !== undefined
+// [ 'Erro 401' ]
+const respostaFoiErroDeAutenticacao = (resposta: any) => resposta[0] === 'Erro 401'
 
 /**
  * Realiza uma chamada assíncrona para a API de refeições autorizadas.
