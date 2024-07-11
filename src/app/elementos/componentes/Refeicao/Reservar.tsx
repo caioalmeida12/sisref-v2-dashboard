@@ -1,43 +1,25 @@
 "use client"
 
-import { useRef, useState, useCallback } from "react"
+import React, { useCallback } from "react"
 import { Botao } from "../../basicos/Botao"
 import { reservarRefeicao } from "@/app/actions/reservarRefeicao"
-import { revalidatePath } from "next/cache"
+import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta"
 
 export const Reservar = ({ meal_id, date }: { meal_id?: number, date?: string }) => {
-    const mensagemDeResposta = useRef<HTMLDivElement>(null);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [reservando, setReservando] = useState(false);
+    const { carregando, mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
 
     const handleReservar = useCallback(async () => {
-        setReservando(true);
-
-        mensagemDeResposta.current?.classList.remove('hidden', 'text-vermelho-400', 'text-verde-400');
-        mensagemDeResposta.current?.classList.add('text-azul-400');
-        mensagemDeResposta.current!.textContent = 'Reservando...';
+        atualizarMensagem({mensagem: 'Reservando...'});
 
         const resposta = await reservarRefeicao({ meal_id, date })
 
-        if (resposta.sucesso) {
-            mensagemDeResposta.current!.textContent = resposta.mensagem;
-            mensagemDeResposta.current!.classList.remove('text-vermelho-400', 'text-azul-400');
-            mensagemDeResposta.current!.classList.add('text-verde-400');
-
-            revalidatePath("/")
-        } else {
-            mensagemDeResposta.current!.textContent = resposta.mensagem;
-            mensagemDeResposta.current!.classList.remove('text-verde-400', 'text-azul-400');
-            mensagemDeResposta.current!.classList.add('text-vermelho-400');
-        }
-
-        setReservando(false);
-    }, [meal_id, date, mensagemDeResposta]);
+        atualizarMensagem(resposta);
+    }, [meal_id, date, atualizarMensagem]);
 
     return (
         <>
-            <div ref={mensagemDeResposta} className="hidden"></div>
-            <Botao variante="adicionar" texto="Reservar" onClick={handleReservar} />
+            <div ref={mensagemDeRespostaRef} className="hidden"></div>
+            <Botao variante="adicionar" texto="Reservar" onClick={handleReservar} disabled={carregando} />
         </>
     )
 }
