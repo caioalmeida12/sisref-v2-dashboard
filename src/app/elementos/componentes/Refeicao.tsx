@@ -6,6 +6,7 @@ import { Secao } from "@elementos/basicos/Secao";
 import { StatusDaRefeicao } from "@elementos/basicos/StatusDaRefeicao";
 import { IRefeicao } from "../interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { pegarStatusDaRefeicao } from "@/app/lib/elementos/Refeicao";
 
 const varianteNomeRefeicaoPorTurno = {
     1: "manha",
@@ -32,29 +33,8 @@ const descricaoCardapioParaArrayStrings = (descricao: string) => {
     return descricao.split(/[;+]/).filter(naoVazio => naoVazio)
 }
 
-/**
- * Retorna o status da refeição com base nas props fornecidas.
- * @param props - As props da refeição.
- * @returns O status da refeição em string.
- */
-const textoStatusRefeicaoPorProps = (props: IRefeicao): keyof typeof elementoStatusRefeicaoPorTextoStatusRefeicao => {
-    if (!(props.cardapio) || !(props.refeicao)) return "encerrado";
-    if (!(props.cardapio.permission)) return "bloqueado";
-    if (props.cardapio.canceled_by_student) return "cancelado";
-    if (props.cardapio.agendado) return "reservado";
-
-    const dataHoraDaRefeicao = DatasHelper.compilarDataHora(props.cardapio.date, props.refeicao.timeStart);
-    const diferencaEmHoras = DatasHelper.getDiferencaEmHoras(dataHoraDaRefeicao);
-
-    if (diferencaEmHoras < 0) return "encerrado";
-    if (diferencaEmHoras > props.refeicao?.qtdTimeReservationStart) return "indisponivel";
-    if (diferencaEmHoras < props.refeicao?.qtdTimeReservationEnd) return "indisponivel";
-
-    return "disponivel";
-}
-
 const RefeicaoCurta = (props: IRefeicao) => {
-    const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[textoStatusRefeicaoPorProps(props)];
+    const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[pegarStatusDaRefeicao(props)];
 
     return (
         <Secao>
@@ -69,8 +49,8 @@ const RefeicaoCurta = (props: IRefeicao) => {
 const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
     if (!props.refeicao || !props.cardapio) return <RefeicaoCurta turno={props.turno} />
 
-    const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[textoStatusRefeicaoPorProps(props)];
-    const textoStatus = textoStatusRefeicaoPorProps(props);
+    const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[pegarStatusDaRefeicao(props)];
+    const textoStatus = pegarStatusDaRefeicao(props);
 
     return (
         <Secao className="flex flex-col gap-y-2">
@@ -98,16 +78,14 @@ const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
                     </React.Fragment>
                 ))}
             </p>
-            <div className="mt-auto">
-                {comBotao && textoStatus === "disponivel" && <Botao variante="adicionar" texto="Reservar" />}
-                {comBotao && textoStatus === "reservado" && <Botao variante="remover" texto="Cancelar" />}
-            </div>
+                {comBotao && textoStatus === "disponivel" && <Botao variante="adicionar" texto="Reservar" className="mt-auto"/>}
+                {comBotao && textoStatus === "reservado" && <Botao variante="remover" texto="Cancelar" className="mt-auto"/>}
         </Secao>
     )
 }
 
 export const Refeicao = (props: IRefeicao) => {
-    const textoStatus = textoStatusRefeicaoPorProps(props);
+    const textoStatus = pegarStatusDaRefeicao(props);
     const comBotao = textoStatus === "disponivel" || textoStatus === "reservado";
     return RefeicaoLonga(props, comBotao);
 }
