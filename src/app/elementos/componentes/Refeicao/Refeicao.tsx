@@ -8,6 +8,7 @@ import { IRefeicao } from "../../interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { pegarStatusDaRefeicao } from "@/app/lib/elementos/Refeicao";
 import { Reservar } from "./Reservar";
+import { Cancelar } from "./Cancelar";
 
 const varianteNomeRefeicaoPorTurno = {
     1: "manha",
@@ -80,7 +81,7 @@ const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
                 ))}
             </p>
                 {comBotao && textoStatus === "disponivel" && <Reservar meal_id={props.refeicao.id} date={props.cardapio.date}/>}
-                {comBotao && textoStatus === "reservado" && <Botao variante="remover" texto="Cancelar" className="mt-auto"/>}
+                {comBotao && textoStatus === "reservado" && <Cancelar meal_id={props.refeicao.id} date={props.cardapio.date}/>}
         </Secao>
     )
 }
