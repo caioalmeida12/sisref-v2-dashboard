@@ -1,13 +1,13 @@
 "use client"
 
 import { useRef, useState, useCallback } from "react"
-import { IRefeicao } from "../../interfaces/IRefeicao"
 import { Botao } from "../../basicos/Botao"
 import { reservarRefeicao } from "@/app/actions/reservarRefeicao"
 import { revalidatePath } from "next/cache"
 
 export const Reservar = ({ meal_id, date }: { meal_id?: number, date?: string }) => {
     const mensagemDeResposta = useRef<HTMLDivElement>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [reservando, setReservando] = useState(false);
 
     const handleReservar = useCallback(async () => {

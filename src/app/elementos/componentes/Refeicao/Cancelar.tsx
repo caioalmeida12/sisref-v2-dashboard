@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache"
 
 export const Cancelar = ({ meal_id, date }: { meal_id?: number, date?: string }) => {
     const mensagemDeResposta = useRef<HTMLDivElement>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [cancelando, setCancelando] = useState(false);
 
     const handleCancelar = useCallback(async () => {
