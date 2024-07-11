@@ -16,11 +16,11 @@ const varianteNomeRefeicaoPorTurno = {
 } as const;
 
 const elementoStatusRefeicaoPorTextoStatusRefeicao = {
-    "a-ser-utilizado": <StatusDaRefeicao cor="azul-400" icone="circulo-check" texto="A ser utilizado" />,
-    "nao-utilizado": <StatusDaRefeicao cor="amarelo-200" icone="circulo-x" texto="Não utilizado" />,
-    "justificado": <StatusDaRefeicao cor="azul-400" icone="circulo-check" texto="Justificado" />,
-    "cancelado": <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" />,
-    "utilizado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Utilizado" />,
+    "a-ser-utilizado": <StatusDaRefeicao cor="azul-400" icone="circulo-check" texto="A ser utilizado" textoTooltip="Você reservou esta refeição e ainda utilizou o ticket."/>,
+    "nao-utilizado": <StatusDaRefeicao cor="amarelo-200" icone="circulo-x" texto="Não utilizado" textoTooltip="Você reservou esta refeição e não utilizou o ticket." />,
+    "justificado": <StatusDaRefeicao cor="azul-400" icone="circulo-check" texto="Justificado" textoTooltip="Você justificou sua ausência a esta refeição." />,
+    "cancelado": <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" textoTooltip="Você cancelou esta reserva."/>,
+    "utilizado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Utilizado" textoTooltip="Você reservou e utilizou este ticket."/>,
 } as const;
 
 /**

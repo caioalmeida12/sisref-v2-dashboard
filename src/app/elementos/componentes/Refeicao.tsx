@@ -16,12 +16,12 @@ const varianteNomeRefeicaoPorTurno = {
 } as const;
 
 const elementoStatusRefeicaoPorTextoStatusRefeicao = {
-    "disponivel": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Disponível" />,
-    "encerrado": <StatusDaRefeicao cor="cinza-600" icone="circulo-x" texto="Encerrado" />,
-    "bloqueado": <StatusDaRefeicao cor="amarelo-200" icone="cadeado" texto="Bloqueado" />,
-    "cancelado": <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" />,
-    "reservado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Reservado" />,
-    "indisponivel": <StatusDaRefeicao cor="cinza-600" icone="relogio-x" texto="Indisponível" />
+    "disponivel": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Disponível" textoTooltip="Você pode reservar esta refeição." />,
+    "encerrado": <StatusDaRefeicao cor="cinza-600" icone="circulo-x" texto="Encerrado" textoTooltip="O horário de reservas já foi ultrapassado."/>,
+    "bloqueado": <StatusDaRefeicao cor="amarelo-200" icone="cadeado" texto="Bloqueado" textoTooltip="Esta refeição não está liberada para você."/>,
+    "cancelado": <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" textoTooltip="Você cancelou esta refeição." />,
+    "reservado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Reservado" textoTooltip="Você reservou esta refeição."/>,
+    "indisponivel": <StatusDaRefeicao cor="cinza-600" icone="relogio-x" texto="Indisponível" textoTooltip="Ainda é muito cedo para reservar esta refeição."/>
 } as const;
 
 /**

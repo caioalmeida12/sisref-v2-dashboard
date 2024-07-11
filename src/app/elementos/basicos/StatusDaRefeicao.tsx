@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import * as Tooltip from '@radix-ui/react-tooltip';
 
 import { IIconeStatusProps } from "@elementos/interfaces/IIconeStatusProps";
 import { IconeStatus } from "./icones/IconeStatus";
@@ -7,6 +8,7 @@ interface StatusDaRefeicaoProps {
     texto: string;
     cor: keyof typeof classNamePorCor;
     icone: IIconeStatusProps["variante"];
+    textoTooltip?: string;
 }
 
 const classNamePorCor = {
@@ -32,11 +34,28 @@ const classNamePorCor = {
     },
 } as const;
 
-export const StatusDaRefeicao = ({ texto, cor, icone }: StatusDaRefeicaoProps) => {
+export const StatusDaRefeicao = ({ texto, cor, icone, textoTooltip }: StatusDaRefeicaoProps) => {
     return (
-        <div className="flex items-center gap-x-2 leading-normal">
-            <p className={`${classNamePorCor[cor].text} w-min`}>{texto}</p>
-            <IconeStatus fill={classNamePorCor[cor].fill || "fill-cinza-600"} variante={icone} />
-        </div>
+        <Tooltip.Provider delayDuration={100}>
+            <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                    <div className="flex items-center gap-x-2 leading-normal">
+                        <p className={`${classNamePorCor[cor].text} w-min`}>{texto}</p>
+                        <IconeStatus fill={classNamePorCor[cor].fill || "fill-cinza-600"} variante={icone} />
+                    </div>
+                </Tooltip.Trigger>
+                {textoTooltip && (
+                    <Tooltip.Portal>
+                        <Tooltip.Content
+                            className="bg-branco-400 border border-cinza-600 shadow-lg rounded-md p-2 text-sm"
+                            sideOffset={5}
+                        >
+                            {textoTooltip}
+                            <Tooltip.Arrow className="fill-branco-400" />
+                        </Tooltip.Content>
+                    </Tooltip.Portal>
+                )}
+            </Tooltip.Root>
+        </Tooltip.Provider>
     )
 }
