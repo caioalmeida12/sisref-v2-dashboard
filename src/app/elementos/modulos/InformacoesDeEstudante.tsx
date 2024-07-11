@@ -8,7 +8,7 @@ import { IInformacoesDeEstudante } from "../interfaces/IInformacoesDeEstudante"
 import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao"
 import { IInformacoesDoCampus } from "../interfaces/IInformacoesDoCampus"
 import { fetchInformacoesDoCampus } from "@/app/lib/elementos/FetchInformacoesDoCampus"
-import { fetchInformacoesDeEstudante } from "@/app/lib/middlewares/FetchInformacoesDoEstudante"
+import { fetchInformacoesDeEstudante } from "@/app/lib/middlewares/FetchInformacoesDeEstudante"
 import { validarTokenDosCookies } from "@/app/lib/middlewares/ValidarTokenDosCookies"
 import Image from "next/image"
 
