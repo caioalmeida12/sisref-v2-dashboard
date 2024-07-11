@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { validarTokenDosCookies } from "./ValidarTokenDosCookies";
-import { fetchInformacoesDeEstudante } from "./FetchInformacoesDoEstudante";
+import { fetchInformacoesDeEstudante } from "./FetchInformacoesDeEstudante";
 import { cookies } from "next/headers";
 import { redirecionarViaMiddleware } from "./RedirecionarViaMiddleware";
 
