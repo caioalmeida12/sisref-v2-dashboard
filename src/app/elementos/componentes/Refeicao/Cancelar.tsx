@@ -2,7 +2,7 @@
 
 import { useRef, useState, useCallback } from "react"
 import { Botao } from "../../basicos/Botao"
-import { cancelarRefeicao } from "@/app/actions/cancelarRefeicao" // Alterado para importar a função de cancelamento
+import { cancelarRefeicao } from "@/app/actions/cancelarRefeicao"
 import { revalidatePath } from "next/cache"
 
 export const Cancelar = ({ meal_id, date }: { meal_id?: number, date?: string }) => {
