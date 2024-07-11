@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
-import { Refeicao } from "../componentes/Refeicao";
+import { Refeicao } from "../componentes/Refeicao/Refeicao";
 import { Slider } from "../componentes/Slider";
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
 import { IRefeicao } from "../interfaces/IRefeicao";

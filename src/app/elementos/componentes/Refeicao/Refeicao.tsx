@@ -4,9 +4,10 @@ import { HorarioDaRefeicao } from "@elementos/basicos/HorarioDaRefeicao";
 import { NomeDaRefeicao } from "@elementos/basicos/NomeDaRefeicao";
 import { Secao } from "@elementos/basicos/Secao";
 import { StatusDaRefeicao } from "@elementos/basicos/StatusDaRefeicao";
-import { IRefeicao } from "../interfaces/IRefeicao";
+import { IRefeicao } from "../../interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { pegarStatusDaRefeicao } from "@/app/lib/elementos/Refeicao";
+import { Reservar } from "./Reservar";
 
 const varianteNomeRefeicaoPorTurno = {
     1: "manha",
@@ -78,7 +79,7 @@ const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
                     </React.Fragment>
                 ))}
             </p>
-                {comBotao && textoStatus === "disponivel" && <Botao variante="adicionar" texto="Reservar" className="mt-auto"/>}
+                {comBotao && textoStatus === "disponivel" && <Reservar meal_id={props.refeicao.id} date={props.cardapio.date}/>}
                 {comBotao && textoStatus === "reservado" && <Botao variante="remover" texto="Cancelar" className="mt-auto"/>}
         </Secao>
     )
