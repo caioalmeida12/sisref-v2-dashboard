@@ -7,7 +7,7 @@ import { IconeInformacao } from "../basicos/icones/IconeInformacao";
 import { Slider } from "../componentes/Slider"
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
 import { IRefeicao } from "../interfaces/IRefeicao";
-import { Refeicao } from "../componentes/Refeicao";
+import { Refeicao } from "../componentes/Refeicao/Refeicao";
 import ReservasPorDia from "../componentes/ReservasPorDia";
 import { TicketsPorDia } from "../componentes/TicketsPorDia";
 import { TicketsPorRefeicao } from "../componentes/TicketsPorRefeicao";
