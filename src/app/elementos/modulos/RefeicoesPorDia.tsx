@@ -26,6 +26,8 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
             .then((refeicoes) => {
                 refeicoes && setRefeicoes(refeicoes);
 
+                console.log("fetch", data, refeicoes);
+
                 cache[data] = refeicoes;
             })
             .catch((erro) => console.error(erro));
@@ -33,9 +35,9 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
 
     const elementosRefeicao = ([1, 2, 3, 4] as const).map((turno) => (
         <Refeicao key={turno} turno={turno} refeicao={
-            refeicoes.find((refeicao) => refeicao.turno === turno)?.refeicao
+            refeicoes.find((refeicao) => refeicao.refeicao?.id === turno)?.refeicao
         } cardapio={
-            refeicoes.find((refeicao) => refeicao.turno === turno)?.cardapio
+            refeicoes.find((refeicao) => refeicao.refeicao?.id === turno)?.cardapio
         } />
     ));
 
@@ -63,7 +65,7 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
                         <IconeInformacao texto="Nenhuma refeição encontrada para esta data" />
                     )
                 }
-           />
+            />
             {elementosRefeicao}
         </Secao>
     )

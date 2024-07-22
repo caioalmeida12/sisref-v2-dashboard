@@ -3,11 +3,11 @@ import { HorarioDaRefeicao } from "@elementos/basicos/HorarioDaRefeicao";
 import { NomeDaRefeicao } from "@elementos/basicos/NomeDaRefeicao";
 import { Secao } from "@elementos/basicos/Secao";
 import { StatusDaRefeicao } from "@elementos/basicos/StatusDaRefeicao";
-import { IRefeicao } from "../../interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { pegarStatusDaRefeicao } from "@/app/lib/elementos/Refeicao";
 import { Reservar } from "./Reservar";
 import { Cancelar } from "./Cancelar";
+import { IRefeicaoComTurno } from "../../interfaces/IRefeicao";
 
 const varianteNomeRefeicaoPorTurno = {
     1: "manha",
@@ -18,11 +18,11 @@ const varianteNomeRefeicaoPorTurno = {
 
 const elementoStatusRefeicaoPorTextoStatusRefeicao = {
     "disponivel": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Disponível" textoTooltip="Você pode reservar esta refeição." />,
-    "encerrado": <StatusDaRefeicao cor="cinza-600" icone="circulo-x" texto="Encerrado" textoTooltip="O horário de reservas já foi ultrapassado."/>,
-    "bloqueado": <StatusDaRefeicao cor="amarelo-200" icone="cadeado" texto="Bloqueado" textoTooltip="Esta refeição não está liberada para você."/>,
+    "encerrado": <StatusDaRefeicao cor="cinza-600" icone="circulo-x" texto="Encerrado" textoTooltip="O horário de reservas já foi ultrapassado." />,
+    "bloqueado": <StatusDaRefeicao cor="amarelo-200" icone="cadeado" texto="Bloqueado" textoTooltip="Esta refeição não está liberada para você." />,
     "cancelado": <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" textoTooltip="Você cancelou esta refeição." />,
-    "reservado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Reservado" textoTooltip="Você reservou esta refeição."/>,
-    "indisponivel": <StatusDaRefeicao cor="cinza-600" icone="relogio-x" texto="Indisponível" textoTooltip="Ainda é muito cedo para reservar esta refeição."/>
+    "reservado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Reservado" textoTooltip="Você reservou esta refeição." />,
+    "indisponivel": <StatusDaRefeicao cor="cinza-600" icone="relogio-x" texto="Indisponível" textoTooltip="Ainda é muito cedo para reservar esta refeição." />
 } as const;
 
 /**
@@ -34,7 +34,7 @@ const descricaoCardapioParaArrayStrings = (descricao: string) => {
     return descricao.split(/[;+]/).filter(naoVazio => naoVazio)
 }
 
-const RefeicaoCurta = (props: IRefeicao) => {
+const RefeicaoCurta = (props: IRefeicaoComTurno) => {
     const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[pegarStatusDaRefeicao(props)];
 
     return (
@@ -47,7 +47,7 @@ const RefeicaoCurta = (props: IRefeicao) => {
     )
 }
 
-const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
+const RefeicaoLonga = (props: IRefeicaoComTurno, comBotao: boolean) => {
     if (!props.refeicao || !props.cardapio) return <RefeicaoCurta turno={props.turno} />
 
     const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[pegarStatusDaRefeicao(props)];
@@ -79,13 +79,13 @@ const RefeicaoLonga = (props: IRefeicao, comBotao: boolean) => {
                     </React.Fragment>
                 ))}
             </p>
-                {comBotao && textoStatus === "disponivel" && <Reservar meal_id={props.refeicao.id} date={props.cardapio.date}/>}
-                {comBotao && textoStatus === "reservado" && <Cancelar meal_id={props.refeicao.id} date={props.cardapio.date}/>}
+            {comBotao && textoStatus === "disponivel" && <Reservar meal_id={props.refeicao.id} date={props.cardapio.date} />}
+            {comBotao && textoStatus === "reservado" && <Cancelar meal_id={props.refeicao.id} date={props.cardapio.date} />}
         </Secao>
     )
 }
 
-export const Refeicao = (props: IRefeicao) => {
+export const Refeicao = (props: IRefeicaoComTurno) => {
     const textoStatus = pegarStatusDaRefeicao(props);
     const comBotao = textoStatus === "disponivel" || textoStatus === "reservado";
     return RefeicaoLonga(props, comBotao);

@@ -3,6 +3,8 @@
 import { cookies } from "next/headers";
 
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
+import { IRefeicaoSchema } from "../elementos/interfaces/IRefeicao";
+import { format } from "path";
 
 export async function fetchRefeicoesPorDia({ data = new Date().toISOString().split('T')[0] }: { data?: string }) {
     const API_URL = new URL("https://ruapi.cedro.ifce.edu.br/api/all/menus-today")
@@ -22,7 +24,19 @@ export async function fetchRefeicoesPorDia({ data = new Date().toISOString().spl
 
     const array = Array.isArray(refeicoes) ? refeicoes : [refeicoes];
 
-    return array
+    const refeicoesFormatadas = array.map((refeicao: any) => {
+        // mapear o campo "meal" para o campo "refeicao" e utilizar o restante dos campos como "cardapio"
+        const { meal, ...cardapio } = refeicao
+
+        const formatar = IRefeicaoSchema.parse({
+            refeicao: meal,
+            cardapio: cardapio
+        })
+
+        return formatar
+    })
+
+    return refeicoesFormatadas
 }
 
 // const mockRefeicoesComTodosOsStatus: IRefeicao[] = [
@@ -81,7 +95,7 @@ export async function fetchRefeicoesPorDia({ data = new Date().toISOString().spl
 //     //     },
 //     //     cardapio: {
 //     //         agendado: false,
-//     //         date: "2024-07-11", 
+//     //         date: "2024-07-11",
 //     //         description: "Arroz; feijão; carne; salada; suco",
 //     //         permission: true,
 //     //         id: 102,
