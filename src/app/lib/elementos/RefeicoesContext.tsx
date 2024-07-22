@@ -1,5 +1,5 @@
 import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
-import { createContext, useState, ReactNode, useContext, useEffect } from "react";
+import { createContext, useState, ReactNode, useContext } from "react";
 
 interface RefeicoesContextProps {
     refeicoes: IRefeicao[];

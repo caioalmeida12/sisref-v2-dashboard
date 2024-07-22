@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Refeicao } from "../componentes/Refeicao/Refeicao";
 import { Slider } from "../componentes/Slider";
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
@@ -8,12 +8,13 @@ import { IRefeicao } from "../interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { IconeInformacao } from "../basicos/icones/IconeInformacao";
 import { Secao } from "../basicos/Secao";
-import RefeicoesContext, { useRefeicoes } from "@/app/lib/elementos/RefeicoesContext";
+import { useRefeicoes } from "@/app/lib/elementos/RefeicoesContext";
 
 const cache: { [data: string]: IRefeicao[] | undefined } = {};
 
 export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
     const [data, setData] = useState(new Date().toISOString().split('T')[0]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [refetchRefeicoes, setRefetchRefeicoes] = useState(false);
     const { refeicoes, setRefeicoes, recarregar } = useRefeicoes();
 
