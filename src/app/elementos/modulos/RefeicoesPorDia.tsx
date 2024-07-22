@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { Refeicao } from "../componentes/Refeicao/Refeicao";
 import { Slider } from "../componentes/Slider";
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
@@ -8,30 +8,34 @@ import { IRefeicao } from "../interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { IconeInformacao } from "../basicos/icones/IconeInformacao";
 import { Secao } from "../basicos/Secao";
+import RefeicoesContext, { useRefeicoes } from "@/app/lib/elementos/RefeicoesContext";
 
-const cache: { [data: string]: IRefeicao[] } = {};
+const cache: { [data: string]: IRefeicao[] | undefined } = {};
 
 export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
     const [data, setData] = useState(new Date().toISOString().split('T')[0]);
-    const [refeicoes, setRefeicoes] = useState<IRefeicao[]>([]);
+    const [refetchRefeicoes, setRefetchRefeicoes] = useState(false);
+    const { refeicoes, setRefeicoes, recarregar } = useRefeicoes();
 
     // Limitar a distância de dias entre a data atual e a data selecionada
     const dataSelecionada = new Date(data).toISOString().split('T')[0];
     const diferencaDias = DatasHelper.getDiferenciaEmDias(dataSelecionada);
 
     useEffect(() => {
-        if (cache[data]) return setRefeicoes(cache[data]);
+        cache[data] = undefined;
+    }, [recarregar]);
+
+    useEffect(() => {
+        if (cache[data]) return
 
         fetchRefeicoesPorDia({ data })
             .then((refeicoes) => {
                 refeicoes && setRefeicoes(refeicoes);
 
-                console.log("fetch", data, refeicoes);
-
                 cache[data] = refeicoes;
             })
             .catch((erro) => console.error(erro));
-    }, [data])
+    }, [data, refetchRefeicoes, recarregar]);
 
     const elementosRefeicao = ([1, 2, 3, 4] as const).map((turno) => (
         <Refeicao key={turno} turno={turno} refeicao={

@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
 import { IRefeicaoSchema } from "../elementos/interfaces/IRefeicao";
-import { format } from "path";
+
 
 export async function fetchRefeicoesPorDia({ data = new Date().toISOString().split('T')[0] }: { data?: string }) {
     const API_URL = new URL("https://ruapi.cedro.ifce.edu.br/api/all/menus-today")
