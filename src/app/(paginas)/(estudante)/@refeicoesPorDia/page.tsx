@@ -1,4 +1,6 @@
+"use client"
 import { RefeicoesPorDia } from "@/app/elementos/modulos/RefeicoesPorDia";
+import { RefeicoesProvider } from "@/app/lib/elementos/RefeicoesContext";
 import React from "react";
 
 export default function RefeicoesPorDiaParallelPage({
@@ -9,5 +11,9 @@ export default function RefeicoesPorDiaParallelPage({
     params: { slug: string };
     searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-    return <RefeicoesPorDia forcarExibicao={(searchParams?.pagina === 'refeicoesPorDia' || searchParams?.pagina == undefined)} />
+    return (
+        <RefeicoesProvider>
+            <RefeicoesPorDia forcarExibicao={(searchParams?.pagina === 'refeicoesPorDia' || searchParams?.pagina == undefined)} />
+        </RefeicoesProvider>
+    );
 }

@@ -53,6 +53,6 @@ export const pegarStatusDaRefeicao = (props: IRefeicao): StatusDaRefeicao => {
     if (diferencaEmHorasAteOComeco < 0 || diferencaEmHorasAteOFim < 0) return "encerrado";
     if (diferencaEmHorasAteOComeco > props.refeicao?.qtdTimeReservationStart) return "indisponivel";
     if (diferencaEmHorasAteOComeco < props.refeicao?.qtdTimeReservationEnd) return "indisponivel";
-
     return "disponivel";
+
 }

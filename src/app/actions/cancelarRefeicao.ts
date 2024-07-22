@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
 import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCodigoHTTP";
 
-export const cancelarRefeicao = async ({meal_id, date}: {meal_id?: number, date?:string}) => {
+export const cancelarRefeicao = async ({ meal_id, date }: { meal_id?: number, date?: string }) => {
     const auth = cookies().get("authorization")?.value
     if (!auth) return redirecionarViaAction()
 
@@ -21,6 +21,7 @@ export const cancelarRefeicao = async ({meal_id, date}: {meal_id?: number, date?
     }
 
     const json = await resposta.json();
+    console.log(json, resposta, resposta.ok)
 
     if (typeof json.message != "undefined") return { sucesso: false, mensagem: json.message };
 
