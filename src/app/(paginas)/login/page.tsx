@@ -8,12 +8,14 @@ import { Navbar } from "@/app/elementos/modulos/Navbar"
 
 export default function LoginPage() {
     return (
-        <>
+
+        <div className='flex flex-col min-h-screen'>
             <Navbar navItems={[]} />
-            <main className="p-4 bg-branco-400">
+            <main className="flex-grow p-4 bg-branco-400">
                 <Login />
             </main>
             <Footer />
-        </>
+        </div>
+
     )
 }
