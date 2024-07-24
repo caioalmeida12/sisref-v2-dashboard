@@ -22,7 +22,7 @@
  * - canceled_by_student: Se o cardápio foi cancelado pelo estudante.
  */
 
-import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
+import { IRefeicaoComTurno } from "@/app/elementos/interfaces/IRefeicao";
 import { DatasHelper } from "./DatasHelper";
 
 type StatusDaRefeicao = "disponivel" | "encerrado" | "bloqueado" | "cancelado" | "reservado" | "indisponivel";
@@ -38,7 +38,7 @@ type StatusDaRefeicao = "disponivel" | "encerrado" | "bloqueado" | "cancelado" |
  * @param props - As propriedades da refeição.
  * @returns O status da refeição.
  */
-export const pegarStatusDaRefeicao = (props: IRefeicao): StatusDaRefeicao => {
+export const pegarStatusDaRefeicao = (props: IRefeicaoComTurno): StatusDaRefeicao => {
     if (!(props.cardapio) || !(props.refeicao)) return "encerrado";
     if (!(props.cardapio.permission)) return "bloqueado";
     if (props.cardapio.canceled_by_student) return "cancelado";

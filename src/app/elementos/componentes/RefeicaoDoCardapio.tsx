@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Secao } from "../basicos/Secao";
-import { IRefeicao } from "../interfaces/IRefeicao";
+import { IRefeicaoComTurno } from "../interfaces/IRefeicao";
 import { NomeDaRefeicao } from "../basicos/NomeDaRefeicao";
 
 const varianteNomeRefeicaoPorTurno = {
@@ -21,7 +21,7 @@ const descricaoCardapioParaArrayStrings = (descricao: string) => {
 }
 
 
-export const RefeicaoDoCardapio = (props: IRefeicao) => {
+export const RefeicaoDoCardapio = (props: IRefeicaoComTurno) => {
     if (!props.cardapio) return null;
 
     return (

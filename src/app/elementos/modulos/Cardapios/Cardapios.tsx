@@ -7,11 +7,11 @@ import { SliderServerSide } from "../../componentes/SliderServerSide";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { AdicionarCardapio } from "./AdicionarCardapio";
 
-export const Cardapios = async ({searchParams} : {searchParams: URLSearchParams}) => {
+export const Cardapios = async ({ searchParams }: { searchParams: URLSearchParams }) => {
     const data = searchParams.get('dataCardapio') || new Date().toISOString().split('T')[0];
 
     const cardapios = await fetchRefeicoesPorDia({ data });
-    
+
     const anterior = DatasHelper.getDataAnterior(data);
     const posterior = DatasHelper.getDataPosterior(data);
 
@@ -24,7 +24,9 @@ export const Cardapios = async ({searchParams} : {searchParams: URLSearchParams}
             {
                 cardapios.length ?
                     cardapios.map((refeicao, index) => (
-                        <RefeicaoDoCardapio key={index} {...refeicao} />
+                        refeicao.refeicao &&
+                        refeicao.refeicao.id &&
+                        <RefeicaoDoCardapio turno={refeicao.refeicao.id as 1 | 2 | 3 | 4} key={index} {...refeicao} />
                     )) :
                     <p>Não há cardápios para esta data.</p>
             }
