@@ -8,6 +8,7 @@ import { pegarStatusDaRefeicao } from "@/app/lib/elementos/Refeicao";
 import { Reservar } from "./Reservar";
 import { Cancelar } from "./Cancelar";
 import { IRefeicaoComTurno } from "../../interfaces/IRefeicao";
+import Skeleton from "react-loading-skeleton";
 
 const varianteNomeRefeicaoPorTurno = {
     1: "manha",
@@ -89,4 +90,23 @@ export const Refeicao = (props: IRefeicaoComTurno) => {
     const textoStatus = pegarStatusDaRefeicao(props);
     const comBotao = textoStatus === "disponivel" || textoStatus === "reservado";
     return RefeicaoLonga(props, comBotao);
+}
+
+export const RefeicaoLoading = () => {
+    return (
+        <Secao className="flex flex-col gap-y-2">
+            <div className="flex justify-between">
+                <Skeleton width={140} height={20} />
+                <Skeleton width={80} height={20} />
+            </div>
+            <Skeleton width={"70%"} height={20} />
+            <p className="leading-6">
+                <Skeleton width={"60%"} height={20} />
+                <Skeleton width={"70%"} height={20} />
+                <Skeleton width={"50%"} height={20} />
+                <Skeleton width={"45%"} height={20} />
+            </p>
+            <Skeleton width={"100%"} height={58} />
+        </Secao>
+    )
 }

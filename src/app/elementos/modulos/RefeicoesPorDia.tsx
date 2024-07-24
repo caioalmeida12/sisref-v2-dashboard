@@ -1,52 +1,27 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
-import { Refeicao } from "../componentes/Refeicao/Refeicao";
+import React, { useState } from "react";
+import { Refeicao, RefeicaoLoading } from "../componentes/Refeicao/Refeicao";
 import { Slider } from "../componentes/Slider";
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
-import { IRefeicao } from "../interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { IconeInformacao } from "../basicos/icones/IconeInformacao";
 import { Secao } from "../basicos/Secao";
-import { useRefeicoes } from "@/app/lib/elementos/RefeicoesContext";
+import { useQuery } from "@tanstack/react-query";
 
-const cache: { [data: string]: IRefeicao[] | undefined } = {};
 
 export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
-    const [data, setData] = useState(new Date().toISOString().split('T')[0]);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [refetchRefeicoes, setRefetchRefeicoes] = useState(false);
-    const { refeicoes, setRefeicoes, recarregar } = useRefeicoes();
+    const [dataDaPesquisa, setDataDaPesquisa] = useState(new Date().toISOString().split('T')[0]);
+    const textoData = new Date().toISOString().split('T')[0] === dataDaPesquisa ? "hoje" : DatasHelper.converterParaFormatoBrasileiro(dataDaPesquisa);
+
+    const { data: refeicoes, isLoading, isError } = useQuery({
+        queryKey: ['refeicoesPorDia', dataDaPesquisa],
+        queryFn: () => fetchRefeicoesPorDia({ data: dataDaPesquisa })
+    });
 
     // Limitar a distância de dias entre a data atual e a data selecionada
-    const dataSelecionada = new Date(data).toISOString().split('T')[0];
+    const dataSelecionada = new Date(dataDaPesquisa).toISOString().split('T')[0];
     const diferencaDias = DatasHelper.getDiferenciaEmDias(dataSelecionada);
-
-    useEffect(() => {
-        cache[data] = undefined;
-    }, [recarregar]);
-
-    useEffect(() => {
-        if (cache[data]) return
-
-        fetchRefeicoesPorDia({ data })
-            .then((refeicoes) => {
-                refeicoes && setRefeicoes(refeicoes);
-
-                cache[data] = refeicoes;
-            })
-            .catch((erro) => console.error(erro));
-    }, [data, refetchRefeicoes, recarregar]);
-
-    const elementosRefeicao = ([1, 2, 3, 4] as const).map((turno) => (
-        <Refeicao key={turno} turno={turno} refeicao={
-            refeicoes.find((refeicao) => refeicao.refeicao?.id === turno)?.refeicao
-        } cardapio={
-            refeicoes.find((refeicao) => refeicao.refeicao?.id === turno)?.cardapio
-        } />
-    ));
-
-    const textoData = new Date().toISOString().split('T')[0] === data ? "hoje" : DatasHelper.converterParaFormatoBrasileiro(data);
 
     return (
         <Secao className={`${forcarExibicao ? "flex" : "hidden"} flex-col gap-y-4 lg:grid lg:grid-cols-2 lg:gap-4`}>
@@ -54,24 +29,46 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
                 onNext={() => {
                     if (diferencaDias > 7) return;
 
-                    const amanha = DatasHelper.getDataPosterior(data);
-                    setData(amanha);
+                    const amanha = DatasHelper.getDataPosterior(dataDaPesquisa);
+                    setDataDaPesquisa(amanha);
                 }}
 
                 onPrevious={() => {
                     if (diferencaDias < -7) return;
 
-                    const ontem = DatasHelper.getDataAnterior(data);
-                    setData(ontem);
+                    const ontem = DatasHelper.getDataAnterior(dataDaPesquisa);
+                    setDataDaPesquisa(ontem);
                 }}
 
                 tooltip={
-                    (refeicoes.length) ? null : (
+                    (refeicoes?.length) ? null : (
                         <IconeInformacao texto="Nenhuma refeição encontrada para esta data" />
                     )
                 }
             />
-            {elementosRefeicao}
+            {
+                isLoading &&
+                ([1, 2, 3, 4] as const).map((_, index) => (
+                    <RefeicaoLoading key={index} />
+                ))
+            }
+            {
+                refeicoes &&
+                ([1, 2, 3, 4] as const).map((turno) => (
+                    <Refeicao key={turno} turno={turno} refeicao={
+                        refeicoes.find((refeicao) => refeicao.refeicao?.id === turno)?.refeicao
+                    } cardapio={
+                        refeicoes.find((refeicao) => refeicao.refeicao?.id === turno)?.cardapio
+                    } />
+                ))
+            }
+            {
+                isError &&
+                ([1, 2, 3, 4] as const).map((turno) => (
+                    <Refeicao key={turno} turno={turno} />
+                ))
+            }
+
         </Secao>
     )
 }
