@@ -6,39 +6,49 @@ import { CabecalhoDeSecao } from '../basicos/CabecalhoDeSecao'
 import { fetchTickets } from '@/app/actions/fetchTickets'
 import { IRefeicaoDoHistorico } from '../interfaces/IRefeicaoDoHistorico'
 import { RefeicaoDoHistorico, RefeicaoDoHistoricoLoading } from '../componentes/RefeicaoDoHistorico'
+import { useQuery } from '@tanstack/react-query'
 
 const QUANTOS_TICKETS_MOSTRAR = 10
 
 export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
-    const [aSerUtilizado, setASerUtilizado] = useState<IRefeicaoDoHistorico[]>([])
-    const [utilizado, setUtilizado] = useState<IRefeicaoDoHistorico[]>([])
-    const [cancelado, setCancelado] = useState<IRefeicaoDoHistorico[]>([])
-    const [naoUtilizado, setNaoUtilizado] = useState<IRefeicaoDoHistorico[]>([])
-    const [carregando, setCarregando] = useState(true)
-
     /**
      * Armazena os n tickets mais recentes dentre os 40 que são retornados pela API.
      */
     const [ticketsMaisRecentes, setTicketsMaisRecentes] = useState<IRefeicaoDoHistorico[]>([])
 
-    useEffect(() => {
-        fetchTickets('a-ser-utilizado').then(setASerUtilizado)
-        fetchTickets('utilizado').then(setUtilizado)
-        fetchTickets('cancelado').then(setCancelado)
-        fetchTickets('nao-utilizado').then(setNaoUtilizado)
-    }, [])
+    const { data: tickets, isLoading, isError } = useQuery({
+        queryKey: ['tickets', 'utilizado'],
+        queryFn: async () => {
+            const aSerUtilizado = await fetchTickets('a-ser-utilizado')
+            const utilizado = await fetchTickets('utilizado')
+            const cancelado = await fetchTickets('cancelado')
+            const naoUtilizado = await fetchTickets('nao-utilizado')
+
+            return {
+                aSerUtilizado,
+                utilizado,
+                cancelado,
+                naoUtilizado
+            }
+        }
+    })
 
     useEffect(() => {
-        const todosSaoArray = [aSerUtilizado, utilizado, cancelado, naoUtilizado].every(Array.isArray)
+        const todosSaoArray = tickets && Array.isArray(tickets.aSerUtilizado) && Array.isArray(tickets.utilizado) && Array.isArray(tickets.cancelado) && Array.isArray(tickets.naoUtilizado)
         if (!todosSaoArray) return
 
         // Adiciona o status de cada ticket para que possa ser exibido no componente.
-        aSerUtilizado.forEach(ticket => ticket.status = 'a-ser-utilizado')
-        utilizado.forEach(ticket => ticket.status = 'utilizado')
-        cancelado.forEach(ticket => ticket.status = 'cancelado')
-        naoUtilizado.forEach(ticket => ticket.status = 'nao-utilizado')
+        tickets.aSerUtilizado.forEach(ticket => ticket.status = 'a-ser-utilizado')
+        tickets.utilizado.forEach(ticket => ticket.status = 'utilizado')
+        tickets.cancelado.forEach(ticket => ticket.status = 'cancelado')
+        tickets.naoUtilizado.forEach(ticket => {
+            ticket.absenceJustification ?
+                ticket.status = 'justificado' :
+                ticket.status = 'nao-utilizado'
+        })
+        console.log(tickets.naoUtilizado)
 
-        const todosTickets = [...aSerUtilizado, ...utilizado, ...cancelado, ...naoUtilizado]
+        const todosTickets = [...tickets.aSerUtilizado, ...tickets.utilizado, ...tickets.cancelado, ...tickets.naoUtilizado]
         const todosTicketsOrdenados = todosTickets.sort((a, b) => {
             return new Date(b.cardapio.date).getTime() - new Date(a.cardapio.date).getTime()
         })
@@ -46,29 +56,28 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
         const ticketsMaisRecentes = todosTicketsOrdenados.slice(0, QUANTOS_TICKETS_MOSTRAR)
 
         setTicketsMaisRecentes(ticketsMaisRecentes)
-        
-        // Se todos os tickets já foram carregados, então não está mais carregando.
-        const todosForamCarregados = todosTickets.length === QUANTOS_TICKETS_MOSTRAR
-        if (todosForamCarregados) setCarregando(false)
-    
-    }, [aSerUtilizado, utilizado, cancelado, naoUtilizado])
+    }, [tickets])
 
     return (
         <Secao className={`${forcarExibicao ? "flex" : "hidden"} lg:flex flex-col gap-y-4`}>
             <CabecalhoDeSecao titulo='Histórico de Refeições' />
             <div className='flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-4'>
                 {
-                    carregando ?
-                        (
-                            Array.from({ length: QUANTOS_TICKETS_MOSTRAR }).map((_, index) => (
-                                <RefeicaoDoHistoricoLoading key={index} />
-                            ))
-                        ) :
-                        (
-                            ticketsMaisRecentes.map((refeicao, index) => (
-                                <RefeicaoDoHistorico key={index} {...refeicao} />
-                            ))
-                        )
+                    isLoading &&
+                    Array.from({ length: QUANTOS_TICKETS_MOSTRAR }).map((_, index) => (
+                        <RefeicaoDoHistoricoLoading key={index} />
+                    ))
+
+                }
+                {
+                    !isLoading && !isError &&
+                    ticketsMaisRecentes.map((refeicao, index) => (
+                        <RefeicaoDoHistorico key={index} {...refeicao} />
+                    ))
+                }
+                {
+                    isError &&
+                    <p>Não foi possível carregar o histórico de refeições</p>
                 }
             </div>
         </Secao>

@@ -18,6 +18,7 @@ export const IRefeicaoSchema = z.object({
         id: z.number(),
         campus_id: z.number(),
         canceled_by_student: z.boolean().optional(),
+        absenceJustification: z.string().nullable().optional()
     }).optional(),
 });
 
