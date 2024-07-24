@@ -1,6 +1,6 @@
 "use client"
 
-import { logout } from "@/app/actions/Logout"
+import { logout } from "@/app/actions/logout"
 import { IconeLogout } from "./icones/IconeLogout"
 import React from "react"
 
