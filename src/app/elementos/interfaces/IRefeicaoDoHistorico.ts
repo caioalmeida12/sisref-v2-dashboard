@@ -16,5 +16,6 @@ export interface IRefeicaoDoHistorico {
         qtdTimeReservationEnd: number;
         qtdTimeReservationStart: number;
     };
-    status: "a-ser-utilizado" | "utilizado" | "cancelado" | "nao-utilizado";
+    status: "a-ser-utilizado" | "utilizado" | "cancelado" | "nao-utilizado" | "justificado";
+    absenceJustification: string | null
 }

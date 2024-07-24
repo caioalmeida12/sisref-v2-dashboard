@@ -36,5 +36,6 @@ export const fetchTickets = async (tipo: keyof typeof urlPorTipoDeTicket) => {
         turno: refeicao.meal_id as 1 | 2 | 3 | 4,
         cardapio: refeicao.menu,
         refeicao: refeicao.meal,
+        absenceJustification: refeicao.absenceJustification
     })) as IRefeicaoDoHistorico[]
 }
