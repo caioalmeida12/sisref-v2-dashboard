@@ -2,7 +2,7 @@
 
 import { IRelatorioDeDesperdicio } from "@/app/elementos/interfaces/IRelatorioDeDesperdicio"
 import { cookies } from "next/headers"
-import { redirecionarViaAction } from "./RedirecionarViaAction"
+import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction"
 
 export const fetchRelatorioDeDesperdicio = async ({ data }: { data: string }) => {
     const auth = cookies().get("authorization")?.value
@@ -20,6 +20,6 @@ export const fetchRelatorioDeDesperdicio = async ({ data }: { data: string }) =>
     const resposta = await fetchRelatorio.json()
 
     if (!fetchRelatorio.ok) return null
-    
+
     return resposta as IRelatorioDeDesperdicio
 }

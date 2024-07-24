@@ -7,10 +7,10 @@ import { CampoDeSecao } from "../componentes/CampoDeSecao"
 import { IInformacoesDeEstudante } from "../interfaces/IInformacoesDeEstudante"
 import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao"
 import { IInformacoesDoCampus } from "../interfaces/IInformacoesDoCampus"
-import { fetchInformacoesDoCampus } from "@/app/lib/elementos/FetchInformacoesDoCampus"
 import { fetchInformacoesDeEstudante } from "@/app/lib/middlewares/FetchInformacoesDeEstudante"
 import { validarTokenDosCookies } from "@/app/lib/middlewares/ValidarTokenDosCookies"
 import Image from "next/image"
+import { fetchInformacoesDoCampus } from "@/app/actions/fetchInformacoesDoCampus"
 
 interface InformacoesDeEstudanteProps {
     estudante: IInformacoesDeEstudante
@@ -79,7 +79,7 @@ const MobileCompleta = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
         <Secao className="flex flex-col gap-y-4 lg:hidden" id="informacoesDeEstudante">
             <CabecalhoDeSecao titulo="Informações pessoais" />
             <div className="flex justify-center p-4">
-            <Image className="rounded-full" src={estudante.photo || "/imgs/usuario.png"} width={100} height={100} alt="Imagem de usuário" />
+                <Image className="rounded-full" src={estudante.photo || "/imgs/usuario.png"} width={100} height={100} alt="Imagem de usuário" />
             </div>
             <CampoDeSecao titulo="Nome" complemento={stringParaCamelCase(estudante.name)} variante="vertical" />
             <CampoDeSecao titulo="Matrícula" complemento="20211035000020" variante="vertical" />
@@ -96,7 +96,7 @@ const MobileCompleta = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
     )
 }
 
-export const InformacoesDeEstudante = async ({ versaoMobileCompleta = false } : { versaoMobileCompleta?: boolean }) => {
+export const InformacoesDeEstudante = async ({ versaoMobileCompleta = false }: { versaoMobileCompleta?: boolean }) => {
     const validado = validarTokenDosCookies()
 
     const informacoesDeEstudante = await fetchInformacoesDeEstudante(validado.sub);

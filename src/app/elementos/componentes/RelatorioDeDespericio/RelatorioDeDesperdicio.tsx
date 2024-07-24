@@ -1,10 +1,10 @@
 import React from "react";
 
-import { fetchRelatorioDeDesperdicio } from "@/app/lib/actions/FetchRelatorioDeDesperdicio";
 import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 import Card from "./Card";
 import { Modal } from "./Modal";
+import { fetchRelatorioDeDesperdicio } from "@/app/actions/fetchRelatorioDeDesperdicio";
 
 const CardWrapper = async ({ data }: { data: string }) => {
     const relatorio = await fetchRelatorioDeDesperdicio({ data })
