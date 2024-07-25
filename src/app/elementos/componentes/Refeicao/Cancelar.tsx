@@ -19,9 +19,8 @@ export const Cancelar = ({ meal_id, date }: { meal_id?: number, date?: string })
             atualizarMensagem({ mensagem: error.message });
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({
+            queryClient.refetchQueries({
                 queryKey: ['refeicoesPorDia', 'historicoDeRefeicoes'],
-                refetchType: 'all'
             });
         }
     })
