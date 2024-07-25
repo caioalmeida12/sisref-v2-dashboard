@@ -8,7 +8,6 @@ import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { IconeInformacao } from "../basicos/icones/IconeInformacao";
 import { Secao } from "../basicos/Secao";
 import { useQuery } from "@tanstack/react-query";
-import { queryClient } from "@/app/lib/elementos/QueryClient";
 
 
 export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
