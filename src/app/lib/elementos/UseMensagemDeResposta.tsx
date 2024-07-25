@@ -1,15 +1,13 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 
 const useMensagemDeResposta = () => {
-    const [carregando, setCarregando] = useState(false);
     const mensagemDeRespostaRef = useRef<HTMLDivElement | null>(null);
 
     const atualizarMensagem = (resposta: { sucesso: boolean; mensagem: string } | { mensagem: string }) => {
-        setCarregando(true);
 
         mensagemDeRespostaRef.current?.classList.remove('text-verde-300', 'text-vermelho-400', 'text-azul-400', 'hidden');
 
-        if (carregando || !("sucesso" in resposta)) {
+        if (!("sucesso" in resposta)) {
             mensagemDeRespostaRef.current?.classList.add('text-azul-400');
             mensagemDeRespostaRef.current!.textContent = resposta.mensagem;
             return;
@@ -24,10 +22,10 @@ const useMensagemDeResposta = () => {
             mensagemDeRespostaRef.current!.classList.remove('text-verde-300', 'text-azul-400');
             mensagemDeRespostaRef.current!.classList.add('text-vermelho-400');
         }
-        setCarregando(false);
+
     };
 
-    return { carregando, mensagemDeRespostaRef, atualizarMensagem };
+    return { mensagemDeRespostaRef, atualizarMensagem };
 };
 
 export default useMensagemDeResposta;
