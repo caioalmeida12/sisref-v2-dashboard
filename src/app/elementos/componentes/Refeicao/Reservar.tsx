@@ -20,7 +20,8 @@ export const Reservar = ({ meal_id, date }: { meal_id?: number, date?: string })
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ['refeicoesPorDia', 'historicoDeRefeicoes']
+                queryKey: ['refeicoesPorDia', 'historicoDeRefeicoes'],
+                refetchType: 'all'
             });
         }
     })
