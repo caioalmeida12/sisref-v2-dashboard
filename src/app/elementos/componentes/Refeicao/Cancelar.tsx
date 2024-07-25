@@ -13,7 +13,7 @@ export const Cancelar = ({ meal_id, date }: { meal_id?: number, date?: string })
     const { data: reserva, mutate, isPending } = useMutation({
         mutationFn: () => cancelarRefeicao({ meal_id, date }),
         onMutate: () => {
-            atualizarMensagem({ mensagem: 'Reservando...' });
+            atualizarMensagem({ mensagem: 'Cancelando...' });
         },
         onError: (error) => {
             atualizarMensagem({ mensagem: error.message });
