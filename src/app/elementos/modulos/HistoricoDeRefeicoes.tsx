@@ -17,7 +17,7 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
     const [ticketsMaisRecentes, setTicketsMaisRecentes] = useState<IRefeicaoDoHistorico[]>([])
 
     const { data: tickets, isLoading, isError } = useQuery({
-        queryKey: ['tickets', 'utilizado'],
+        queryKey: ['historicoDeRefeicoes'],
         queryFn: async () => {
             const aSerUtilizado = await fetchTickets('a-ser-utilizado')
             const utilizado = await fetchTickets('utilizado')
@@ -46,7 +46,6 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
                 ticket.status = 'justificado' :
                 ticket.status = 'nao-utilizado'
         })
-        console.log(tickets.naoUtilizado)
 
         const todosTickets = [...tickets.aSerUtilizado, ...tickets.utilizado, ...tickets.cancelado, ...tickets.naoUtilizado]
         const todosTicketsOrdenados = todosTickets.sort((a, b) => {
