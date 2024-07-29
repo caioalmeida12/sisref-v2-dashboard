@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
 import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCodigoHTTP";
 
-
 export const reservarRefeicao = async ({ meal_id, date }: { meal_id?: number, date?: string }) => {
     const auth = cookies().get("authorization")?.value
     if (!auth) return redirecionarViaAction()
