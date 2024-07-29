@@ -21,7 +21,6 @@ export const cancelarRefeicao = async ({ meal_id, date }: { meal_id?: number, da
     }
 
     const json = await resposta.json();
-    console.log(json, resposta, resposta.ok)
 
     if (typeof json.message != "undefined") return { sucesso: false, mensagem: json.message };
 
