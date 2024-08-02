@@ -3,10 +3,10 @@ import { HorarioDaRefeicao } from "@elementos/basicos/HorarioDaRefeicao";
 import { NomeDaRefeicao } from "@elementos/basicos/NomeDaRefeicao";
 import { Secao } from "@elementos/basicos/Secao";
 import { StatusDaRefeicao } from "@elementos/basicos/StatusDaRefeicao";
-import { IRefeicaoDoHistorico } from "../interfaces/IRefeicaoDoHistorico";
+import { IRefeicaoDoHistorico } from "../../interfaces/IRefeicaoDoHistorico";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import Skeleton from "react-loading-skeleton";
-
+import { RefeicaoNaoJustificada } from "./RefeicaoNaoJustificada";
 
 const varianteNomeRefeicaoPorTurno = {
     1: "manha",
@@ -16,11 +16,12 @@ const varianteNomeRefeicaoPorTurno = {
 } as const;
 
 const elementoStatusRefeicaoPorTextoStatusRefeicao = {
-    "a-ser-utilizado": <StatusDaRefeicao cor="azul-400" icone="circulo-check" texto="A ser utilizado" textoTooltip="Você reservou esta refeição e ainda utilizou o ticket."/>,
+    "a-ser-utilizado": <StatusDaRefeicao cor="azul-400" icone="circulo-check" texto="A ser utilizado" textoTooltip="Você reservou esta refeição e ainda utilizou o ticket." />,
     "nao-utilizado": <StatusDaRefeicao cor="amarelo-200" icone="circulo-x" texto="Não utilizado" textoTooltip="Você reservou esta refeição e não utilizou o ticket." />,
     "justificado": <StatusDaRefeicao cor="azul-400" icone="circulo-check" texto="Justificado" textoTooltip="Você justificou sua ausência a esta refeição." />,
-    "cancelado": <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" textoTooltip="Você cancelou esta reserva."/>,
-    "utilizado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Utilizado" textoTooltip="Você reservou e utilizou este ticket."/>,
+    "cancelado": <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" textoTooltip="Você cancelou esta reserva." />,
+    "utilizado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Utilizado" textoTooltip="Você reservou e utilizou este ticket." />,
+    "nao-utilizado-sem-justificativa": <StatusDaRefeicao cor="vermelho-400" icone="circulo-x" texto="Não justificado" textoTooltip="Você reservou esta refeição e não utilizou o ticket. Justifique sua ausência." />
 } as const;
 
 /**
@@ -48,7 +49,7 @@ export const RefeicaoDoHistorico = (props: IRefeicaoDoHistorico) => {
                     timeEnd: DatasHelper.removerSegundosDoHorario(props.refeicao.timeEnd),
                     timeStart: DatasHelper.removerSegundosDoHorario(props.refeicao.timeStart)
                 }}
-           />
+            />
             <p className="leading-6">
                 {descricaoCardapioParaArrayStrings(props.cardapio.description).map((descricao, index) => (
                     <React.Fragment key={index}>
@@ -59,6 +60,12 @@ export const RefeicaoDoHistorico = (props: IRefeicaoDoHistorico) => {
                     </React.Fragment>
                 ))}
             </p>
+
+            {
+                props.status === "nao-utilizado-sem-justificativa" &&
+                <RefeicaoNaoJustificada meal_id={props.ticket_id} />
+            }
+
         </Secao>
     )
 }

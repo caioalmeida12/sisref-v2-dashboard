@@ -5,8 +5,9 @@ import { Secao } from '../basicos/Secao'
 import { CabecalhoDeSecao } from '../basicos/CabecalhoDeSecao'
 import { fetchTickets } from '@/app/actions/fetchTickets'
 import { IRefeicaoDoHistorico } from '../interfaces/IRefeicaoDoHistorico'
-import { RefeicaoDoHistorico, RefeicaoDoHistoricoLoading } from '../componentes/RefeicaoDoHistorico'
+import { RefeicaoDoHistorico, RefeicaoDoHistoricoLoading } from '../componentes/RefeicaoDoHistorico/RefeicaoDoHistorico'
 import { useQuery } from '@tanstack/react-query'
+import { fetchTicketsSemJustificativa } from '@/app/actions/fetchTicketsSemJustificativa'
 
 const QUANTOS_TICKETS_MOSTRAR = 10
 
@@ -23,18 +24,27 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
             const utilizado = await fetchTickets('utilizado')
             const cancelado = await fetchTickets('cancelado')
             const naoUtilizado = await fetchTickets('nao-utilizado')
+            const naoUtilizadoSemJustificativa = await fetchTicketsSemJustificativa()
 
             return {
                 aSerUtilizado,
                 utilizado,
                 cancelado,
-                naoUtilizado
+                naoUtilizado,
+                naoUtilizadoSemJustificativa
             }
         }
     })
 
     useEffect(() => {
-        const todosSaoArray = tickets && Array.isArray(tickets.aSerUtilizado) && Array.isArray(tickets.utilizado) && Array.isArray(tickets.cancelado) && Array.isArray(tickets.naoUtilizado)
+        const todosSaoArray =
+            tickets
+            && Array.isArray(tickets.aSerUtilizado)
+            && Array.isArray(tickets.utilizado)
+            && Array.isArray(tickets.cancelado)
+            && Array.isArray(tickets.naoUtilizado)
+            && Array.isArray(tickets.naoUtilizadoSemJustificativa)
+
         if (!todosSaoArray) return
 
         // Adiciona o status de cada ticket para que possa ser exibido no componente.
@@ -46,6 +56,7 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
                 ticket.status = 'justificado' :
                 ticket.status = 'nao-utilizado'
         })
+        tickets.naoUtilizadoSemJustificativa.forEach(ticket => ticket.status = 'nao-utilizado-sem-justificativa')
 
         const todosTickets = [...tickets.aSerUtilizado, ...tickets.utilizado, ...tickets.cancelado, ...tickets.naoUtilizado]
         const todosTicketsOrdenados = todosTickets.sort((a, b) => {
@@ -54,7 +65,10 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
 
         const ticketsMaisRecentes = todosTicketsOrdenados.slice(0, QUANTOS_TICKETS_MOSTRAR)
 
-        setTicketsMaisRecentes(ticketsMaisRecentes)
+        // Sempre mantém os tickets sem justificativa no início da lista.
+        const concatenarTicketsETicketsSemJustificativa = [...tickets.naoUtilizadoSemJustificativa, ...ticketsMaisRecentes]
+
+        setTicketsMaisRecentes(concatenarTicketsETicketsSemJustificativa)
     }, [tickets])
 
     return (
