@@ -7,27 +7,36 @@ import { justificativasPermitidas } from "../../interfaces/IJustificativaDeEstud
 import classnames from "classnames";
 import { SelectItemProps } from "@radix-ui/react-select";
 import { Botao } from '../../basicos/Botao';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { justificarRefeicao } from '@/app/actions/justificarRefeicao';
 
-
 export const RefeicaoNaoJustificada = ({ meal_id }: { meal_id: number }) => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta()
+    const queryClient = useQueryClient();
 
-
-    const { mutate } = useMutation({
-        mutationFn: (formData: FormData) => {
-            return justificarRefeicao({ indiceDaJustificativa: formData.get('justificativa') as any, meal_id })
-        },
+    const { mutate, isPending } = useMutation({
+        mutationKey: ['justificarRefeicao', meal_id],
+        mutationFn: (formData: FormData) => justificarRefeicao({ indiceDaJustificativa: formData.get('justificativa') as any, meal_id }),
         onMutate: () => {
             atualizarMensagem({
                 mensagem: "Justificando ausência a refeição...",
             })
         },
         onSuccess: (data) => {
+            queryClient.invalidateQueries({
+                queryKey: ['refeicoesPorDia'],
+            });
+
+            queryClient.invalidateQueries({
+                queryKey: ['historicoDeRefeicoes'],
+            });
+
             atualizarMensagem(data)
         },
+        onError: (error) => {
+            atualizarMensagem({ mensagem: error.message });
+        }
     })
 
     const handleJustificarRefeicao = (event: React.FormEvent<HTMLFormElement>) => {
@@ -72,7 +81,7 @@ export const RefeicaoNaoJustificada = ({ meal_id }: { meal_id: number }) => {
                     </Select.Portal>
                 </Select.Root>
                 <div className='hidden' ref={mensagemDeRespostaRef}></div>
-                <Botao texto="Justificar" variante="adicionar" />
+                <Botao texto="Justificar" variante="adicionar" disabled={isPending} />
             </form>
         </>
     )
