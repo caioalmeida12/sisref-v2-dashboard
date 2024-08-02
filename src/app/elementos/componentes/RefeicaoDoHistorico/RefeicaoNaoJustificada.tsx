@@ -35,7 +35,7 @@ export const RefeicaoNaoJustificada = ({ meal_id }: { meal_id: number }) => {
             atualizarMensagem(data)
         },
         onError: (error) => {
-            atualizarMensagem({ mensagem: error.message });
+            atualizarMensagem({ mensagem: error.message, sucesso: false });
         }
     })
 

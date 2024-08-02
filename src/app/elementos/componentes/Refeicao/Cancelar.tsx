@@ -17,7 +17,7 @@ export const Cancelar = ({ meal_id, date }: { meal_id?: number, date?: string })
             atualizarMensagem({ mensagem: 'Cancelando...' });
         },
         onError: (error) => {
-            atualizarMensagem({ mensagem: error.message });
+            atualizarMensagem({ mensagem: error.message, sucesso: false });
         },
         onSuccess: (resposta) => {
             queryClient.invalidateQueries({
