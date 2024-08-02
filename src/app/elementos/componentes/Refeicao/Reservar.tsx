@@ -18,7 +18,7 @@ export const Reservar = ({ meal_id, date }: { meal_id?: number, date?: string })
             atualizarMensagem({ mensagem: 'Reservando...' });
         },
         onError: (error) => {
-            atualizarMensagem({ mensagem: error.message });
+            atualizarMensagem({ mensagem: error.message, sucesso: false });
         },
         onSuccess: (resposta) => {
             queryClient.invalidateQueries({
