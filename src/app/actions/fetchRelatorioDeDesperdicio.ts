@@ -17,9 +17,9 @@ export const fetchRelatorioDeDesperdicio = async ({ data }: { data: string }) =>
         }
     })
 
-    const resposta = await fetchRelatorio.json()
-
     if (!fetchRelatorio.ok) return null
+
+    const resposta = await fetchRelatorio.json()
 
     return resposta as IRelatorioDeDesperdicio
 }
