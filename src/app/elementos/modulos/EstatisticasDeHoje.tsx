@@ -1,7 +1,7 @@
 "use client"
 
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Secao } from "../basicos/Secao"
 import { IconeInformacao } from "../basicos/icones/IconeInformacao";
 import { Slider } from "../componentes/Slider"
