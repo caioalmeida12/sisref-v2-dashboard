@@ -7,54 +7,52 @@ import { IconeInformacao } from "../basicos/icones/IconeInformacao";
 import { Slider } from "../componentes/Slider"
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
 import { IRefeicao } from "../interfaces/IRefeicao";
-import { Refeicao } from "../componentes/Refeicao/Refeicao";
+import { Refeicao, RefeicaoLoading } from "../componentes/Refeicao/Refeicao";
 import ReservasPorDia from "../componentes/ReservasPorDia";
 import { TicketsPorDia } from "../componentes/TicketsPorDia";
 import { TicketsPorRefeicao } from "../componentes/TicketsPorRefeicao";
+import { useQuery } from "@tanstack/react-query";
 
 const cache: { [data: string]: IRefeicao[] } = {};
 
 export default function EstatisticasDeHoje() {
-    const [data, setData] = useState(new Date().toISOString().split('T')[0]);
-    const [refeicoes, setRefeicoes] = useState<IRefeicao[]>([]);
+    const [dataDaPesquisa, setDataDaPesquisa] = useState(new Date().toISOString().split('T')[0]);
+    const textoData = new Date().toISOString().split('T')[0] === dataDaPesquisa ? "hoje" : DatasHelper.converterParaFormatoBrasileiro(dataDaPesquisa);
 
-    useEffect(() => {
-        if (cache[data]) return setRefeicoes(cache[data]);
+    const { data: refeicoes, isLoading } = useQuery({
+        queryKey: ['refeicoesPorDia', dataDaPesquisa],
+        queryFn: () => fetchRefeicoesPorDia({ data: dataDaPesquisa })
+    });
 
-        fetchRefeicoesPorDia({ data })
-            .then((refeicoes) => {
-                refeicoes && setRefeicoes(refeicoes);
+    const elementosRefeicao = ([1, 2, 3, 4] as const).map((turno) => {
+        if (isLoading) {
+            return <RefeicaoLoading key={turno} />
+        }
 
-                cache[data] = refeicoes;
-            })
-            .catch((erro) => console.error(erro));
-    }, [data])
-
-    const textoData = new Date().toISOString().split('T')[0] === data ? "hoje" : DatasHelper.converterParaFormatoBrasileiro(data);
-
-    const elementosRefeicao = ([1, 2, 3, 4] as const).map((turno) => (
-        <Refeicao key={turno} turno={turno} refeicao={
-            refeicoes.find((refeicao) => refeicao.refeicao?.id === turno)?.refeicao
-        } cardapio={
-            refeicoes.find((refeicao) => refeicao.refeicao?.id === turno)?.cardapio
-        } />
-    ));
+        return (
+            <Refeicao key={turno} turno={turno} refeicao={
+                refeicoes.find((refeicao: IRefeicao) => refeicao.refeicao?.id === turno)?.refeicao
+            } cardapio={
+                refeicoes.find((refeicao: IRefeicao) => refeicao.refeicao?.id === turno)?.cardapio
+            } />
+        )
+    });
 
     return (
         <Secao className={`flex flex-col gap-y-4 lg:grid lg:grid-cols-2 lg:gap-4`}>
             <Slider texto={`Estatísticas para ${textoData}`} className="bg-preto-400 col-span-2"
                 onNext={() => {
-                    const amanha = DatasHelper.getDataPosterior(data);
-                    setData(amanha);
+                    const amanha = DatasHelper.getDataPosterior(dataDaPesquisa);
+                    setDataDaPesquisa(amanha);
                 }}
 
                 onPrevious={() => {
-                    const ontem = DatasHelper.getDataAnterior(data);
-                    setData(ontem);
+                    const ontem = DatasHelper.getDataAnterior(dataDaPesquisa);
+                    setDataDaPesquisa(ontem);
                 }}
 
                 tooltip={
-                    (refeicoes.length) ? null : (
+                    (refeicoes?.length) ? null : (
                         <IconeInformacao texto="Nenhuma refeição encontrada para esta data" />
                     )
                 }
