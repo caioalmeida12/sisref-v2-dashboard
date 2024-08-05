@@ -8,6 +8,7 @@ import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { IconeInformacao } from "../basicos/icones/IconeInformacao";
 import { Secao } from "../basicos/Secao";
 import { useQuery } from "@tanstack/react-query";
+import { IRefeicao } from "../interfaces/IRefeicao";
 
 
 export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
@@ -56,9 +57,9 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
                 refeicoes &&
                 ([1, 2, 3, 4] as const).map((turno) => (
                     <Refeicao key={turno} turno={turno} refeicao={
-                        refeicoes.find((refeicao) => refeicao.refeicao?.id === turno)?.refeicao
+                        refeicoes.find((refeicao: IRefeicao) => refeicao.refeicao?.id === turno)?.refeicao
                     } cardapio={
-                        refeicoes.find((refeicao) => refeicao.refeicao?.id === turno)?.cardapio
+                        refeicoes.find((refeicao: IRefeicao) => refeicao.refeicao?.id === turno)?.cardapio
                     } />
                 ))
             }
