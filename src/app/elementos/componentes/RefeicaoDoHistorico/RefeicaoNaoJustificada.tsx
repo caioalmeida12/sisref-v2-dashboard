@@ -10,8 +10,9 @@ import { Botao } from '../../basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { justificarRefeicao } from '@/app/actions/justificarRefeicao';
+import { IconeInformacao } from '../../basicos/icones/IconeInformacao';
 
-export const RefeicaoNaoJustificada = ({ meal_id }: { meal_id: number }) => {
+export const RefeicaoNaoJustificada = ({ meal_id, studentJustification }: { meal_id: number, studentJustification: string | null }) => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta()
     const queryClient = useQueryClient();
 
@@ -45,6 +46,17 @@ export const RefeicaoNaoJustificada = ({ meal_id }: { meal_id: number }) => {
         const formData = new FormData(event.currentTarget)
 
         mutate(formData)
+    }
+
+    if (studentJustification) {
+        return (
+            <div className='flex flex-col gap-y-2'>
+                <div className='flex gap-x-2 text-cinza-600'>
+                    Aguardando aprovação da justificativa.
+                    <IconeInformacao texto={`Justificativa: ${studentJustification}`} cor='cinza-600' />
+                </div>
+            </div>
+        )
     }
 
     return (

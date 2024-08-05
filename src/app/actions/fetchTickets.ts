@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers"
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction"
-import { IRefeicaoDoHistorico } from "../elementos/interfaces/IRefeicaoDoHistorico"
+import { ParseRefeicaoDoHistorico } from "../elementos/interfaces/IRefeicaoDoHistorico"
 
 const urlPorTipoDeTicket = {
     "a-ser-utilizado": "/to-use",
@@ -32,11 +32,7 @@ export const fetchTickets = async (tipo: keyof typeof urlPorTipoDeTicket) => {
 
     const array = Array.isArray(data) ? data : [data];
 
-    return array.map((refeicao) => ({
-        ticket_id: refeicao.id,
-        turno: refeicao.meal_id as 1 | 2 | 3 | 4,
-        cardapio: refeicao.menu,
-        refeicao: refeicao.meal,
-        absenceJustification: refeicao.absenceJustification
-    })) as IRefeicaoDoHistorico[]
+    return array
+        .map((refeicao) => ParseRefeicaoDoHistorico(refeicao))
+        .flatMap((refeicao) => refeicao.success ? refeicao.data : [])
 }
