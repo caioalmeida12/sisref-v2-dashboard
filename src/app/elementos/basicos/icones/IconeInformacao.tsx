@@ -1,6 +1,5 @@
 import React, { HTMLAttributes } from 'react'
 import * as Tooltip from '@radix-ui/react-tooltip';
-import classNames from 'classnames';
 
 interface IconeInformacaoProps extends HTMLAttributes<HTMLElement> {
     texto: string;
