@@ -63,7 +63,7 @@ export const RefeicaoDoHistorico = (props: IRefeicaoDoHistorico) => {
 
             {
                 props.status === "nao-utilizado-sem-justificativa" &&
-                <RefeicaoNaoJustificada meal_id={props.ticket_id} />
+                <RefeicaoNaoJustificada meal_id={props.ticket_id} studentJustification={props.studentJustification} />
             }
 
         </Secao>
