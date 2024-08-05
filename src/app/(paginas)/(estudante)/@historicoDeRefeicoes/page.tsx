@@ -1,8 +1,7 @@
 "use client"
 
 import { HistoricoDeRefeicoes } from "@/app/elementos/modulos/HistoricoDeRefeicoes";
-import { queryClient } from "@/app/lib/elementos/QueryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { CustomQueryClientProvider } from "@/app/lib/elementos/CustomQueryProviderWrapper";
 import React from "react";
 
 export default function HistoricoDeRefeicoesParallelPage({
@@ -14,8 +13,8 @@ export default function HistoricoDeRefeicoesParallelPage({
     searchParams?: { [key: string]: string | string[] | undefined };
 }) {
     return (
-        <QueryClientProvider client={queryClient}>
+        <CustomQueryClientProvider>
             <HistoricoDeRefeicoes forcarExibicao={(searchParams?.pagina === 'historicoDeRefeicoes')} />
-        </QueryClientProvider>
+        </CustomQueryClientProvider>
     )
 }
