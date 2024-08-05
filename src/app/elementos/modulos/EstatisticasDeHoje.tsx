@@ -13,8 +13,6 @@ import { TicketsPorDia } from "../componentes/TicketsPorDia";
 import { TicketsPorRefeicao } from "../componentes/TicketsPorRefeicao";
 import { useQuery } from "@tanstack/react-query";
 
-const cache: { [data: string]: IRefeicao[] } = {};
-
 export default function EstatisticasDeHoje() {
     const [dataDaPesquisa, setDataDaPesquisa] = useState(new Date().toISOString().split('T')[0]);
     const textoData = new Date().toISOString().split('T')[0] === dataDaPesquisa ? "hoje" : DatasHelper.converterParaFormatoBrasileiro(dataDaPesquisa);
