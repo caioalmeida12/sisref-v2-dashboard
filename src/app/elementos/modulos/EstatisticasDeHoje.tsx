@@ -22,20 +22,6 @@ export default function EstatisticasDeHoje() {
         queryFn: () => fetchRefeicoesPorDia({ data: dataDaPesquisa })
     });
 
-    const elementosRefeicao = ([1, 2, 3, 4] as const).map((turno) => {
-        if (isLoading) {
-            return <RefeicaoLoading key={turno} />
-        }
-
-        return (
-            <Refeicao key={turno} turno={turno} refeicao={
-                refeicoes.find((refeicao: IRefeicao) => refeicao.refeicao?.id === turno)?.refeicao
-            } cardapio={
-                refeicoes.find((refeicao: IRefeicao) => refeicao.refeicao?.id === turno)?.cardapio
-            } />
-        )
-    });
-
     return (
         <Secao className={`flex flex-col gap-y-4 lg:grid lg:grid-cols-2 lg:gap-4`}>
             <Slider texto={`Estatísticas para ${textoData}`} className="bg-preto-400 col-span-2"
@@ -55,7 +41,20 @@ export default function EstatisticasDeHoje() {
                     )
                 }
             />
-            {elementosRefeicao}
+            {
+                isLoading &&
+                ([1, 2, 3, 4] as const).map((_, index) => (
+                    <RefeicaoLoading key={index} />
+                ))
+            }
+            {
+                refeicoes &&
+                ([1, 2, 3, 4] as const).map((turno) => (
+                    <Refeicao key={turno} turno={turno} refeicao={
+                        refeicoes.find((refeicao: IRefeicao) => refeicao.refeicao?.id === turno)?.refeicao
+                    } />
+                ))
+            }
             <div className="grid col-span-2 grid-cols-3">
                 <ReservasPorDia className="col-start-1 col-end-3" textoDoCabecalho="Reservas por dia" data="16/06/2024" refeicoes={[
                     { nome: "Lanche da manhã", quantidade: 10 },
