@@ -3,6 +3,7 @@
 import { cookies } from "next/headers"
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction"
 import { IRefeicaoDoHistorico } from "../elementos/interfaces/IRefeicaoDoHistorico"
+import { IRefeicao } from "../elementos/interfaces/IRefeicao"
 
 export const fetchTicketsSemJustificativa = async () => {
     const API_URL = new URL(`https://ruapi.cedro.ifce.edu.br/api/student/schedulings/not-used-without-justification`)
@@ -19,15 +20,15 @@ export const fetchTicketsSemJustificativa = async () => {
 
     if (resposta.status === 401) return redirecionarViaAction()
 
-    const refeicoes = await resposta.json()
+    const refeicoes: {
+        meal_id: 1 | 2 | 3 | 4,
+        menu: IRefeicao,
+        meal: IRefeicao,
+        absenceJustification: string | null
+    }[]
+        = await resposta.json()
 
-    if (!("data" in refeicoes)) return []
-
-    const data = refeicoes.data
-
-    const array = Array.isArray(data) ? data : [data];
-
-    return array.map((refeicao) => ({
+    return refeicoes.map((refeicao) => ({
         turno: refeicao.meal_id as 1 | 2 | 3 | 4,
         cardapio: refeicao.menu,
         refeicao: refeicao.meal,
