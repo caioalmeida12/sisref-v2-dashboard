@@ -20,11 +20,11 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
     const { data: tickets, isLoading, isError } = useQuery({
         queryKey: ['historicoDeRefeicoes'],
         queryFn: async () => {
-            const aSerUtilizado = await fetchTickets('a-ser-utilizado')
-            const utilizado = await fetchTickets('utilizado')
-            const cancelado = await fetchTickets('cancelado')
-            const naoUtilizado = await fetchTickets('nao-utilizado')
-            const naoUtilizadoSemJustificativa = await fetchTicketsSemJustificativa()
+            const aSerUtilizado = (await fetchTickets('a-ser-utilizado')).filter(ticket => ticket !== null)
+            const utilizado = (await fetchTickets('utilizado')).filter(ticket => ticket !== null)
+            const cancelado = (await fetchTickets('cancelado')).filter(ticket => ticket !== null)
+            const naoUtilizado = (await fetchTickets('nao-utilizado')).filter(ticket => ticket !== null)
+            const naoUtilizadoSemJustificativa = (await fetchTicketsSemJustificativa()).filter(ticket => ticket !== null)
 
             return {
                 aSerUtilizado,
@@ -48,25 +48,25 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
         if (!todosSaoArray) return
 
         // Adiciona o status de cada ticket para que possa ser exibido no componente.
-        tickets.aSerUtilizado.forEach(ticket => ticket.status = 'a-ser-utilizado')
-        tickets.utilizado.forEach(ticket => ticket.status = 'utilizado')
-        tickets.cancelado.forEach(ticket => ticket.status = 'cancelado')
+        tickets.aSerUtilizado.forEach(ticket => ticket!.status = 'a-ser-utilizado')
+        tickets.utilizado.forEach(ticket => ticket!.status = 'utilizado')
+        tickets.cancelado.forEach(ticket => ticket!.status = 'cancelado')
         tickets.naoUtilizado.forEach(ticket => {
-            ticket.absenceJustification ?
-                ticket.status = 'justificado' :
-                ticket.status = 'nao-utilizado'
+            ticket!.absenceJustification ?
+                ticket!.status = 'justificado' :
+                ticket!.status = 'nao-utilizado'
         })
-        tickets.naoUtilizadoSemJustificativa.forEach(ticket => ticket.status = 'nao-utilizado-sem-justificativa')
+        tickets.naoUtilizadoSemJustificativa.forEach(ticket => ticket!.status = 'nao-utilizado-sem-justificativa')
 
         const todosTickets = [...tickets.aSerUtilizado, ...tickets.utilizado, ...tickets.cancelado, ...tickets.naoUtilizado]
         const todosTicketsOrdenados = todosTickets.sort((a, b) => {
-            return new Date(b.cardapio.date).getTime() - new Date(a.cardapio.date).getTime()
+            return new Date(b!.cardapio.date).getTime() - new Date(a!.cardapio.date).getTime()
         })
 
         const ticketsMaisRecentes = todosTicketsOrdenados.slice(0, QUANTOS_TICKETS_MOSTRAR)
 
         // Sempre mantém os tickets sem justificativa no início da lista.
-        const concatenarTicketsETicketsSemJustificativa = [...tickets.naoUtilizadoSemJustificativa, ...ticketsMaisRecentes]
+        const concatenarTicketsETicketsSemJustificativa = [...tickets.naoUtilizadoSemJustificativa, ...ticketsMaisRecentes] as IRefeicaoDoHistorico[]
 
         setTicketsMaisRecentes(concatenarTicketsETicketsSemJustificativa)
     }, [tickets])
