@@ -31,6 +31,7 @@
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
     "@udecode/plate-common": "^35.3.2",
+    "@vercel/speed-insights": "^1.0.12",
     "chart.js": "^4.4.3",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
