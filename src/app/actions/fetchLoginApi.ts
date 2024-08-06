@@ -40,7 +40,11 @@ export async function fetchLoginAPI(formData: FormData) {
     })
         .then(resposta => resposta.json())
         // Erro ao conectar com a API
-        .catch(erro => redirect(`/login?erro=${encodeURIComponent(mensagemDeErroPorCodigoHTTP(erro.status))}`))
+        .catch(erro => {
+            console.error(erro)
+
+            return redirect(`/login?erro=${encodeURIComponent(mensagemDeErroPorCodigoHTTP(erro.status))}`)
+        })
 
     // Erro durante a autenticação
     if (respostaFoiErroDeAutenticacao(resposta)) return redirect(`/login?erro=${encodeURIComponent(resposta.message)}`)
