@@ -1,5 +1,6 @@
 import { Footer } from "@/app/elementos/componentes/Footer";
 import { Navbar } from "@/app/elementos/modulos/Navbar";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import React from "react";
 
 interface EstudanteLayoutProps {
@@ -13,6 +14,7 @@ interface EstudanteLayoutProps {
 export default function EstudanteLayout({ children, restricoesAlimentares, refeicoesPorDia, historicoDeRefeicoes, refeicoesAutorizadas }: EstudanteLayoutProps) {
     return (
         <>
+            <SpeedInsights />
             <Navbar navItems={[
                 {
                     titulo: 'Refeições', rota: '?pagina=refeicoesPorDia',
@@ -36,7 +38,7 @@ export default function EstudanteLayout({ children, restricoesAlimentares, refei
                     ],
                 },
             ]}
-           />
+            />
 
             <main className='w-full grid gap-y-8 px-6 my-8 lg:grid lg:grid-cols-12 lg:gap-x-8 max-w-screen-xl mx-auto'>
                 <div className="col-left flex flex-col gap-y-8">
