@@ -39,7 +39,7 @@ const RefeicaoCurta = (props: IRefeicaoComTurno) => {
     const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[pegarStatusDaRefeicao(props)];
 
     return (
-        <Secao>
+        <Secao className="h-fit">
             <div className="flex justify-between">
                 <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
                 {StatusRefeicao}
@@ -55,7 +55,7 @@ const RefeicaoLonga = (props: IRefeicaoComTurno, comBotao: boolean) => {
     const textoStatus = pegarStatusDaRefeicao(props);
 
     return (
-        <Secao className="flex flex-col gap-y-2">
+        <Secao className="flex flex-col gap-y-2 h-fit">
             <div className="flex justify-between">
                 <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
                 {StatusRefeicao}
@@ -94,7 +94,7 @@ export const Refeicao = (props: IRefeicaoComTurno) => {
 
 export const RefeicaoLoading = () => {
     return (
-        <Secao className="flex flex-col gap-y-2">
+        <Secao className="flex flex-col gap-y-2 h-fit">
             <div className="flex justify-between">
                 <Skeleton width={140} height={20} />
                 <Skeleton width={80} height={20} />
