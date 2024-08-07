@@ -15,9 +15,9 @@ const classNamePorVariante = {
     ocultar: "bg-branco-400 text-preto-400 hover:outline-preto-400",
 };
 
-export const Botao = forwardRef<HTMLButtonElement, BotaoProps>(({ texto, variante, className, ...rest }, ref) => {
+export const Botao = forwardRef<HTMLButtonElement, BotaoProps>(({ texto, variante, className, disabled, ...rest }, ref) => {
     return (
-        <button {...rest} ref={ref} className={classnames(`p-4 rounded-md text-branco-400 font-bold w-full outline-2 hover:outline hover:animate-outline`, classNamePorVariante[variante], className)}>
+        <button {...rest} ref={ref} className={classnames(`p-4 rounded-md text-branco-400 font-bold w-full outline-2 hover:outline hover:animate-outline`, classNamePorVariante[variante], className, { 'opacity-50 cursor-not-allowed': disabled })} disabled={disabled}>
             {texto}
         </button>
     );
