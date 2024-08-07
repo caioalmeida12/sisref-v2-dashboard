@@ -11,7 +11,7 @@ export default function LoginPage() {
 
         <div className='flex flex-col min-h-screen'>
             <Navbar navItems={[]} />
-            <main className="flex-grow p-4 bg-branco-400">
+            <main className="flex-grow p-4 bg-branco-400 flex items-center justify-center">
                 <Login />
             </main>
             <Footer />
