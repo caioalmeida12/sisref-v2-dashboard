@@ -1,6 +1,6 @@
 
 "use client"
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cancelar } from './Cancelar';
 import { Botao } from '../../basicos/Botao';
