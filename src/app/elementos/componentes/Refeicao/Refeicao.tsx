@@ -9,6 +9,7 @@ import { Reservar } from "./Reservar";
 import { Cancelar } from "./Cancelar";
 import { IRefeicaoComTurno } from "../../interfaces/IRefeicao";
 import Skeleton from "react-loading-skeleton";
+import Modal from "./Modal";
 
 const varianteNomeRefeicaoPorTurno = {
     1: "manha",
@@ -81,7 +82,7 @@ const RefeicaoLonga = (props: IRefeicaoComTurno, comBotao: boolean) => {
                 ))}
             </p>
             {comBotao && textoStatus === "disponivel" && <Reservar meal_id={props.refeicao.id} date={props.cardapio.date} />}
-            {comBotao && textoStatus === "reservado" && <Cancelar meal_id={props.refeicao.id} date={props.cardapio.date} />}
+            {comBotao && textoStatus === "reservado" && <Modal meal_id={props.refeicao.id} date={props.cardapio.date} />}
         </Secao>
     )
 }
