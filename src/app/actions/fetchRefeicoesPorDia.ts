@@ -7,7 +7,7 @@ import { IRefeicaoSchema } from "../elementos/interfaces/IRefeicao";
 
 
 export async function fetchRefeicoesPorDia({ data = new Date().toISOString().split('T')[0] }: { data?: string }) {
-    const API_URL = new URL("https://ruapi.cedro.ifce.edu.br/api/all/menus-today")
+    const API_URL = new URL(`${process.env.URL_BASE_API}/all/menus-today`)
     API_URL.searchParams.append('date', data);
 
     const auth = cookies().get("authorization")?.value

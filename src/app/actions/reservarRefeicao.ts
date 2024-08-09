@@ -8,7 +8,7 @@ export const reservarRefeicao = async ({ meal_id, date }: { meal_id?: number, da
     const auth = cookies().get("authorization")?.value
     if (!auth) return redirecionarViaAction()
 
-    const resposta = await fetch("https://ruapi.cedro.ifce.edu.br/api/student/schedulings/new", {
+    const resposta = await fetch(`${process.env.URL_BASE_API}/student/schedulings/new`, {
         headers: {
             "Content-Type": "application/json",
             "Authorization": auth

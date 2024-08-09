@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
 
 export const fetchInformacoesDoCampus = async (id: string) => {
-    const API_URL = "https://ruapi.cedro.ifce.edu.br/api/all/campus"
+    const API_URL = `${process.env.URL_BASE_API}/all/campus`
 
     const auth = cookies().get("authorization")?.value
     if (!auth) return redirecionarViaAction()
