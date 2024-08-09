@@ -1,7 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { validarTokenDosCookies } from "./ValidarTokenDosCookies";
 import { redirecionarViaMiddleware } from "./RedirecionarViaMiddleware";
-import { isRedirectError } from "next/dist/client/components/redirect";
 
 
 /**
