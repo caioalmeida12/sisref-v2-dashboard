@@ -12,7 +12,7 @@ const urlPorTipoDeTicket = {
 } as const
 
 export const fetchTickets = async (tipo: keyof typeof urlPorTipoDeTicket) => {
-    const API_URL = new URL(`https://ruapi.cedro.ifce.edu.br/api/student/schedulings${urlPorTipoDeTicket[tipo]}?page=1`)
+    const API_URL = new URL(`${process.env.URL_BASE_API}/student/schedulings${urlPorTipoDeTicket[tipo]}?page=1`)
 
     const auth = cookies().get("authorization")?.value
     if (!auth) return redirecionarViaAction()

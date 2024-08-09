@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { validarTokenDosCookies } from "./ValidarTokenDosCookies";
 import { redirecionarViaMiddleware } from "./RedirecionarViaMiddleware";
+import { isRedirectError } from "next/dist/client/components/redirect";
 
 
 /**
@@ -20,7 +21,7 @@ export const requerAutenticacaoMiddleware = async (req: NextRequest) => {
     const validado = validarTokenDosCookies()
 
     try {
-        const fetchAuth = await fetch(`https://ruapi.cedro.ifce.edu.br/api/all/show-student/${validado.sub}`);
+        const fetchAuth = await fetch(`${process.env.URL_BASE_API}/all/show-student/${validado.sub}`);
         if (!fetchAuth.ok) redirecionarViaMiddleware("/login")
     } catch (error) {
         console.log("Erro ao buscar informações do estudante (middleware.ts): ")

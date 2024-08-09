@@ -5,7 +5,7 @@ import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction"
 import { ParseRefeicaoDoHistorico } from "../elementos/interfaces/IRefeicaoDoHistorico"
 
 export const fetchTicketsSemJustificativa = async () => {
-    const API_URL = new URL(`https://ruapi.cedro.ifce.edu.br/api/student/schedulings/not-used-without-justification`)
+    const API_URL = new URL(`${process.env.URL_BASE_API}/student/schedulings/not-used-without-justification`)
 
     const auth = cookies().get("authorization")?.value
     if (!auth) return redirecionarViaAction()

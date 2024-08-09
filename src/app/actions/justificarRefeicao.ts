@@ -6,7 +6,7 @@ import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCod
 import { IJustificativaDeEstudante, justificativasPermitidas } from "../elementos/interfaces/IJustificativaDeEstudante"
 
 export const justificarRefeicao = async ({ indiceDaJustificativa, meal_id }: { indiceDaJustificativa: IJustificativaDeEstudante["value"], meal_id: number }) => {
-    const API_URL = new URL(`https://ruapi.cedro.ifce.edu.br/api/student/schedulings/student-justification/${meal_id}`);
+    const API_URL = new URL(`${process.env.URL_BASE_API}/student/schedulings/student-justification/${meal_id}`);
 
     if (!indiceDaJustificativa) return { sucesso: false, mensagem: "Nenhuma justificativa selecionada. Selecione uma justificativa." };
 

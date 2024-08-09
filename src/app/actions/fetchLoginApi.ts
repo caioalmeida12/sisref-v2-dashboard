@@ -26,7 +26,7 @@ const respostaFoiErroDeAutenticacao = (resposta: unknown): resposta is { message
  * @redirects fail - Para a página de login com uma mensagem de erro caso haja algum problema.
  */
 export async function fetchLoginAPI(formData: FormData) {
-    const API_URL = "https://ruapi.cedro.ifce.edu.br/api/login"
+    const API_URL = `${process.env.URL_BASE_API}/login`
 
     const resposta = await fetch(API_URL, {
         method: 'POST',

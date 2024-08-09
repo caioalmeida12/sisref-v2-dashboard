@@ -8,7 +8,7 @@ export const cancelarRefeicao = async ({ meal_id, date }: { meal_id?: number, da
     const auth = cookies().get("authorization")?.value
     if (!auth) return redirecionarViaAction()
 
-    const resposta = await fetch(`https://ruapi.cedro.ifce.edu.br/api/student/schedulings/cancel?meal_id=${meal_id}&date=${date}`, {
+    const resposta = await fetch(`${process.env.URL_BASE_API}/student/schedulings/cancel?meal_id=${meal_id}&date=${date}`, {
         method: "PUT",
         headers: {
             "Authorization": `Bearer ${auth}`,

@@ -15,7 +15,7 @@ const respostaFoiErroDeAutenticacao = (resposta: any) => resposta[0] === 'Erro 4
  * @redirects fail - Para a página de erro com uma mensagem de erro caso haja algum problema.
  */
 export async function fetchRefeicoesParaCardapio() {
-    const API_URL = "https://ruapi.cedro.ifce.edu.br/api/meal/all"
+    const API_URL = `${process.env.URL_BASE_API}/meal/all`
 
     const resposta = await fetch(API_URL, {
         method: 'GET',

@@ -18,7 +18,7 @@ const respostaFoiErroDeAutenticacao = (resposta: unknown): resposta is ErroDeAut
  * @returns JSON com os campos `sucesso` e `mensagem`.
  */
 export async function criarRelatorioDeDesperdicio(formData: FormData) {
-    const API_URL = "https://ruapi.cedro.ifce.edu.br/api/report/add-waste-report"
+    const API_URL = `${process.env.URL_BASE_API}/report/add-waste-report`
 
     try {
         const resposta = await fetch(API_URL, {

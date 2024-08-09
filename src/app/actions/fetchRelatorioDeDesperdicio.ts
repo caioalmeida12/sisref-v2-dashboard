@@ -9,7 +9,7 @@ export const fetchRelatorioDeDesperdicio = async ({ data }: { data: string }) =>
 
     if (!auth) return redirecionarViaAction()
 
-    const fetchRelatorio = await fetch(`https://ruapi.cedro.ifce.edu.br/api/report/list-waste?date=${data}`, {
+    const fetchRelatorio = await fetch(`${process.env.URL_BASE_API}/report/list-waste?date=${data}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
