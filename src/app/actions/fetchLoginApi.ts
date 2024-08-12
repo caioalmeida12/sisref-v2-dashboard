@@ -4,17 +4,7 @@ import { cookies } from "next/headers"
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction"
 import { redirect } from "next/navigation"
 import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCodigoHTTP"
-
-interface IInformacoesLogin {
-    access_token: string
-    token_type: string
-    id: number
-    classfication: 'STUDENT'
-    name: string
-    campus: number
-    active: number
-    expires_in: number
-}
+import { IInformacoesDeLogin } from "../lib/middlewares/IInformacoesDeLogin"
 
 const respostaFoiErroDeAutenticacao = (resposta: unknown): resposta is { message: string } => (resposta as { message: string }).message !== undefined
 
@@ -50,10 +40,20 @@ export async function fetchLoginAPI(formData: FormData) {
     if (respostaFoiErroDeAutenticacao(resposta)) return redirect(`/login?erro=${encodeURIComponent(resposta.message)}`)
 
     // Autenticado com sucesso
-    const informacoesLogin: IInformacoesLogin = { ...resposta }
+    const informacoesLogin: IInformacoesDeLogin = { ...resposta }
 
     cookies().set("authorization", `Bearer ${informacoesLogin.access_token}`)
     cookies().set("classification", informacoesLogin.classfication)
 
-    return redirecionarViaAction("/")
+    const redirecionar = {
+        "ADMIN": "/administrador",
+        "NUTRI": "/nutricionista",
+        "RECEPCAO": "/recepcao",
+        "ASSIS_ESTU": "/assistencia_estudantil",
+        "STUDENT": "/"
+    } as const
+
+    if (!redirecionar[informacoesLogin.classfication]) return redirect(`/login?erro=${encodeURIComponent("Classificação de usuário inválida. Faça login novamente.")}`)
+
+    return redirecionarViaAction(redirecionar[informacoesLogin.classfication])
 }

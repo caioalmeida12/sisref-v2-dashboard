@@ -3,6 +3,8 @@ import { validarTokenDosCookies } from "./ValidarTokenDosCookies";
 import { fetchInformacoesDeEstudante } from "./FetchInformacoesDeEstudante";
 import { cookies } from "next/headers";
 import { redirecionarViaMiddleware } from "./RedirecionarViaMiddleware";
+import { IInformacoesDeEstudante } from "@/app/elementos/interfaces/IInformacoesDeEstudante";
+import { IInformacoesDeLogin } from "./IInformacoesDeLogin";
 
 
 /**
@@ -19,7 +21,7 @@ interface IRotasEAutorizacoes {
      * Classificação do usuário
      * ex: "STUDENT"
      */
-    classification: "STUDENT" | "ASSIS_ESTU" | "RECEPCAO" | "NUTRI",
+    classification: IInformacoesDeLogin["classfication"],
     /**
      * Rotas permitidas para essa classificação
      * ex: ["/", "/login", "/logout"]
@@ -30,16 +32,19 @@ interface IRotasEAutorizacoes {
 const rotasPermitidasPorClassification: IRotasEAutorizacoes[] = [
     {
         classification: "STUDENT",
-        permissions: ["/", "/login", "/logout", "/nutricionista"]
+        permissions: ["/", "/login", "/logout"]
     }, {
         classification: "NUTRI",
-        permissions: ["/", "/login", "/logout"]
+        permissions: ["/nutricionista", "/login", "/logout"]
     }, {
         classification: "RECEPCAO",
-        permissions: ["/", "/login", "/logout"]
+        permissions: ["/recepcao", "/login", "/logout"]
     }, {
         classification: "ASSIS_ESTU",
-        permissions: ["/", "/login", "/logout"]
+        permissions: ["/assistencia_estudantil", "/login", "/logout"]
+    }, {
+        classification: "ADMIN",
+        permissions: ["/administrador", "/login", "/logout"]
     }
 ]
 
