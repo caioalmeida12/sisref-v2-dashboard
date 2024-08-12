@@ -9,11 +9,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 export const Cancelar = ({ meal_id, date, ref_botao_fechar }: { meal_id?: number, date?: string, ref_botao_fechar: React.RefObject<HTMLButtonElement> }) => {
     const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
     const queryClient = useQueryClient();
-    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const [botaoDesativado, setBotaoDesativado] = useState(true);
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setIsButtonDisabled(false);
+            setBotaoDesativado(false);
         }, 1000);
 
         return () => clearTimeout(timer);
@@ -52,7 +52,7 @@ export const Cancelar = ({ meal_id, date, ref_botao_fechar }: { meal_id?: number
     return (
         <>
             <div ref={mensagemDeRespostaRef} className="hidden"></div>
-            <Botao variante="remover" texto="Sim, desejo cancelar" onClick={handleCancelar} disabled={isPending || isButtonDisabled} />
+            <Botao variante="remover" texto="Sim, desejo cancelar" onClick={handleCancelar} disabled={isPending || botaoDesativado} />
         </>
     )
 }
