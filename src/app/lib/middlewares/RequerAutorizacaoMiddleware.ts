@@ -3,7 +3,6 @@ import { validarTokenDosCookies } from "./ValidarTokenDosCookies";
 import { fetchInformacoesDeEstudante } from "./FetchInformacoesDeEstudante";
 import { cookies } from "next/headers";
 import { redirecionarViaMiddleware } from "./RedirecionarViaMiddleware";
-import { IInformacoesDeEstudante } from "@/app/elementos/interfaces/IInformacoesDeEstudante";
 import { IInformacoesDeLogin } from "./IInformacoesDeLogin";
 
 
