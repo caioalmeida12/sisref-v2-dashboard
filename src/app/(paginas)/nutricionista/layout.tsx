@@ -1,6 +1,5 @@
 import { Footer } from "@/app/elementos/componentes/Footer";
 import EstatisticasDeHoje from "@/app/elementos/modulos/EstatisticasDeHoje";
-import { InformacoesDeEstudante } from "@/app/elementos/modulos/InformacoesDeEstudante";
 import { Navbar } from "@/app/elementos/modulos/Navbar";
 import { CustomQueryClientProvider } from "@/app/lib/elementos/CustomQueryProviderWrapper";
 import React from "react";
@@ -39,7 +38,7 @@ export default function NutricionistaLayout({ children }: NutricionistaLayoutPro
 
             <main className='w-full grid gap-y-8 px-6 my-8 lg:grid lg:grid-cols-12 lg:gap-x-8 max-w-screen-2xl mx-auto'>
                 <div className="col-left flex flex-col gap-y-8">
-                    <InformacoesDeEstudante />
+                    {/* <InformacoesDeEstudante /> */}
                     {children}
                 </div>
                 <div className="col-right flex flex-col gap-y-8 lg:row-start-1 lg:row-span-3">
