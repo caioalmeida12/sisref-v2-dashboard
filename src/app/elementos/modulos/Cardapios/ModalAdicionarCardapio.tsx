@@ -4,13 +4,22 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
-import SelectRefeicao from './SelectRefeicao';
+import SelectRefeicao from '../../componentes/SelectRefeicao';
 import { Botao } from '../../basicos/Botao';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { criarCardapio } from '@/app/actions/criarCardapio';
 import { IRefeicao } from '../../interfaces/IRefeicao';
 
-const Modal = () => {
+const BotaoDeAbrir = () => (
+    <Dialog.Root>
+        <Dialog.Trigger asChild>
+            <Botao variante='adicionar' texto='Adicionar Cardápio' />
+        </Dialog.Trigger>
+        <CorpoDoModal />
+    </Dialog.Root>
+);
+
+const CorpoDoModal = () => {
     const [data, setData] = useState({
         startDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
         endDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
@@ -128,4 +137,7 @@ const Modal = () => {
     )
 };
 
-export default Modal;
+export const ModalAdicionarCardapio = () => { }
+
+ModalAdicionarCardapio.BotaoDeAbrir = BotaoDeAbrir;
+ModalAdicionarCardapio.CorpoDoModal = CorpoDoModal;
