@@ -71,50 +71,50 @@ export const ModalAdicionarRelatorioDeDesperdicio = () => {
     };
 
     return (
-        <Dialog.Portal>
-            <Dialog.Root>
-                <Dialog.Trigger asChild>
-                    <Botao variante='adicionar' texto='Adicionar Relatorio' />
-                </Dialog.Trigger>
-            </Dialog.Root>
-            <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
-            <Dialog.Content className="flex flex-col gap-y-4 overflow-y-auto data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] min-h-[600px] max-h-[85vh] w-[90vw] max-w-[900px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none ">
-                <Dialog.Title className="m-0 font-medium text-lg">
-                    Adicionar Relatório de Desperdício
-                </Dialog.Title>
-                <Dialog.Description className="leading-normal">
-                    Preencha os a data e escreva novo relatório de desperdício.
-                </Dialog.Description>
-                <div>
-                    <label className='font-bold' htmlFor='data'>
-                        Data do relatório
-                    </label>
-                    <div className='outline outline-1 rounded mt-2'>
-                        <Datepicker
-                            primaryColor='red'
-                            value={data}
-                            onChange={(novaData) => handleDataChange(novaData)}
-                            asSingle={true}
-                            useRange={false}
-                            placeholder='AAAA-MM-DD'
-                            displayFormat='DD/MM/YYYY'
-                            i18n='pt-br'
-                        />
+        <Dialog.Root>
+            <Dialog.Trigger asChild>
+                <Botao variante='adicionar' texto='Adicionar Relatorio' />
+            </Dialog.Trigger>
+            <Dialog.Portal>
+                <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
+                <Dialog.Content className="flex flex-col gap-y-4 overflow-y-auto data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] min-h-[600px] max-h-[85vh] w-[90vw] max-w-[900px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none ">
+                    <Dialog.Title className="m-0 font-medium text-lg">
+                        Adicionar Relatório de Desperdício
+                    </Dialog.Title>
+                    <Dialog.Description className="leading-normal">
+                        Preencha os a data e escreva novo relatório de desperdício.
+                    </Dialog.Description>
+                    <div>
+                        <label className='font-bold' htmlFor='data'>
+                            Data do relatório
+                        </label>
+                        <div className='outline outline-1 rounded mt-2'>
+                            <Datepicker
+                                primaryColor='red'
+                                value={data}
+                                onChange={(novaData) => handleDataChange(novaData)}
+                                asSingle={true}
+                                useRange={false}
+                                placeholder='AAAA-MM-DD'
+                                displayFormat='DD/MM/YYYY'
+                                i18n='pt-br'
+                            />
+                        </div>
                     </div>
-                </div>
-                <EditorDeTexto setHtml={setHtml} />
-                <div ref={mensagemDeResposta} className="hidden" />
-                <Botao variante='adicionar' texto='Salvar' onClick={handleSalvar} />
-                <Dialog.Close asChild>
-                    <button
-                        name='Fechar'
-                        className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-2 right-2 inline-flex p-[0.25em] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
-                        aria-label="Fechar"
-                    >
-                        <Cross2Icon />
-                    </button>
-                </Dialog.Close>
-            </Dialog.Content>
-        </Dialog.Portal>
+                    <EditorDeTexto setHtml={setHtml} />
+                    <div ref={mensagemDeResposta} className="hidden" />
+                    <Botao variante='adicionar' texto='Salvar' onClick={handleSalvar} />
+                    <Dialog.Close asChild>
+                        <button
+                            name='Fechar'
+                            className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-2 right-2 inline-flex p-[0.25em] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+                            aria-label="Fechar"
+                        >
+                            <Cross2Icon />
+                        </button>
+                    </Dialog.Close>
+                </Dialog.Content>
+            </Dialog.Portal >
+        </Dialog.Root>
     )
 };
