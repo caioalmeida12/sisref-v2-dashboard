@@ -2,18 +2,17 @@
 
 import React from 'react'
 
-import { IconeMenu } from "@elementos/basicos/icones/IconeMenu";
 import { INavbarProps } from "../interfaces/INavbarProps";
 import { useState } from "react";
-import { IconeFechar } from "@elementos/basicos/icones/IconeFechar";
 import { NavbarNavigation } from '../modulos/Navbar';
+import Icone from '../basicos/icones';
 
 export const MenuDrawer = ({ navItems }: INavbarProps) => {
     const [aberto, setAberto] = useState(false);
 
     const IconeFecharSeAberto = aberto && (
         <div className="flex justify-end px-6 py-4">
-            <IconeFechar onClick={() => setAberto(false)} />
+            <Icone.Fechar onClick={() => setAberto(false)} />
         </div>
     )
 
@@ -25,7 +24,7 @@ export const MenuDrawer = ({ navItems }: INavbarProps) => {
 
     return (
         <>
-            <IconeMenu onClick={() => setAberto(true)} />
+            <Icone.Menu onClick={() => setAberto(true)} />
             <div
                 className={`
                         flex flex-col gap-y-4 fixed z-20 bg-verde-400 transition-all

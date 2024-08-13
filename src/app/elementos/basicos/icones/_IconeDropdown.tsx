@@ -1,10 +1,6 @@
 import { CaretDownIcon } from '@radix-ui/react-icons';
-import React, { HTMLAttributes } from 'react'
-
-interface IconeDropdownProps extends HTMLAttributes<HTMLElement> {
-    variante?: "sem-circulo";
-}
-
+import React from 'react'
+import { IIconeDropdownProps } from '.';
 
 const SemCirculo = ({ ...rest }) =>
     <CaretDownIcon
@@ -12,7 +8,7 @@ const SemCirculo = ({ ...rest }) =>
         aria-hidden
         {...rest} />
 
-export const IconeDropdown = ({ variante, ...rest }: IconeDropdownProps) => {
+export const _IconeDropdown = ({ variante, ...rest }: IIconeDropdownProps) => {
     if (!variante || variante === "sem-circulo") {
         return <SemCirculo {...rest} />
     }

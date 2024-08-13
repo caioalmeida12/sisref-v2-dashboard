@@ -5,10 +5,10 @@ import { Refeicao, RefeicaoLoading } from "../componentes/Refeicao/Refeicao";
 import { Slider } from "../componentes/Slider";
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { IconeInformacao } from "../basicos/icones/IconeInformacao";
 import { Secao } from "../basicos/Secao";
 import { useQuery } from "@tanstack/react-query";
 import { IRefeicao } from "../interfaces/IRefeicao";
+import Icone from "../basicos/icones";
 
 
 export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
@@ -43,7 +43,7 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
 
                 tooltip={
                     (refeicoes?.length) ? null : (
-                        <IconeInformacao texto="Nenhuma refeição encontrada para esta data" />
+                        <Icone.Informacao texto="Nenhuma refeição encontrada para esta data" />
                     )
                 }
             />

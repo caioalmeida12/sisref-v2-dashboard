@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { IconeRefeicao } from "./icones/IconeRefeicao";
+import Icone from './icones';
 
 interface NomeDaRefeicaoProps {
     variante: keyof typeof nomePorVariante;
@@ -16,7 +16,7 @@ const nomePorVariante = {
 export const NomeDaRefeicao = ({ variante }: NomeDaRefeicaoProps) => {
     return (
         <div className="flex gap-x-2 items-center">
-            <IconeRefeicao variante={variante} />
+            <Icone.Refeicao variante={variante} />
             <span className="font-bold">{nomePorVariante[variante]}</span>
         </div>
     )
