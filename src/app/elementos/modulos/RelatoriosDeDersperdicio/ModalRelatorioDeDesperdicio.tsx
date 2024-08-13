@@ -9,7 +9,16 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 import EditorDeTexto from './EditorDeTexto';
 import { criarRelatorioDeDesperdicio } from '@/app/actions/criarRelatorioDeDesperdicio';
 
-const Modal = () => {
+const BotaoDeAbrir = () => (
+    <Dialog.Root>
+        <Dialog.Trigger asChild>
+            <Botao variante='adicionar' texto='Adicionar Relatorio' />
+        </Dialog.Trigger>
+        <CorpoDoModal />
+    </Dialog.Root>
+);
+
+const CorpoDoModal = () => {
     const [data, setData] = useState({
         startDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
         endDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
@@ -113,4 +122,7 @@ const Modal = () => {
     )
 };
 
-export default Modal;
+export const ModalAdicionarRelatorioDeDesperdicio = () => { }
+
+ModalAdicionarRelatorioDeDesperdicio.BotaoDeAbrir = BotaoDeAbrir;
+ModalAdicionarRelatorioDeDesperdicio.CorpoDoModal = CorpoDoModal;
