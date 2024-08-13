@@ -80,7 +80,7 @@ const RefeicaoLonga = (props: IRefeicaoComTurno, comBotao: boolean) => {
                 ))}
             </p>
             {comBotao && textoStatus === "disponivel" && <BotaoDeRefeicao.Reservar meal_id={props.refeicao.id} date={props.cardapio.date} />}
-            {comBotao && textoStatus === "reservado" && <BotaoDeRefeicao.AbrirModalDeCancelar meal_id={props.refeicao.id} date={props.cardapio.date} />}
+            {comBotao && textoStatus === "reservado" && <BotaoDeRefeicao.BotaoDeAbrir meal_id={props.refeicao.id} date={props.cardapio.date} />}
         </Secao>
     )
 }
