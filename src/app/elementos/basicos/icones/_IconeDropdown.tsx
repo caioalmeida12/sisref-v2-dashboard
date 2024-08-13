@@ -1,6 +1,6 @@
 import { CaretDownIcon } from '@radix-ui/react-icons';
 import React from 'react'
-import { IIconeDropdownProps } from '.';
+import { IIconeDropdownProps } from '../../interfaces/IIcones';
 
 const SemCirculo = ({ ...rest }) =>
     <CaretDownIcon

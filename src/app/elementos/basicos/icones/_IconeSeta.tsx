@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { SVGProps } from "react";
-import { IIconeSetaProps } from '.';
+import { IIconeSetaProps } from '../../interfaces/IIcones';
 
 interface IconeSetaProps extends SVGProps<SVGSVGElement> {
     fill: string;

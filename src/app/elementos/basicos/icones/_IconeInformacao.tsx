@@ -1,6 +1,6 @@
 import React from 'react'
 import * as Tooltip from '@radix-ui/react-tooltip';
-import { IIconeInformacaoProps } from '.';
+import { IIconeInformacaoProps } from '../../interfaces/IIcones';
 
 export const _IconeInformacao = ({ texto, cor }: IIconeInformacaoProps) => {
     return (
