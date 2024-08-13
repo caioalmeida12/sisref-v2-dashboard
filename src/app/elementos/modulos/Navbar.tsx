@@ -5,9 +5,9 @@ import React from 'react';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { INavbarProps } from '../interfaces/INavbarProps';
 import Link from 'next/link';
-import { IconeDropdown } from '../basicos/icones/IconeDropdown';
 import { Logout } from '../basicos/Logout';
 import { MenuDrawer } from '../componentes/MenuDrawer';
+import Icone from '../basicos/icones';
 
 export const Navbar = ({ navItems }: INavbarProps) => {
     return (
@@ -30,7 +30,7 @@ export const NavbarNavigation = ({ navItems }: INavbarProps) => {
                 <NavigationMenu.Item key={index} className="relative flex items-center gap-x-2 cursor-pointer">
                     <NavigationMenu.Trigger className='flex items-center gap-2 group'>
                         {navItem.titulo}
-                        <IconeDropdown />
+                        <Icone.Dropdown />
                     </NavigationMenu.Trigger>
                     <NavigationMenu.Content className='absolute top-full inset-x-0 bg-branco-400 p-4 py-3 rounded shadow-preto-400 shadow-sm flex flex-col gap-y-2 mt-1'>
                         {navItem.itens.map((item, itemIndex) => (

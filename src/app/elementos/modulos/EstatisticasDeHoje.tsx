@@ -3,7 +3,6 @@
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { useState } from "react";
 import { Secao } from "../basicos/Secao"
-import { IconeInformacao } from "../basicos/icones/IconeInformacao";
 import { Slider } from "../componentes/Slider"
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
 import { IRefeicao } from "../interfaces/IRefeicao";
@@ -12,6 +11,7 @@ import ReservasPorDia from "../componentes/ReservasPorDia";
 import { TicketsPorDia } from "../componentes/TicketsPorDia";
 import { TicketsPorRefeicao } from "../componentes/TicketsPorRefeicao";
 import { useQuery } from "@tanstack/react-query";
+import Icone from "../basicos/icones";
 
 export default function EstatisticasDeHoje() {
     const [dataDaPesquisa, setDataDaPesquisa] = useState(new Date().toISOString().split('T')[0]);
@@ -37,7 +37,7 @@ export default function EstatisticasDeHoje() {
 
                 tooltip={
                     (refeicoes?.length) ? null : (
-                        <IconeInformacao texto="Nenhuma refeição encontrada para esta data" />
+                        <Icone.Informacao texto="Nenhuma refeição encontrada para esta data" />
                     )
                 }
             />

@@ -1,12 +1,8 @@
-import React, { HTMLAttributes } from 'react'
+import React from 'react'
 import * as Tooltip from '@radix-ui/react-tooltip';
+import { IIconeInformacaoProps } from '.';
 
-interface IconeInformacaoProps extends HTMLAttributes<HTMLElement> {
-    texto: string;
-    cor?: string
-}
-
-export const IconeInformacao = ({ texto, cor }: IconeInformacaoProps) => {
+export const _IconeInformacao = ({ texto, cor }: IIconeInformacaoProps) => {
     return (
         <div className="w-min">
             <Tooltip.Provider delayDuration={100}>

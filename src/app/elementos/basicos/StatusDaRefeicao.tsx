@@ -2,7 +2,7 @@ import React from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 
 import { IIconeStatusProps } from "@elementos/interfaces/IIconeStatusProps";
-import { IconeStatus } from "./icones/IconeStatus";
+import Icone from './icones';
 
 interface StatusDaRefeicaoProps {
     texto: string;
@@ -41,7 +41,7 @@ export const StatusDaRefeicao = ({ texto, cor, icone, textoTooltip }: StatusDaRe
                 <Tooltip.Trigger asChild>
                     <div className="flex items-center gap-x-2 leading-normal">
                         <p className={`${classNamePorCor[cor].text} w-min`}>{texto}</p>
-                        <IconeStatus fill={classNamePorCor[cor].fill || "fill-cinza-600"} variante={icone} />
+                        <Icone.Status fill={classNamePorCor[cor].fill || "fill-cinza-600"} variante={icone} />
                     </div>
                 </Tooltip.Trigger>
                 {textoTooltip && (

@@ -11,6 +11,16 @@ interface EstudanteLayoutProps {
     refeicoesAutorizadas: React.ReactNode;
 }
 
+/**
+ * Layout padrão para páginas de estudante.
+ * 
+ * Este layout utiliza-se da função de rotas paralelas do Next.js para renderizar múltiplas páginas em uma única rota.
+ * Essa funcionalidade é necessária para que a página de estudante seja renderizada como SPA no desktop e seja repartida em múltiplas páginas no mobile.
+ * 
+ * Para entender melhor como funciona a função de rotas paralelas, consulte a documentação do Next.js: 
+ * Rotas dinâmicas: https://nextjs.org/docs/routing/dynamic-routes
+ * Rotas paralelas: https://nextjs.org/docs/app/building-your-application/routing/parallel-routes
+ */
 export default function EstudanteLayout({ children, restricoesAlimentares, refeicoesPorDia, historicoDeRefeicoes, refeicoesAutorizadas }: EstudanteLayoutProps) {
     return (
         <>

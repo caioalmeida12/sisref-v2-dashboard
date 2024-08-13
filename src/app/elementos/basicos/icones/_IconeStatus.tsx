@@ -53,7 +53,7 @@ const statusPorVariante: {
     "relogio-x": RelogioComX
 }
 
-export const IconeStatus = ({ fill, variante }: IIconeStatusProps) => {
+export const _IconeStatus = ({ fill, variante }: IIconeStatusProps) => {
     const Icone = statusPorVariante[variante];
     return <Icone fill={fill} />
 }
