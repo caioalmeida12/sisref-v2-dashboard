@@ -1,8 +1,8 @@
 import React from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 
-import { IIconeStatusProps } from "@elementos/interfaces/IIconeStatusProps";
 import Icone from './icones';
+import { IIconeStatusProps } from '../interfaces/IIcones';
 
 interface StatusDaRefeicaoProps {
     texto: string;
