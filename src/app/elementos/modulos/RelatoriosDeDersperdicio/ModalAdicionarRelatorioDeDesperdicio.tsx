@@ -9,16 +9,8 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 import EditorDeTexto from './EditorDeTexto';
 import { criarRelatorioDeDesperdicio } from '@/app/actions/criarRelatorioDeDesperdicio';
 
-const BotaoDeAbrir = () => (
-    <Dialog.Root>
-        <Dialog.Trigger asChild>
-            <Botao variante='adicionar' texto='Adicionar Relatorio' />
-        </Dialog.Trigger>
-        <CorpoDoModal />
-    </Dialog.Root>
-);
 
-const CorpoDoModal = () => {
+export const ModalAdicionarRelatorioDeDesperdicio = () => {
     const [data, setData] = useState({
         startDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
         endDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
@@ -80,6 +72,11 @@ const CorpoDoModal = () => {
 
     return (
         <Dialog.Portal>
+            <Dialog.Root>
+                <Dialog.Trigger asChild>
+                    <Botao variante='adicionar' texto='Adicionar Relatorio' />
+                </Dialog.Trigger>
+            </Dialog.Root>
             <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
             <Dialog.Content className="flex flex-col gap-y-4 overflow-y-auto data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] min-h-[600px] max-h-[85vh] w-[90vw] max-w-[900px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none ">
                 <Dialog.Title className="m-0 font-medium text-lg">
@@ -121,8 +118,3 @@ const CorpoDoModal = () => {
         </Dialog.Portal>
     )
 };
-
-export const ModalAdicionarRelatorioDeDesperdicio = () => { }
-
-ModalAdicionarRelatorioDeDesperdicio.BotaoDeAbrir = BotaoDeAbrir;
-ModalAdicionarRelatorioDeDesperdicio.CorpoDoModal = CorpoDoModal;
