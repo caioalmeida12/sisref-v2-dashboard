@@ -66,69 +66,69 @@ export const ModalAdicionarCardapio = () => {
     };
 
     return (
-        <Dialog.Portal>
-            <Dialog.Root>
-                <Dialog.Trigger asChild>
-                    <Botao variante='adicionar' texto='Adicionar Cardápio' />
-                </Dialog.Trigger>
-            </Dialog.Root>
-            <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
-            <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none ">
-                <Dialog.Title className="m-0 font-medium text-lg">
-                    Adicionar cardápio
-                </Dialog.Title>
-                <Dialog.Description className="mt-2 mb-5 leading-normal">
-                    Preencha os campos abaixo para adicionar um novo cardápio.
-                </Dialog.Description>
-                <form className='flex flex-col gap-y-4' onSubmit={handleSalvar}>
-                    <fieldset className='flex flex-col gap-y-2 justify-start'>
-                        <label className='font-medium' htmlFor="description">
-                            Descrição
-                        </label>
-                        <input
-                            className="shadow-preto-400 focus:shadow-preto-400 inline-flex h-8 w-full flex-1 items-center justify-center rounded-[4px] px-4 py-2 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-                            id="description"
-                            placeholder='Ex: Pão com ovos + suco de acerola'
-                        />
-                    </fieldset>
-                    <fieldset className='flex flex-col gap-y-2 justify-start' >
-                        <label className='font-medium' htmlFor="date">
-                            Data
-                        </label>
-                        <div className='outline outline-1 rounded'>
-                            <Datepicker
-                                primaryColor='red'
-                                value={data}
-                                onChange={(novaData) => handleDataChange(novaData)}
-                                asSingle={true}
-                                useRange={false}
-                                placeholder='AAAA-MM-DD'
-                                displayFormat='DD/MM/YYYY'
-                                i18n='pt-br'
+        <Dialog.Root>
+            <Dialog.Trigger asChild>
+                <Botao variante='adicionar' texto='Adicionar Cardápio' />
+            </Dialog.Trigger>
+            <Dialog.Portal>
+                <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
+                <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none ">
+                    <Dialog.Title className="m-0 font-medium text-lg">
+                        Adicionar cardápio
+                    </Dialog.Title>
+                    <Dialog.Description className="mt-2 mb-5 leading-normal">
+                        Preencha os campos abaixo para adicionar um novo cardápio.
+                    </Dialog.Description>
+                    <form className='flex flex-col gap-y-4' onSubmit={handleSalvar}>
+                        <fieldset className='flex flex-col gap-y-2 justify-start'>
+                            <label className='font-medium' htmlFor="description">
+                                Descrição
+                            </label>
+                            <input
+                                className="shadow-preto-400 focus:shadow-preto-400 inline-flex h-8 w-full flex-1 items-center justify-center rounded-[4px] px-4 py-2 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+                                id="description"
+                                placeholder='Ex: Pão com ovos + suco de acerola'
                             />
+                        </fieldset>
+                        <fieldset className='flex flex-col gap-y-2 justify-start' >
+                            <label className='font-medium' htmlFor="date">
+                                Data
+                            </label>
+                            <div className='outline outline-1 rounded'>
+                                <Datepicker
+                                    primaryColor='red'
+                                    value={data}
+                                    onChange={(novaData) => handleDataChange(novaData)}
+                                    asSingle={true}
+                                    useRange={false}
+                                    placeholder='AAAA-MM-DD'
+                                    displayFormat='DD/MM/YYYY'
+                                    i18n='pt-br'
+                                />
+                            </div>
+                        </fieldset>
+                        <fieldset className='flex flex-col gap-y-2 justify-start'>
+                            <label className='font-medium' htmlFor="meal">
+                                Refeição
+                            </label>
+                            <SelectRefeicao refeicoes={refeicoes} />
+                        </fieldset>
+                        <div className="flex justify-end flex-col items-center gap-y-2">
+                            <div className="text-center" ref={mensagemDeResposta}></div>
+                            <Botao texto='Salvar' variante='adicionar' type='submit' className='mt-4' disabled={salvando} />
                         </div>
-                    </fieldset>
-                    <fieldset className='flex flex-col gap-y-2 justify-start'>
-                        <label className='font-medium' htmlFor="meal">
-                            Refeição
-                        </label>
-                        <SelectRefeicao refeicoes={refeicoes} />
-                    </fieldset>
-                    <div className="flex justify-end flex-col items-center gap-y-2">
-                        <div className="text-center" ref={mensagemDeResposta}></div>
-                        <Botao texto='Salvar' variante='adicionar' type='submit' className='mt-4' disabled={salvando} />
-                    </div>
-                    <Dialog.Close asChild>
-                        <button
-                            name='Fechar'
-                            className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-2 right-2 inline-flex p-[0.25em] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
-                            aria-label="Fechar"
-                        >
-                            <Cross2Icon />
-                        </button>
-                    </Dialog.Close>
-                </form>
-            </Dialog.Content>
-        </Dialog.Portal>
+                        <Dialog.Close asChild>
+                            <button
+                                name='Fechar'
+                                className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-2 right-2 inline-flex p-[0.25em] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+                                aria-label="Fechar"
+                            >
+                                <Cross2Icon />
+                            </button>
+                        </Dialog.Close>
+                    </form>
+                </Dialog.Content>
+            </Dialog.Portal>
+        </Dialog.Root>
     )
 };
