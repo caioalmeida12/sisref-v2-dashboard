@@ -2,16 +2,16 @@
 "use client"
 import React, { useRef } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Cancelar } from './Cancelar';
-import { Botao } from '../../basicos/Botao';
+import { Botao } from '../../../basicos/Botao';
 import { Cross2Icon } from '@radix-ui/react-icons';
+import { BotaoDeRefeicao } from '.';
 
 interface ModalProps {
     meal_id?: number;
     date?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ meal_id, date }) => {
+export const _ModalDeCancelar: React.FC<ModalProps> = ({ meal_id, date }) => {
     const refBotaoFechar = useRef<HTMLButtonElement>(null);
 
     return (
@@ -28,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({ meal_id, date }) => {
                     <Dialog.Description className="leading-normal">
                         Caso cancele sua reserva, não será possível reservar novamente.
                     </Dialog.Description>
-                    <Cancelar meal_id={meal_id} date={date} ref_botao_fechar={refBotaoFechar} />
+                    <BotaoDeRefeicao.Cancelar meal_id={meal_id!} date={date!} ref_botao_fechar={refBotaoFechar} />
                     <Dialog.Close asChild>
                         <button
                             ref={refBotaoFechar}
@@ -47,5 +47,3 @@ const Modal: React.FC<ModalProps> = ({ meal_id, date }) => {
         </Dialog.Root>
     );
 };
-
-export default Modal;

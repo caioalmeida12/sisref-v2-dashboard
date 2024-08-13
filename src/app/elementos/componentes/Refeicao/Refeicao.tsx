@@ -5,10 +5,9 @@ import { Secao } from "@elementos/basicos/Secao";
 import { StatusDaRefeicao } from "@elementos/basicos/StatusDaRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { pegarStatusDaRefeicao } from "@/app/lib/elementos/Refeicao";
-import { Reservar } from "./Reservar";
 import { IRefeicaoComTurno } from "../../interfaces/IRefeicao";
 import Skeleton from "react-loading-skeleton";
-import Modal from "./Modal";
+import { BotaoDeRefeicao } from "./BotaoDeRefeicao";
 
 const varianteNomeRefeicaoPorTurno = {
     1: "manha",
@@ -80,8 +79,8 @@ const RefeicaoLonga = (props: IRefeicaoComTurno, comBotao: boolean) => {
                     </React.Fragment>
                 ))}
             </p>
-            {comBotao && textoStatus === "disponivel" && <Reservar meal_id={props.refeicao.id} date={props.cardapio.date} />}
-            {comBotao && textoStatus === "reservado" && <Modal meal_id={props.refeicao.id} date={props.cardapio.date} />}
+            {comBotao && textoStatus === "disponivel" && <BotaoDeRefeicao.Reservar meal_id={props.refeicao.id} date={props.cardapio.date} />}
+            {comBotao && textoStatus === "reservado" && <BotaoDeRefeicao.AbrirModalDeCancelar meal_id={props.refeicao.id} date={props.cardapio.date} />}
         </Secao>
     )
 }

@@ -1,12 +1,13 @@
 "use client"
 
 import React, { useCallback, useState, useEffect } from "react"
-import { Botao } from "../../basicos/Botao"
+import { Botao } from "../../../basicos/Botao"
 import { cancelarRefeicao } from "@/app/actions/cancelarRefeicao"
 import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { IBotaoDeRefeicaoProps } from "."
 
-export const Cancelar = ({ meal_id, date, ref_botao_fechar }: { meal_id?: number, date?: string, ref_botao_fechar: React.RefObject<HTMLButtonElement> }) => {
+export const _Cancelar = ({ meal_id, date, ref_botao_fechar }: Required<IBotaoDeRefeicaoProps>) => {
     const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
     const queryClient = useQueryClient();
     const [botaoDesativado, setBotaoDesativado] = useState(true);
@@ -41,7 +42,7 @@ export const Cancelar = ({ meal_id, date, ref_botao_fechar }: { meal_id?: number
 
             setTimeout(() => {
                 ref_botao_fechar.current?.click();
-            }, 750);
+            }, 1000);
         }
     })
 
