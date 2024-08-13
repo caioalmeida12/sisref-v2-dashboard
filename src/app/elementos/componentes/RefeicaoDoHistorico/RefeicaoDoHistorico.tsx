@@ -6,7 +6,7 @@ import { StatusDaRefeicao } from "@elementos/basicos/StatusDaRefeicao";
 import { IRefeicaoDoHistorico } from "../../interfaces/IRefeicaoDoHistorico";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import Skeleton from "react-loading-skeleton";
-import { RefeicaoNaoJustificada } from "./RefeicaoNaoJustificada";
+import { RefeicaoNaoJustificada } from "./RefeicaoDoHistoricoNaoJustificada";
 
 const varianteNomeRefeicaoPorTurno = {
     1: "manha",
