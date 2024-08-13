@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { IIconeFecharProps } from '.';
+import { IIconeFecharProps } from '../../interfaces/IIcones';
 
 export const _IconeFechar = ({ className, ...rest }: IIconeFecharProps) => {
     return (

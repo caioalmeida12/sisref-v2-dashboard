@@ -1,6 +1,5 @@
 import React from 'react'
-
-import { IIconeStatusProps } from "@elementos/interfaces/IIconeStatusProps"
+import { IIconeStatusProps } from '../../interfaces/IIcones'
 
 const CirculoComX = ({ fill }: { fill: IIconeStatusProps["fill"] }) => {
     return (

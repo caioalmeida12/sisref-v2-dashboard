@@ -1,6 +1,5 @@
 import React from 'react'
-
-import { IIconeRefeicaoProps } from '.';
+import { IIconeRefeicaoProps } from '../../interfaces/IIcones'
 
 const LancheDaManha = () => (
     <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.25 8.188a.75.75 0 0 1 0 1.5H.75a.75.75 0 0 1 0-1.5zm0-1.126h-1.193a4.2 4.2 0 0 0 0-1.5h1.193a.75.75 0 0 1 0 1.5m-9.307 0H.75a.75.75 0 0 1 0-1.5h1.193a4.2 4.2 0 0 0 0 1.5M3 6.313q.001.39.095.75h5.81Q9 6.703 9 6.313a3 3 0 0 0-6 0m-.315-4.11.823.823c-.401.305-.745.68-1.012 1.11l-.871-.872a.75.75 0 1 1 1.06-1.06M10.11 3l-.823.823a4.2 4.2 0 0 0-1.109-1.012l.871-.872a.75.75 0 1 1 1.061 1.06M6.75 1.062a.75.75 0 0 0-1.5 0v1.194a4.2 4.2 0 0 1 1.5 0z" fill="#000" /></svg>

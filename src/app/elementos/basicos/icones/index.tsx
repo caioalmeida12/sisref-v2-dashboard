@@ -1,5 +1,5 @@
-import React, { HTMLAttributes, SVGProps } from 'react';
-import { IIconeStatusProps } from '../../interfaces/IIconeStatusProps';
+import React from 'react';
+import { IIconeDropdownProps, IIconeFecharProps, IIconeInformacaoProps, IIconeMenuProps, IIconeRefeicaoProps, IIconeSetaProps, IIconeStatusProps } from '../../interfaces/IIcones';
 import { _IconeAviso } from './_IconeAviso';
 import { _IconeDropdown } from './_IconeDropdown';
 import { _IconeFechar } from './_IconeFechar';
@@ -10,13 +10,6 @@ import { _IconeRefeicao } from './_IconeRefeicao';
 import { _IconeRestricaoAlimentar } from './_IconeRestricaoAlimentar';
 import { _IconeSeta } from './_IconeSeta';
 import { _IconeStatus } from './_IconeStatus';
-
-export interface IIconeDropdownProps extends HTMLAttributes<HTMLElement> { variante?: "sem-circulo"; }
-export interface IIconeFecharProps extends React.SVGProps<SVGSVGElement> { }
-export interface IIconeInformacaoProps extends HTMLAttributes<HTMLElement> { texto: string; cor?: string }
-export interface IIconeMenuProps extends React.SVGProps<SVGSVGElement> { }
-export interface IIconeRefeicaoProps extends SVGProps<SVGSVGElement> { variante: "manha" | "almoco" | "tarde" | "noite"; }
-export interface IIconeSetaProps extends SVGProps<SVGSVGElement> { fill: string; direcao: "cima" | "baixo" | "esquerda" | "direita"; }
 
 const Icone = ({ children }: { children: React.ReactNode }) => children;
 
