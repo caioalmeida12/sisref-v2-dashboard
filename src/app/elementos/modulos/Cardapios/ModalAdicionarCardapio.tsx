@@ -10,16 +10,7 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 import { criarCardapio } from '@/app/actions/criarCardapio';
 import { IRefeicao } from '../../interfaces/IRefeicao';
 
-const BotaoDeAbrir = () => (
-    <Dialog.Root>
-        <Dialog.Trigger asChild>
-            <Botao variante='adicionar' texto='Adicionar Cardápio' />
-        </Dialog.Trigger>
-        <CorpoDoModal />
-    </Dialog.Root>
-);
-
-const CorpoDoModal = () => {
+export const ModalAdicionarCardapio = () => {
     const [data, setData] = useState({
         startDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
         endDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
@@ -76,6 +67,11 @@ const CorpoDoModal = () => {
 
     return (
         <Dialog.Portal>
+            <Dialog.Root>
+                <Dialog.Trigger asChild>
+                    <Botao variante='adicionar' texto='Adicionar Cardápio' />
+                </Dialog.Trigger>
+            </Dialog.Root>
             <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
             <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none ">
                 <Dialog.Title className="m-0 font-medium text-lg">
@@ -136,8 +132,3 @@ const CorpoDoModal = () => {
         </Dialog.Portal>
     )
 };
-
-export const ModalAdicionarCardapio = () => { }
-
-ModalAdicionarCardapio.BotaoDeAbrir = BotaoDeAbrir;
-ModalAdicionarCardapio.CorpoDoModal = CorpoDoModal;
