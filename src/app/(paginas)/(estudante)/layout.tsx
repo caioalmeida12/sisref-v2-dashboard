@@ -21,7 +21,7 @@ interface EstudanteLayoutProps {
  * Rotas dinâmicas: https://nextjs.org/docs/routing/dynamic-routes
  * Rotas paralelas: https://nextjs.org/docs/app/building-your-application/routing/parallel-routes
  */
-export default function EstudanteLayout({ children, restricoesAlimentares, refeicoesPorDia, historicoDeRefeicoes, refeicoesAutorizadas }: EstudanteLayoutProps) {
+export default function EstudanteLayout({ children, refeicoesPorDia, historicoDeRefeicoes, refeicoesAutorizadas }: EstudanteLayoutProps) {
     return (
         <>
             <SpeedInsights />
