@@ -1,10 +1,6 @@
-import { Footer } from "@/app/elementos/componentes/Footer";
-import EstatisticasDeHoje from "@/app/elementos/modulos/EstatisticasDeHoje";
-import { Navbar } from "@/app/elementos/modulos/Navbar";
 import { Sidebar } from "@/app/elementos/modulos/Sidebar";
 import { CustomQueryClientProvider } from "@/app/lib/elementos/CustomQueryProviderWrapper";
 import { validarTokenDosCookies } from "@/app/lib/middlewares/ValidarTokenDosCookies";
-import { cookies } from "next/headers";
 import React from "react";
 
 interface NutricionistaLayoutProps {
@@ -15,6 +11,13 @@ export default async function NutricionistaLayout({ children }: NutricionistaLay
     const decodificado = validarTokenDosCookies()
 
     return (
-        <Sidebar token_decodificado={decodificado} />
+        <CustomQueryClientProvider>
+            <div className="flex">
+                <Sidebar token_decodificado={decodificado} />
+                <div className="block">
+                    {children}
+                </div>
+            </div>
+        </CustomQueryClientProvider>
     );
 }
