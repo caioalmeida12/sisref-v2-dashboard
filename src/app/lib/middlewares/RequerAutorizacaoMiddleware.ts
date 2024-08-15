@@ -48,8 +48,6 @@ const rotasPermitidasPorClassification: IRotasEAutorizacoes[] = [
 ]
 
 export const requerAutorizacaoMiddleware = async (req: NextRequest) => {
-    if (true) return NextResponse.next();
-
     const pathname = new URL(req.url).pathname
     if (rotasQueNaoRequeremAutenticacao.includes(pathname)) return NextResponse.next();
 
