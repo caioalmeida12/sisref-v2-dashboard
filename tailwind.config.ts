@@ -63,6 +63,7 @@ module.exports = {
         "cinza-600": "#A29C9B",
         "cinza-400": "#EFEFEF",
         "preto-400": "#000000",
+        "preto-300": "#222222",
         "verde-400": "#1C5E27",
         "verde-300": "#359830",
         "vermelho-400": "#C80B0F",
