@@ -10,6 +10,7 @@ import { _IconeRefeicao } from './_IconeRefeicao';
 import { _IconeRestricaoAlimentar } from './_IconeRestricaoAlimentar';
 import { _IconeSeta } from './_IconeSeta';
 import { _IconeStatus } from './_IconeStatus';
+import { _IconeUsuario } from './_IconeUsuario';
 
 const Icone = ({ children }: { children: React.ReactNode }) => children;
 
@@ -23,5 +24,6 @@ Icone.Refeicao = (props: IIconeRefeicaoProps) => <_IconeRefeicao {...props} />;
 Icone.RestricaoAlimentar = () => <_IconeRestricaoAlimentar />;
 Icone.Seta = (props: IIconeSetaProps) => <_IconeSeta {...props} />;
 Icone.Status = (props: IIconeStatusProps) => <_IconeStatus {...props} />;
+Icone.Usuario = () => <_IconeUsuario />;
 
 export default Icone;
