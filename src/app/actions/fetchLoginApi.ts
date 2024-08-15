@@ -43,7 +43,7 @@ export async function fetchLoginAPI(formData: FormData) {
     const informacoesLogin: IInformacoesDeLogin = { ...resposta }
 
     cookies().set("authorization", `Bearer ${informacoesLogin.access_token}`)
-    cookies().set("classification", informacoesLogin.classfication)
+    cookies().set("classification", informacoesLogin.classification)
 
     const redirecionar = {
         "ADMIN": "/administrador",
@@ -53,7 +53,7 @@ export async function fetchLoginAPI(formData: FormData) {
         "STUDENT": "/"
     } as const
 
-    if (!redirecionar[informacoesLogin.classfication]) return redirect(`/login?erro=${encodeURIComponent("Classificação de usuário inválida. Faça login novamente.")}`)
+    if (!redirecionar[informacoesLogin.classification]) return redirect(`/login?erro=${encodeURIComponent("Classificação de usuário inválida. Faça login novamente.")}`)
 
-    return redirecionarViaAction(redirecionar[informacoesLogin.classfication])
+    return redirecionarViaAction(redirecionar[informacoesLogin.classification])
 }
