@@ -45,7 +45,7 @@ export const Aviso = ({ titulo, texto, textoBotao }: AvisoProps) => {
             <div className='flex justify-between items-center'>
                 <h2 className="font-bold text-branco-400 flex gap-x-2 items-center"><Icone.Aviso />{titulo}</h2>
                 <button name='Ver mais / Ver menos' className='relative before:content-[""] before:inset-[-.5em] before:rounded before:opacity-10 before:bg-branco-400 hover:before:absolute'>
-                    <Icone.Dropdown variante='sem-circulo' />
+                    <Icone.Dropdown />
                 </button>
             </div>
             <div className='transition-all duration-300' ref={elementoConteudo}>
