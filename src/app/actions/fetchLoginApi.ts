@@ -40,7 +40,11 @@ export async function fetchLoginAPI(formData: FormData) {
     if (respostaFoiErroDeAutenticacao(resposta)) return redirect(`/login?erro=${encodeURIComponent(resposta.message)}`)
 
     // Autenticado com sucesso
-    const informacoesLogin: IInformacoesDeLogin = { ...resposta }
+    const informacoesLogin: IInformacoesDeLogin = {
+        // é necessário fazer um cast para o campo classification, pois a resposta da API traz o campo como 'classfication' -- falta um 'i'
+        classification: resposta.classfication,
+        ...resposta
+    }
 
     cookies().set("authorization", `Bearer ${informacoesLogin.access_token}`)
     cookies().set("classification", informacoesLogin.classification)
