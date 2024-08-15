@@ -5,7 +5,7 @@ import * as Tooltip from '@radix-ui/react-tooltip';
 
 import classnames from 'classnames';
 
-const Icone = ({ children }: { children: React.ReactNode }) => children;
+const Icone = () => null;
 
 Icone.Aviso = () => (
     <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -164,6 +164,48 @@ Icone.Status = (props: IIconeStatusProps) => {
 Icone.Usuario = () => (
     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M6 0C6.79565 0 7.55871 0.31607 8.12132 0.87868C8.68393 1.44129 9 2.20435 9 3C9 3.79565 8.68393 4.55871 8.12132 5.12132C7.55871 5.68393 6.79565 6 6 6C5.20435 6 4.44129 5.68393 3.87868 5.12132C3.31607 4.55871 3 3.79565 3 3C3 2.20435 3.31607 1.44129 3.87868 0.87868C4.44129 0.31607 5.20435 0 6 0ZM6 7.5C9.315 7.5 12 8.8425 12 10.5V12H0V10.5C0 8.8425 2.685 7.5 6 7.5Z" fill="white" />
+    </svg>
+);
+
+Icone.Calendario = () => (
+    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.2 12.6H1.4V4.9H11.2M9.1 0V1.4H3.5V0H2.1V1.4H1.4C0.623 1.4 0 2.023 0 2.8V12.6C0 12.9713 0.1475 13.3274 0.41005 13.5899C0.672601 13.8525 1.0287 14 1.4 14H11.2C11.5713 14 11.9274 13.8525 12.1899 13.5899C12.4525 13.3274 12.6 12.9713 12.6 12.6V2.8C12.6 2.023 11.97 1.4 11.2 1.4H10.5V0" fill="white" />
+    </svg>
+);
+
+Icone.GarfoEFaca = () => (
+    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5.6 4.9H4.2V0H2.8V4.9H1.4V0H0V4.9C0 6.384 1.162 7.588 2.625 7.679V14H4.375V7.679C5.838 7.588 7 6.384 7 4.9V0H5.6V4.9ZM9.1 2.8V8.4H10.85V14H12.6V0C10.668 0 9.1 1.568 9.1 2.8Z" fill="white" />
+    </svg>
+);
+
+Icone.Casa = () => (
+    <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5.6 11.95V7.75H8.4V11.95H11.9V6.35H14L7 0.0499992L0 6.35H2.1V11.95H5.6Z" fill="white" />
+    </svg>
+);
+
+Icone.EstudanteComChapeu = () => (
+    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.33333 4.66667C9.33333 6.38556 7.94111 7.77778 6.22222 7.77778C4.50333 7.77778 3.11111 6.38556 3.11111 4.66667L3.19667 3.93556L0.777778 2.72222L6.22222 0L11.6667 2.72222V6.61111H10.8889V3.11111L9.24778 3.93556L9.33333 4.66667ZM6.22222 9.33333C9.66 9.33333 12.4444 10.7256 12.4444 12.4444V14H0V12.4444C0 10.7256 2.78444 9.33333 6.22222 9.33333Z" fill="white" />
+    </svg>
+);
+
+Icone.Ampulheta = () => (
+    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 0V4.2L2.8 7L0 9.8V14H8.4V9.8L5.6 7L8.4 4.2V0H0Z" fill="white" />
+    </svg>
+);
+
+Icone.GraficoDeBarras = () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12.4444 0H1.55556C0.7 0 0 0.7 0 1.55556V12.4444C0 13.3 0.7 14 1.55556 14H12.4444C13.3 14 14 13.3 14 12.4444V1.55556C14 0.7 13.3 0 12.4444 0ZM4.66667 10.8889H3.11111V5.44444H4.66667V10.8889ZM7.77778 10.8889H6.22222V3.11111H7.77778V10.8889ZM10.8889 10.8889H9.33333V7.77778H10.8889V10.8889Z" fill="white" />
+    </svg>
+);
+
+Icone.Lixeira = () => (
+    <svg width="11" height="14" viewBox="0 0 11 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.5385 5.13358L9.80513 6.40231L0.909377 1.26873L1.64274 0L3.87218 1.28339L4.86957 1.01205L8.04505 2.84547L8.3164 3.85018L10.5385 5.13358ZM0 12.5333V3.73284H3.71818L8.80042 6.66632V12.5333C8.80042 12.9223 8.64589 13.2953 8.37082 13.5704C8.09576 13.8455 7.72269 14 7.33368 14H1.46674C1.07773 14 0.704664 13.8455 0.429597 13.5704C0.154531 13.2953 0 12.9223 0 12.5333Z" fill="white" />
     </svg>
 );
 
