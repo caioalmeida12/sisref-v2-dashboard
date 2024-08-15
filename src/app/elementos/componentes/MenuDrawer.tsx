@@ -5,7 +5,7 @@ import React from 'react'
 import { INavbarProps } from "../interfaces/INavbarProps";
 import { useState } from "react";
 import { NavbarNavigation } from '../modulos/Navbar';
-import Icone from '../basicos/icones';
+import Icone from '../basicos/Icone';
 
 export const MenuDrawer = ({ navItems }: INavbarProps) => {
     const [aberto, setAberto] = useState(false);

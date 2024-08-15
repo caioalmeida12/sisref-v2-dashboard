@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Icone from './icones';
+import Icone from './Icone';
 
 interface NomeDaRefeicaoProps {
     variante: keyof typeof nomePorVariante;

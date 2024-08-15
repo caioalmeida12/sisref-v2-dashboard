@@ -5,7 +5,7 @@ import React, { useRef } from 'react'
 import { Botao } from "../basicos/Botao";
 
 import { toggle } from "slide-element"
-import Icone from '../basicos/icones';
+import Icone from '../basicos/Icone';
 
 interface AvisoProps {
     titulo: string;
