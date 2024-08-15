@@ -2,7 +2,7 @@
 
 import { logout } from "@/app/actions/logoutUsuario"
 import React from "react"
-import Icone from "./icones"
+import Icone from "./Icone"
 
 export const Logout = () => {
     const handleLogout = async () => await logout()

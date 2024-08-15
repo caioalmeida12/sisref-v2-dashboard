@@ -11,7 +11,7 @@ import ReservasPorDia from "../componentes/ReservasPorDia";
 import { TicketsPorDia } from "../componentes/TicketsPorDia";
 import { TicketsPorRefeicao } from "../componentes/TicketsPorRefeicao";
 import { useQuery } from "@tanstack/react-query";
-import Icone from "../basicos/icones";
+import Icone from "../basicos/Icone";
 
 export default function EstatisticasDeHoje() {
     const [dataDaPesquisa, setDataDaPesquisa] = useState(new Date().toISOString().split('T')[0]);

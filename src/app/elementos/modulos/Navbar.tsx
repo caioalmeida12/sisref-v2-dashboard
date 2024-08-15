@@ -7,7 +7,7 @@ import { INavbarProps } from '../interfaces/INavbarProps';
 import Link from 'next/link';
 import { Logout } from '../basicos/Logout';
 import { MenuDrawer } from '../componentes/MenuDrawer';
-import Icone from '../basicos/icones';
+import Icone from '../basicos/Icone';
 
 export const Navbar = ({ navItems }: INavbarProps) => {
     return (

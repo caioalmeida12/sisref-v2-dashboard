@@ -3,7 +3,7 @@
 import React from 'react'
 
 import { MouseEventHandler } from "react";
-import Icone from './icones';
+import Icone from './Icone';
 
 interface RestricaoAlimentarProps {
     texto: string

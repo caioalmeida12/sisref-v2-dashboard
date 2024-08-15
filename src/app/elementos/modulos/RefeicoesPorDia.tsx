@@ -8,7 +8,7 @@ import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { Secao } from "../basicos/Secao";
 import { useQuery } from "@tanstack/react-query";
 import { IRefeicao } from "../interfaces/IRefeicao";
-import Icone from "../basicos/icones";
+import Icone from "../basicos/Icone";
 
 
 export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {

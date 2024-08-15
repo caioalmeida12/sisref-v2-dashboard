@@ -10,7 +10,7 @@ import { Botao } from '../../basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { justificarRefeicao } from '@/app/actions/justificarRefeicao';
-import Icone from '../../basicos/icones';
+import Icone from '../../basicos/Icone';
 
 export const RefeicaoNaoJustificada = ({ meal_id, studentJustification }: { meal_id: number, studentJustification: string | null }) => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta()
