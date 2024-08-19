@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { justificarRefeicao } from '@/app/actions/justificarRefeicao';
 import Icone from '../../basicos/Icone';
+import { CustomTooltipWrapper } from '../../basicos/CustomTooltipWrapper';
 
 export const RefeicaoNaoJustificada = ({ meal_id, studentJustification }: { meal_id: number, studentJustification: string | null }) => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta()
@@ -53,7 +54,18 @@ export const RefeicaoNaoJustificada = ({ meal_id, studentJustification }: { meal
             <div className='flex flex-col gap-y-2'>
                 <div className='flex gap-x-2 text-cinza-600'>
                     Aguardando aprovação da justificativa.
-                    <Icone.Informacao texto={`Justificativa: ${studentJustification}`} cor='cinza-600' />
+                    <CustomTooltipWrapper
+                        elementoContent={
+                            <p>
+                                Justificativa solicitada: {studentJustification}
+                            </p>
+                        }
+                        elementoTrigger={
+                            <div className="my-auto">
+                                <Icone.Informacao cor='cinza-600' />
+                            </div>
+                        }
+                    />
                 </div>
             </div>
         )
