@@ -1,4 +1,3 @@
-
 "use client"
 import React, { useRef } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
@@ -12,11 +11,11 @@ interface ModalProps {
 }
 
 export const _ModalDeCancelar: React.FC<ModalProps> = ({ meal_id, date }) => {
-    const refBotaoFechar = useRef<HTMLButtonElement>(null);
+    const refBotaoFechar = useRef(null);
 
     return (
         <Dialog.Root>
-            <Dialog.Trigger>
+            <Dialog.Trigger asChild>
                 <Botao variante="remover" texto="Cancelar" />
             </Dialog.Trigger>
             <Dialog.Portal>
@@ -30,14 +29,13 @@ export const _ModalDeCancelar: React.FC<ModalProps> = ({ meal_id, date }) => {
                     </Dialog.Description>
                     <BotaoDeRefeicao.Cancelar meal_id={meal_id!} date={date!} ref_botao_fechar={refBotaoFechar} />
                     <Dialog.Close asChild>
-                        <button
+                        <div
                             ref={refBotaoFechar}
-                            name='Fechar'
-                            className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-2 right-2 inline-flex p-[0.25em] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+                            className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-2 right-2 inline-flex p-[0.25em] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none cursor-pointer"
                             aria-label="Fechar"
                         >
                             <Cross2Icon />
-                        </button>
+                        </div>
                     </Dialog.Close>
                     <Dialog.Close asChild>
                         <Botao variante="editar" texto="Não, não desejo cancelar" />
