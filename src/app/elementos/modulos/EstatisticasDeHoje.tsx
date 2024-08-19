@@ -11,7 +11,6 @@ import ReservasPorDia from "../componentes/ReservasPorDia";
 import { TicketsPorDia } from "../componentes/TicketsPorDia";
 import { TicketsPorRefeicao } from "../componentes/TicketsPorRefeicao";
 import { useQuery } from "@tanstack/react-query";
-import Icone from "../basicos/Icone";
 import { CustomTooltipWrapper } from "../basicos/CustomTooltipWrapper";
 
 export default function EstatisticasDeHoje() {
