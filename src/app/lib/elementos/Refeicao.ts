@@ -39,7 +39,7 @@ type StatusDaRefeicao = "disponivel" | "encerrado" | "bloqueado" | "cancelado" |
  * @returns O status da refeição.
  */
 export const pegarStatusDaRefeicao = (props: IRefeicaoComTurno): StatusDaRefeicao => {
-    if (!(props.cardapio) || !(props.refeicao)) return "encerrado";
+    if (!(props.cardapio) || !(props.refeicao)) return "indisponivel";
     if (!(props.cardapio.permission)) return "bloqueado";
     if (props.cardapio.canceled_by_student) return "cancelado";
     if (props.cardapio.agendado) return "reservado";
