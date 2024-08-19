@@ -1,7 +1,6 @@
 import React from "react"
 import ifce_logo_horizontal_branco from '@/app/elementos/assets/img/ifce_logo_horizontal_branco.png';
 import Image from "next/image"
-import { ITokenDecodificado } from "@/app/lib/middlewares/ITokenDecodificado";
 import { fetchInformacoesDoCampus } from "@/app/actions/fetchInformacoesDoCampus";
 import Icone from "../basicos/Icone";
 import { stringParaCamelCase } from "@/app/lib/elementos/StringParaCamelCase";
@@ -12,7 +11,8 @@ import { Logout } from "../basicos/Logout";
 import Link from "next/link";
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 
-export const Sidebar = async ({ token_decodificado }: { token_decodificado: ITokenDecodificado }) => {
+// export const Sidebar = async ({ token_decodificado }: { token_decodificado: ITokenDecodificado }) => {
+export const Sidebar = async () => {
     // A Api não possui uma rota para buscar informações de outros tipos de usuário senão estudantes, então vou mockar o retorno
     const usuario = {
         campus_id: 1,
