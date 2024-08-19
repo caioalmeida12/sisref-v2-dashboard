@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 
 import Icone from './Icone';
@@ -35,10 +35,15 @@ const classNamePorCor = {
 } as const;
 
 export const StatusDaRefeicao = ({ texto, cor, icone, textoTooltip }: StatusDaRefeicaoProps) => {
+    const [aberto, setAberto] = useState(false);
+
+    const handleAbrirTooltip = () => setAberto(true);
+    const handleFecharTooltip = () => setAberto(false);
+
     return (
         <Tooltip.Provider delayDuration={100}>
-            <Tooltip.Root>
-                <Tooltip.Trigger asChild>
+            <Tooltip.Root open={aberto}>
+                <Tooltip.Trigger asChild onMouseEnter={handleAbrirTooltip} onFocus={handleAbrirTooltip} onMouseLeave={handleFecharTooltip} onBlur={handleFecharTooltip}>
                     <div className="flex items-center gap-x-2 leading-normal">
                         <p className={`${classNamePorCor[cor].text} w-min`}>{texto}</p>
                         <Icone.Status fill={classNamePorCor[cor].fill || "fill-cinza-600"} variante={icone} />
