@@ -16,12 +16,12 @@ const varianteNomeRefeicaoPorTurno = {
 } as const;
 
 const elementoStatusRefeicaoPorTextoStatusRefeicao = {
-    "a-ser-utilizado": <StatusDaRefeicao cor="azul-400" icone="circulo-check" texto="A ser utilizado" textoTooltip="Você reservou esta refeição e ainda utilizou o ticket." />,
-    "nao-utilizado": <StatusDaRefeicao cor="amarelo-200" icone="circulo-x" texto="Não utilizado" textoTooltip="Você reservou esta refeição e não utilizou o ticket." />,
+    "a-ser-utilizado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Reservado" textoTooltip="Você ainda pode utilizar este ticket." />,
+    "nao-utilizado": <StatusDaRefeicao cor="amarelo-200" icone="circulo-check" texto="Disponível" textoTooltip="Você reservou esta refeição e ainda pode utilizar este ticket." />,
     "justificado": <StatusDaRefeicao cor="azul-400" icone="circulo-check" texto="Justificado" textoTooltip="Você justificou sua ausência a esta refeição." />,
     "cancelado": <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" textoTooltip="Você cancelou esta reserva." />,
-    "utilizado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Utilizado" textoTooltip="Você reservou e utilizou este ticket." />,
-    "nao-utilizado-sem-justificativa": <StatusDaRefeicao cor="vermelho-400" icone="circulo-x" texto="Não justificado" textoTooltip="Você reservou esta refeição e não utilizou o ticket. Justifique sua ausência." />
+    "utilizado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Utilizado" textoTooltip="Você reservou e já utilizou este ticket." />,
+    "nao-utilizado-sem-justificativa": <StatusDaRefeicao cor="vermelho-400" icone="circulo-x" texto="Não justificado" textoTooltip="Você não esteve presente nesta refeição. Justifique sua ausência." />
 } as const;
 
 /**
