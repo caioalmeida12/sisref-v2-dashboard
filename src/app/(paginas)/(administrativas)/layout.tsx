@@ -13,7 +13,7 @@ export default async function NutricionistaLayout({ children }: NutricionistaLay
     return (
         <CustomQueryClientProvider>
             <div className="flex">
-                <Sidebar token_decodificado={decodificado} />
+                <Sidebar />
                 <div className="block">
                     {children}
                 </div>
