@@ -22,7 +22,7 @@ const elementoStatusRefeicaoPorTextoStatusRefeicao = {
     "bloqueado": <StatusDaRefeicao cor="amarelo-200" icone="cadeado" texto="Bloqueado" textoTooltip="Esta refeição não está liberada para você." />,
     "cancelado": <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" textoTooltip="Você cancelou esta refeição." />,
     "reservado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Reservado" textoTooltip="Você reservou esta refeição." />,
-    "indisponivel": <StatusDaRefeicao cor="cinza-600" icone="relogio-x" texto="Indisponível" textoTooltip="Ainda é muito cedo para reservar esta refeição." />
+    "indisponivel": <StatusDaRefeicao cor="cinza-600" icone="relogio-x" texto="Indisponível" textoTooltip="Está muito cedo ou muito tarde para reservar esta refeição." />
 } as const;
 
 /**

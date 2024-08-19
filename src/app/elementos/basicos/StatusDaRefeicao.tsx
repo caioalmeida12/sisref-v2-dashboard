@@ -45,14 +45,14 @@ export const StatusDaRefeicao = ({ texto, cor, icone, textoTooltip }: StatusDaRe
             <Tooltip.Root open={aberto}>
                 <Tooltip.Trigger asChild onMouseEnter={handleAbrirTooltip} onFocus={handleAbrirTooltip} onMouseLeave={handleFecharTooltip} onBlur={handleFecharTooltip}>
                     <div className="flex items-center gap-x-2 leading-normal">
-                        <p className={`${classNamePorCor[cor].text} w-min`}>{texto}</p>
+                        <p className={`${classNamePorCor[cor].text}`}>{texto}</p>
                         <Icone.Status fill={classNamePorCor[cor].fill || "fill-cinza-600"} variante={icone} />
                     </div>
                 </Tooltip.Trigger>
                 {textoTooltip && (
                     <Tooltip.Portal>
                         <Tooltip.Content
-                            className="bg-branco-400 border border-cinza-600 shadow-lg rounded-md p-2 text-sm"
+                            className="bg-branco-400 border border-cinza-600 shadow-lg rounded-md p-2 text-sm max-w-[calc(100vw-2rem)]"
                             sideOffset={5}
                         >
                             {textoTooltip}
