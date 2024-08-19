@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import * as Tooltip from '@radix-ui/react-tooltip';
+import React from 'react';
 
 import Icone from './Icone';
 import { IIconeStatusProps } from '../interfaces/IIcones';
