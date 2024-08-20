@@ -42,7 +42,7 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
                 }}
 
                 tooltip={
-                    <CustomTooltipWrapper
+                    refeicoes?.length === 0 && <CustomTooltipWrapper
                         elementoContent={
                             <p>
                                 Nenhuma refeição encontrada para esta data.
