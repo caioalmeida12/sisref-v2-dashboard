@@ -14,9 +14,7 @@ export default async function NutricionistaLayout({ children }: NutricionistaLay
         <CustomQueryClientProvider>
             <div className="flex">
                 <Sidebar />
-                <div className="block">
-                    {children}
-                </div>
+                {children}
             </div>
         </CustomQueryClientProvider>
     );
