@@ -59,7 +59,7 @@ export const Sidebar = async () => {
                                 </NavigationMenu.Content>
                             </NavigationMenu.Item>
                         ) : (
-                            <Link className='flex gap-x-2 items-center cursor-pointer relative before:content-[""] before:inset-[-.5em] before:rounded before:opacity-10 before:bg-branco-400 before:hidden hover:before:block hover:before:absolute' key={index} href={link.rota}>
+                            <Link className='min-w-max flex gap-x-2 items-center cursor-pointer relative before:content-[""] before:inset-[-.5em] before:rounded before:opacity-10 before:bg-branco-400 before:hidden hover:before:block hover:before:absolute' key={index} href={link.rota}>
                                 {React.createElement(Icone[link.icone] as any)}
                                 {link.titulo}
                             </Link>
