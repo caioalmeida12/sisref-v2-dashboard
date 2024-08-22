@@ -8,10 +8,9 @@ import { Botao } from "@/app/elementos/basicos/Botao";
 import * as Form from '@radix-ui/react-form';
 import * as Select from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchRefeicoesNutricionista } from "@/app/actions/fetchRefeicoesNutricionista";
+import { useQuery } from "@tanstack/react-query";
+import { fetchNomesDeRefeicoesNutricionista } from "@/app/actions/fetchRefeicoesNutricionista";
+import DataTable from 'react-data-table-component';
 
 interface NutricionistaPageProps {
   params: { slug: string }
@@ -43,11 +42,14 @@ export default function NutricionistaPage({
     dataFinal: new Date().toISOString().split('T')[0]
   })
 
-  const queryClient = useQueryClient()
-
-  const { data: refeicoes, isLoading } = useQuery({
+  const { data: refeicoes, isLoading: isLoadingRefeicoes } = useQuery({
     queryKey: ['refeicoes', datas],
-    queryFn: () => fetchRefeicoesNutricionista(datas)
+    queryFn: () => fetchNomesDeRefeicoesNutricionista(datas)
+  });
+
+  const { data: tabela, isLoading: isLoadingTabela } = useQuery({
+    queryKey: ['tabela', datas],
+    queryFn: () => fetchTabelaDeRefeicoesNutricionista(datas)
   });
 
   return (
@@ -98,7 +100,7 @@ export default function NutricionistaPage({
                           </Select.ItemIndicator>
                         </Select.Item>
                         {
-                          !isLoading && refeicoes &&
+                          !isLoadingRefeicoes && refeicoes &&
                           refeicoes.map((refeicao, index) => (
                             <Select.Item value={String(refeicao?.id)} className="flex items-center px-2 py-1 hover:outline outline-1 rounded hover:bg-amarelo-200" key={index}>
                               <Select.ItemText>
