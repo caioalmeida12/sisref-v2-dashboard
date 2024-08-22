@@ -11,12 +11,50 @@ import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTabelaDeRefeicoesNutricionista } from "@/app/actions/fetchTabelaDeRefeicoesRefeicoes";
 import { fetchNomesDeRefeicoesNutricionista } from "@/app/actions/fetchNomesDeRefeicoesNutricionista";
-
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from '@tanstack/react-table'
+import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { Badge } from "@/app/elementos/basicos/Badge";
 
 interface NutricionistaPageProps {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
+
+const colunasHelper = createColumnHelper<IRefeicao>()
+const colunas = [
+  colunasHelper.accessor('refeicao', {
+    cell: info => info.getValue()?.id,
+    header: () => <Badge texto="Id" corDaBadge="bg-preto-400" className="border-none" />,
+  }),
+  colunasHelper.accessor('cardapio', {
+    cell: info => info.getValue()?.date ? DatasHelper.converterParaFormatoBrasileiro(info.getValue()!.date) : 'Data não informada',
+    header: () => <Badge texto="Data" corDaBadge="bg-preto-400" className="border-none" />,
+  }),
+  colunasHelper.accessor('refeicao', {
+    cell: info => info.getValue()?.description,
+    header: () => <Badge texto="Nome da Refeição" corDaBadge="bg-preto-400" className="border-none" />,
+  }),
+  colunasHelper.accessor('cardapio', {
+    cell: info => info.getValue()?.description,
+    header: () => <Badge texto="Descrição" corDaBadge="bg-preto-400" className="border-none" />,
+  }),
+  colunasHelper.display({
+    id: 'Ações',
+    header: () => <Badge texto="Ações" corDaBadge="bg-preto-400" className="border-none" />,
+    cell: info => (
+      <div className="flex justify-center gap-x-2">
+        <Botao variante="editar" texto="Editar" className="h-[36px] py-0 px-10" />
+        <Botao variante="remover" texto="Remover" className="h-[36px] py-0 px-10" />
+      </div>
+    ),
+  })
+]
 
 export default function NutricionistaPage({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -43,6 +81,11 @@ export default function NutricionistaPage({
     queryFn: () => fetchTabelaDeRefeicoesNutricionista({ campus_id: 1, date: datas.dataInicial }),
   });
 
+  const tabela = useReactTable({
+    data: dadosDaTabela || [],
+    columns: colunas,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   const handleBuscar = () => {
     const dataInicial = dataInicialRef.current?.querySelector('input')?.value;
@@ -138,7 +181,51 @@ export default function NutricionistaPage({
             }
             {
               !isLoadingDadosDaTabela && dadosDaTabela &&
-              <span>...</span>
+              <table className="w-full text-center">
+                <thead>
+                  {tabela.getHeaderGroups().map(headerGroup => (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers.map(header => (
+                        <th key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody>
+                  {tabela.getRowModel().rows.map(row => (
+                    <tr key={row.id}>
+                      {row.getVisibleCells().map(cell => (
+                        <td key={cell.id}>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  {tabela.getFooterGroups().map(footerGroup => (
+                    <tr key={footerGroup.id}>
+                      {footerGroup.headers.map(header => (
+                        <th key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                              header.column.columnDef.footer,
+                              header.getContext()
+                            )}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </tfoot>
+              </table>
             }
           </Secao>
         </Secao>
