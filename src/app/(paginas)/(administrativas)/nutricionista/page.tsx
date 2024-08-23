@@ -20,6 +20,7 @@ import {
 import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { Badge } from "@/app/elementos/basicos/Badge";
+import Icone from "@/app/elementos/basicos/Icone";
 
 interface NutricionistaPageProps {
   params: { slug: string }
@@ -49,8 +50,12 @@ const colunas = [
     header: () => <Badge texto="Ações" corDaBadge="bg-preto-400" className="border-none" />,
     cell: info => (
       <div className="flex justify-center gap-x-2">
-        <Botao variante="editar" texto="Editar" className="h-[36px] py-0 px-10" />
-        <Botao variante="remover" texto="Remover" className="h-[36px] py-0 px-10" />
+        <button className="w-5 h-5 relative">
+          <Icone.Deletar className="absolute inset-0 block w-full h-full" />
+        </button>
+        <button className="w-5 h-5 relative">
+          <Icone.Editar className="absolute inset-0 block w-full h-full" />
+        </button>
       </div>
     ),
   })
@@ -71,14 +76,14 @@ export default function NutricionistaPage({
   const dataFinalRef = useRef<HTMLInputElement>(null);
   const nomeDeRefeicaoRef = useRef<HTMLFormElement>(null);
 
-  const { data: refeicoes, isLoading: isLoadingRefeicoes } = useQuery({
+  const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
     queryKey: ['refeicoes', datas],
     queryFn: () => fetchNomesDeRefeicoesNutricionista()
   });
 
   const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela } = useQuery({
-    queryKey: ['tabela', datas, nomeDeRefeicaoRef.current?.querySelector('select')?.value],
-    queryFn: () => fetchTabelaDeRefeicoesNutricionista({ campus_id: 1, date: datas.dataInicial }),
+    queryKey: ['tabela', datas, nomeDeRefeicaoRef.current?.querySelector('select')?.value, nomesDasRefeicoes],
+    queryFn: () => fetchTabelaDeRefeicoesNutricionista({ campus_id: 1, date: datas.dataInicial, refeicoes_ids: [] }),
   });
 
   const tabela = useReactTable({
@@ -149,8 +154,8 @@ export default function NutricionistaPage({
                             </Select.ItemIndicator>
                           </Select.Item>
                           {
-                            !isLoadingRefeicoes && refeicoes &&
-                            refeicoes.map((refeicao, index) => (
+                            !isLoadingRefeicoes && nomesDasRefeicoes &&
+                            nomesDasRefeicoes.map((refeicao, index) => (
                               <Select.Item value={String(refeicao?.id)} className="flex items-center px-2 py-1 hover:outline outline-1 rounded hover:bg-amarelo-200" key={index}>
                                 <Select.ItemText>
                                   {refeicao?.description}
@@ -186,7 +191,7 @@ export default function NutricionistaPage({
                   {tabela.getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
                       {headerGroup.headers.map(header => (
-                        <th key={header.id}>
+                        <th key={header.id} className="[&>span]:w-full [&>span]:block px-[0.25em]">
                           {header.isPlaceholder
                             ? null
                             : flexRender(
@@ -202,7 +207,7 @@ export default function NutricionistaPage({
                   {tabela.getRowModel().rows.map(row => (
                     <tr key={row.id}>
                       {row.getVisibleCells().map(cell => (
-                        <td key={cell.id}>
+                        <td key={cell.id} className="px-[0.25em]">
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </td>
                       ))}
