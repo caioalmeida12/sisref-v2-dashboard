@@ -1,6 +1,6 @@
 import { HTMLAttributes, SVGProps } from "react";
 
-export type IIconesDisponiveis = "Aviso" | "Dropdown" | "Fechar" | "Informacao" | "Logout" | "Menu" | "Refeicao" | "RestricaoAlimentar" | "Seta" | "Status" | "Usuario" | "Calendario" | "GarfoEFaca" | "Casa" | "EstudanteComChapeu" | "Ampulheta" | "GraficoDeBarras" | "Lixeira"
+export type IIconesDisponiveis = "Deletar" | "Editar" | "Adicionar" | "Aviso" | "Dropdown" | "Fechar" | "Informacao" | "Logout" | "Menu" | "Refeicao" | "RestricaoAlimentar" | "Seta" | "Status" | "Usuario" | "Calendario" | "GarfoEFaca" | "Casa" | "EstudanteComChapeu" | "Ampulheta" | "GraficoDeBarras" | "Lixeira"
 
 export interface IIconeDropdownProps extends HTMLAttributes<HTMLElement> { variante?: "sem-circulo"; }
 export interface IIconeFecharProps extends React.SVGProps<SVGSVGElement> { }
