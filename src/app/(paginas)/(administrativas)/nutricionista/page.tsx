@@ -11,6 +11,11 @@ import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTabelaDeRefeicoesNutricionista } from "@/app/actions/fetchTabelaDeRefeicoesRefeicoes";
 import { fetchNomesDeRefeicoesNutricionista } from "@/app/actions/fetchNomesDeRefeicoesNutricionista";
+import { TabelaDeCrud } from "@/app/elementos/modulos/TabelaDeCrud/TabelaDeCrud";
+import { ColumnDef } from "@tanstack/react-table";
+import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
+import { Badge } from "@/app/elementos/basicos/Badge";
+import Icone from "@/app/elementos/basicos/Icone";
 interface NutricionistaPageProps {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
@@ -37,7 +42,7 @@ export default function NutricionistaPage({
     initialData: []
   });
 
-  const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela } = useQuery({
+  const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela, refetch: refetchDadosDaTabela } = useQuery({
     queryKey: ['tabela', datas, nomeDeRefeicaoRef.current?.querySelector('select')?.value, nomesDasRefeicoes],
     queryFn: () => fetchTabelaDeRefeicoesNutricionista({ campus_id: 1, date: datas.dataInicial, refeicoes_disponiveis: nomesDasRefeicoes?.filter(refeicao => refeicao?.id) || [] }),
     initialData: []
@@ -55,6 +60,55 @@ export default function NutricionistaPage({
       dataFinal: dataFinal || datas.dataFinal
     });
   };
+
+  const colunas = React.useMemo<ColumnDef<IRefeicao, any>[]>(
+    () => [
+      {
+        accessorKey: 'refeicao.id',
+        accessorFn: (row) => row.refeicao?.id,
+        cell: info => info.getValue(),
+        meta: {
+          filterVariant: "range"
+        }
+      }, {
+        accessorKey: 'refeicao.date',
+        accessorFn: (row) => row.cardapio?.date,
+        cell: info => info.getValue(),
+      }, {
+        accessorKey: 'refeicao.description',
+        accessorFn: (row) => row.refeicao?.description,
+        cell: info => info.getValue(),
+        meta: {
+          filterVariant: "text"
+        }
+      }, {
+        accessorKey: 'cardapio.description',
+        accessorFn: (row) => row.cardapio?.description,
+        cell: info => info.getValue(),
+      }, {
+        header: 'Ações',
+        id: 'Ações',
+        cell: info => (
+          // Refeições não cadastradas retornam id = 0
+          info.row.original.cardapio?.id != undefined && info.row.original.cardapio.id > 0 ? (<div className="flex justify-center gap-x-2">
+            <button className="w-5 h-5 relative">
+              <Icone.Deletar className="absolute inset-0 block w-full h-full" />
+            </button>
+            <button className="w-5 h-5 relative">
+              <Icone.Editar className="absolute inset-0 block w-full h-full" />
+            </button>
+          </div>) : (
+            <div className="flex justify-center gap-x-2">
+              <button className="w-5 h-5 relative">
+                <Icone.Adicionar className="absolute inset-0 block w-full h-full" />
+              </button>
+            </div>
+          )
+        )
+      }
+    ],
+    []
+  )
 
   return (
     <>
@@ -81,50 +135,6 @@ export default function NutricionistaPage({
                 </Form.Field>
                 <Form.Submit />
               </Form.Root>
-              <div className="flex flex-col gap-y-2">
-                <label className="font-bold">Refeição</label>
-                <form ref={nomeDeRefeicaoRef}>
-                  <Select.Root>
-                    <Select.Trigger className="px-2 py-1 h-[34px] flex overflow-hidden items-center min-w-[250px] text-left rounded outline outline-1 outline-cinza-600">
-                      <Select.Value placeholder="Todas as refeições" defaultValue={"0"} />
-                      <Select.Icon className="SelectIcon">
-                        <ChevronDownIcon />
-                      </Select.Icon>
-                    </Select.Trigger>
-
-                    <Select.Portal>
-                      <Select.Content>
-                        <Select.ScrollUpButton />
-                        <Select.Viewport className="bg-branco-400 px-2 py-1 rounded outline outline-1 outline-cinza-600">
-                          <Select.Item value={"0"} className="flex items-center px-2 py-1 hover:outline outline-1 rounded hover:bg-amarelo-200">
-                            <Select.ItemText>
-                              Todas as refeições
-                            </Select.ItemText>
-                            <Select.ItemIndicator>
-                              <CheckIcon />
-                            </Select.ItemIndicator>
-                          </Select.Item>
-                          {
-                            !isLoadingRefeicoes && nomesDasRefeicoes &&
-                            nomesDasRefeicoes.map((refeicao, index) => (
-                              <Select.Item value={String(refeicao?.id)} className="flex items-center px-2 py-1 hover:outline outline-1 rounded hover:bg-amarelo-200" key={index}>
-                                <Select.ItemText>
-                                  {refeicao?.description}
-                                </Select.ItemText>
-                                <Select.ItemIndicator>
-                                  <CheckIcon />
-                                </Select.ItemIndicator>
-                              </Select.Item>
-                            ))
-                          }
-                        </Select.Viewport>
-                        <Select.ScrollDownButton />
-                        <Select.Arrow />
-                      </Select.Content>
-                    </Select.Portal>
-                  </Select.Root>
-                </form>
-              </div>
               <Botao variante="adicionar" texto="Buscar" className="h-[36px] py-0 px-10" onClick={handleBuscar} />
             </div>
           </Secao>
@@ -134,6 +144,11 @@ export default function NutricionistaPage({
               <div className="flex justify-center items-center h-40">
                 <span>Carregando...</span>
               </div>
+            }
+            {
+              !isLoadingDadosDaTabela &&
+              dadosDaTabela &&
+              <TabelaDeCrud colunas={colunas} dados={dadosDaTabela} refetch={refetchDadosDaTabela} />
             }
           </Secao>
         </Secao>
