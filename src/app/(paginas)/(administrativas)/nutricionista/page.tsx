@@ -21,6 +21,7 @@ import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { Badge } from "@/app/elementos/basicos/Badge";
 import Icone from "@/app/elementos/basicos/Icone";
+import { NomeDaRefeicao } from "@/app/elementos/basicos/NomeDaRefeicao";
 
 interface NutricionistaPageProps {
   params: { slug: string }
@@ -32,31 +33,39 @@ const colunas = [
   colunasHelper.accessor('refeicao', {
     cell: info => info.getValue()?.id,
     header: () => <Badge texto="Id" corDaBadge="bg-preto-400" className="border-none" />,
+    sortDescFirst: true,
   }),
   colunasHelper.accessor('cardapio', {
     cell: info => info.getValue()?.date ? DatasHelper.converterParaFormatoBrasileiro(info.getValue()!.date) : 'Data não informada',
     header: () => <Badge texto="Data" corDaBadge="bg-preto-400" className="border-none" />,
   }),
   colunasHelper.accessor('refeicao', {
-    cell: info => info.getValue()?.description,
+    cell: info => !([1, 2, 3, 4].includes(Number(info.getValue()?.id))) ? <p className="text-left">{info.getValue()?.description}</p> : <NomeDaRefeicao variante={(["manha", "almoco", "tarde", "noite"] as const)[(info.getValue()!.id as 1 | 2 | 3 | 4) - 1]} />,
     header: () => <Badge texto="Nome da Refeição" corDaBadge="bg-preto-400" className="border-none" />,
   }),
   colunasHelper.accessor('cardapio', {
-    cell: info => info.getValue()?.description,
+    cell: info => <p className="text-left">{info.getValue()?.description}</p>,
     header: () => <Badge texto="Descrição" corDaBadge="bg-preto-400" className="border-none" />,
   }),
   colunasHelper.display({
     id: 'Ações',
     header: () => <Badge texto="Ações" corDaBadge="bg-preto-400" className="border-none" />,
     cell: info => (
-      <div className="flex justify-center gap-x-2">
+      info.getValue() ? (<div className="flex justify-center gap-x-2">
         <button className="w-5 h-5 relative">
           <Icone.Deletar className="absolute inset-0 block w-full h-full" />
         </button>
         <button className="w-5 h-5 relative">
           <Icone.Editar className="absolute inset-0 block w-full h-full" />
         </button>
-      </div>
+      </div>) : (
+        <div className="flex justify-center gap-x-2">
+          <button className="w-5 h-5 relative">
+            <Icone.Adicionar className="absolute inset-0 block w-full h-full" />
+          </button>
+        </div>
+      )
+
     ),
   })
 ]
@@ -83,11 +92,11 @@ export default function NutricionistaPage({
 
   const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela } = useQuery({
     queryKey: ['tabela', datas, nomeDeRefeicaoRef.current?.querySelector('select')?.value, nomesDasRefeicoes],
-    queryFn: () => fetchTabelaDeRefeicoesNutricionista({ campus_id: 1, date: datas.dataInicial, refeicoes_ids: [] }),
+    queryFn: () => fetchTabelaDeRefeicoesNutricionista({ campus_id: 1, date: datas.dataInicial, refeicoes_disponiveis: nomesDasRefeicoes?.filter(refeicao => refeicao?.id) || [] })
   });
 
   const tabela = useReactTable({
-    data: dadosDaTabela || [],
+    data: dadosDaTabela,
     columns: colunas,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -191,7 +200,7 @@ export default function NutricionistaPage({
                   {tabela.getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
                       {headerGroup.headers.map(header => (
-                        <th key={header.id} className="[&>span]:w-full [&>span]:block px-[0.25em]">
+                        <th key={header.id} className="[&>span]:w-full [&>span]:block px-[0.25em] w-min">
                           {header.isPlaceholder
                             ? null
                             : flexRender(
