@@ -11,64 +11,10 @@ import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTabelaDeRefeicoesNutricionista } from "@/app/actions/fetchTabelaDeRefeicoesRefeicoes";
 import { fetchNomesDeRefeicoesNutricionista } from "@/app/actions/fetchNomesDeRefeicoesNutricionista";
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
-import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { Badge } from "@/app/elementos/basicos/Badge";
-import Icone from "@/app/elementos/basicos/Icone";
-import { NomeDaRefeicao } from "@/app/elementos/basicos/NomeDaRefeicao";
-
 interface NutricionistaPageProps {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
-
-const colunasHelper = createColumnHelper<IRefeicao>()
-const colunas = [
-  colunasHelper.accessor('refeicao', {
-    cell: info => info.getValue()?.id,
-    header: () => <Badge texto="Id" corDaBadge="bg-preto-400" className="border-none" />,
-    sortDescFirst: true,
-  }),
-  colunasHelper.accessor('cardapio', {
-    cell: info => info.getValue()?.date ? DatasHelper.converterParaFormatoBrasileiro(info.getValue()!.date) : 'Data não informada',
-    header: () => <Badge texto="Data" corDaBadge="bg-preto-400" className="border-none" />,
-  }),
-  colunasHelper.accessor('refeicao', {
-    cell: info => !([1, 2, 3, 4].includes(Number(info.getValue()?.id))) ? <p className="text-left">{info.getValue()?.description}</p> : <NomeDaRefeicao variante={(["manha", "almoco", "tarde", "noite"] as const)[(info.getValue()!.id as 1 | 2 | 3 | 4) - 1]} />,
-    header: () => <Badge texto="Nome da Refeição" corDaBadge="bg-preto-400" className="border-none" />,
-  }),
-  colunasHelper.accessor('cardapio', {
-    cell: info => <p className="text-left">{info.getValue()?.description}</p>,
-    header: () => <Badge texto="Descrição" corDaBadge="bg-preto-400" className="border-none" />,
-  }),
-  colunasHelper.display({
-    id: 'Ações',
-    header: () => <Badge texto="Ações" corDaBadge="bg-preto-400" className="border-none" />,
-    cell: info => (
-      info.getValue() ? (<div className="flex justify-center gap-x-2">
-        <button className="w-5 h-5 relative">
-          <Icone.Deletar className="absolute inset-0 block w-full h-full" />
-        </button>
-        <button className="w-5 h-5 relative">
-          <Icone.Editar className="absolute inset-0 block w-full h-full" />
-        </button>
-      </div>) : (
-        <div className="flex justify-center gap-x-2">
-          <button className="w-5 h-5 relative">
-            <Icone.Adicionar className="absolute inset-0 block w-full h-full" />
-          </button>
-        </div>
-      )
-
-    ),
-  })
-]
 
 export default function NutricionistaPage({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -87,18 +33,14 @@ export default function NutricionistaPage({
 
   const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
     queryKey: ['refeicoes', datas],
-    queryFn: () => fetchNomesDeRefeicoesNutricionista()
+    queryFn: () => fetchNomesDeRefeicoesNutricionista(),
+    initialData: []
   });
 
   const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela } = useQuery({
     queryKey: ['tabela', datas, nomeDeRefeicaoRef.current?.querySelector('select')?.value, nomesDasRefeicoes],
-    queryFn: () => fetchTabelaDeRefeicoesNutricionista({ campus_id: 1, date: datas.dataInicial, refeicoes_disponiveis: nomesDasRefeicoes?.filter(refeicao => refeicao?.id) || [] })
-  });
-
-  const tabela = useReactTable({
-    data: dadosDaTabela,
-    columns: colunas,
-    getCoreRowModel: getCoreRowModel(),
+    queryFn: () => fetchTabelaDeRefeicoesNutricionista({ campus_id: 1, date: datas.dataInicial, refeicoes_disponiveis: nomesDasRefeicoes?.filter(refeicao => refeicao?.id) || [] }),
+    initialData: []
   });
 
   const handleBuscar = () => {
@@ -192,54 +134,6 @@ export default function NutricionistaPage({
               <div className="flex justify-center items-center h-40">
                 <span>Carregando...</span>
               </div>
-            }
-            {
-              !isLoadingDadosDaTabela && dadosDaTabela &&
-              <table className="w-full text-center">
-                <thead>
-                  {tabela.getHeaderGroups().map(headerGroup => (
-                    <tr key={headerGroup.id}>
-                      {headerGroup.headers.map(header => (
-                        <th key={header.id} className="[&>span]:w-full [&>span]:block px-[0.25em] w-min">
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody>
-                  {tabela.getRowModel().rows.map(row => (
-                    <tr key={row.id}>
-                      {row.getVisibleCells().map(cell => (
-                        <td key={cell.id} className="px-[0.25em]">
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  {tabela.getFooterGroups().map(footerGroup => (
-                    <tr key={footerGroup.id}>
-                      {footerGroup.headers.map(header => (
-                        <th key={header.id}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                              header.column.columnDef.footer,
-                              header.getContext()
-                            )}
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </tfoot>
-              </table>
             }
           </Secao>
         </Secao>
