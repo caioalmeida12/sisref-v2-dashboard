@@ -1,9 +1,10 @@
-import React from 'react'
-
+import React from 'react';
+import classnames from 'classnames';
 import Icone from './Icone';
 
 interface NomeDaRefeicaoProps {
     variante: keyof typeof nomePorVariante;
+    className?: string;
 }
 
 const nomePorVariante = {
@@ -13,11 +14,11 @@ const nomePorVariante = {
     "noite": "Lanche da noite",
 } as const;
 
-export const NomeDaRefeicao = ({ variante }: NomeDaRefeicaoProps) => {
+export const NomeDaRefeicao: React.FC<NomeDaRefeicaoProps> = ({ variante, className }) => {
     return (
-        <div className="flex gap-x-2 items-center">
+        <div className={classnames("flex gap-x-2 items-center", className)}>
             <Icone.Refeicao variante={variante} />
             <span className="font-bold">{nomePorVariante[variante]}</span>
         </div>
-    )
-}
+    );
+};
