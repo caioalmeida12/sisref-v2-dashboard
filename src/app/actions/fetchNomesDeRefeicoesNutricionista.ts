@@ -9,7 +9,7 @@ import { IRefeicao } from "../elementos/interfaces/IRefeicao"
 const respostaFoiErroDeAutenticacao = (resposta: any) => resposta[0] === 'Erro 401'
 
 // export async function fetchNomesDeRefeicoesNutricionista({ dataInicial, dataFinal }: { dataInicial: string, dataFinal: string }) {
-export async function fetchNomesDeRefeicoesNutricionista() {
+export async function fetchNomesDeRefeicoesNutricionista(): Promise<IRefeicao["refeicao"][]> {
     const API_URL = `${process.env.URL_BASE_API}/meal`
 
     const resposta = await fetch(API_URL, {

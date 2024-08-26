@@ -24,7 +24,7 @@ const formatarRefeicao = (menu: any) => {
 };
 
 // Esta função precisa de uma data no formato yyyy-MM-dd
-export async function fetchTabelaDeRefeicoesNutricionista({ campus_id, date, refeicoes_disponiveis }: { campus_id: number, date: string, refeicoes_disponiveis: IRefeicao["refeicao"][] }) {
+export async function fetchTabelaDeRefeicoesNutricionista({ campus_id, date, refeicoes_disponiveis }: { campus_id: number, date: string, refeicoes_disponiveis: IRefeicao["refeicao"][] }): Promise<IRefeicao[]> {
     const API_URL = `${process.env.URL_BASE_API}/menu/all-by-date?campus_id=${campus_id}&date=${date}`
 
     const resposta = await fetch(API_URL, {
@@ -55,10 +55,14 @@ export async function fetchTabelaDeRefeicoesNutricionista({ campus_id, date, ref
             cardapio: {
                 agendado: false,
                 description: "Não cadastrado",
+                campus_id,
+                date,
+                id: 0,
+                permission: false,
             }
         };
     });
 
-    return todasAsRefeicoes;
+    return todasAsRefeicoes
 
 }
