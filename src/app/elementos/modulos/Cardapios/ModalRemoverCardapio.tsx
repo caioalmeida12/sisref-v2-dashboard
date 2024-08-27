@@ -25,7 +25,9 @@ export const ModalRemoverCardapio: React.FC<ModalProps> = ({ refeicao }) => {
         onMutate: () => {
             atualizarMensagem({ mensagem: 'Cancelando cardápio...' });
         },
-        onSuccess: () => {
+        onSuccess: (json) => {
+            if (!json.sucesso) return atualizarMensagem(json);
+
             atualizarMensagem({ mensagem: 'Cardápio removido com sucesso!', sucesso: true });
 
             setTimeout(() => {
@@ -61,7 +63,7 @@ export const ModalRemoverCardapio: React.FC<ModalProps> = ({ refeicao }) => {
                     <Dialog.Description className="leading-normal">
                         {
                             refeicao.cardapio?.description
-                                ? `Você está prestes a remover o cardápio do dia ${refeicao.cardapio.date} com a descrição "${refeicao.cardapio.description}"`
+                                ? `Você está prestes a remover o cardápio do dia ${refeicao.cardapio.date} com a descrição "${refeicao.cardapio.description}"  e ID ${refeicao.cardapio.id}`
                                 : `Você está prestes a remover o cardápio do dia ${refeicao.cardapio?.date}`
                         }
                     </Dialog.Description>
