@@ -30,7 +30,7 @@ export const Cardapios = async ({ searchParams }: { searchParams: URLSearchParam
                     )) :
                     <p>Não há cardápios para esta data.</p>
             }
-            <ModalAdicionarCardapio />
+            <ModalAdicionarCardapio dataDaPesquisa={data} />
             <SliderServerSide onNext={handleNext} onPrevious={handlePrevious} texto={DatasHelper.converterParaFormatoBrasileiro(data)} />
         </Secao>
     );
