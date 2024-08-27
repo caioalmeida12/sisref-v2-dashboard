@@ -24,7 +24,14 @@ export const removerCardapio = async ({ meal_id }: { meal_id?: number }) => {
 
     const json = await resposta.json();
 
-    if (typeof json.message != "undefined") return { sucesso: false, mensagem: json.message };
+    // Quando o campo é excluído, retorna { message: 'O cardápio foi excluído.' }
+    // Em outro caso, retorna { message: string }
+    // Mais um dos casos e casos da bomba dessa api
+    if (typeof json.message != "undefined") {
+        if (!(json.message === "O cardápio foi excluído.")) {
+            return { sucesso: false, mensagem: json.message };
+        }
+    }
 
-    return { sucesso: true, mensagem: "Reserva cancelada com sucesso" };
+    return { sucesso: true, mensagem: "Cardápio removido com sucesso" };
 }
