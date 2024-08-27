@@ -16,6 +16,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
 import { Badge } from "@/app/elementos/basicos/Badge";
 import Icone from "@/app/elementos/basicos/Icone";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 interface NutricionistaPageProps {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
@@ -73,7 +74,7 @@ export default function NutricionistaPage({
       }, {
         accessorKey: 'refeicao.date',
         accessorFn: (row) => row.cardapio?.date,
-        cell: info => info.getValue(),
+        cell: info => DatasHelper.converterParaFormatoBrasileiro(info.getValue()),
       }, {
         accessorKey: 'refeicao.description',
         accessorFn: (row) => row.refeicao?.description,
