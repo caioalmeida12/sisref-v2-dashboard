@@ -19,6 +19,7 @@ import Icone from "@/app/elementos/basicos/Icone";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/Refeicoes/ModalAdicionarRefeicao";
 import { ModalAdicionarCardapio } from "@/app/elementos/modulos/Cardapios/ModalAdicionarCardapio";
+import { ModalRemoverCardapio } from "@/app/elementos/modulos/Cardapios/ModalRemoverCardapio";
 interface NutricionistaPageProps {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
@@ -94,12 +95,12 @@ export default function NutricionistaPage({
         cell: info => (
           // Refeições não cadastradas retornam id = 0
           info.row.original.cardapio?.id != undefined && info.row.original.cardapio.id > 0 ? (<div className="flex justify-center gap-x-2">
-            <button className="w-5 h-5 relative">
-              <Icone.Deletar className="absolute inset-0 block w-full h-full" />
-            </button>
-            <button className="w-5 h-5 relative">
+            <div className="w-5 h-5 relative">
+              <ModalRemoverCardapio refeicao={info.row.original} />
+            </div>
+            <div className="w-5 h-5 relative">
               <Icone.Editar className="absolute inset-0 block w-full h-full" />
-            </button>
+            </div>
           </div>) : (
             <div className="flex justify-center gap-x-2">
               <ModalAdicionarCardapio />

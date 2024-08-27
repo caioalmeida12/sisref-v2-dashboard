@@ -1,0 +1,86 @@
+"use client"
+import React, { useRef, useState } from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
+import { Cross2Icon } from '@radix-ui/react-icons';
+import Icone from '../../basicos/Icone';
+import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
+import { Botao } from '../../basicos/Botao';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { IRefeicao } from '../../interfaces/IRefeicao';
+import { removerCardapio } from '@/app/actions/removerCardapio';
+
+interface ModalProps {
+    refeicao: IRefeicao;
+}
+
+export const ModalRemoverCardapio: React.FC<ModalProps> = ({ refeicao }) => {
+    const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
+    const queryClient = useQueryClient();
+
+    const [modalAberto, setModalAberto] = useState(false);
+
+    const { mutate: handleCancelar, isPending } = useMutation({
+        mutationFn: () => removerCardapio({ meal_id: refeicao.cardapio?.id }),
+        mutationKey: ['removerCardapio', refeicao.cardapio?.id],
+        onMutate: () => {
+            atualizarMensagem({ mensagem: 'Cancelando cardápio...' });
+        },
+        onSuccess: () => {
+            atualizarMensagem({ mensagem: 'Cardápio removido com sucesso!', sucesso: true });
+
+            setTimeout(() => {
+                setModalAberto(false);
+
+                queryClient.invalidateQueries({
+                    queryKey: ['refeicoes', refeicao],
+                })
+
+                queryClient.invalidateQueries({
+                    queryKey: ['tabelaDeCardapios'],
+                })
+            }, 500);
+        },
+        onError: (error) => {
+            atualizarMensagem({ mensagem: error.message, sucesso: false });
+        }
+    })
+
+    return (
+        <Dialog.Root open={modalAberto}>
+            <Dialog.Trigger>
+                <div className="w-5 h-5 relative" onClick={() => setModalAberto(true)}>
+                    <Icone.Deletar className="absolute inset-0 block w-full h-full" />
+                </div>
+            </Dialog.Trigger>
+            <Dialog.Portal>
+                <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
+                <Dialog.Content className="flex flex-col gap-y-4 overflow-y-auto data-[state=open]:animate-contentShow fixed top-[50%] left-[50%]  w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none   ">
+                    <Dialog.Title className="m-0 font-medium text-lg">
+                        Tem certeza que deseja remover este cardápio?
+                    </Dialog.Title>
+                    <Dialog.Description className="leading-normal">
+                        {
+                            refeicao.cardapio?.description
+                                ? `Você está prestes a remover o cardápio do dia ${refeicao.cardapio.date} com a descrição "${refeicao.cardapio.description}"`
+                                : `Você está prestes a remover o cardápio do dia ${refeicao.cardapio?.date}`
+                        }
+                    </Dialog.Description>
+                    <div ref={mensagemDeRespostaRef} className="hidden"></div>
+                    <Botao variante="remover" texto="Sim, desejo remover" disabled={isPending} onClick={() => handleCancelar()} />
+                    <Dialog.Close asChild>
+                        <div
+                            className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-2 right-2 inline-flex p-[0.25em] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none cursor-pointer"
+                            aria-label="Fechar"
+                            onClick={() => setModalAberto(false)}
+                        >
+                            <Cross2Icon />
+                        </div>
+                    </Dialog.Close>
+                    <Dialog.Close asChild>
+                        <Botao variante="editar" texto="Não, não desejo remover" onClick={() => setModalAberto(false)} />
+                    </Dialog.Close>
+                </Dialog.Content>
+            </Dialog.Portal>
+        </Dialog.Root>
+    );
+};
