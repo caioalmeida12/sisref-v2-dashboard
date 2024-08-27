@@ -18,6 +18,7 @@ export const ModalAdicionarCardapio = () => {
 
     const queryClient = useQueryClient();
 
+    const [modalAberto, setModalAberto] = useState(false);
     const [datas, setDatas] = useState({
         startDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
         endDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
@@ -39,6 +40,10 @@ export const ModalAdicionarCardapio = () => {
             if (!json.sucesso) return atualizarMensagem(json);
 
             atualizarMensagem({ mensagem: 'Cardápio salvo com sucesso!', sucesso: true });
+
+            setTimeout(() => {
+                setModalAberto(false);
+            }, 750);
 
             queryClient.invalidateQueries({
                 queryKey: ['refeicoes', datas],
@@ -69,9 +74,11 @@ export const ModalAdicionarCardapio = () => {
     };
 
     return (
-        <Dialog.Root>
+        <Dialog.Root open={modalAberto}>
             <Dialog.Trigger>
-                <Icone.Adicionar />
+                <div className="w-5 h-5 relative" onClick={() => setModalAberto(true)}>
+                    <Icone.Adicionar className="absolute inset-0 block w-full h-full" />
+                </div>
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
@@ -147,6 +154,7 @@ export const ModalAdicionarCardapio = () => {
                                 name='Fechar'
                                 className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-2 right-2 inline-flex p-[0.25em] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                                 aria-label="Fechar"
+                                onClick={() => setModalAberto(false)}
                             >
                                 <Cross2Icon />
                             </button>
