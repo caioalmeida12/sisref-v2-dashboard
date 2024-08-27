@@ -43,15 +43,15 @@ export const ModalAdicionarCardapio = () => {
 
             setTimeout(() => {
                 setModalAberto(false);
-            }, 750);
 
-            queryClient.invalidateQueries({
-                queryKey: ['refeicoes', datas],
-            })
+                queryClient.invalidateQueries({
+                    queryKey: ['refeicoes', datas],
+                })
 
-            queryClient.invalidateQueries({
-                queryKey: ['tabelaDeCardapios'],
-            })
+                queryClient.invalidateQueries({
+                    queryKey: ['tabelaDeCardapios'],
+                })
+            }, 500);
         },
         onError: (error) => {
             atualizarMensagem({ mensagem: error.message, sucesso: false });
