@@ -18,6 +18,7 @@ import { Badge } from "@/app/elementos/basicos/Badge";
 import Icone from "@/app/elementos/basicos/Icone";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/Refeicoes/ModalAdicionarRefeicao";
+import { ModalAdicionarCardapio } from "@/app/elementos/modulos/Cardapios/ModalAdicionarCardapio";
 interface NutricionistaPageProps {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
@@ -45,7 +46,7 @@ export default function NutricionistaPage({
   });
 
   const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela, refetch: refetchDadosDaTabela } = useQuery({
-    queryKey: ['tabela', datas, nomeDeRefeicaoRef.current?.querySelector('select')?.value, nomesDasRefeicoes],
+    queryKey: ['tabelaDeCardapios', datas, nomeDeRefeicaoRef.current?.querySelector('select')?.value, nomesDasRefeicoes],
     queryFn: () => fetchTabelaDeRefeicoesNutricionista({ campus_id: 1, date: datas.dataInicial, refeicoes_disponiveis: nomesDasRefeicoes?.filter(refeicao => refeicao?.id) || [] }),
     initialData: []
   });
@@ -101,7 +102,7 @@ export default function NutricionistaPage({
             </button>
           </div>) : (
             <div className="flex justify-center gap-x-2">
-              <ModalAdicionarRefeicao />
+              <ModalAdicionarCardapio />
             </div>
           )
         )
@@ -114,7 +115,7 @@ export default function NutricionistaPage({
     <>
       <Secao className="border-none">
         <Secao className="max-w-[1440px] mx-auto flex flex-col gap-y-4">
-          <CabecalhoDeSecao titulo="Refeições" />
+          <CabecalhoDeSecao titulo="Cardápios" />
           <Secao className="flex">
             <div className="flex gap-x-4 items-end">
               <Form.Root className="flex">

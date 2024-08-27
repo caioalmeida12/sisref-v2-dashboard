@@ -39,12 +39,25 @@ export async function criarCardapio(formData: FormData) {
             return { sucesso: false, mensagem: mensagemErro };
         }
 
-        const data = await resposta.json();
+        const json = await resposta.json();
 
         // Verifica se a resposta é um erro de autenticação
-        if (respostaFoiErroDeAutenticacao(data)) {
-            return { sucesso: false, mensagem: data.message };
+        if (respostaFoiErroDeAutenticacao(json)) {
+            return { sucesso: false, mensagem: json.message };
         }
+
+        // Quando um campo é enviado mal formatado, a API retorna o seguinte tipo de dado, ao invés de erro (por algum motivo desconhecido)
+        /**
+         * {
+            description: [ 'A descrição é obrigatória' ],
+            date: [ 'A data é obrigatória' ],
+            meal_id: [ 'A refeição é obrigatória' ]
+            }   
+         */
+
+        if (Array.isArray(json.description)) return { sucesso: false, mensagem: json.description[0] }
+        if (Array.isArray(json.date)) return { sucesso: false, mensagem: json.date[0] }
+        if (Array.isArray(json.meal_id)) return { sucesso: false, mensagem: json.meal_id[0] }
 
         // Sucesso na criação do cardápio
         return { sucesso: true, mensagem: "Cardápio criado com sucesso." };
