@@ -2,31 +2,58 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
-import SelectRefeicao from '../../componentes/SelectRefeicao';
 import { Botao } from '../../basicos/Botao';
-import { Cross2Icon } from '@radix-ui/react-icons';
+import { CheckIcon, ChevronDownIcon, Cross2Icon } from '@radix-ui/react-icons';
 import { criarCardapio } from '@/app/actions/criarCardapio';
 import { IRefeicao } from '../../interfaces/IRefeicao';
+import Icone from '../../basicos/Icone';
+import { fetchNomesDeRefeicoesNutricionista } from '@/app/actions/fetchNomesDeRefeicoesNutricionista';
+import * as Select from '@radix-ui/react-select';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 
 export const ModalAdicionarCardapio = () => {
-    const [data, setData] = useState({
+    const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
+
+    const queryClient = useQueryClient();
+
+    const [datas, setDatas] = useState({
         startDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
         endDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [refeicoes, setRefeicoes] = useState<IRefeicao["refeicao"][]>([]);
-    const [salvando, setSalvando] = useState(false);
+    const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
+        queryKey: ['refeicoes', datas],
+        queryFn: () => fetchNomesDeRefeicoesNutricionista()
+    });
 
-    const mensagemDeResposta = useRef<HTMLDivElement>(null);
+    const { mutate: handleSalvar, isPending } = useMutation({
+        mutationFn: (formData: FormData) => criarCardapio(formData),
+        mutationKey: ['criarCardapio', datas],
+        onMutate: () => {
+            atualizarMensagem({ mensagem: 'Salvando cardápio...' });
+        },
+        onSuccess: (json) => {
+            // Devido a um erro na API, o JSON de erro é retornado com status 200. Esse comportamento foi descrito em criarCardapio.ts:49
+            if (!json.sucesso) return atualizarMensagem(json);
 
-    useEffect(() => {
-        // fetchRefeicoesParaCardapio().then((refeicoes) => setRefeicoes(refeicoes));
-    }, [data]);
+            atualizarMensagem({ mensagem: 'Cardápio salvo com sucesso!', sucesso: true });
 
-    const handleDataChange = (novaData: DateValueType) => {
+            queryClient.invalidateQueries({
+                queryKey: ['refeicoes', datas],
+            })
+
+            queryClient.invalidateQueries({
+                queryKey: ['tabelaDeCardapios'],
+            })
+        },
+        onError: (error) => {
+            atualizarMensagem({ mensagem: error.message, sucesso: false });
+        },
+    })
+
+    const handleDataChange = (novaData: { startDate?: string, endDate?: string }) => {
         if (!novaData?.startDate || !novaData?.endDate) return;
 
         const corrigirData = (dateStr: string) => {
@@ -38,37 +65,13 @@ export const ModalAdicionarCardapio = () => {
         const startDate = typeof novaData.startDate === 'string' ? corrigirData(novaData.startDate) : novaData.startDate;
         const endDate = typeof novaData.endDate === 'string' ? corrigirData(novaData.endDate) : novaData.endDate;
 
-        setData({ startDate, endDate });
-    };
-
-    const handleSalvar = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setSalvando(true);
-
-        // Atualiza a mensagem para mostrar "Salvando..." enquanto a operação está em andamento
-        mensagemDeResposta.current!.textContent = 'Salvando...';
-        mensagemDeResposta.current!.classList.remove('hidden', 'text-verde-400', 'text-vermelho-400');
-        mensagemDeResposta.current!.classList.add('text-azul-400');
-
-        const formData = new FormData(e.currentTarget);
-
-        const { sucesso, mensagem } = await criarCardapio(formData);
-
-        setSalvando(false);
-
-        if (sucesso) {
-            mensagemDeResposta.current!.classList.add('text-verde-400');
-        } else {
-            mensagemDeResposta.current!.classList.add('text-vermelho-400');
-        }
-
-        mensagemDeResposta.current!.textContent = mensagem;
+        setDatas({ startDate, endDate });
     };
 
     return (
         <Dialog.Root>
-            <Dialog.Trigger asChild>
-                <Botao variante='adicionar' texto='Adicionar Cardápio' />
+            <Dialog.Trigger>
+                <Icone.Adicionar />
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
@@ -79,7 +82,7 @@ export const ModalAdicionarCardapio = () => {
                     <Dialog.Description className="mt-2 mb-5 leading-normal">
                         Preencha os campos abaixo para adicionar um novo cardápio.
                     </Dialog.Description>
-                    <form className='flex flex-col gap-y-4' onSubmit={handleSalvar}>
+                    <form className='flex flex-col gap-y-4' action={handleSalvar}>
                         <fieldset className='flex flex-col gap-y-2 justify-start'>
                             <label className='font-medium' htmlFor="description">
                                 Descrição
@@ -88,6 +91,7 @@ export const ModalAdicionarCardapio = () => {
                                 className="shadow-preto-400 focus:shadow-preto-400 inline-flex h-8 w-full flex-1 items-center justify-center rounded-[4px] px-4 py-2 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
                                 id="description"
                                 placeholder='Ex: Pão com ovos + suco de acerola'
+                                name='description'
                             />
                         </fieldset>
                         <fieldset className='flex flex-col gap-y-2 justify-start' >
@@ -95,27 +99,48 @@ export const ModalAdicionarCardapio = () => {
                                 Data
                             </label>
                             <div className='outline outline-1 rounded'>
-                                <Datepicker
-                                    primaryColor='red'
-                                    value={data}
-                                    onChange={(novaData) => handleDataChange(novaData)}
-                                    asSingle={true}
-                                    useRange={false}
-                                    placeholder='AAAA-MM-DD'
-                                    displayFormat='DD/MM/YYYY'
-                                    i18n='pt-br'
-                                />
+                                <input type='date' id='date' name='date' className='px-2 py-1 w-full' onChange={(e) => handleDataChange({ startDate: e.target.value, endDate: e.target.value })} />
                             </div>
                         </fieldset>
                         <fieldset className='flex flex-col gap-y-2 justify-start'>
                             <label className='font-medium' htmlFor="meal">
                                 Refeição
                             </label>
-                            <SelectRefeicao refeicoes={refeicoes} />
+                            <Select.Root name='meal_id'>
+                                <Select.Trigger className="px-2 py-1 h-[34px] flex overflow-hidden items-center min-w-[250px] text-left rounded outline outline-1 outline-cinza-600">
+                                    <Select.Value placeholder="Selecione a refeição" />
+                                    <Select.Icon className="SelectIcon">
+                                        <ChevronDownIcon />
+                                    </Select.Icon>
+                                </Select.Trigger>
+
+                                <Select.Portal>
+                                    <Select.Content>
+                                        <Select.ScrollUpButton />
+                                        <Select.Viewport className="bg-branco-400 px-2 py-1 rounded outline outline-1 outline-cinza-600">
+                                            {
+                                                !isLoadingRefeicoes && nomesDasRefeicoes &&
+                                                nomesDasRefeicoes.map((refeicao, index) => (
+                                                    <Select.Item value={String(refeicao?.id)} className="flex items-center px-2 py-1 hover:outline outline-1 rounded hover:bg-amarelo-200" key={index}>
+                                                        <Select.ItemText>
+                                                            {refeicao?.description}
+                                                        </Select.ItemText>
+                                                        <Select.ItemIndicator>
+                                                            <CheckIcon />
+                                                        </Select.ItemIndicator>
+                                                    </Select.Item>
+                                                ))
+                                            }
+                                        </Select.Viewport>
+                                        <Select.ScrollDownButton />
+                                        <Select.Arrow />
+                                    </Select.Content>
+                                </Select.Portal>
+                            </Select.Root>
                         </fieldset>
                         <div className="flex justify-end flex-col items-center gap-y-2">
-                            <div className="text-center" ref={mensagemDeResposta}></div>
-                            <Botao texto='Salvar' variante='adicionar' type='submit' className='mt-4' disabled={salvando} />
+                            <div className="text-center" ref={mensagemDeRespostaRef}></div>
+                            <Botao texto='Salvar' variante='adicionar' type='submit' className='mt-4' disabled={isPending} />
                         </div>
                         <Dialog.Close asChild>
                             <button
