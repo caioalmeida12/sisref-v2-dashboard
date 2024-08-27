@@ -13,7 +13,7 @@ import * as Select from '@radix-ui/react-select';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 
-export const ModalAdicionarCardapio = () => {
+export const ModalAdicionarCardapio = ({ dataDaPesquisa }: { dataDaPesquisa: string }) => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
 
     const queryClient = useQueryClient();
@@ -99,7 +99,7 @@ export const ModalAdicionarCardapio = () => {
                                 Data
                             </label>
                             <div className='outline outline-1 rounded'>
-                                <input type='date' id='date' name='date' className='px-2 py-1 w-full' onChange={(e) => handleDataChange(e.target.value)} />
+                                <input type='date' id='date' name='date' className='px-2 py-1 w-full' onChange={(e) => handleDataChange(e.target.value)} defaultValue={dataDaPesquisa} />
                             </div>
                         </fieldset>
                         <fieldset className='flex flex-col gap-y-2 justify-start'>
