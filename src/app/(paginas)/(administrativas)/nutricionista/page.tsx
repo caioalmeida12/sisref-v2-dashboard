@@ -104,7 +104,7 @@ export default function NutricionistaPage({
             </div>
           </div>) : (
             <div className="flex justify-center gap-x-2">
-              <ModalAdicionarCardapio />
+              <ModalAdicionarCardapio dataDaPesquisa={datas.dataInicial} />
             </div>
           )
         )
