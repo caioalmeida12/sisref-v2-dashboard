@@ -17,6 +17,7 @@ import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
 import { Badge } from "@/app/elementos/basicos/Badge";
 import Icone from "@/app/elementos/basicos/Icone";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/Refeicoes/ModalAdicionarRefeicao";
 interface NutricionistaPageProps {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
@@ -100,9 +101,7 @@ export default function NutricionistaPage({
             </button>
           </div>) : (
             <div className="flex justify-center gap-x-2">
-              <button className="w-5 h-5 relative">
-                <Icone.Adicionar className="absolute inset-0 block w-full h-full" />
-              </button>
+              <ModalAdicionarRefeicao />
             </div>
           )
         )
