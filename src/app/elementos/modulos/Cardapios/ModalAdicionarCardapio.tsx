@@ -19,19 +19,15 @@ export const ModalAdicionarCardapio = () => {
     const queryClient = useQueryClient();
 
     const [modalAberto, setModalAberto] = useState(false);
-    const [datas, setDatas] = useState({
-        startDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
-        endDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
-    });
-
+    const [data, setData] = useState(new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])));
     const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
-        queryKey: ['refeicoes', datas],
+        queryKey: ['refeicoes', data],
         queryFn: () => fetchNomesDeRefeicoesNutricionista()
     });
 
     const { mutate: handleSalvar, isPending } = useMutation({
         mutationFn: (formData: FormData) => criarCardapio(formData),
-        mutationKey: ['criarCardapio', datas],
+        mutationKey: ['criarCardapio', data],
         onMutate: () => {
             atualizarMensagem({ mensagem: 'Salvando cardápio...' });
         },
@@ -45,7 +41,7 @@ export const ModalAdicionarCardapio = () => {
                 setModalAberto(false);
 
                 queryClient.invalidateQueries({
-                    queryKey: ['refeicoes', datas],
+                    queryKey: ['refeicoes', data],
                 })
 
                 queryClient.invalidateQueries({
@@ -58,19 +54,16 @@ export const ModalAdicionarCardapio = () => {
         },
     })
 
-    const handleDataChange = (novaData: { startDate?: string, endDate?: string }) => {
-        if (!novaData?.startDate || !novaData?.endDate) return;
-
+    const handleDataChange = (novaData: string) => {
         const corrigirData = (dateStr: string) => {
             const ontem = new Date(dateStr).toISOString().split('T')[0];
             const hoje = DatasHelper.getDataPosterior(ontem);
             return new Date(hoje);
         };
 
-        const startDate = typeof novaData.startDate === 'string' ? corrigirData(novaData.startDate) : novaData.startDate;
-        const endDate = typeof novaData.endDate === 'string' ? corrigirData(novaData.endDate) : novaData.endDate;
+        const dataCorrigida = typeof novaData === 'string' ? corrigirData(novaData) : novaData;
 
-        setDatas({ startDate, endDate });
+        setData(dataCorrigida);
     };
 
     return (
@@ -106,7 +99,7 @@ export const ModalAdicionarCardapio = () => {
                                 Data
                             </label>
                             <div className='outline outline-1 rounded'>
-                                <input type='date' id='date' name='date' className='px-2 py-1 w-full' onChange={(e) => handleDataChange({ startDate: e.target.value, endDate: e.target.value })} />
+                                <input type='date' id='date' name='date' className='px-2 py-1 w-full' onChange={(e) => handleDataChange(e.target.value)} />
                             </div>
                         </fieldset>
                         <fieldset className='flex flex-col gap-y-2 justify-start'>
