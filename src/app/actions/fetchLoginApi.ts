@@ -3,10 +3,8 @@
 import { cookies } from "next/headers"
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction"
 import { redirect } from "next/navigation"
-import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCodigoHTTP"
 import { IInformacoesDeLogin } from "../lib/middlewares/IInformacoesDeLogin"
-
-const respostaFoiErroDeAutenticacao = (resposta: unknown): resposta is { message: string } => (resposta as { message: string }).message !== undefined
+import { FetchHelper } from "../lib/actions/FetchHelper"
 
 /**
  * Realiza uma chamada assíncrona para a API de login.
@@ -16,34 +14,21 @@ const respostaFoiErroDeAutenticacao = (resposta: unknown): resposta is { message
  * @redirects fail - Para a página de login com uma mensagem de erro caso haja algum problema.
  */
 export async function fetchLoginAPI(formData: FormData) {
-    const API_URL = `${process.env.URL_BASE_API}/login`
-
-    const resposta = await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({
-            email: formData.get('email'),
-            password: formData.get('password')
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        },
+    const resposta = await FetchHelper.post<IInformacoesDeLogin>({
+        rota: "/login",
+        cookies: cookies(),
+        body: formData,
     })
-        .then(resposta => resposta.json())
-        // Erro ao conectar com a API
-        .catch(erro => {
-            console.error(erro)
 
-            return redirect(`/login?erro=${encodeURIComponent(mensagemDeErroPorCodigoHTTP(erro.status))}`)
-        })
-
-    // Erro durante a autenticação
-    if (respostaFoiErroDeAutenticacao(resposta)) return redirect(`/login?erro=${encodeURIComponent(resposta.message)}`)
+    if (!resposta.sucesso) {
+        return redirect(`/login?erro=${encodeURIComponent(resposta.message)}`)
+    }
 
     // Autenticado com sucesso
     const informacoesLogin: IInformacoesDeLogin = {
         // é necessário fazer um cast para o campo classification, pois a resposta da API traz o campo como 'classfication' -- falta um 'i'
-        classification: resposta.classfication,
-        ...resposta
+        classification: (resposta.resposta[0] as any).classfication,
+        ...(resposta.resposta[0] as any)
     }
 
     cookies().set("authorization", `Bearer ${informacoesLogin.access_token}`)
