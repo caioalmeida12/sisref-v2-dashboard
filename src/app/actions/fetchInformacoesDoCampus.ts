@@ -1,28 +1,15 @@
 import { IInformacoesDoCampus } from "@/app/elementos/interfaces/IInformacoesDoCampus";
 import { cookies } from "next/headers";
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
+import { FetchHelper } from "../lib/actions/FetchHelper";
 
 export const fetchInformacoesDoCampus = async (id: string) => {
-    const API_URL = `${process.env.URL_BASE_API}/all/campus`
-
-    const auth = cookies().get("authorization")?.value
-    if (!auth) return redirecionarViaAction()
-
-    const response = await fetch(API_URL, {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": auth
-        },
+    const resposta = await FetchHelper.get<IInformacoesDoCampus>({
+        rota: `/all/campus/`,
+        cookies: cookies(),
     })
 
-    if (!response.ok) return redirecionarViaAction()
+    if (!resposta.sucesso) return redirecionarViaAction(`/login?erro=${encodeURIComponent(resposta.message)}`)
 
-    const data: Array<IInformacoesDoCampus> = await response.json()
-
-    const array = Array.isArray(data) ? data : [data]
-
-    const campus = array.find((campus) => campus.id === Number(id))
-    if (!campus) return redirecionarViaAction()
-
-    return campus
+    return resposta.resposta.find((campus) => campus.id === Number(id)) || { id: 0, name: "Campus não encontrado" }
 };
