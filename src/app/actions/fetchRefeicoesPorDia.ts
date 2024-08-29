@@ -3,28 +3,21 @@
 import { cookies } from "next/headers";
 
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
-import { IRefeicaoSchema } from "../elementos/interfaces/IRefeicao";
+import { IRefeicao, IRefeicaoSchema } from "../elementos/interfaces/IRefeicao";
+import { FetchHelper } from "../lib/actions/FetchHelper";
 
 
 export async function fetchRefeicoesPorDia({ data = new Date().toISOString().split('T')[0] }: { data?: string }) {
-    const API_URL = new URL(`${process.env.URL_BASE_API}/all/menus-today`)
-    API_URL.searchParams.append('date', data);
-
-    const auth = cookies().get("authorization")?.value
-    if (!auth) return redirecionarViaAction()
-
-    const resposta = await fetch(`${API_URL}`, {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": auth
-        }
+    const resposta = await FetchHelper.get<IRefeicao>({
+        rota: `/all/menus-today?date=${data}`,
+        cookies: cookies(),
     })
 
-    const refeicoes = await resposta.json();
+    if (!resposta.sucesso) {
+        return redirecionarViaAction(`/login?erro=${encodeURIComponent(resposta.message)}`)
+    }
 
-    const array = Array.isArray(refeicoes) ? refeicoes : [refeicoes];
-
-    const refeicoesFormatadas = array.map((refeicao: any) => {
+    const refeicoes = resposta.resposta.map((refeicao: any) => {
         // mapear o campo "meal" para o campo "refeicao" e utilizar o restante dos campos como "cardapio"
         const { meal, ...cardapio } = refeicao
 
@@ -36,7 +29,7 @@ export async function fetchRefeicoesPorDia({ data = new Date().toISOString().spl
         return formatar
     })
 
-    return refeicoesFormatadas
+    return refeicoes
 }
 
 // const mockRefeicoesComTodosOsStatus: IRefeicao[] = [

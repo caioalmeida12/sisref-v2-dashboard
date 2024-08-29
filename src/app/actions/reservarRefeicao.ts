@@ -1,33 +1,16 @@
 "use server"
 
 import { cookies } from "next/headers";
-import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
-import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCodigoHTTP";
+import { FetchHelper } from "../lib/actions/FetchHelper";
 
 export const reservarRefeicao = async ({ meal_id, date }: { meal_id?: number, date?: string }) => {
-    const auth = cookies().get("authorization")?.value
-    if (!auth) return redirecionarViaAction()
+    const resposta = await FetchHelper.post<unknown>({
+        rota: '/student/schedulings/new',
+        cookies: cookies(),
+        body: { meal_id, date }
+    });
 
-    const resposta = await fetch(`${process.env.URL_BASE_API}/student/schedulings/new`, {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": auth
-        },
-        body: JSON.stringify({
-            meal_id,
-            date
-        }),
-        method: "POST"
-    })
-
-    if (!resposta.ok) {
-        const mensagemErro = mensagemDeErroPorCodigoHTTP(resposta.status);
-        return { sucesso: false, mensagem: mensagemErro };
-    }
-
-    const json = await resposta.json();
-
-    if (typeof json.message != "undefined") return { sucesso: false, mensagem: json.message };
+    if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
 
     return { sucesso: true, mensagem: "Reserva realizada com sucesso" };
 }

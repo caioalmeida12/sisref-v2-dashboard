@@ -1,12 +1,9 @@
 "use server"
 
 import { cookies } from "next/headers"
-import { redirect } from "next/navigation"
-import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCodigoHTTP"
 import { IFetchRefeicoesAutorizadas } from "../elementos/interfaces/IFetchRefeicoesAutorizadas"
-
-// [ 'Erro 401' ]
-const respostaFoiErroDeAutenticacao = (resposta: any) => resposta[0] === 'Erro 401'
+import { FetchHelper } from "../lib/actions/FetchHelper"
+import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction"
 
 /**
  * Realiza uma chamada assíncrona para a API de refeições autorizadas.
@@ -14,24 +11,12 @@ const respostaFoiErroDeAutenticacao = (resposta: any) => resposta[0] === 'Erro 4
  * @redirects fail - Para a página de login com uma mensagem de erro caso haja algum problema.
  */
 export async function fetchRefeicoesAutorizadas() {
-    const API_URL = `${process.env.URL_BASE_API}/student/schedulings/allows-meal-by-day`
-
-    const resposta = await fetch(API_URL, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${cookies().get('authorization')?.value}`
-        },
+    const resposta = await FetchHelper.get<IFetchRefeicoesAutorizadas>({
+        rota: `/student/schedulings/allows-meal-by-day`,
+        cookies: cookies(),
     })
-        .then(resposta => resposta.json())
-        // Erro ao conectar com a API
-        .catch(erro => redirect(`/login?erro=${encodeURIComponent(mensagemDeErroPorCodigoHTTP(erro.status))}`))
 
-    // Erro durante a autenticação
-    if (respostaFoiErroDeAutenticacao(resposta)) return redirect(`/login?erro=${encodeURIComponent(resposta.message)}`)
+    if (!resposta.sucesso) return redirecionarViaAction(`/login?erro=${encodeURIComponent(resposta.message)}`)
 
-    // Autenticado com sucesso
-    const refeicoes: IFetchRefeicoesAutorizadas[] = resposta
-
-    return refeicoes
+    return resposta.resposta
 }

@@ -4,10 +4,10 @@ import { cookies } from "next/headers"
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction"
 import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCodigoHTTP"
 import { IJustificativaDeEstudante, justificativasPermitidas } from "../elementos/interfaces/IJustificativaDeEstudante"
+import { IRefeicao } from "../elementos/interfaces/IRefeicao"
+import { FetchHelper } from "../lib/actions/FetchHelper"
 
 export const justificarRefeicao = async ({ indiceDaJustificativa, meal_id }: { indiceDaJustificativa: IJustificativaDeEstudante["value"], meal_id: number }) => {
-    const API_URL = new URL(`${process.env.URL_BASE_API}/student/schedulings/student-justification/${meal_id}`);
-
     if (!indiceDaJustificativa) return { sucesso: false, mensagem: "Nenhuma justificativa selecionada. Selecione uma justificativa." };
 
     const justificativa = justificativasPermitidas.find(justificativa => justificativa.value == indiceDaJustificativa);
@@ -19,25 +19,13 @@ export const justificarRefeicao = async ({ indiceDaJustificativa, meal_id }: { i
     const auth = cookies().get("authorization")?.value;
     if (!auth) return redirecionarViaAction();
 
-    const resposta = await fetch(`${API_URL}`, {
-        method: 'PUT',
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": auth
-        },
-        body: JSON.stringify({
-            studentJustification: justificativa.label
-        })
+    const resposta = await FetchHelper.put<IRefeicao>({
+        rota: `/student/schedulings/student-justification/${meal_id}`,
+        cookies: cookies(),
+        body: { studentJustification: justificativa.label }
     });
 
-    if (!resposta.ok) {
-        const mensagemErro = mensagemDeErroPorCodigoHTTP(resposta.status);
-        return { sucesso: false, mensagem: mensagemErro };
-    }
-
-    const json = await resposta.json();
-
-    if (typeof json.message != "undefined") return { sucesso: false, mensagem: json.message };
+    if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
 
     return { sucesso: true, mensagem: "Justificativa registrada com sucesso" };
 }

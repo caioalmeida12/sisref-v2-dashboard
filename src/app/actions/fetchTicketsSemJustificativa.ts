@@ -1,27 +1,22 @@
 "use server"
 
-import { cookies } from "next/headers"
-import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction"
-import { ParseRefeicaoDoHistorico } from "../elementos/interfaces/IRefeicaoDoHistorico"
+import { cookies } from "next/headers";
+import { FetchHelper } from "../lib/actions/FetchHelper";
+import { ParseRefeicaoDoHistorico } from "../elementos/interfaces/IRefeicaoDoHistorico";
+import { IRefeicao } from "../elementos/interfaces/IRefeicao";
+import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
 
 export const fetchTicketsSemJustificativa = async () => {
-    const API_URL = new URL(`${process.env.URL_BASE_API}/student/schedulings/not-used-without-justification`)
+    const resposta = await FetchHelper.get<IRefeicao>({
+        rota: '/student/schedulings/not-used-without-justification',
+        cookies: cookies(),
+    });
 
-    const auth = cookies().get("authorization")?.value
-    if (!auth) return redirecionarViaAction()
+    if (!resposta.sucesso) {
+        return redirecionarViaAction(`/login?erro=${encodeURIComponent(resposta.message)}`)
+    }
 
-    const resposta = await fetch(`${API_URL}`, {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": auth
-        }
-    })
-
-    if (resposta.status === 401) return redirecionarViaAction()
-
-    const refeicoes: any[] = await resposta.json()
-
-    return refeicoes
+    return resposta.resposta
         .map((refeicao) => ParseRefeicaoDoHistorico(refeicao))
-        .flatMap((refeicao) => refeicao.success ? refeicao.data : [])
-}
+        .flatMap((refeicao) => refeicao.success ? refeicao.data : []);
+};

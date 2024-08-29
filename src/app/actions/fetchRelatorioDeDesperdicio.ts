@@ -3,23 +3,17 @@
 import { IRelatorioDeDesperdicio } from "@/app/elementos/interfaces/IRelatorioDeDesperdicio"
 import { cookies } from "next/headers"
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction"
+import { FetchHelper } from "../lib/actions/FetchHelper"
 
 export const fetchRelatorioDeDesperdicio = async ({ data }: { data: string }) => {
-    const auth = cookies().get("authorization")?.value
-
-    if (!auth) return redirecionarViaAction()
-
-    const fetchRelatorio = await fetch(`${process.env.URL_BASE_API}/report/list-waste?date=${data}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${auth}`
-        }
+    const resposta = await FetchHelper.get<IRelatorioDeDesperdicio>({
+        rota: `/report/list-waste?date=${data}`,
+        cookies: cookies(),
     })
 
-    if (!fetchRelatorio.ok) return null
+    if (!resposta.sucesso) {
+        return redirecionarViaAction(`/login?erro=${encodeURIComponent(resposta.message)}`)
+    }
 
-    const resposta = await fetchRelatorio.json()
-
-    return resposta as IRelatorioDeDesperdicio
+    return resposta.resposta[0]
 }
