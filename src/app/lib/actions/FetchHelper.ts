@@ -100,7 +100,7 @@ export class FetchHelper {
      * 
      * @param rota - A URL a ser requisitada. Já possui o caminho base da API, portanto, não é necessário informar o caminho completo.
      * @param cookies - Os cookies da requisição. Podem ser obtidos através da função `cookies()` do Next.js.
-     * @param body - O corpo da requisição. Deve ser um objeto FormData.
+     * @param body - O corpo da requisição. Deve ser um objeto serializável em JSON.
      * @param headers - Os cabeçalhos da requisição. O cabeçalho `Content-Type` é definido como `application/json` por padrão. 
      * O cabeçalho `Authorization` é definido com o token de autenticação, que é obtido via cookies.
      * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como null para não redirecionar.
@@ -108,8 +108,8 @@ export class FetchHelper {
      * @default headers - { "content-type": "application/json", "authorization": `Bearer ${cookies.get("authorization")?.value}` }
      * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
      */
-    static async post<T>({ rota, cookies, body, headers, rotaParaRedirecionar }: { rota: string, cookies: ReadonlyRequestCookies, body: FormData, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> {
-        return fetchAPI<T>({ method: 'POST', rota, cookies, body: Object.fromEntries(body.entries()), headers, rotaParaRedirecionar });
+    static async post<T>({ rota, cookies, body, headers, rotaParaRedirecionar }: { rota: string, cookies: ReadonlyRequestCookies, body: Record<string, any>, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> {
+        return fetchAPI<T>({ method: 'POST', rota, cookies, body, headers, rotaParaRedirecionar });
     }
 
     /**
@@ -133,7 +133,7 @@ export class FetchHelper {
      * 
      * @param rota - A URL a ser requisitada. Já possui o caminho base da API, portanto, não é necessário informar o caminho completo.
      * @param cookies - Os cookies da requisição. Podem ser obtidos através da função `cookies()` do Next.js.
-     * @param body - O corpo da requisição. Deve ser um objeto FormData.
+     * @param body - O corpo da requisição. Deve ser um objeto serializável em JSON.
      * @param headers - Os cabeçalhos da requisição. O cabeçalho `Content-Type` é definido como `application/json` por padrão. 
      * O cabeçalho `Authorization` é definido com o token de autenticação, que é obtido via cookies.
      * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como null para não redirecionar.
@@ -141,7 +141,7 @@ export class FetchHelper {
      * @default headers - { "content-type": "application/json", "authorization": `Bearer ${cookies.get("authorization")?.value}` }
      * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
      */
-    static async put<T>({ rota, cookies, body, headers, rotaParaRedirecionar }: { rota: string, cookies: ReadonlyRequestCookies, body: FormData, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> {
-        return fetchAPI<T>({ method: 'PUT', rota, cookies, body: Object.fromEntries(body.entries()), headers, rotaParaRedirecionar });
+    static async put<T>({ rota, cookies, body, headers, rotaParaRedirecionar }: { rota: string, cookies: ReadonlyRequestCookies, body: Record<string, any>, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> {
+        return fetchAPI<T>({ method: 'PUT', rota, cookies, body, headers, rotaParaRedirecionar });
     }
 }

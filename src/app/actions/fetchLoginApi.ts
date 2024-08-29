@@ -17,7 +17,7 @@ export async function fetchLoginAPI(formData: FormData) {
     const resposta = await FetchHelper.post<IInformacoesDeLogin>({
         rota: "/login",
         cookies: cookies(),
-        body: formData,
+        body: Object.fromEntries(formData),
     })
 
     if (!resposta.sucesso) {
