@@ -33,7 +33,7 @@ const respostaFoiErro = (resposta: unknown) => {
  * @param body - O corpo da requisição. Deve ser um objeto serializável em JSON.
  * @param headers - Os cabeçalhos da requisição. O cabeçalho `Content-Type` é definido como `application/json` por padrão. 
  * O cabeçalho `Authorization` é definido com o token de autenticação, que é obtido via cookies.
- * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como null para não redirecionar.
+ * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
  * 
  * @default headers - { "content-type": "application/json", "authorization": `Bearer ${cookies.get("authorization")?.value}` }
  * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
@@ -86,7 +86,7 @@ export class FetchHelper {
      * @param cookies - Os cookies da requisição. Podem ser obtidos através da função `cookies()` do Next.js.
      * @param headers - Os cabeçalhos da requisição. O cabeçalho `Content-Type` é definido como `application/json` por padrão. 
      * O cabeçalho `Authorization` é definido com o token de autenticação, que é obtido via cookies.
-     * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como null para não redirecionar.
+     * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
      * 
      * @default headers - { "content-type": "application/json", "authorization": `Bearer ${cookies.get("authorization")?.value}` }
      * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
@@ -103,7 +103,7 @@ export class FetchHelper {
      * @param body - O corpo da requisição. Deve ser um objeto serializável em JSON.
      * @param headers - Os cabeçalhos da requisição. O cabeçalho `Content-Type` é definido como `application/json` por padrão. 
      * O cabeçalho `Authorization` é definido com o token de autenticação, que é obtido via cookies.
-     * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como null para não redirecionar.
+     * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
      * 
      * @default headers - { "content-type": "application/json", "authorization": `Bearer ${cookies.get("authorization")?.value}` }
      * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
@@ -119,7 +119,7 @@ export class FetchHelper {
      * @param cookies - Os cookies da requisição. Podem ser obtidos através da função `cookies()` do Next.js.
      * @param headers - Os cabeçalhos da requisição. O cabeçalho `Content-Type` é definido como `application/json` por padrão. 
      * O cabeçalho `Authorization` é definido com o token de autenticação, que é obtido via cookies.
-     * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como null para não redirecionar.
+     * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
      * 
      * @default headers - { "content-type": "application/json", "authorization": `Bearer ${cookies.get("authorization")?.value}` }
      * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
@@ -136,7 +136,7 @@ export class FetchHelper {
      * @param body - O corpo da requisição. Deve ser um objeto serializável em JSON.
      * @param headers - Os cabeçalhos da requisição. O cabeçalho `Content-Type` é definido como `application/json` por padrão. 
      * O cabeçalho `Authorization` é definido com o token de autenticação, que é obtido via cookies.
-     * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como null para não redirecionar.
+     * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
      * 
      * @default headers - { "content-type": "application/json", "authorization": `Bearer ${cookies.get("authorization")?.value}` }
      * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
