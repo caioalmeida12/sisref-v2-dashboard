@@ -1,6 +1,6 @@
 import { IInformacoesDeEstudante } from "./IInformacoesDeEstudante"
 
-export interface IFetchRefeicoesAutorizadas {
+export interface IBuscarRefeicoesAutorizadas {
     id: number
     friday: number
     monday: number

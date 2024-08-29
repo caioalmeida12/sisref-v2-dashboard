@@ -3,10 +3,10 @@ import { Secao } from "../basicos/Secao";
 import { CabecalhoDeSecao } from "../basicos/CabecalhoDeSecao";
 import { RefeicaoAutorizada } from "../componentes/RefeicaoAutorizada";
 import { InformacoesDeEstudante } from "./InformacoesDeEstudante";
-import { fetchRefeicoesAutorizadas } from "@/app/actions/fetchRefeicoesAutorizadas";
-import { IFetchRefeicoesAutorizadas } from "../interfaces/IFetchRefeicoesAutorizadas";
+import { IBuscarRefeicoesAutorizadas } from "../interfaces/IBuscarRefeicoesAutorizadas";
+import { buscarRefeicoesAutorizadas } from "@/app/actions/estudante";
 
-const pegarOsDiasDaSemanaAutorizados = (refeicoesAutorizadas: IFetchRefeicoesAutorizadas[], idDaRefeicao: number) => {
+const pegarOsDiasDaSemanaAutorizados = (refeicoesAutorizadas: IBuscarRefeicoesAutorizadas[], idDaRefeicao: number) => {
     const diasQueSaoAutorizados: string[] = [];
     refeicoesAutorizadas
         .filter(refeicao => refeicao.meal_id === idDaRefeicao)
@@ -27,7 +27,7 @@ const pegarOsDiasDaSemanaAutorizados = (refeicoesAutorizadas: IFetchRefeicoesAut
 };
 
 export const RefeicoesAutorizadas = async ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
-    const refeicoesAutorizadas = await fetchRefeicoesAutorizadas();
+    const refeicoesAutorizadas = await buscarRefeicoesAutorizadas();
 
     type RefeicoesMap = {
         [K in 1 | 2 | 3 | 4]?: {

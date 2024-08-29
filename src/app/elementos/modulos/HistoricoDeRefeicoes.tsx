@@ -3,11 +3,10 @@
 import React, { useEffect, useState } from 'react'
 import { Secao } from '../basicos/Secao'
 import { CabecalhoDeSecao } from '../basicos/CabecalhoDeSecao'
-import { fetchTickets } from '@/app/actions/fetchTickets'
 import { IRefeicaoDoHistorico } from '../interfaces/IRefeicaoDoHistorico'
 import { RefeicaoDoHistorico, RefeicaoDoHistoricoLoading } from '../componentes/RefeicaoDoHistorico/RefeicaoDoHistorico'
 import { useQuery } from '@tanstack/react-query'
-import { fetchTicketsSemJustificativa } from '@/app/actions/fetchTicketsSemJustificativa'
+import { buscarTickets, buscarTicketsSemJustificativa } from '@/app/actions/estudante'
 
 const QUANTOS_TICKETS_MOSTRAR = 10
 
@@ -20,11 +19,12 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
     const { data: tickets, isLoading, isError } = useQuery({
         queryKey: ['historicoDeRefeicoes'],
         queryFn: async () => {
-            const aSerUtilizado = (await fetchTickets('a-ser-utilizado')).filter(ticket => ticket !== null)
-            const utilizado = (await fetchTickets('utilizado')).filter(ticket => ticket !== null)
-            const cancelado = (await fetchTickets('cancelado')).filter(ticket => ticket !== null)
-            const naoUtilizado = (await fetchTickets('nao-utilizado')).filter(ticket => ticket !== null)
-            const naoUtilizadoSemJustificativa = (await fetchTicketsSemJustificativa()).filter(ticket => ticket !== null)
+            const aSerUtilizado = (await buscarTickets('a-ser-utilizado')).filter(ticket => ticket !== null)
+            console.log(aSerUtilizado)
+            const utilizado = (await buscarTickets('utilizado')).filter(ticket => ticket !== null)
+            const cancelado = (await buscarTickets('cancelado')).filter(ticket => ticket !== null)
+            const naoUtilizado = (await buscarTickets('nao-utilizado')).filter(ticket => ticket !== null)
+            const naoUtilizadoSemJustificativa = (await buscarTicketsSemJustificativa()).filter(ticket => ticket !== null)
 
             return {
                 aSerUtilizado,

@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import { Refeicao, RefeicaoLoading } from "../componentes/Refeicao/Refeicao";
 import { Slider } from "../componentes/Slider";
-import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { Secao } from "../basicos/Secao";
 import { useQuery } from "@tanstack/react-query";
 import { IRefeicao } from "../interfaces/IRefeicao";
 import { CustomTooltipWrapper } from "../basicos/CustomTooltipWrapper";
+import { buscarRefeicoesPorDia } from "@/app/actions/estudante";
 
 
 export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
@@ -17,7 +17,7 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
 
     const { data: refeicoes, isLoading, isError } = useQuery({
         queryKey: ['refeicoesPorDia', dataDaPesquisa],
-        queryFn: () => fetchRefeicoesPorDia({ data: dataDaPesquisa })
+        queryFn: () => buscarRefeicoesPorDia({ data: dataDaPesquisa }),
     });
 
     // Limitar a distância de dias entre a data atual e a data selecionada

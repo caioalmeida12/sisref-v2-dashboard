@@ -2,10 +2,10 @@
 
 import React, { useCallback, useState, useEffect } from "react"
 import { Botao } from "../../../basicos/Botao"
-import { cancelarRefeicao } from "@/app/actions/cancelarRefeicao"
 import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { IBotaoDeRefeicaoProps } from "."
+import { cancelarRefeicao } from "@/app/actions/estudante"
 
 export const _Cancelar = ({ meal_id, date, ref_botao_fechar }: Required<IBotaoDeRefeicaoProps>) => {
     const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();

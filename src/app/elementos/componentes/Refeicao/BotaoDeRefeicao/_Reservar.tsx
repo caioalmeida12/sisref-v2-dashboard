@@ -2,9 +2,9 @@
 
 import React, { useCallback } from "react"
 import { Botao } from "../../../basicos/Botao"
-import { reservarRefeicao } from "@/app/actions/reservarRefeicao"
 import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { reservarRefeicao } from "@/app/actions/estudante"
 
 export const _Reservar = ({ meal_id, date }: { meal_id?: number, date?: string }) => {
     const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
