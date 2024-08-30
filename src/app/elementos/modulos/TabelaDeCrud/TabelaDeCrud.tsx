@@ -253,8 +253,8 @@ function Filter({ column }: { column: Column<any, unknown> }) {
         <>
             {/* Autocomplete suggestions from faceted values feature */}
             <datalist id={column.id + 'list'}>
-                {sortedUniqueValues.map((value: any) => (
-                    <option value={value} key={value} />
+                {sortedUniqueValues.map((value: any, index) => (
+                    <option value={value} key={index} />
                 ))}
             </datalist>
             <DebouncedInput

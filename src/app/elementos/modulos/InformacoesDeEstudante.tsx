@@ -7,11 +7,11 @@ import { CampoDeSecao } from "../componentes/CampoDeSecao"
 import { IInformacoesDeEstudante } from "../interfaces/IInformacoesDeEstudante"
 import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao"
 import { IInformacoesDoCampus } from "../interfaces/IInformacoesDoCampus"
-import { fetchInformacoesDeEstudante } from "@/app/lib/middlewares/FetchInformacoesDeEstudante"
 import { validarTokenDosCookies } from "@/app/lib/middlewares/ValidarTokenDosCookies"
 import Image from "next/image"
-import { fetchInformacoesDoCampus } from "@/app/actions/fetchInformacoesDoCampus"
 import { stringParaCamelCase } from "@/app/lib/elementos/StringParaCamelCase"
+import { buscarCampus } from "@/app/actions/campus"
+import { buscarEstudante } from "@/app/actions/estudante"
 
 interface InformacoesDeEstudanteProps {
     estudante: IInformacoesDeEstudante
@@ -83,9 +83,9 @@ const MobileCompleta = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
 export const InformacoesDeEstudante = async ({ versaoMobileCompleta = false }: { versaoMobileCompleta?: boolean }) => {
     const validado = validarTokenDosCookies()
 
-    const informacoesDeEstudante = await fetchInformacoesDeEstudante(validado.sub);
+    const informacoesDeEstudante = await buscarEstudante(validado.sub);
 
-    const informacoesDoCampus = await fetchInformacoesDoCampus(String(informacoesDeEstudante.campus_id));
+    const informacoesDoCampus = await buscarCampus(String(informacoesDeEstudante.campus_id));
 
     if (versaoMobileCompleta) return (
         <MobileCompleta estudante={informacoesDeEstudante} campus={informacoesDoCampus} />
