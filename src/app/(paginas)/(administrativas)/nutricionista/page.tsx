@@ -40,7 +40,7 @@ export default function NutricionistaPage({
   const dataFinalRef = useRef<HTMLInputElement>(null);
   const nomeDeRefeicaoRef = useRef<HTMLFormElement>(null);
 
-  const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
+  const { data: refeicoesDisponiveis } = useQuery({
     queryKey: ['refeicoes', datas],
     queryFn: async () => {
       const resposta = await buscarRefeicoes()
@@ -51,13 +51,11 @@ export default function NutricionistaPage({
   });
 
   const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela, refetch: refetchDadosDaTabela } = useQuery({
-    queryKey: ['tabelaDeCardapios', datas, nomeDeRefeicaoRef.current?.querySelector('select')?.value, nomesDasRefeicoes],
+    queryKey: ['tabelaDeCardapios', datas, nomeDeRefeicaoRef.current?.querySelector('select')?.value, refeicoesDisponiveis],
     queryFn: async () => {
-      const resposta = await buscarTabelaDeCardapios({ campus_id: 1, data: datas.dataInicial, refeicoes_disponiveis: (nomesDasRefeicoes as any[])?.filter(refeicao => refeicao?.id) || [] })
+      const resposta = await buscarTabelaDeCardapios({ campus_id: 1, data: datas.dataInicial, refeicoes_disponiveis: (refeicoesDisponiveis as any[])?.filter(refeicao => refeicao?.id) || [] })
 
-      if (!resposta.sucesso) { return [] }
-
-      return resposta.resposta
+      return resposta.sucesso ? resposta.resposta : []
     },
     initialData: []
   });
@@ -113,7 +111,7 @@ export default function NutricionistaPage({
             </div>
           </div>) : (
             <div className="flex justify-center gap-x-2">
-              <ModalAdicionarCardapio dataDaPesquisa={datas.dataInicial} />
+              <ModalAdicionarCardapio refeicao={info.row.original} />
             </div>
           )
         )

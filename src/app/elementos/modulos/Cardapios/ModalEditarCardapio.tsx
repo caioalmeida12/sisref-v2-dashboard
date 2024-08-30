@@ -11,21 +11,15 @@ import * as Select from '@radix-ui/react-select';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
 import { buscarRefeicoes, editarCardapio } from '@/app/actions/nutricionista';
 
-interface ModalProps {
-    refeicao: IRefeicao;
-}
-
-export const ModalEditarCardapio: React.FC<ModalProps> = ({ refeicao }) => {
+export const ModalEditarCardapio = ({ refeicao }: { refeicao: IRefeicao }) => {
     const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
     const queryClient = useQueryClient();
-
-    const [data, setData] = useState(new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])));
 
     const [modalAberto, setModalAberto] = useState(false);
 
     const { mutate: handleEditar, isPending } = useMutation({
         mutationFn: (formData: FormData) => editarCardapio(formData),
-        mutationKey: ['editarCardapio', data],
+        mutationKey: ['editarCardapio', refeicao.cardapio?.date],
         onMutate: () => {
             atualizarMensagem({ mensagem: 'Salvando cardápio...' });
         },
@@ -38,7 +32,7 @@ export const ModalEditarCardapio: React.FC<ModalProps> = ({ refeicao }) => {
                 setModalAberto(false);
 
                 queryClient.invalidateQueries({
-                    queryKey: ['refeicoes', data],
+                    queryKey: ['refeicoes', refeicao.cardapio?.date],
                 })
 
                 queryClient.invalidateQueries({
@@ -51,18 +45,6 @@ export const ModalEditarCardapio: React.FC<ModalProps> = ({ refeicao }) => {
         },
     })
 
-    const handleDataChange = (novaData: string) => {
-        const corrigirData = (dateStr: string) => {
-            const ontem = new Date(dateStr).toISOString().split('T')[0];
-            const hoje = DatasHelper.getDataPosterior(ontem);
-            return new Date(hoje);
-        };
-
-        const dataCorrigida = typeof novaData === 'string' ? corrigirData(novaData) : novaData;
-
-        setData(dataCorrigida);
-    };
-
     return (
         <Dialog.Root open={modalAberto}>
             <Dialog.Trigger>
@@ -72,13 +54,13 @@ export const ModalEditarCardapio: React.FC<ModalProps> = ({ refeicao }) => {
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
-                <Dialog.Content aria-describedby='modal-description' className="flex flex-col gap-y-4 overflow-y-auto data-[state=open]:animate-contentShow fixed top-[50%] left-[50%]  w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none   ">
+                <Dialog.Content aria-describedby='modal-description' className="flex flex-col gap-y-2 data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none">
                     <Dialog.Title className="m-0 font-medium text-lg">
-                        Editar cardápio - {DatasHelper.converterParaFormatoBrasileiro(refeicao.cardapio!.date)}
+                        Editar cardápio
                     </Dialog.Title>
-                    <div id="modal-description" className="sr-only">
-                        Formulário para editar o cardápio.
-                    </div>
+                    <Dialog.Description className='text-cinza-600'>
+                        Modifique os campos abaixo para editar o cardápio.
+                    </Dialog.Description>
                     <form className='flex flex-col gap-y-4' action={handleEditar}>
                         <fieldset className='flex flex-col gap-y-2 justify-start'>
                             <label className='font-medium' htmlFor="description">
@@ -92,17 +74,17 @@ export const ModalEditarCardapio: React.FC<ModalProps> = ({ refeicao }) => {
                                 defaultValue={refeicao.cardapio?.description}
                             />
                         </fieldset>
-                        <fieldset className='flex flex-col gap-y-2 justify-start' >
+                        <fieldset className='flex flex-col gap-y-2 justify-start'>
                             <label className='font-medium' htmlFor="date">
                                 Data
                             </label>
                             <div className='outline outline-1 rounded'>
                                 <input
+                                    readOnly
                                     type='date'
                                     id='date'
                                     name='date'
-                                    className='px-2 py-1 w-full'
-                                    onChange={(e) => handleDataChange(e.target.value)}
+                                    className='px-2 py-1 w-full bg-gray-100 cursor-not-allowed text-cinza-600'
                                     defaultValue={refeicao.cardapio?.date}
                                 />
                             </div>
@@ -125,11 +107,15 @@ export const ModalEditarCardapio: React.FC<ModalProps> = ({ refeicao }) => {
                             name='menu_id'
                             className='hidden'
                             value={refeicao.cardapio?.id}
+                            readOnly
+                            aria-hidden
                         />
                         <input
                             name='meal_id'
                             className='hidden'
                             value={refeicao.refeicao?.id}
+                            readOnly
+                            aria-hidden
                         />
                     </form>
                     <Dialog.Close asChild>

@@ -12,31 +12,20 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { buscarRefeicoes, criarCardapio } from '@/app/actions/nutricionista';
 
-export const ModalAdicionarCardapio = ({ dataDaPesquisa }: { dataDaPesquisa: string }) => {
+export const ModalAdicionarCardapio = ({ refeicao }: { refeicao: IRefeicao }) => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
 
     const queryClient = useQueryClient();
 
     const [modalAberto, setModalAberto] = useState(false);
-    const [data, setData] = useState(new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])));
-    const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
-        queryKey: ['refeicoes', dataDaPesquisa],
-        queryFn: async () => {
-            const resposta = await buscarRefeicoes()
-
-            return resposta.sucesso ? resposta.resposta : []
-        },
-        initialData: []
-    });
 
     const { mutate: handleSalvar, isPending } = useMutation({
         mutationFn: (formData: FormData) => criarCardapio(formData),
-        mutationKey: ['criarCardapio', data],
+        mutationKey: ['criarCardapio', refeicao.cardapio?.date],
         onMutate: () => {
             atualizarMensagem({ mensagem: 'Salvando cardápio...' });
         },
         onSuccess: (json) => {
-            // Devido a um erro na API, o JSON de erro é retornado com status 200. Esse comportamento foi descrito em criarCardapio.ts:49
             if (!json.sucesso) return atualizarMensagem(json);
 
             atualizarMensagem({ mensagem: 'Cardápio salvo com sucesso!', sucesso: true });
@@ -45,30 +34,18 @@ export const ModalAdicionarCardapio = ({ dataDaPesquisa }: { dataDaPesquisa: str
                 setModalAberto(false);
 
                 queryClient.invalidateQueries({
-                    queryKey: ['refeicoes', data],
-                })
+                    queryKey: ['refeicoes', refeicao.cardapio?.date],
+                });
 
                 queryClient.invalidateQueries({
                     queryKey: ['tabelaDeCardapios'],
-                })
+                });
             }, 500);
         },
         onError: (error) => {
             atualizarMensagem({ mensagem: error.message, sucesso: false });
         },
-    })
-
-    const handleDataChange = (novaData: string) => {
-        const corrigirData = (dateStr: string) => {
-            const ontem = new Date(dateStr).toISOString().split('T')[0];
-            const hoje = DatasHelper.getDataPosterior(ontem);
-            return new Date(hoje);
-        };
-
-        const dataCorrigida = typeof novaData === 'string' ? corrigirData(novaData) : novaData;
-
-        setData(dataCorrigida);
-    };
+    });
 
     return (
         <Dialog.Root open={modalAberto}>
@@ -79,14 +56,14 @@ export const ModalAdicionarCardapio = ({ dataDaPesquisa }: { dataDaPesquisa: str
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
-                <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none ">
+                <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none">
                     <Dialog.Title className="m-0 font-medium text-lg">
                         Adicionar cardápio
                     </Dialog.Title>
-                    <Dialog.Description className="mt-2 mb-5 leading-normal">
+                    <Dialog.Description>
                         Preencha os campos abaixo para adicionar um novo cardápio.
                     </Dialog.Description>
-                    <form className='flex flex-col gap-y-4' action={handleSalvar}>
+                    <form className='flex flex-col gap-y-4' onSubmit={(e) => { e.preventDefault(); handleSalvar(new FormData(e.target as HTMLFormElement)); }}>
                         <fieldset className='flex flex-col gap-y-2 justify-start'>
                             <label className='font-medium' htmlFor="description">
                                 Descrição
@@ -96,51 +73,23 @@ export const ModalAdicionarCardapio = ({ dataDaPesquisa }: { dataDaPesquisa: str
                                 id="description"
                                 placeholder='Ex: Pão com ovos + suco de acerola'
                                 name='description'
+                                defaultValue=""
                             />
                         </fieldset>
-                        <fieldset className='flex flex-col gap-y-2 justify-start' >
+                        <fieldset className='flex flex-col gap-y-2 justify-start'>
                             <label className='font-medium' htmlFor="date">
                                 Data
                             </label>
                             <div className='outline outline-1 rounded'>
-                                <input type='date' id='date' name='date' className='px-2 py-1 w-full' onChange={(e) => handleDataChange(e.target.value)} defaultValue={dataDaPesquisa} />
+                                <input
+                                    readOnly
+                                    type='date'
+                                    id='date'
+                                    name='date'
+                                    className='px-2 py-1 w-full bg-gray-100 cursor-not-allowed text-cinza-600'
+                                    defaultValue={refeicao.cardapio?.date}
+                                />
                             </div>
-                        </fieldset>
-                        <fieldset className='flex flex-col gap-y-2 justify-start'>
-                            <label className='font-medium' htmlFor="meal">
-                                Refeição
-                            </label>
-                            <Select.Root name='meal_id'>
-                                <Select.Trigger className="px-2 py-1 h-[34px] flex overflow-hidden items-center min-w-[250px] text-left rounded outline outline-1 outline-cinza-600">
-                                    <Select.Value placeholder="Selecione a refeição" />
-                                    <Select.Icon className="SelectIcon">
-                                        <ChevronDownIcon />
-                                    </Select.Icon>
-                                </Select.Trigger>
-
-                                <Select.Portal>
-                                    <Select.Content>
-                                        <Select.ScrollUpButton />
-                                        <Select.Viewport className="bg-branco-400 px-2 py-1 rounded outline outline-1 outline-cinza-600">
-                                            {
-                                                !isLoadingRefeicoes && nomesDasRefeicoes &&
-                                                nomesDasRefeicoes.map((refeicao, index) => (
-                                                    <Select.Item value={String(refeicao?.id)} className="flex items-center px-2 py-1 hover:outline outline-1 rounded hover:bg-amarelo-200" key={index}>
-                                                        <Select.ItemText>
-                                                            {refeicao?.description}
-                                                        </Select.ItemText>
-                                                        <Select.ItemIndicator>
-                                                            <CheckIcon />
-                                                        </Select.ItemIndicator>
-                                                    </Select.Item>
-                                                ))
-                                            }
-                                        </Select.Viewport>
-                                        <Select.ScrollDownButton />
-                                        <Select.Arrow />
-                                    </Select.Content>
-                                </Select.Portal>
-                            </Select.Root>
                         </fieldset>
                         <div className="flex justify-end flex-col items-center gap-y-2">
                             <div className="text-center" ref={mensagemDeRespostaRef}></div>
@@ -156,9 +105,15 @@ export const ModalAdicionarCardapio = ({ dataDaPesquisa }: { dataDaPesquisa: str
                                 <Cross2Icon />
                             </button>
                         </Dialog.Close>
+                        <input
+                            name='meal_id'
+                            className='hidden'
+                            value={refeicao.refeicao?.id}
+                            readOnly
+                        />
                     </form>
                 </Dialog.Content>
             </Dialog.Portal>
         </Dialog.Root>
-    )
+    );
 };
