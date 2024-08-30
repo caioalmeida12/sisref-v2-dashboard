@@ -4,10 +4,10 @@ import React, { Suspense } from 'react';
 import Image from 'next/image';
 import sisrefLogo from '@/app/elementos/assets/img/sisrefLogo.png';
 import { Botao } from '../basicos/Botao';
-import { fetchLoginAPI } from '@/app/actions/fetchLoginApi';
 import { useSearchParams } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import * as Form from '@radix-ui/react-form';
+import { login } from '@/app/actions/comuns';
 
 const MensagemErro = ({ texto }: { texto: string | null }) => {
     const { pending } = useFormStatus()
@@ -47,7 +47,7 @@ export const Login = () => {
     return (
         <main className='flex flex-col items-center gap-y-8 flex-grow h-full'>
             <Image src={sisrefLogo} alt="Sisref" />
-            <Form.Root className='flex flex-col gap-y-4 w-full min-w-[256px] max-w-[400px]' action={fetchLoginAPI}>
+            <Form.Root className='flex flex-col gap-y-4 w-full min-w-[256px] max-w-[400px]' action={login}>
                 <Form.Field name='email' className='flex flex-col gap-y-2'>
                     <Form.Label>Email</Form.Label>
                     <Form.Control type='email' placeholder='estudante@ifce.edu.br' className='rounded py-2 px-4 outline outline-1 outline-cinza-600' />
@@ -64,6 +64,6 @@ export const Login = () => {
                     <LoginContent />
                 </Suspense>
             </Form.Root>
-       </main>
+        </main>
     );
 }

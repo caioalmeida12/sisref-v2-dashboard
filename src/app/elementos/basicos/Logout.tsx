@@ -1,8 +1,8 @@
 "use client"
 
-import { logout } from "@/app/actions/logoutUsuario"
 import React from "react"
 import Icone from "./Icone"
+import { logout } from "@/app/actions/comuns"
 
 export const Logout = () => {
     const handleLogout = async () => await logout()
