@@ -1,7 +1,7 @@
 "use server"
 
 /**
- * Este módulo contém todas as actions relacionadas ao estudante.
+ * Este módulo contém todas as actions relacionadas à pagina de estudante.
  */
 
 import { cookies } from "next/headers";
