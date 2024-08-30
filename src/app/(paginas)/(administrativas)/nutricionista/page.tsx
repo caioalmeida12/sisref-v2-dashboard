@@ -19,7 +19,7 @@ import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/Refeicoes/ModalA
 import { ModalAdicionarCardapio } from "@/app/elementos/modulos/Cardapios/ModalAdicionarCardapio";
 import { ModalRemoverCardapio } from "@/app/elementos/modulos/Cardapios/ModalRemoverCardapio";
 import { ModalEditarCardapio } from "@/app/elementos/modulos/Cardapios/ModalEditarCardapio";
-import { buscarRefeicoes, buscarTabelaDeRefeicoes } from "@/app/actions/nutricionista";
+import { buscarRefeicoes, buscarTabelaDeCardapios } from "@/app/actions/nutricionista";
 interface NutricionistaPageProps {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
@@ -40,23 +40,24 @@ export default function NutricionistaPage({
   const dataFinalRef = useRef<HTMLInputElement>(null);
   const nomeDeRefeicaoRef = useRef<HTMLFormElement>(null);
 
-  const { data: nomesDasRefeicoes } = useQuery({
+  const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
     queryKey: ['refeicoes', datas],
     queryFn: async () => {
       const resposta = await buscarRefeicoes()
+
       return resposta.sucesso ? resposta.resposta : []
     },
     initialData: []
   });
 
-  nomesDasRefeicoes && console.log(nomesDasRefeicoes);
-
   const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela, refetch: refetchDadosDaTabela } = useQuery({
     queryKey: ['tabelaDeCardapios', datas, nomeDeRefeicaoRef.current?.querySelector('select')?.value, nomesDasRefeicoes],
     queryFn: async () => {
-      const resposta = await buscarTabelaDeRefeicoes({ campus_id: 1, data: datas.dataInicial, refeicoes_disponiveis: nomesDasRefeicoes?.filter(refeicao => refeicao?.id) || [] })
+      const resposta = await buscarTabelaDeCardapios({ campus_id: 1, data: datas.dataInicial, refeicoes_disponiveis: (nomesDasRefeicoes as any[])?.filter(refeicao => refeicao?.id) || [] })
 
-      return resposta.sucesso ? resposta.resposta : []
+      if (!resposta.sucesso) { return [] }
+
+      return resposta.resposta
     },
     initialData: []
   });

@@ -212,7 +212,7 @@ const formatarRefeicaoDoBackendParaOFrontend = (menu: unknown) => {
 /**
  *  Busca as refeições de um determinado campus para uma determinada data.
  */
-export async function buscarTabelaDeRefeicoes({ campus_id, data, refeicoes_disponiveis }: { campus_id: number, data: string, refeicoes_disponiveis: IRefeicao["refeicao"][] }) {
+export async function buscarTabelaDeCardapios({ campus_id, data, refeicoes_disponiveis }: { campus_id: number, data: string, refeicoes_disponiveis: IRefeicao["refeicao"][] }) {
     const resposta = await FetchHelper.get<IRefeicao["refeicao"][]>({
         rota: `/menu/all-by-date?campus_id=${campus_id}&date=${data}`,
         cookies: cookies(),
@@ -268,11 +268,40 @@ export async function buscarRefeicoes() {
         }
     }
 
-    const refeicoes = resposta.resposta.map(formatarRefeicaoDoBackendParaOFrontend);
+    // Refeições buscadas com sucesso
+    const refeicoes: IRefeicao["refeicao"][] = resposta.resposta.map((refeicao: any) => ({
+        id: refeicao.id,
+        description: refeicao.description,
+        qtdTimeReservationEnd: refeicao.qtdTimeReservationEnd,
+        qtdTimeReservationStart: refeicao.qtdTimeReservationStart,
+        timeEnd: refeicao.timeEnd,
+        timeStart: refeicao.timeStart
+    }))
 
     return {
         sucesso: true,
         resposta: refeicoes
     }
+}
+
+/**
+ * Realiza uma chamada assíncrona para a API de criação de relatórios de desperdício.
+ * 
+ * @param formData - Os dados do formulário de criação de relatório de desperdício.
+ * @returns JSON com os campos `sucesso` e `mensagem`.
+ */
+export async function criarRelatorioDeDesperdicio(formData: FormData) {
+    const resposta = await FetchHelper.post<unknown>({
+        rota: "/report/add-waste-report",
+        cookies: cookies(),
+        body: {
+            date: formData.get('date'),
+            content: formData.get('content')
+        }
+    });
+
+    if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
+
+    return { sucesso: true, mensagem: "Relatório de desperdício criado com sucesso." };
 }
 

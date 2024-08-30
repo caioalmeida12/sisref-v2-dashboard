@@ -1,7 +1,6 @@
 import React from "react"
 import ifce_logo_horizontal_branco from '@/app/elementos/assets/img/ifce_logo_horizontal_branco.png';
 import Image from "next/image"
-import { fetchInformacoesDoCampus } from "@/app/actions/fetchInformacoesDoCampus";
 import Icone from "../basicos/Icone";
 import { stringParaCamelCase } from "@/app/lib/elementos/StringParaCamelCase";
 import { linksDaSidebarPorTipoDeUsuario } from "@/app/lib/elementos/LinksDaSidebarPorTipoDeUsuario";
@@ -10,6 +9,7 @@ import { IInformacoesDeLogin } from "@/app/lib/middlewares/IInformacoesDeLogin";
 import { Logout } from "../basicos/Logout";
 import Link from "next/link";
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
+import { buscarCampus } from "@/app/actions/campus";
 
 // export const Sidebar = async ({ token_decodificado }: { token_decodificado: ITokenDecodificado }) => {
 export const Sidebar = async () => {
@@ -19,7 +19,7 @@ export const Sidebar = async () => {
         name: "Usuário Mockado",
     }
 
-    const campus = await fetchInformacoesDoCampus(String(usuario.campus_id))
+    const campus = await buscarCampus(String(usuario.campus_id))
 
     const tipo_de_usuario = cookies().get("classification")?.value as IInformacoesDeLogin["classification"]
 

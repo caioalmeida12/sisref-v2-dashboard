@@ -1,9 +1,9 @@
 import { NextResponse, NextRequest } from "next/server";
 import { validarTokenDosCookies } from "./ValidarTokenDosCookies";
-import { fetchInformacoesDeEstudante } from "./FetchInformacoesDeEstudante";
 import { cookies } from "next/headers";
 import { redirecionarViaMiddleware } from "./RedirecionarViaMiddleware";
 import { IInformacoesDeLogin } from "./IInformacoesDeLogin";
+import { buscarEstudante } from "@/app/actions/estudante";
 
 
 /**
@@ -62,7 +62,7 @@ export const requerAutorizacaoMiddleware = async (req: NextRequest) => {
 
     try {
         if (classification === "STUDENT") {
-            const fetchAuth = await fetchInformacoesDeEstudante(validado.sub);
+            const fetchAuth = await buscarEstudante(validado.sub);
             if (!fetchAuth) return redirecionarViaMiddleware()
         }
 

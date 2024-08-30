@@ -7,11 +7,10 @@ import { Botao } from '../../basicos/Botao';
 import { CheckIcon, ChevronDownIcon, Cross2Icon } from '@radix-ui/react-icons';
 import { IRefeicao } from '../../interfaces/IRefeicao';
 import Icone from '../../basicos/Icone';
-import { fetchNomesDeRefeicoesNutricionista } from '@/app/actions/fetchNomesDeRefeicoesNutricionista';
 import * as Select from '@radix-ui/react-select';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
-import { criarCardapio } from '@/app/actions/nutricionista';
+import { buscarRefeicoes, criarCardapio } from '@/app/actions/nutricionista';
 
 export const ModalAdicionarCardapio = ({ dataDaPesquisa }: { dataDaPesquisa: string }) => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
@@ -21,8 +20,13 @@ export const ModalAdicionarCardapio = ({ dataDaPesquisa }: { dataDaPesquisa: str
     const [modalAberto, setModalAberto] = useState(false);
     const [data, setData] = useState(new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])));
     const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
-        queryKey: ['refeicoes', data],
-        queryFn: () => fetchNomesDeRefeicoesNutricionista()
+        queryKey: ['refeicoes', dataDaPesquisa],
+        queryFn: async () => {
+            const resposta = await buscarRefeicoes()
+
+            return resposta.sucesso ? resposta.resposta : []
+        },
+        initialData: []
     });
 
     const { mutate: handleSalvar, isPending } = useMutation({

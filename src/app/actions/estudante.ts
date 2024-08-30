@@ -12,6 +12,7 @@ import { IBuscarRefeicoesAutorizadas } from "../elementos/interfaces/IBuscarRefe
 import { ParseRefeicaoDoHistorico } from "../elementos/interfaces/IRefeicaoDoHistorico";
 import { IJustificativaDeEstudante, justificativasPermitidas } from "../elementos/interfaces/IJustificativaDeEstudante";
 import { IRelatorioDeDesperdicio } from "../elementos/interfaces/IRelatorioDeDesperdicio";
+import { IInformacoesDeEstudante } from "../elementos/interfaces/IInformacoesDeEstudante";
 
 /**
  * Busca as refeições disponíveis para o dia solicitado. Se não for passado nenhum parâmetro, a data atual será utilizada.
@@ -204,6 +205,24 @@ export const justificarRefeicao = async ({ indiceDaJustificativa, meal_id }: { i
 export const buscarRelatorioDeDesperdicio = async ({ data }: { data: string }) => {
     const resposta = await FetchHelper.get<IRelatorioDeDesperdicio>({
         rota: `/report/list-waste?date=${data}`,
+        cookies: cookies(),
+    })
+
+    if (!resposta.sucesso) {
+        return redirecionarViaAction(`/login?erro=${encodeURIComponent(resposta.message)}`)
+    }
+
+    return resposta.resposta[0]
+}
+
+/**
+ *  Busca as informações de estudante.
+ * 
+ * @param sub o sub de estudante, obtido no token decodificado
+ */
+export const buscarEstudante = async (sub: string): Promise<IInformacoesDeEstudante> => {
+    const resposta = await FetchHelper.get<IInformacoesDeEstudante>({
+        rota: `/all/show-student/${sub}`,
         cookies: cookies(),
     })
 

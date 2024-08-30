@@ -7,11 +7,9 @@ import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { Botao } from '../../basicos/Botao';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { IRefeicao } from '../../interfaces/IRefeicao';
-import { removerCardapio } from '@/app/actions/removerCardapio';
-import { fetchNomesDeRefeicoesNutricionista } from '@/app/actions/fetchNomesDeRefeicoesNutricionista';
 import * as Select from '@radix-ui/react-select';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
-import { editarCardapio } from '@/app/actions/nutricionista';
+import { buscarRefeicoes, editarCardapio } from '@/app/actions/nutricionista';
 
 interface ModalProps {
     refeicao: IRefeicao;
@@ -24,13 +22,6 @@ export const ModalEditarCardapio: React.FC<ModalProps> = ({ refeicao }) => {
     const [data, setData] = useState(new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])));
 
     const [modalAberto, setModalAberto] = useState(false);
-
-    console.log(refeicao);
-
-    const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
-        queryKey: ['refeicoes', data],
-        queryFn: () => fetchNomesDeRefeicoesNutricionista()
-    });
 
     const { mutate: handleEditar, isPending } = useMutation({
         mutationFn: (formData: FormData) => editarCardapio(formData),
