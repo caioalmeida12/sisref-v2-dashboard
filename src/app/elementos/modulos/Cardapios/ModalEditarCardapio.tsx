@@ -11,7 +11,7 @@ import { removerCardapio } from '@/app/actions/removerCardapio';
 import { fetchNomesDeRefeicoesNutricionista } from '@/app/actions/fetchNomesDeRefeicoesNutricionista';
 import * as Select from '@radix-ui/react-select';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
-import { editarCardapio } from '@/app/actions/editarCardapio';
+import { editarCardapio } from '@/app/actions/nutricionista';
 
 interface ModalProps {
     refeicao: IRefeicao;
@@ -131,9 +131,14 @@ export const ModalEditarCardapio: React.FC<ModalProps> = ({ refeicao }) => {
                             </button>
                         </Dialog.Close>
                         <input
-                            name='meal_id'
+                            name='menu_id'
                             className='hidden'
                             value={refeicao.cardapio?.id}
+                        />
+                        <input
+                            name='meal_id'
+                            className='hidden'
+                            value={refeicao.refeicao?.id}
                         />
                     </form>
                     <Dialog.Close asChild>

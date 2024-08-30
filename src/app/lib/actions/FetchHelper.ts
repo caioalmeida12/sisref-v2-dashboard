@@ -1,6 +1,7 @@
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { mensagemDeErroPorCodigoHTTP } from "./MensagemDeErroPorCodigoHTTP";
 import { redirecionarViaAction } from "./RedirecionarViaAction";
+import fs from "fs";
 
 type RespostaDaAPI<T> = {
     sucesso: false;
@@ -73,6 +74,8 @@ const fetchAPI = async <T>({ metodo, rota, cookies, body, headers, rotaParaRedir
             resposta: Array.isArray(json_resolvido) ? json_resolvido : [json_resolvido]
         };
     } catch (erro) {
+        if (rotaParaRedirecionarCasoFalhe === null) return { sucesso: false, message: mensagemDeErroPorCodigoHTTP(resposta_inicial.status) };
+
         // Se for erro de JSON mal formatado, retorna o erro
         if (erro instanceof SyntaxError) return redirecionarViaAction(`/login?erro=${encodeURIComponent("Erro ao processar a resposta da API.")}`);
 
