@@ -38,12 +38,12 @@ const respostaFoiErro = (resposta: unknown) => {
  * @default headers - { "content-type": "application/json", "authorization": `Bearer ${cookies.get("authorization")?.value}` }
  * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
  */
-const fetchAPI = async <T>({ method, rota, cookies, body, headers, rotaParaRedirecionar }: { method: string, rota: string, cookies: ReadonlyRequestCookies, body?: any, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> => {
+const fetchAPI = async <T>({ metodo, rota, cookies, body, headers, rotaParaRedirecionar }: { metodo: string, rota: string, cookies: ReadonlyRequestCookies, body?: any, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> => {
     if (!process.env.URL_BASE_API) return { sucesso: false, message: "A URL base da API não foi informada." };
     if (!rota) return { sucesso: false, message: "A URL da rota da API não foi informada." };
 
     const resposta_inicial = await fetch(process.env.URL_BASE_API + rota, {
-        method,
+        method: metodo,
         headers: {
             "content-type": "application/json",
             "authorization": `Bearer ${cookies.get("authorization")?.value}`,
@@ -56,13 +56,15 @@ const fetchAPI = async <T>({ method, rota, cookies, body, headers, rotaParaRedir
     if (resposta_inicial.status === 401 && typeof rotaParaRedirecionar === "undefined") return redirecionarViaAction(`/login?erro=${encodeURIComponent(mensagemDeErroPorCodigoHTTP(401))}`);
 
     try {
-        const json_resolvido = await resposta_inicial.json();
-
         if (!resposta_inicial.ok) {
+            if (rotaParaRedirecionar === null) return { sucesso: false, message: mensagemDeErroPorCodigoHTTP(resposta_inicial.status) };
+
             if (rotaParaRedirecionar) return redirecionarViaAction(rotaParaRedirecionar);
 
             return redirecionarViaAction(`/login?erro=${encodeURIComponent(mensagemDeErroPorCodigoHTTP(resposta_inicial.status))}`);
         }
+
+        const json_resolvido = await resposta_inicial.json();
 
         if (respostaFoiErro(json_resolvido)) return { sucesso: false, message: json_resolvido.message }
 
@@ -92,7 +94,7 @@ export class FetchHelper {
      * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
      */
     static async get<T>({ rota, cookies, headers, rotaParaRedirecionar }: { rota: string, cookies: ReadonlyRequestCookies, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> {
-        return fetchAPI<T>({ method: 'GET', rota, cookies, headers, rotaParaRedirecionar });
+        return fetchAPI<T>({ metodo: 'GET', rota, cookies, headers, rotaParaRedirecionar });
     }
 
     /**
@@ -109,7 +111,7 @@ export class FetchHelper {
      * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
      */
     static async post<T>({ rota, cookies, body, headers, rotaParaRedirecionar }: { rota: string, cookies: ReadonlyRequestCookies, body: Record<string, any>, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> {
-        return fetchAPI<T>({ method: 'POST', rota, cookies, body, headers, rotaParaRedirecionar });
+        return fetchAPI<T>({ metodo: 'POST', rota, cookies, body, headers, rotaParaRedirecionar });
     }
 
     /**
@@ -125,7 +127,7 @@ export class FetchHelper {
      * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
      */
     static async delete<T>({ rota, cookies, headers, rotaParaRedirecionar }: { rota: string, cookies: ReadonlyRequestCookies, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> {
-        return fetchAPI<T>({ method: 'DELETE', rota, cookies, headers, rotaParaRedirecionar });
+        return fetchAPI<T>({ metodo: 'DELETE', rota, cookies, headers, rotaParaRedirecionar });
     }
 
     /**
@@ -142,6 +144,6 @@ export class FetchHelper {
      * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
      */
     static async put<T>({ rota, cookies, body, headers, rotaParaRedirecionar }: { rota: string, cookies: ReadonlyRequestCookies, body: Record<string, any>, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> {
-        return fetchAPI<T>({ method: 'PUT', rota, cookies, body, headers, rotaParaRedirecionar });
+        return fetchAPI<T>({ metodo: 'PUT', rota, cookies, body, headers, rotaParaRedirecionar });
     }
 }
