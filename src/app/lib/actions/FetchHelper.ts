@@ -33,12 +33,12 @@ const respostaFoiErro = (resposta: unknown) => {
  * @param body - O corpo da requisição. Deve ser um objeto serializável em JSON.
  * @param headers - Os cabeçalhos da requisição. O cabeçalho `Content-Type` é definido como `application/json` por padrão. 
  * O cabeçalho `Authorization` é definido com o token de autenticação, que é obtido via cookies.
- * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
+ * @param rotaParaRedirecionarCasoFalhe - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá redirecionar para a rota de login e informará qual foi o erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
  * 
  * @default headers - { "content-type": "application/json", "authorization": `Bearer ${cookies.get("authorization")?.value}` }
- * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
+ * @default rotaParaRedirecionarCasoFalhe - /login (apenas em caso de status 401)
  */
-const fetchAPI = async <T>({ metodo, rota, cookies, body, headers, rotaParaRedirecionar }: { metodo: string, rota: string, cookies: ReadonlyRequestCookies, body?: any, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> => {
+const fetchAPI = async <T>({ metodo, rota, cookies, body, headers, rotaParaRedirecionarCasoFalhe }: { metodo: string, rota: string, cookies: ReadonlyRequestCookies, body?: any, headers?: HeadersInit, rotaParaRedirecionarCasoFalhe?: string | null }): Promise<RespostaDaAPI<T>> => {
     if (!process.env.URL_BASE_API) return { sucesso: false, message: "A URL base da API não foi informada." };
     if (!rota) return { sucesso: false, message: "A URL da rota da API não foi informada." };
 
@@ -53,13 +53,13 @@ const fetchAPI = async <T>({ metodo, rota, cookies, body, headers, rotaParaRedir
     });
 
     // Por padrão, redireciona para a página de login em caso de erro 401
-    if (resposta_inicial.status === 401 && typeof rotaParaRedirecionar === "undefined") return redirecionarViaAction(`/login?erro=${encodeURIComponent(mensagemDeErroPorCodigoHTTP(401))}`);
+    if (resposta_inicial.status === 401 && typeof rotaParaRedirecionarCasoFalhe === "undefined") return redirecionarViaAction(`/login?erro=${encodeURIComponent(mensagemDeErroPorCodigoHTTP(401))}`);
 
     try {
         if (!resposta_inicial.ok) {
-            if (rotaParaRedirecionar === null) return { sucesso: false, message: mensagemDeErroPorCodigoHTTP(resposta_inicial.status) };
+            if (rotaParaRedirecionarCasoFalhe === null) return { sucesso: false, message: mensagemDeErroPorCodigoHTTP(resposta_inicial.status) };
 
-            if (rotaParaRedirecionar) return redirecionarViaAction(rotaParaRedirecionar);
+            if (rotaParaRedirecionarCasoFalhe) return redirecionarViaAction(rotaParaRedirecionarCasoFalhe);
 
             return redirecionarViaAction(`/login?erro=${encodeURIComponent(mensagemDeErroPorCodigoHTTP(resposta_inicial.status))}`);
         }
@@ -88,13 +88,13 @@ export class FetchHelper {
      * @param cookies - Os cookies da requisição. Podem ser obtidos através da função `cookies()` do Next.js.
      * @param headers - Os cabeçalhos da requisição. O cabeçalho `Content-Type` é definido como `application/json` por padrão. 
      * O cabeçalho `Authorization` é definido com o token de autenticação, que é obtido via cookies.
-     * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
+     * @param rotaParaRedirecionarCasoFalhe - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
      * 
      * @default headers - { "content-type": "application/json", "authorization": `Bearer ${cookies.get("authorization")?.value}` }
-     * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
+     * @default rotaParaRedirecionarCasoFalhe - /login (apenas em caso de status 401)
      */
-    static async get<T>({ rota, cookies, headers, rotaParaRedirecionar }: { rota: string, cookies: ReadonlyRequestCookies, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> {
-        return fetchAPI<T>({ metodo: 'GET', rota, cookies, headers, rotaParaRedirecionar });
+    static async get<T>({ rota, cookies, headers, rotaParaRedirecionarCasoFalhe }: { rota: string, cookies: ReadonlyRequestCookies, headers?: HeadersInit, rotaParaRedirecionarCasoFalhe?: string | null }): Promise<RespostaDaAPI<T>> {
+        return fetchAPI<T>({ metodo: 'GET', rota, cookies, headers, rotaParaRedirecionarCasoFalhe });
     }
 
     /**
@@ -105,13 +105,13 @@ export class FetchHelper {
      * @param body - O corpo da requisição. Deve ser um objeto serializável em JSON.
      * @param headers - Os cabeçalhos da requisição. O cabeçalho `Content-Type` é definido como `application/json` por padrão. 
      * O cabeçalho `Authorization` é definido com o token de autenticação, que é obtido via cookies.
-     * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
+     * @param rotaParaRedirecionarCasoFalhe - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
      * 
      * @default headers - { "content-type": "application/json", "authorization": `Bearer ${cookies.get("authorization")?.value}` }
-     * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
+     * @default rotaParaRedirecionarCasoFalhe - /login (apenas em caso de status 401)
      */
-    static async post<T>({ rota, cookies, body, headers, rotaParaRedirecionar }: { rota: string, cookies: ReadonlyRequestCookies, body: Record<string, any>, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> {
-        return fetchAPI<T>({ metodo: 'POST', rota, cookies, body, headers, rotaParaRedirecionar });
+    static async post<T>({ rota, cookies, body, headers, rotaParaRedirecionarCasoFalhe }: { rota: string, cookies: ReadonlyRequestCookies, body: Record<string, any>, headers?: HeadersInit, rotaParaRedirecionarCasoFalhe?: string | null }): Promise<RespostaDaAPI<T>> {
+        return fetchAPI<T>({ metodo: 'POST', rota, cookies, body, headers, rotaParaRedirecionarCasoFalhe });
     }
 
     /**
@@ -121,13 +121,13 @@ export class FetchHelper {
      * @param cookies - Os cookies da requisição. Podem ser obtidos através da função `cookies()` do Next.js.
      * @param headers - Os cabeçalhos da requisição. O cabeçalho `Content-Type` é definido como `application/json` por padrão. 
      * O cabeçalho `Authorization` é definido com o token de autenticação, que é obtido via cookies.
-     * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
+     * @param rotaParaRedirecionarCasoFalhe - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
      * 
      * @default headers - { "content-type": "application/json", "authorization": `Bearer ${cookies.get("authorization")?.value}` }
-     * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
+     * @default rotaParaRedirecionarCasoFalhe - /login (apenas em caso de status 401)
      */
-    static async delete<T>({ rota, cookies, headers, rotaParaRedirecionar }: { rota: string, cookies: ReadonlyRequestCookies, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> {
-        return fetchAPI<T>({ metodo: 'DELETE', rota, cookies, headers, rotaParaRedirecionar });
+    static async delete<T>({ rota, cookies, headers, rotaParaRedirecionarCasoFalhe }: { rota: string, cookies: ReadonlyRequestCookies, headers?: HeadersInit, rotaParaRedirecionarCasoFalhe?: string | null }): Promise<RespostaDaAPI<T>> {
+        return fetchAPI<T>({ metodo: 'DELETE', rota, cookies, headers, rotaParaRedirecionarCasoFalhe });
     }
 
     /**
@@ -138,12 +138,12 @@ export class FetchHelper {
      * @param body - O corpo da requisição. Deve ser um objeto serializável em JSON.
      * @param headers - Os cabeçalhos da requisição. O cabeçalho `Content-Type` é definido como `application/json` por padrão. 
      * O cabeçalho `Authorization` é definido com o token de autenticação, que é obtido via cookies.
-     * @param rotaParaRedirecionar - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
+     * @param rotaParaRedirecionarCasoFalhe - A rota para redirecionar o usuário caso a requisição falhe. Se não for informada, a requisição irá retornar um erro. Deve incluir a / no início. Defina como `null` para não redirecionar.
      * 
      * @default headers - { "content-type": "application/json", "authorization": `Bearer ${cookies.get("authorization")?.value}` }
-     * @default rotaParaRedirecionar - /login (apenas em caso de status 401)
+     * @default rotaParaRedirecionarCasoFalhe - /login (apenas em caso de status 401)
      */
-    static async put<T>({ rota, cookies, body, headers, rotaParaRedirecionar }: { rota: string, cookies: ReadonlyRequestCookies, body: Record<string, any>, headers?: HeadersInit, rotaParaRedirecionar?: string | null }): Promise<RespostaDaAPI<T>> {
-        return fetchAPI<T>({ metodo: 'PUT', rota, cookies, body, headers, rotaParaRedirecionar });
+    static async put<T>({ rota, cookies, body, headers, rotaParaRedirecionarCasoFalhe }: { rota: string, cookies: ReadonlyRequestCookies, body: Record<string, any>, headers?: HeadersInit, rotaParaRedirecionarCasoFalhe?: string | null }): Promise<RespostaDaAPI<T>> {
+        return fetchAPI<T>({ metodo: 'PUT', rota, cookies, body, headers, rotaParaRedirecionarCasoFalhe });
     }
 }
