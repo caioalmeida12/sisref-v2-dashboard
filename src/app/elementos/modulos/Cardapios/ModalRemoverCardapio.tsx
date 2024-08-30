@@ -7,7 +7,7 @@ import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { Botao } from '../../basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { IRefeicao } from '../../interfaces/IRefeicao';
-import { removerCardapio } from '@/app/actions/removerCardapio';
+import { removerCardapio } from '@/app/actions/nutricionista';
 
 interface ModalProps {
     refeicao: IRefeicao;

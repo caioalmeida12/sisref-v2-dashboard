@@ -6,8 +6,10 @@
 
 import { cookies } from "next/headers";
 import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCodigoHTTP"
-import { IRefeicaoSchema } from "../elementos/interfaces/IRefeicao";
+import { IRefeicao, IRefeicaoSchema } from "../elementos/interfaces/IRefeicao";
 import { FetchHelper } from "../lib/actions/FetchHelper";
+import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
+import { redirect } from "next/navigation";
 
 /**
  * Cria uma refeição.
@@ -51,7 +53,6 @@ export async function criarRefeição(formData: FormData) {
     // É preciso, então, verificar se o objeto retornado é vazio, e caso seja, retornar um objeto com a propriedade `success` definida como `false` e a propriedade `mensagem` contendo a mensagem de erro.
 
     const { data: refeicao } = formatar;
-
 
     const camposParaValidar = ["description", "qtdTimeReservationEnd", "qtdTimeReservationStart", "timeEnd", "timeStart"] as const;
     const camposInvalidos = camposParaValidar.filter(campo => refeicao.refeicao![campo]);
@@ -155,3 +156,123 @@ export async function editarCardapio(formData: FormData) {
 
     return { sucesso: true, mensagem: "Cardápio editado com sucesso." };
 }
+
+/**
+ * Realiza uma chamada assíncrona para a API de edição de refeição.
+ * 
+ * @param formData - Os dados do formulário de criação de cardápio.
+ * @returns JSON com os campos `sucesso` e `mensagem`.
+ */
+export const removerCardapio = async ({ meal_id }: { meal_id?: number }) => {
+    if (!meal_id) return { sucesso: false, mensagem: "ID do cardápio não informado" };
+
+    const resposta = await FetchHelper.delete<{ message: string }>({
+        rota: `/menu/${meal_id}`,
+        cookies: cookies(),
+        rotaParaRedirecionarCasoFalhe: null,
+    });
+
+    // Se a resposta for erro e a mensagem for "O cardápio foi excluído.", retornar sucesso.
+    if (!resposta.sucesso && resposta.message == "O cardápio foi excluído.") {
+        return { sucesso: true, mensagem: resposta.message };
+    }
+
+    if (!resposta.sucesso) {
+        return { sucesso: false, mensagem: resposta.message };
+    }
+
+    // Retornar mensagem de erro genérica se a mensagem não for "O cardápio foi excluído."
+    return { sucesso: false, mensagem: resposta.resposta[0].message };
+}
+
+/**
+ *  Formata a refeição para o formato esperado pelo front-end.
+ * 
+ * @param menu - O a refeição da maneira que é retornada pela API.
+ * @returns A refeição formatada para o formato esperado pelo front-end.
+ */
+const formatarRefeicaoDoBackendParaOFrontend = (menu: unknown) => {
+    if (!(typeof menu === "object")) return [];
+    if (menu === null) return [];
+    if (!("meal" in menu)) return [];
+
+    const { meal, ...cardapio } = menu;
+
+    const formatar = IRefeicaoSchema.safeParse({
+        refeicao: meal,
+        cardapio: {
+            ...cardapio,
+            agendado: false
+        }
+    });
+
+    return formatar.success ? formatar.data : [];
+};
+
+/**
+ *  Busca as refeições de um determinado campus para uma determinada data.
+ */
+export async function buscarTabelaDeRefeicoes({ campus_id, data, refeicoes_disponiveis }: { campus_id: number, data: string, refeicoes_disponiveis: IRefeicao["refeicao"][] }) {
+    const resposta = await FetchHelper.get<IRefeicao["refeicao"][]>({
+        rota: `/menu/all-by-date?campus_id=${campus_id}&date=${data}`,
+        cookies: cookies(),
+        rotaParaRedirecionarCasoFalhe: null,
+    });
+
+    if (!resposta.sucesso) {
+        return { sucesso: false, mensagem: resposta.message };
+    }
+
+
+    // Formata a resposta da API
+    const refeicoesFormatadas: IRefeicao[] = resposta.resposta.flatMap(formatarRefeicaoDoBackendParaOFrontend);
+
+    // Pode ocorrer de entre as refeições disponíveis, algumas não estarem cadastradas ainda. Ex: o lanche da tarde do dia em questão não foi preenchido ainda.
+    // Nesse caso, é necessário retornar todas as refeições disponíveis, mesmo que algumas não tenham sido cadastradas, para que a pessoa nutricionista possa preencher.
+    const todasAsRefeicoes = refeicoes_disponiveis.map(refeicao => {
+        const refeicaoEncontrada = refeicoesFormatadas.find(refeicaoFormatada => refeicaoFormatada.refeicao?.id === refeicao?.id);
+
+        return refeicaoEncontrada ? refeicaoEncontrada : {
+            refeicao,
+            cardapio: {
+                agendado: false,
+                description: "Não cadastrado",
+                campus_id,
+                date: data,
+                id: 0,
+                permission: false,
+            }
+        };
+    });
+
+    return {
+        sucesso: true,
+        resposta: todasAsRefeicoes
+    };
+}
+
+/**
+ * Realiza uma chamada assíncrona para a API que busca todas as refeições disponíveis.
+ */
+export async function buscarRefeicoes() {
+    const resposta = await FetchHelper.get<IRefeicao["refeicao"][]>({
+        rota: "/meal/all",
+        cookies: cookies(),
+        rotaParaRedirecionarCasoFalhe: null,
+    });
+
+    if (!resposta.sucesso) {
+        return {
+            sucesso: false,
+            mensagem: resposta.message
+        }
+    }
+
+    const refeicoes = resposta.resposta.map(formatarRefeicaoDoBackendParaOFrontend);
+
+    return {
+        sucesso: true,
+        resposta: refeicoes
+    }
+}
+

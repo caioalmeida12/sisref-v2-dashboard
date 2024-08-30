@@ -9,8 +9,6 @@ import * as Form from '@radix-ui/react-form';
 import * as Select from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { useQuery } from "@tanstack/react-query";
-import { fetchTabelaDeRefeicoesNutricionista } from "@/app/actions/fetchTabelaDeRefeicoesRefeicoes";
-import { fetchNomesDeRefeicoesNutricionista } from "@/app/actions/fetchNomesDeRefeicoesNutricionista";
 import { TabelaDeCrud } from "@/app/elementos/modulos/TabelaDeCrud/TabelaDeCrud";
 import { ColumnDef } from "@tanstack/react-table";
 import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
@@ -21,6 +19,7 @@ import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/Refeicoes/ModalA
 import { ModalAdicionarCardapio } from "@/app/elementos/modulos/Cardapios/ModalAdicionarCardapio";
 import { ModalRemoverCardapio } from "@/app/elementos/modulos/Cardapios/ModalRemoverCardapio";
 import { ModalEditarCardapio } from "@/app/elementos/modulos/Cardapios/ModalEditarCardapio";
+import { buscarRefeicoes, buscarTabelaDeRefeicoes } from "@/app/actions/nutricionista";
 interface NutricionistaPageProps {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
@@ -41,15 +40,24 @@ export default function NutricionistaPage({
   const dataFinalRef = useRef<HTMLInputElement>(null);
   const nomeDeRefeicaoRef = useRef<HTMLFormElement>(null);
 
-  const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
+  const { data: nomesDasRefeicoes } = useQuery({
     queryKey: ['refeicoes', datas],
-    queryFn: () => fetchNomesDeRefeicoesNutricionista(),
+    queryFn: async () => {
+      const resposta = await buscarRefeicoes()
+      return resposta.sucesso ? resposta.resposta : []
+    },
     initialData: []
   });
 
+  nomesDasRefeicoes && console.log(nomesDasRefeicoes);
+
   const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela, refetch: refetchDadosDaTabela } = useQuery({
     queryKey: ['tabelaDeCardapios', datas, nomeDeRefeicaoRef.current?.querySelector('select')?.value, nomesDasRefeicoes],
-    queryFn: () => fetchTabelaDeRefeicoesNutricionista({ campus_id: 1, date: datas.dataInicial, refeicoes_disponiveis: nomesDasRefeicoes?.filter(refeicao => refeicao?.id) || [] }),
+    queryFn: async () => {
+      const resposta = await buscarTabelaDeRefeicoes({ campus_id: 1, data: datas.dataInicial, refeicoes_disponiveis: nomesDasRefeicoes?.filter(refeicao => refeicao?.id) || [] })
+
+      return resposta.sucesso ? resposta.resposta : []
+    },
     initialData: []
   });
 
