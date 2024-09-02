@@ -28,7 +28,7 @@ interface IRotasEAutorizacoes {
     permissions: string[]
 }
 
-const rotasPermitidasPorClassification: IRotasEAutorizacoes[] = [
+const rotasPermitidasPorTipoDeUsuario: IRotasEAutorizacoes[] = [
     {
         classification: "STUDENT",
         permissions: ["/", "/login", "/logout"]
@@ -55,20 +55,18 @@ export const requerAutorizacaoMiddleware = async (req: NextRequest) => {
     // Se a verificação do token falhar, redireciona para a página de login
     if (!validado.sub) return redirecionarViaMiddleware()
 
-    const classification = cookies().get("classification")?.value
+    const tipoDeUsuario = cookies().get("classification")?.value
 
-    const rotasPermitidas = rotasPermitidasPorClassification.find((r) => r.classification === classification)?.permissions.includes(pathname)
-    if (!rotasPermitidas) return redirecionarViaMiddleware()
+    // Se não houver classificação, redireciona para a página de login
+    if (!tipoDeUsuario) return redirecionarViaMiddleware()
 
-    try {
-        if (classification === "STUDENT") {
-            const fetchAuth = await buscarEstudante(validado.sub);
-            if (!fetchAuth) return redirecionarViaMiddleware()
-        }
+    // Se a rota não for permitida para o tipo de usuário, redireciona para a primeira rota permitida
+    const rotasPermitidas = rotasPermitidasPorTipoDeUsuario.find(item => item.classification === tipoDeUsuario)?.permissions
+    if (!rotasPermitidas?.includes(pathname)) return redirecionarViaMiddleware(rotasPermitidas?.at(0))
 
-    } catch (error) {
-        console.log("Erro ao buscar informações do estudante (middleware.ts): ")
-        console.error(error)
+    if (tipoDeUsuario === "STUDENT") {
+        const dadosDeEstudante = await buscarEstudante(validado.sub);
+        if (!dadosDeEstudante) return redirecionarViaMiddleware()
     }
 
     return NextResponse.next()
