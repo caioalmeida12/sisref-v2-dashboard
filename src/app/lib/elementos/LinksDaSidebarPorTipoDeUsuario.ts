@@ -40,10 +40,10 @@ export const linksDaSidebarPorTipoDeUsuario: Record<ISidebarProps["tipo_de_usuar
     ],
     NUTRI: [
         {
-            titulo: 'Agendamentos', rota: '?pagina=agendamentos', icone: 'Calendario'
+            titulo: 'Agendamentos', rota: '/nutricionista', icone: 'Calendario'
         },
         {
-            titulo: 'Cardápios', rota: '?pagina=cardapios', icone: 'GarfoEFaca'
+            titulo: 'Cardápios', rota: '/nutricionista/cardapios', icone: 'GarfoEFaca'
         },
         {
             titulo: 'Refeições', rota: '?pagina=refeicoes', icone: 'GarfoEFaca'
