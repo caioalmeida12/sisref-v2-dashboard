@@ -10,6 +10,8 @@ import { IRefeicao, IRefeicaoSchema } from "../elementos/interfaces/IRefeicao";
 import { FetchHelper } from "../lib/actions/FetchHelper";
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
 import { redirect } from "next/navigation";
+import { IAgendamento, IAgendamentoSchema } from "../elementos/interfaces/IAgendamento";
+import { IRespostaPaginada } from "../elementos/interfaces/IRespostaPaginada";
 
 /**
  * Cria uma refeição.
@@ -305,3 +307,32 @@ export async function criarRelatorioDeDesperdicio(formData: FormData) {
     return { sucesso: true, mensagem: "Relatório de desperdício criado com sucesso." };
 }
 
+/**
+ * Realiza uma chamada assíncrona para a API de agendamentos.
+ * 
+ * @param formData - Os dados do formulário de agendamento.
+ * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: IRefeicao[] }.
+ */
+export async function buscarAgendamentos({ data_inicial }: { data_inicial: string }) {
+    const resposta = await FetchHelper.get<IRespostaPaginada<IAgendamento>>({
+        rota: `/scheduling/list-by-date?page=1&date=${data_inicial}`,
+        cookies: cookies(),
+        rotaParaRedirecionarCasoFalhe: null,
+    });
+
+    if (!resposta.sucesso) {
+        return { sucesso: false, mensagem: resposta.message };
+    }
+
+    // Formata a resposta da API
+    const agendamentos = resposta.resposta[0].data.flatMap(agendamento => {
+        const formatar = IAgendamentoSchema.safeParse(agendamento);
+
+        return formatar.success ? formatar.data : [];
+    });
+
+    return {
+        sucesso: true,
+        resposta: agendamentos
+    };
+}
