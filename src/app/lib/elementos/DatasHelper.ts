@@ -10,6 +10,26 @@ export class DatasHelper {
     }
 
     /**
+     * Retorna a data de hoje no formato brasileiro, dd/MM/yyyy.
+     * 
+     * @returns A data de hoje no formato brasileiro.
+     * @example getHoje() // "13/04/2024"
+     */
+    static getDataDeHojeEmFormatoBrasileiro(): string {
+        return new Date().toISOString().split('T')[0].split('-').reverse().join('/');
+    }
+
+    /**
+     * Retorna a data de hoje no formato ISO, yyyy-MM-dd.
+     * 
+     * @returns A data de hoje no formato ISO.
+     * @example getDataDeHoje() // "2024-04-13"
+     */
+    static getDataDeHoje(): string {
+        return new Date().toISOString().split('T')[0];
+    }
+
+    /**
      * Remove os segundos de um horário.
      * @param horario - O horário.
      * @returns O horário sem os segundos.
@@ -126,7 +146,7 @@ export class DatasHelper {
      */
     static getMesPosterior(data: string): string {
         const dataAtual = new Date(data);
-        const proximoMes = new Date(dataAtual.getFullYear(), dataAtual.getMonth()+2, 1)
+        const proximoMes = new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 2, 1)
         return proximoMes.toISOString().split('T')[0];
     }
 }
