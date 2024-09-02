@@ -1,22 +1,25 @@
-export interface IInformacoesDeEstudante {
-    id: number;
-    active: number;
-    dateValid: string;
-    mat: string;
-    name: string;
-    semRegular: number;
-    course_id: number;
-    shift_id: 1 | 2 | 3 | 4;    
-    photo: string | null;
-    campus_id: number;
-    observation: string | null;
-    republic: string | null;
-    block: string | null;
-    absent_meal: number;
-    course: {
-        id: number;
-        description: string;
-        initials: string;
-        campus_id: number;
-    }
-}
+import { z } from "zod";
+
+export const IInformacoesDeEstudanteSchema = z.object({
+    id: z.number(),
+    active: z.number(),
+    dateValid: z.string(),
+    mat: z.string(),
+    name: z.string(),
+    semRegular: z.number(),
+    course_id: z.number(),
+    shift_id: z.number(),
+    photo: z.string().nullable(),
+    campus_id: z.number(),
+    observation: z.string().nullable(),
+    republic: z.string().nullable(),
+    block: z.string().nullable(),
+    course: z.object({
+        id: z.number(),
+        description: z.string(),
+        initials: z.string(),
+        campus_id: z.number()
+    })
+});
+
+export type IInformacoesDeEstudante = z.infer<typeof IInformacoesDeEstudanteSchema>;
