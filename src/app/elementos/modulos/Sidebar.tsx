@@ -54,12 +54,12 @@ export const Sidebar = async () => {
                                 </NavigationMenu.Trigger>
                                 <NavigationMenu.Content className='absolute top-full inset-x-0 bg-branco-400 p-4 py-3 rounded shadow-preto-400 shadow-sm flex flex-col gap-y-2 mt-1'>
                                     {link.itens.map((item, itemIndex) => (
-                                        <Link className='hover:underline underline-offset-[.25em] text-verde-400' key={itemIndex} href={item.rota}>{item.titulo}</Link>
+                                        <Link replace className='hover:underline underline-offset-[.25em] text-verde-400' key={itemIndex} href={item.rota}>{item.titulo}</Link>
                                     ))}
                                 </NavigationMenu.Content>
                             </NavigationMenu.Item>
                         ) : (
-                            <Link className='min-w-max flex gap-x-2 items-center cursor-pointer relative before:content-[""] before:inset-[-.5em] before:rounded before:opacity-10 before:bg-branco-400 before:hidden hover:before:block hover:before:absolute' key={index} href={link.rota}>
+                            <Link replace className='min-w-max flex gap-x-2 items-center cursor-pointer relative before:content-[""] before:inset-[-.5em] before:rounded before:opacity-10 before:bg-branco-400 before:hidden hover:before:block hover:before:absolute' key={index} href={link.rota}>
                                 {React.createElement(Icone[link.icone] as any)}
                                 {link.titulo}
                             </Link>

@@ -331,8 +331,36 @@ export async function buscarAgendamentos({ data_inicial }: { data_inicial: strin
         return formatar.success ? formatar.data : [];
     });
 
+
     return {
         sucesso: true,
         resposta: agendamentos
     };
+}
+
+/**
+ * Realiza uma chamada assíncrona para a API de remoção de agendamento.
+ * 
+ * @param id - O ID do agendamento a ser removido.
+ * @returns JSON com os campos `sucesso` e `mensagem`.
+ */
+export async function removerAgendamento({ id }: { id?: number }) {
+    if (!id) return { sucesso: false, mensagem: "ID da refeição não informado" };
+
+    const resposta = await FetchHelper.delete<{ message: string }>({
+        rota: `/scheduling/${id}`,
+        cookies: cookies(),
+        rotaParaRedirecionarCasoFalhe: null,
+    });
+
+    // Se a resposta for erro e a mensagem for "O Agendamento foi excluído.", retornar sucesso.
+    if (!resposta.sucesso && resposta.message == "O Agendamento foi excluído.") {
+        return { sucesso: true, mensagem: resposta.message };
+    }
+
+    if (!resposta.sucesso) {
+        return { sucesso: false, mensagem: resposta.message };
+    }
+
+    return { sucesso: true, mensagem: "Agendamento removido com sucesso." };
 }

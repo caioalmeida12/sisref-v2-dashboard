@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirecionarViaMiddleware } from "./RedirecionarViaMiddleware";
 import { IInformacoesDeLogin } from "./IInformacoesDeLogin";
 import { buscarEstudante } from "@/app/actions/estudante";
+import { linksDaSidebarPorTipoDeUsuario } from "../elementos/LinksDaSidebarPorTipoDeUsuario";
 
 
 /**
@@ -31,19 +32,19 @@ interface IRotasEAutorizacoes {
 const rotasPermitidasPorTipoDeUsuario: IRotasEAutorizacoes[] = [
     {
         classification: "STUDENT",
-        permissions: ["/", "/login", "/logout"]
+        permissions: ["/", "/login", "/logout"].concat(linksDaSidebarPorTipoDeUsuario.STUDENT.map(item => item.isDropdown ? item.itens.map(subItem => subItem.rota) : item.rota).flat())
     }, {
         classification: "NUTRI",
-        permissions: ["/nutricionista", "/login", "/logout"]
+        permissions: ["/nutricionista", "/login", "/logout"].concat(linksDaSidebarPorTipoDeUsuario.NUTRI.map(item => item.isDropdown ? item.itens.map(subItem => subItem.rota) : item.rota).flat())
     }, {
         classification: "RECEPCAO",
-        permissions: ["/recepcao", "/login", "/logout"]
+        permissions: ["/recepcao", "/login", "/logout"].concat(linksDaSidebarPorTipoDeUsuario.RECEPCAO.map(item => item.isDropdown ? item.itens.map(subItem => subItem.rota) : item.rota).flat())
     }, {
         classification: "ASSIS_ESTU",
-        permissions: ["/assistencia_estudantil", "/login", "/logout"]
+        permissions: ["/assistencia_estudantil", "/login", "/logout"].concat(linksDaSidebarPorTipoDeUsuario.ASSIS_ESTU.map(item => item.isDropdown ? item.itens.map(subItem => subItem.rota) : item.rota).flat())
     }, {
         classification: "ADMIN",
-        permissions: ["/administrador", "/login", "/logout"]
+        permissions: ["/administrador", "/login", "/logout"].concat(linksDaSidebarPorTipoDeUsuario.ADMIN.map(item => item.isDropdown ? item.itens.map(subItem => subItem.rota) : item.rota).flat())
     }
 ]
 

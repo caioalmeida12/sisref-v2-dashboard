@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { IInformacoesDeEstudanteSchema } from "./IInformacoesDeEstudante";
-import { IRefeicaoSchema } from "./IRefeicao";
 
 export const IAgendamentoSchema = z.object({
     id: z.number(),
@@ -18,8 +17,22 @@ export const IAgendamentoSchema = z.object({
     menu_id: z.number(),
     studentJustification: z.string().nullable(),
     student: IInformacoesDeEstudanteSchema,
-    menu: IRefeicaoSchema.pick({ cardapio: true }),
-    meal: IRefeicaoSchema.pick({ refeicao: true })
+    menu: z.object({
+        id: z.number(),
+        date: z.string(),
+        description: z.string(),
+        campus_id: z.number(),
+        meal_id: z.number(),
+    }),
+    meal: z.object({
+        id: z.number(),
+        description: z.string(),
+        timeEnd: z.string(),
+        timeStart: z.string(),
+        campus_id: z.number(),
+        qtdTimeReservationEnd: z.number(),
+        qtdTimeReservationStart: z.number(),
+    }),
 });
 
 export type IAgendamento = z.infer<typeof IAgendamentoSchema>;
