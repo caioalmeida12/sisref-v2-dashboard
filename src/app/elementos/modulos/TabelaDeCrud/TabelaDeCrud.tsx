@@ -64,7 +64,7 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, refetch }: { colunas:
                                                 <div
                                                     {...{
                                                         className: header.column.getCanSort()
-                                                            ? 'cursor-pointer select-none'
+                                                            ? 'cursor-pointer select-none flex px-3 py-1.5 justify-center items-start rounded bg-preto-400 text-branco-400'
                                                             : '',
                                                         onClick: header.column.getToggleSortingHandler(),
                                                     }}

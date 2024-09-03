@@ -5,6 +5,7 @@ import { Botao } from '@/app/elementos/basicos/Botao';
 import { CabecalhoDeSecao } from '@/app/elementos/basicos/CabecalhoDeSecao';
 import { Secao } from '@/app/elementos/basicos/Secao';
 import { IAgendamento } from '@/app/elementos/interfaces/IAgendamento';
+import { Badge } from "@elementos/basicos/Badge";
 import { ModalConfirmarAgendamento } from '@/app/elementos/modulos/Agendamentos/ModalConfirmarAgendamento';
 import { ModalRemoverAgendamento } from '@/app/elementos/modulos/Agendamentos/ModalRemoverAgendamento';
 import { TabelaDeCrud } from '@/app/elementos/modulos/TabelaDeCrud/TabelaDeCrud';
@@ -33,35 +34,37 @@ export default function Agendamentos() {
         {
             accessorKey: 'ID',
             accessorFn: (row) => row.id,
-            cell: info => info.getValue(),
+            cell: info => <div className="flex flex-col justify-center items-center gap-4">{info.getValue()}</div>,
             meta: {
                 filterVariant: "range"
-            }
+            },
         },
         {
             accessorKey: 'Refeição',
             accessorFn: (row) => row.meal.description,
-            cell: info => info.getValue(),
+            cell: info => <div className="flex flex-col justify-center items-start gap-4">{info.getValue()}</div>,
         },
         {
             accessorKey: 'Estudante',
             accessorFn: (row) => row.student.name,
-            cell: info => info.getValue(),
+            cell: info => <div className="flex flex-col justify-center items-center gap-4 flex-[1,0,0]">{info.getValue()}</div>,
         },
         {
             accessorKey: 'Cardápio',
             accessorFn: (row) => row.menu.description,
-            cell: info => info.getValue(),
+            cell: info => <div className="flex flex-col justify-center items-start gap-4 flex-[1,0,0]">{info.getValue()}</div>,
         },
         {
             accessorKey: 'Vencimento',
             accessorFn: (row) => row.student.dateValid,
-            cell: info => info.getValue(),
+            cell: info => <div className="flex flex-col justify-center items-center gap-4">
+                <Badge texto={info.getValue()} corDaBadge="bg-verde-300" />
+            </div>,
         },
         {
             accessorKey: 'Curso',
             accessorFn: (row) => row.student.course.initials,
-            cell: info => info.getValue(),
+            cell: info => <div className="flex flex-col justify-center items-center gap-4">{info.getValue()}</div>,
         }, {
             header: 'Ações',
             id: 'Ações',
