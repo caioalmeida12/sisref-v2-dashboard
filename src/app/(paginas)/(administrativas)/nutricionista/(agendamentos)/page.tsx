@@ -5,6 +5,7 @@ import { Botao } from '@/app/elementos/basicos/Botao';
 import { CabecalhoDeSecao } from '@/app/elementos/basicos/CabecalhoDeSecao';
 import { Secao } from '@/app/elementos/basicos/Secao';
 import { IAgendamento } from '@/app/elementos/interfaces/IAgendamento';
+import { ModalConfirmarAgendamento } from '@/app/elementos/modulos/Agendamentos/ModalConfirmarAgendamento';
 import { ModalRemoverAgendamento } from '@/app/elementos/modulos/Agendamentos/ModalRemoverAgendamento';
 import { TabelaDeCrud } from '@/app/elementos/modulos/TabelaDeCrud/TabelaDeCrud';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
@@ -18,7 +19,7 @@ export default function Agendamentos() {
     const dataInicialRef = useRef<HTMLInputElement>(null);
     const dataFinalRef = useRef<HTMLInputElement>(null);
 
-    const { data: dadosDaTabela, refetch } = useQuery({
+    const { data: dadosDaTabela, refetch, isLoading } = useQuery({
         queryKey: ['tabelaDeAgendamentos', dataInicialRef.current?.value, dataFinalRef.current?.value],
         queryFn: async () => {
             const resposta = await buscarAgendamentos({ data_inicial: dataInicialRef.current?.value || new Date().toISOString() });
@@ -69,6 +70,9 @@ export default function Agendamentos() {
                 <div className="flex justify-center gap-x-2">
                     <div className="w-5 h-5 relative">
                         <ModalRemoverAgendamento agendamento={info.getValue()} />
+                    </div>
+                    <div className="w-5 h-5 relative">
+                        <ModalConfirmarAgendamento agendamento={info.getValue()} />
                     </div>
                 </div>
             )

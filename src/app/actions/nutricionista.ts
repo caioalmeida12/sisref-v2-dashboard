@@ -364,3 +364,27 @@ export async function removerAgendamento({ id }: { id?: number }) {
 
     return { sucesso: true, mensagem: "Agendamento removido com sucesso." };
 }
+
+/**
+ * Realiza uma chamada assíncrona para a API de confirmação de agendamento.
+ * 
+ * @param student_id - O ID do estudante. Também conhecido como código do restaurante. 
+ * @param meal_id - O ID da refeição.
+ * @param date - A data do agendamento.
+ * @returns JSON com os campos `sucesso` e `mensagem`.
+ */
+export async function confirmarAgendamento({ student_id, meal_id, date }: { student_id: number, meal_id: number, date: string }) {
+    const resposta = await FetchHelper.post<unknown>({
+        rota: "/confirm-meals",
+        cookies: cookies(),
+        body: {
+            student_id,
+            meal_id,
+            date
+        }
+    });
+
+    if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
+
+    return { sucesso: true, mensagem: "Agendamento confirmado com sucesso." };
+}
