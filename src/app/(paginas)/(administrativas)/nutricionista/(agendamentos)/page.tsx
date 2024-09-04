@@ -32,11 +32,11 @@ export default function Agendamentos() {
         initialData: []
     });
 
-    const colunas = React.useMemo<ColumnDef<IAgendamento, any>[]>(() => [
+    const colunas = React.useMemo<ColumnDef<IAgendamento>[]>(() => [
         {
             accessorKey: 'ID',
             accessorFn: (row) => row.id,
-            cell: info => <div className="flex flex-col justify-center items-center gap-4">{info.getValue()}</div>,
+            cell: info => <div className="flex flex-col justify-center items-center gap-4">{`${info.getValue()}`}</div>,
             meta: {
                 filterVariant: "range"
             },
@@ -44,29 +44,29 @@ export default function Agendamentos() {
         {
             accessorKey: 'Refeição',
             accessorFn: (row) => row.meal.description,
-            cell: info => <div className="flex flex-col justify-center items-start gap-4">{info.getValue()}</div>,
+            cell: info => <div className="flex flex-col justify-center items-start gap-4">{`${info.getValue()}`}</div>,
         },
         {
             accessorKey: 'Estudante',
             accessorFn: (row) => row.student.name,
-            cell: info => <div className="flex flex-col justify-center items-center gap-4 flex-[1,0,0]">{info.getValue()}</div>,
+            cell: info => <div className="flex flex-col justify-center items-center gap-4 flex-[1,0,0]">{`${info.getValue()}`}</div>,
         },
         {
             accessorKey: 'Cardápio',
             accessorFn: (row) => row.menu.description,
-            cell: info => <div className="flex flex-col justify-center items-start gap-4 flex-[1,0,0]">{info.getValue()}</div>,
+            cell: info => <div className="flex flex-col justify-center items-start gap-4 flex-[1,0,0]">{`${info.getValue()}`}</div>,
         },
         {
             accessorKey: 'Vencimento',
             accessorFn: (row) => row.student.dateValid,
             cell: info => <div className="flex flex-col justify-center items-center gap-4">
-                <Badge texto={info.getValue()} corDaBadge="bg-verde-300" />
+                <Badge texto={`${info.getValue()}`} corDaBadge="bg-verde-300" />
             </div>,
         },
         {
             accessorKey: 'Curso',
             accessorFn: (row) => row.student.course.initials,
-            cell: info => <div className="flex flex-col justify-center items-center gap-4">{info.getValue()}</div>,
+            cell: info => <div className="flex flex-col justify-center items-center gap-4">{`${info.getValue()}`}</div>,
         }, {
             header: 'Ações',
             id: 'Ações',
@@ -74,12 +74,12 @@ export default function Agendamentos() {
             cell: info => (
                 <div className="flex justify-center gap-x-2">
                     <div className="w-5 h-5 relative">
-                        <ModalRemoverAgendamento agendamento={info.getValue()} />
+                        <ModalRemoverAgendamento agendamento={info.row.original} />
                     </div>
                     {
                         !(info.row.original.wasPresent) && (
                             <div className="w-5 h-5 relative">
-                                <ModalConfirmarAgendamento agendamento={info.getValue()} />
+                                <ModalConfirmarAgendamento agendamento={info.row.original} />
                             </div>
                         )
                     }

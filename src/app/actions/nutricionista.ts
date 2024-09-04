@@ -389,8 +389,6 @@ export async function confirmarAgendamento({ student_id, meal_id, date }: { stud
     return { sucesso: true, mensagem: "Agendamento confirmado com sucesso." };
 }
 
-// Criar agendamento
-
 /**
  * Realiza uma chamada assíncrona para a API de criação de agendamento.
  * 
@@ -411,4 +409,31 @@ export async function criarAgendamento(formData: FormData) {
     if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
 
     return { sucesso: true, resposta: resposta.resposta[0] };
+}
+
+/**
+ * Realiza uma chamada assíncrona para a API de remoção de refeição.
+ * 
+ * @param id - O ID da refeição a ser removida.
+ * @returns JSON com os campos `sucesso` e `mensagem`.
+ */
+export async function removerRefeicao({ id }: { id?: number }) {
+    if (!id) return { sucesso: false, mensagem: "ID da refeição não informado" };
+
+    const resposta = await FetchHelper.delete<{ message: string }>({
+        rota: `/meal/${id}`,
+        cookies: cookies(),
+        rotaParaRedirecionarCasoFalhe: null,
+    });
+
+    // Se a resposta for erro e a mensagem for "A refeição foi excluída.", retornar sucesso.
+    if (!resposta.sucesso && resposta.message == "A refeição foi excluída.") {
+        return { sucesso: true, mensagem: resposta.message };
+    }
+
+    if (!resposta.sucesso) {
+        return { sucesso: false, mensagem: resposta.message };
+    }
+
+    return { sucesso: false, mensagem: resposta.resposta[0].message };
 }

@@ -46,7 +46,7 @@ export const linksDaSidebarPorTipoDeUsuario: Record<ISidebarProps["tipo_de_usuar
             titulo: 'Cardápios', rota: '/nutricionista/cardapios', icone: 'GarfoEFaca'
         },
         {
-            titulo: 'Refeições', rota: '?pagina=refeicoes', icone: 'GarfoEFaca'
+            titulo: 'Refeições', rota: '/nutricionista/refeicoes', icone: 'GarfoEFaca'
         },
         {
             titulo: 'Relatório de refeições', rota: '?pagina=relatorioDeRefeicoes', icone: 'GraficoDeBarras'
