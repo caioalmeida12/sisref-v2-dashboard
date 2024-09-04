@@ -2,7 +2,7 @@ import React from 'react';
 import * as Select from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import classnames from 'classnames';
-import { IRefeicao } from '../interfaces/IRefeicao';
+import { IRefeicao } from '@elementos/interfaces/IRefeicao';
 
 interface SelectItemProps {
     children: React.ReactNode;

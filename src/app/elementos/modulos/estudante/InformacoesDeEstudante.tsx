@@ -4,9 +4,9 @@ import { DatasHelper } from "@/app/lib/elementos/DatasHelper"
 import { CabecalhoPrincipal } from "@elementos/basicos/CabecalhoPrincipal"
 import { Secao } from "@elementos/basicos/Secao"
 import { CampoDeSecao } from "@elementos/componentes/CampoDeSecao"
-import { IInformacoesDeEstudante } from "../interfaces/IInformacoesDeEstudante"
+import { IInformacoesDeEstudante } from "@elementos/interfaces/IInformacoesDeEstudante"
 import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao"
-import { IInformacoesDoCampus } from "../interfaces/IInformacoesDoCampus"
+import { IInformacoesDoCampus } from "@elementos/interfaces/IInformacoesDoCampus"
 import { validarTokenDosCookies } from "@/app/lib/middlewares/ValidarTokenDosCookies"
 import Image from "next/image"
 import { stringParaCamelCase } from "@/app/lib/elementos/StringParaCamelCase"
@@ -52,7 +52,7 @@ const Desktop = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
             <CampoDeSecao titulo='Curso' complemento={estudante.course.description} variante='vertical' />
             <div className="flex gap-x-4 justify-between">
                 <CampoDeSecao titulo="Campus" complemento={stringParaCamelCase(campus.description)} variante="vertical" />
-                <CampoDeSecao titulo="Turno" complemento={shiftIdParaTurno[estudante.shift_id]} variante="vertical" />
+                <CampoDeSecao titulo="Turno" complemento={shiftIdParaTurno[estudante.shift_id as 1 | 2 | 3 | 4]} variante="vertical" />
             </div>
         </Secao>
     )
@@ -74,7 +74,7 @@ const MobileCompleta = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
             <CampoDeSecao titulo='Curso' complemento={estudante.course.description} variante='vertical' />
             <div className="flex gap-x-4 justify-between">
                 <CampoDeSecao titulo="Campus" complemento={stringParaCamelCase(campus.description)} variante="vertical" />
-                <CampoDeSecao titulo="Turno" complemento={shiftIdParaTurno[estudante.shift_id]} variante="vertical" />
+                <CampoDeSecao titulo="Turno" complemento={shiftIdParaTurno[estudante.shift_id as 1 | 2 | 3 | 4]} variante="vertical" />
             </div>
         </Secao>
     )

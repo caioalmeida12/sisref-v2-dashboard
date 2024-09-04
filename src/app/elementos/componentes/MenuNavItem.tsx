@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { INavItemSemDropdown } from "../interfaces/INavbarProps";
+import { INavItemSemDropdown } from "@elementos/interfaces/INavbarProps";
 import Link from 'next/link';
 
 export const MenuNavItem = ({ titulo, rota }: INavItemSemDropdown) => {

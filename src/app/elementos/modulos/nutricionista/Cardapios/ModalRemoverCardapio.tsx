@@ -6,7 +6,7 @@ import Icone from '@elementos//basicos/Icone';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { Botao } from '@elementos//basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { IRefeicao } from '../../../interfaces/IRefeicao';
+import { IRefeicao } from '@elementos/interfaces/IRefeicao';
 import { removerCardapio } from '@/app/actions/nutricionista';
 
 interface ModalProps {

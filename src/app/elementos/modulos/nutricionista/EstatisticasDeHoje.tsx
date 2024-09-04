@@ -4,14 +4,14 @@ import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { useState } from "react";
 import { Secao } from "@elementos/basicos/Secao"
 import { Slider } from "@elementos/componentes/Slider"
-import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
-import { IRefeicao } from "../interfaces/IRefeicao";
+import { IRefeicao } from "@elementos/interfaces/IRefeicao";
 import { Refeicao, RefeicaoLoading } from "@elementos/componentes/Refeicao/Refeicao";
 import ReservasPorDia from "@elementos/componentes/ReservasPorDia";
 import { TicketsPorDia } from "@elementos/componentes/TicketsPorDia";
 import { TicketsPorRefeicao } from "@elementos/componentes/TicketsPorRefeicao";
 import { useQuery } from "@tanstack/react-query";
 import { CustomTooltipWrapper } from "@elementos/basicos/CustomTooltipWrapper";
+import { buscarRefeicoesPorDia } from "@/app/actions/estudante";
 
 export default function EstatisticasDeHoje() {
     const [dataDaPesquisa, setDataDaPesquisa] = useState(new Date().toISOString().split('T')[0]);
@@ -19,7 +19,7 @@ export default function EstatisticasDeHoje() {
 
     const { data: refeicoes, isLoading } = useQuery({
         queryKey: ['refeicoesPorDia', dataDaPesquisa],
-        queryFn: () => fetchRefeicoesPorDia({ data: dataDaPesquisa })
+        queryFn: () => buscarRefeicoesPorDia({ data: dataDaPesquisa })
     });
 
     return (

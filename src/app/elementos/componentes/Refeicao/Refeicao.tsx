@@ -5,7 +5,7 @@ import { Secao } from "@elementos/basicos/Secao";
 import { StatusDaRefeicao } from "@elementos/basicos/StatusDaRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { pegarStatusDaRefeicao } from "@/app/lib/elementos/Refeicao";
-import { IRefeicaoComTurno } from "../../interfaces/IRefeicao";
+import { IRefeicaoComTurno } from "@elementos/interfaces/IRefeicao";
 import Skeleton from "react-loading-skeleton";
 import { BotaoDeRefeicao } from "./BotaoDeRefeicao";
 
