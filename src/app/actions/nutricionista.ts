@@ -388,3 +388,27 @@ export async function confirmarAgendamento({ student_id, meal_id, date }: { stud
 
     return { sucesso: true, mensagem: "Agendamento confirmado com sucesso." };
 }
+
+// Criar agendamento
+
+/**
+ * Realiza uma chamada assíncrona para a API de criação de agendamento.
+ * 
+ * @param formData - Os dados do formulário de agendamento.
+ * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: IAgendamento }.
+ */
+export async function criarAgendamento(formData: FormData) {
+    const resposta = await FetchHelper.post<IAgendamento>({
+        rota: "/scheduling",
+        cookies: cookies(),
+        body: {
+            student_id: formData.get('student_id'),
+            meal_id: formData.get('meal_id'),
+            date: formData.get('date')
+        }
+    });
+
+    if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
+
+    return { sucesso: true, resposta: resposta.resposta[0] };
+}
