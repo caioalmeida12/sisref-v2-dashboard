@@ -57,6 +57,7 @@ const fetchAPI = async <T>({ metodo, rota, cookies, body, headers, rotaParaRedir
     // Por padrão, redireciona para a página de login em caso de erro 401
     if (resposta_inicial.status === 401 && typeof rotaParaRedirecionarCasoFalhe === "undefined") return redirecionarViaAction(`/login?erro=${encodeURIComponent(mensagemDeErroPorCodigoHTTP(401))}`);
 
+
     try {
         if (!resposta_inicial.ok) {
             if (rotaParaRedirecionarCasoFalhe === null) return { sucesso: false, message: mensagemDeErroPorCodigoHTTP(resposta_inicial.status) };
@@ -68,6 +69,11 @@ const fetchAPI = async <T>({ metodo, rota, cookies, body, headers, rotaParaRedir
 
         const json_resolvido = await resposta_inicial.json();
 
+        // Na resposta da API, quando retorna status 202 geralmente é porque a requisição contém campos inválidos
+        // Nesse caso, a resposta vem como { message: "Mensagem de erro" }
+        if (resposta_inicial.status === 202) return { sucesso: false, message: json_resolvido.message }
+
+        // Passa mais uma checagem manual para verificar se a resposta foi um erro
         if (respostaFoiErro(json_resolvido)) return { sucesso: false, message: json_resolvido.message }
 
         return {

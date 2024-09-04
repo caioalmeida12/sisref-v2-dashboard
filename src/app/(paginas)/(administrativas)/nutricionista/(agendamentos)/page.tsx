@@ -15,6 +15,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import * as React from 'react';
 import { useRef, useState } from 'react';
+import { ModalAdicionarCardapio } from '@/app/elementos/modulos/Cardapios/ModalAdicionarCardapio';
+import { ModalAdicionarAgendamento } from '@/app/elementos/modulos/Agendamentos/ModalAdicionarAgendamento';
 
 export default function Agendamentos() {
     const dataInicialRef = useRef<HTMLInputElement>(null);
@@ -108,6 +110,7 @@ export default function Agendamentos() {
                         </Form.Root>
                         <Botao variante="adicionar" texto="Buscar" className="h-[36px] py-0 px-10" onClick={() => refetch()} />
                     </div>
+                    <ModalAdicionarAgendamento />
                 </Secao>
                 <Secao>
                     <TabelaDeCrud colunas={colunas} dados={dadosDaTabela ?? []} refetch={refetch} />
