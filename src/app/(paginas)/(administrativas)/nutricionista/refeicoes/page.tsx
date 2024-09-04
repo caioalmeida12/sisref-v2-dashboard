@@ -1,37 +1,19 @@
 "use client"
 
-import React, { useRef, useState } from "react";
+import React from "react";
 
 import { Secao } from "@/app/elementos/basicos/Secao";
 import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
-import { Botao } from "@/app/elementos/basicos/Botao";
-import * as Form from '@radix-ui/react-form';
-import * as Select from '@radix-ui/react-select';
-import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { useQuery } from "@tanstack/react-query";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import { ColumnDef } from "@tanstack/react-table";
 import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
-import { Badge } from "@/app/elementos/basicos/Badge";
-import Icone from "@/app/elementos/basicos/Icone";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { ModalAdicionarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalAdicionarCardapio";
-import { ModalRemoverCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalRemoverCardapio";
-import { ModalEditarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalEditarCardapio";
-import { buscarRefeicoes, buscarTabelaDeCardapios } from "@/app/actions/nutricionista";
-import { ModalAdicionarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento";
+import { buscarRefeicoes } from "@/app/actions/nutricionista";
 import { ModalRemoverRefeição } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalRemoverRefeicao";
 import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalAdicionarRefeicao";
-interface NutricionistaPageProps {
-  params: { slug: string }
-  searchParams: { [key: string]: string | string[] | undefined }
-}
 
-export default function NutricionistaPage({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  params,
-  searchParams
-}: NutricionistaPageProps) {
+export default function NutricionistaPage() {
   const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela, refetch } = useQuery({
     queryKey: ['tabelaDeRefeicoes'],
     queryFn: async () => {

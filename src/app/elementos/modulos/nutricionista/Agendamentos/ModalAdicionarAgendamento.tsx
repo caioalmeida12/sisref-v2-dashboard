@@ -1,16 +1,14 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from 'react';
+import { buscarRefeicoes, criarAgendamento } from "@/app/actions/nutricionista";
+import { Botao } from "@/app/elementos/basicos/Botao";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta";
+import { ChevronDownIcon, CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
+import * as Select from "@radix-ui/react-select";
+import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 import * as Dialog from '@radix-ui/react-dialog';
-import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
-import { Botao } from '@elementos//basicos/Botao';
-import { CheckIcon, ChevronDownIcon, Cross2Icon } from '@radix-ui/react-icons';
-import { IRefeicao } from '../../../interfaces/IRefeicao';
-import Icone from '@elementos//basicos/Icone';
-import * as Select from '@radix-ui/react-select';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
-import { buscarRefeicoes, criarAgendamento } from '@/app/actions/nutricionista';
 
 export const ModalAdicionarAgendamento = () => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();

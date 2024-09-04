@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
 
 import {
     Column,
@@ -19,14 +18,13 @@ import {
 
 declare module '@tanstack/react-table' {
     //allows us to define custom properties for our columns
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface ColumnMeta<TData extends RowData, TValue> {
         filterVariant?: 'text' | 'range' | 'select'
     }
 }
 
 export function TabelaDeCrud<TipoDeDado>({ colunas, dados, refetch }: { colunas: ColumnDef<TipoDeDado, any>[], dados: TipoDeDado[], refetch: () => void }) {
-    const rerender = React.useReducer(() => ({}), {})[1]
-
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
 
     const refreshData = refetch

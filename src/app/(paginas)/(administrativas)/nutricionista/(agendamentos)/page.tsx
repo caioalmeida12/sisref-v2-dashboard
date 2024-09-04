@@ -11,18 +11,17 @@ import { ModalRemoverAgendamento } from '@/app/elementos/modulos/nutricionista/A
 import { TabelaDeCrud } from '@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
 import * as Form from '@radix-ui/react-form';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import * as React from 'react';
-import { useRef, useState } from 'react';
-import { ModalAdicionarCardapio } from '@/app/elementos/modulos/nutricionista/Cardapios/ModalAdicionarCardapio';
+import { useRef } from 'react';
 import { ModalAdicionarAgendamento } from '@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento';
 
 export default function Agendamentos() {
     const dataInicialRef = useRef<HTMLInputElement>(null);
     const dataFinalRef = useRef<HTMLInputElement>(null);
 
-    const { data: dadosDaTabela, refetch, isLoading } = useQuery({
+    const { data: dadosDaTabela, refetch } = useQuery({
         queryKey: ['tabelaDeAgendamentos', dataInicialRef.current?.value, dataFinalRef.current?.value],
         queryFn: async () => {
             const resposta = await buscarAgendamentos({ data_inicial: dataInicialRef.current?.value || new Date().toISOString() });

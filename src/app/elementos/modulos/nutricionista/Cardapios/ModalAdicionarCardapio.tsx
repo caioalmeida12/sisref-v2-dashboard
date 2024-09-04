@@ -1,16 +1,14 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
-import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
-import { Botao } from '@elementos//basicos/Botao';
-import { CheckIcon, ChevronDownIcon, Cross2Icon } from '@radix-ui/react-icons';
-import { IRefeicao } from '../../../interfaces/IRefeicao';
-import Icone from '@elementos//basicos/Icone';
-import * as Select from '@radix-ui/react-select';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { criarCardapio } from '@/app/actions/nutricionista';
+import { Botao } from '@/app/elementos/basicos/Botao';
+import Icone from '@/app/elementos/basicos/Icone';
+import { IRefeicao } from '@/app/elementos/interfaces/IRefeicao';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
-import { buscarRefeicoes, criarCardapio } from '@/app/actions/nutricionista';
+import { Cross2Icon } from '@radix-ui/react-icons';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import React, { useState } from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
 
 export const ModalAdicionarCardapio = ({ refeicao }: { refeicao: IRefeicao }) => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
