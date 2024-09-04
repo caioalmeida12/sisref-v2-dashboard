@@ -76,9 +76,13 @@ export default function Agendamentos() {
                     <div className="w-5 h-5 relative">
                         <ModalRemoverAgendamento agendamento={info.getValue()} />
                     </div>
-                    <div className="w-5 h-5 relative">
-                        <ModalConfirmarAgendamento agendamento={info.getValue()} />
-                    </div>
+                    {
+                        !(info.row.original.wasPresent) && (
+                            <div className="w-5 h-5 relative">
+                                <ModalConfirmarAgendamento agendamento={info.getValue()} />
+                            </div>
+                        )
+                    }
                 </div>
             )
         }
