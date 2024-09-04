@@ -19,6 +19,16 @@ export const ModalAdicionarAgendamento = () => {
 
     const [modalAberto, setModalAberto] = useState(false);
 
+    const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
+        initialData: [],
+        queryKey: ['refeicoes'],
+        queryFn: async () => {
+            const resposta = await buscarRefeicoes();
+
+            return resposta.sucesso ? resposta.resposta : [];
+        },
+    })
+
     const { mutate: handleSalvar, isPending } = useMutation({
         mutationFn: (formData: FormData) => criarAgendamento(formData),
         onMutate: () => {
@@ -49,9 +59,7 @@ export const ModalAdicionarAgendamento = () => {
     return (
         <Dialog.Root open={modalAberto}>
             <Dialog.Trigger>
-                <div className="w-5 h-5 relative" onClick={() => setModalAberto(true)}>
-                    <Icone.Adicionar className="absolute inset-0 block w-full h-full" />
-                </div>
+                <Botao className='h-[36px] py-0 px-10' onClick={() => setModalAberto(true)} texto='Reservar para estudante' variante='adicionar' />
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
@@ -64,15 +72,15 @@ export const ModalAdicionarAgendamento = () => {
                     </Dialog.Description>
                     <form className='flex flex-col gap-y-4' onSubmit={(e) => { e.preventDefault(); handleSalvar(new FormData(e.target as HTMLFormElement)); }}>
                         <fieldset className='flex flex-col gap-y-2 justify-start'>
-                            <label className='font-medium' htmlFor="description">
-                                Descrição
+                            <label className='font-medium' htmlFor="student_id">
+                                Código de estudante
                             </label>
                             <input
                                 className="shadow-preto-400 focus:shadow-preto-400 inline-flex h-8 w-full flex-1 items-center justify-center rounded-[4px] px-4 py-2 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-                                id="description"
-                                placeholder='Ex: Pão com ovos + suco de acerola'
-                                name='description'
-                                defaultValue=""
+                                id="student_id"
+                                placeholder='Ex: 2153 (código do restaurante)'
+                                name='student_id'
+                                type='number'
                             />
                         </fieldset>
                         <fieldset className='flex flex-col gap-y-2 justify-start'>
@@ -81,14 +89,49 @@ export const ModalAdicionarAgendamento = () => {
                             </label>
                             <div className='outline outline-1 rounded'>
                                 <input
-                                    readOnly
                                     type='date'
                                     id='date'
                                     name='date'
-                                    className='px-2 py-1 w-full bg-gray-100 cursor-not-allowed text-cinza-600'
+                                    className='px-2 py-1 w-full bg-cinza-400'
                                     defaultValue={DatasHelper.getDataDeHoje()}
                                 />
                             </div>
+                        </fieldset>
+                        <fieldset className='flex flex-col gap-y-2 justify-start'>
+                            <label className='font-medium' htmlFor="meal_id">
+                                Refeição
+                            </label>
+                            <Select.Root name='meal_id'>
+                                <Select.Trigger className="px-2 py-1 h-[34px] flex overflow-hidden items-center min-w-[250px] text-left rounded outline outline-1 outline-preto-400">
+                                    <Select.Value placeholder="Selecione a refeição desejada" />
+                                    <Select.Icon className="SelectIcon">
+                                        <ChevronDownIcon />
+                                    </Select.Icon>
+                                </Select.Trigger>
+
+                                <Select.Portal>
+                                    <Select.Content>
+                                        <Select.ScrollUpButton />
+                                        <Select.Viewport className="bg-branco-400 px-2 py-1 rounded outline outline-1 outline-cinza-600">
+                                            {
+                                                !isLoadingRefeicoes && nomesDasRefeicoes &&
+                                                nomesDasRefeicoes.map((refeicao, index) => (
+                                                    <Select.Item value={String(refeicao?.id)} className="flex items-center px-2 py-1 hover:outline outline-1 rounded hover:bg-amarelo-200" key={index}>
+                                                        <Select.ItemText>
+                                                            {refeicao?.description}
+                                                        </Select.ItemText>
+                                                        <Select.ItemIndicator>
+                                                            <CheckIcon />
+                                                        </Select.ItemIndicator>
+                                                    </Select.Item>
+                                                ))
+                                            }
+                                        </Select.Viewport>
+                                        <Select.ScrollDownButton />
+                                        <Select.Arrow />
+                                    </Select.Content>
+                                </Select.Portal>
+                            </Select.Root>
                         </fieldset>
                         <div className="flex justify-end flex-col items-center gap-y-2">
                             <div className="text-center" ref={mensagemDeRespostaRef}></div>

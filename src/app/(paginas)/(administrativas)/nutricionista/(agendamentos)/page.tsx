@@ -110,7 +110,9 @@ export default function Agendamentos() {
                         </Form.Root>
                         <Botao variante="adicionar" texto="Buscar" className="h-[36px] py-0 px-10" onClick={() => refetch()} />
                     </div>
-                    <ModalAdicionarAgendamento />
+                    <div className='ml-auto mt-auto'>
+                        <ModalAdicionarAgendamento />
+                    </div>
                 </Secao>
                 <Secao>
                     <TabelaDeCrud colunas={colunas} dados={dadosDaTabela ?? []} refetch={refetch} />
