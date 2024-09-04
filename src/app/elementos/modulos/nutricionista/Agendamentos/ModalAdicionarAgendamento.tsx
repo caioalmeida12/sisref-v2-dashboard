@@ -3,10 +3,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
-import { Botao } from '../../basicos/Botao';
+import { Botao } from '@elementos//basicos/Botao';
 import { CheckIcon, ChevronDownIcon, Cross2Icon } from '@radix-ui/react-icons';
-import { IRefeicao } from '../../interfaces/IRefeicao';
-import Icone from '../../basicos/Icone';
+import { IRefeicao } from '../../../interfaces/IRefeicao';
+import Icone from '@elementos//basicos/Icone';
 import * as Select from '@radix-ui/react-select';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';

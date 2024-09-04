@@ -1,13 +1,13 @@
 "use client"
 
 import React, { useState } from "react";
-import { Refeicao, RefeicaoLoading } from "../componentes/Refeicao/Refeicao";
-import { Slider } from "../componentes/Slider";
+import { Refeicao, RefeicaoLoading } from "@elementos/componentes/Refeicao/Refeicao";
+import { Slider } from "@elementos/componentes/Slider";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { Secao } from "../basicos/Secao";
+import { Secao } from "@elementos/basicos/Secao";
 import { useQuery } from "@tanstack/react-query";
 import { IRefeicao } from "../interfaces/IRefeicao";
-import { CustomTooltipWrapper } from "../basicos/CustomTooltipWrapper";
+import { CustomTooltipWrapper } from "@elementos/basicos/CustomTooltipWrapper";
 import { buscarRefeicoesPorDia } from "@/app/actions/estudante";
 
 

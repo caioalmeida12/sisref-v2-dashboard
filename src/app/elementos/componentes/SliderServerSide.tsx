@@ -3,7 +3,7 @@
 import React from 'react'
 
 import Link from 'next/link';
-import Icone from '../basicos/Icone';
+import Icone from '@elementos/basicos/Icone';
 
 interface SliderServerSideProps extends React.HTMLAttributes<HTMLDivElement> {
     texto: string;

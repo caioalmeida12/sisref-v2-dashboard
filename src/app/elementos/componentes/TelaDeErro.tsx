@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Navbar } from '../modulos/Navbar';
+import { Navbar } from '../modulos/comuns/Navbar';
 import { Footer } from './Footer';
-import { Botao } from '../basicos/Botao';
+import { Botao } from '@elementos/basicos/Botao';
 
 type TelaDeErroProps = {
     statusCode: keyof typeof mensagensErro | keyof typeof mensagensDetalhadas | keyof typeof mensagensBotao;
@@ -40,14 +40,14 @@ export const TelaDeErro = ({ statusCode }: TelaDeErroProps) => {
             <main className="flex-grow">
                 <div className='flex flex-col items-center gap-64 p-12'>
                     <div className='flex flex-col items-center gap-12  '>
-                        <span className='text-4xl font-bold text-verde-400 md:text-5xl'>Erro <br/> <span className='text-5xl md:text-6xl'>{statusCode}</span></span>
+                        <span className='text-4xl font-bold text-verde-400 md:text-5xl'>Erro <br /> <span className='text-5xl md:text-6xl'>{statusCode}</span></span>
                         <span className='text-base font-bold text-verde-400 md:text-lg'> {mensagem}</span>
-                    <div className="text-center text-base font-normal md:text-lg">{mensagemDetalhada}<br/>
-                    </div>
+                        <div className="text-center text-base font-normal md:text-lg">{mensagemDetalhada}<br />
+                        </div>
                     </div>
                     <div className='flex flex-col items-center gap-4'>
-                    <span className='text-base font-normal md:text-lg'>Caso deseje,</span>
-                    <Botao texto={mensagemBotao} variante='adicionar'/>
+                        <span className='text-base font-normal md:text-lg'>Caso deseje,</span>
+                        <Botao texto={mensagemBotao} variante='adicionar' />
                     </div>
                 </div>
             </main>

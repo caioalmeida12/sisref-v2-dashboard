@@ -3,7 +3,7 @@
 import React, { Suspense } from 'react';
 import Image from 'next/image';
 import sisrefLogo from '@/app/elementos/assets/img/sisrefLogo.png';
-import { Botao } from '../basicos/Botao';
+import { Botao } from '@elementos/basicos/Botao';
 import { useSearchParams } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import * as Form from '@radix-ui/react-form';

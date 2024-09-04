@@ -1,5 +1,5 @@
 import { Footer } from "@/app/elementos/componentes/Footer";
-import { Navbar } from "@/app/elementos/modulos/Navbar";
+import { Navbar } from "@/app/elementos/modulos/comuns/Navbar";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import React from "react";
 

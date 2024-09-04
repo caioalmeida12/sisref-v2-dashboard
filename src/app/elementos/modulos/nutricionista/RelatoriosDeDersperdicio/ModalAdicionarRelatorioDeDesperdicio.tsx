@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
-import { Botao } from '../../basicos/Botao';
+import { Botao } from '@elementos//basicos/Botao';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import EditorDeTexto from './EditorDeTexto';
 import { criarRelatorioDeDesperdicio } from '@/app/actions/criarRelatorioDeDesperdicio';

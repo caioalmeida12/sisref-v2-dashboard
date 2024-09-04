@@ -2,8 +2,8 @@
 
 import React, { useLayoutEffect } from "react";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { Botao } from "../../basicos/Botao";
-import { Secao } from "../../basicos/Secao";
+import { Botao } from "@elementos/basicos/Botao";
+import { Secao } from "@elementos/basicos/Secao";
 import { Modal } from "./Modal";
 
 export default function Card({ children, data }: { children: React.ReactNode, data: string }) {

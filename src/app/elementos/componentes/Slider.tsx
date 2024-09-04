@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import Icone from '../basicos/Icone';
+import Icone from '@elementos/basicos/Icone';
 
 interface SliderProps extends React.HTMLAttributes<HTMLDivElement> {
     texto: string;

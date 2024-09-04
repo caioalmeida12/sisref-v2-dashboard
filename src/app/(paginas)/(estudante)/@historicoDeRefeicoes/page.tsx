@@ -1,6 +1,6 @@
 "use client"
 
-import { HistoricoDeRefeicoes } from "@/app/elementos/modulos/HistoricoDeRefeicoes";
+import { HistoricoDeRefeicoes } from "@/app/elementos/modulos/estudante/HistoricoDeRefeicoes";
 import { CustomQueryClientProvider } from "@/app/lib/elementos/CustomQueryProviderWrapper";
 import React from "react";
 

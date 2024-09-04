@@ -3,7 +3,7 @@
 import React from 'react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { INavItemComDropdown } from '../interfaces/INavbarProps';
-import Icone from '../basicos/Icone';
+import Icone from '@elementos/basicos/Icone';
 
 export const MenuDropdown = ({ titulo, itens }: INavItemComDropdown) => {
     const createHandleMenuClick = (menuItem: string) => {

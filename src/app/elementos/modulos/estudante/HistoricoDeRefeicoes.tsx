@@ -1,10 +1,10 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import { Secao } from '../basicos/Secao'
-import { CabecalhoDeSecao } from '../basicos/CabecalhoDeSecao'
+import { Secao } from '@elementos/basicos/Secao'
+import { CabecalhoDeSecao } from '@elementos/basicos/CabecalhoDeSecao'
 import { IRefeicaoDoHistorico } from '../interfaces/IRefeicaoDoHistorico'
-import { RefeicaoDoHistorico, RefeicaoDoHistoricoLoading } from '../componentes/RefeicaoDoHistorico/RefeicaoDoHistorico'
+import { RefeicaoDoHistorico, RefeicaoDoHistoricoLoading } from '@elementos/componentes/RefeicaoDoHistorico/RefeicaoDoHistorico'
 import { useQuery } from '@tanstack/react-query'
 import { buscarTickets, buscarTicketsSemJustificativa } from '@/app/actions/estudante'
 

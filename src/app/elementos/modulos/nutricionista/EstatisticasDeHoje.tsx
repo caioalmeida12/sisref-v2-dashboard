@@ -2,16 +2,16 @@
 
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { useState } from "react";
-import { Secao } from "../basicos/Secao"
-import { Slider } from "../componentes/Slider"
+import { Secao } from "@elementos/basicos/Secao"
+import { Slider } from "@elementos/componentes/Slider"
 import { fetchRefeicoesPorDia } from "@/app/actions/fetchRefeicoesPorDia";
 import { IRefeicao } from "../interfaces/IRefeicao";
-import { Refeicao, RefeicaoLoading } from "../componentes/Refeicao/Refeicao";
-import ReservasPorDia from "../componentes/ReservasPorDia";
-import { TicketsPorDia } from "../componentes/TicketsPorDia";
-import { TicketsPorRefeicao } from "../componentes/TicketsPorRefeicao";
+import { Refeicao, RefeicaoLoading } from "@elementos/componentes/Refeicao/Refeicao";
+import ReservasPorDia from "@elementos/componentes/ReservasPorDia";
+import { TicketsPorDia } from "@elementos/componentes/TicketsPorDia";
+import { TicketsPorRefeicao } from "@elementos/componentes/TicketsPorRefeicao";
 import { useQuery } from "@tanstack/react-query";
-import { CustomTooltipWrapper } from "../basicos/CustomTooltipWrapper";
+import { CustomTooltipWrapper } from "@elementos/basicos/CustomTooltipWrapper";
 
 export default function EstatisticasDeHoje() {
     const [dataDaPesquisa, setDataDaPesquisa] = useState(new Date().toISOString().split('T')[0]);

@@ -3,11 +3,11 @@
 import React from 'react';
 
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
-import { INavbarProps } from '../interfaces/INavbarProps';
+import { INavbarProps } from '../../interfaces/INavbarProps';
 import Link from 'next/link';
-import { Logout } from '../basicos/Logout';
-import { MenuDrawer } from '../componentes/MenuDrawer';
-import Icone from '../basicos/Icone';
+import { Logout } from '@elementos/basicos/Logout';
+import { MenuDrawer } from '@elementos/componentes/MenuDrawer';
+import Icone from '@elementos/basicos/Icone';
 
 export const Navbar = ({ navItems }: INavbarProps) => {
     return (

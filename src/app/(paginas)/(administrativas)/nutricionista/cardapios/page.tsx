@@ -9,16 +9,16 @@ import * as Form from '@radix-ui/react-form';
 import * as Select from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { useQuery } from "@tanstack/react-query";
-import { TabelaDeCrud } from "@/app/elementos/modulos/TabelaDeCrud/TabelaDeCrud";
+import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import { ColumnDef } from "@tanstack/react-table";
 import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
 import { Badge } from "@/app/elementos/basicos/Badge";
 import Icone from "@/app/elementos/basicos/Icone";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/Refeicoes/ModalAdicionarRefeicao";
-import { ModalAdicionarCardapio } from "@/app/elementos/modulos/Cardapios/ModalAdicionarCardapio";
-import { ModalRemoverCardapio } from "@/app/elementos/modulos/Cardapios/ModalRemoverCardapio";
-import { ModalEditarCardapio } from "@/app/elementos/modulos/Cardapios/ModalEditarCardapio";
+import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalAdicionarRefeicao";
+import { ModalAdicionarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalAdicionarCardapio";
+import { ModalRemoverCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalRemoverCardapio";
+import { ModalEditarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalEditarCardapio";
 import { buscarRefeicoes, buscarTabelaDeCardapios } from "@/app/actions/nutricionista";
 interface NutricionistaPageProps {
   params: { slug: string }

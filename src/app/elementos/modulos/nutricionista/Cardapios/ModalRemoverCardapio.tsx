@@ -2,43 +2,43 @@
 import React, { useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
-import Icone from '../../basicos/Icone';
+import Icone from '@elementos//basicos/Icone';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
-import { Botao } from '../../basicos/Botao';
+import { Botao } from '@elementos//basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { removerAgendamento } from '@/app/actions/nutricionista';
-import { IAgendamento } from '../../interfaces/IAgendamento';
+import { IRefeicao } from '../../../interfaces/IRefeicao';
+import { removerCardapio } from '@/app/actions/nutricionista';
 
 interface ModalProps {
-    agendamento: IAgendamento;
+    refeicao: IRefeicao;
 }
 
-export const ModalRemoverAgendamento: React.FC<ModalProps> = ({ agendamento }) => {
+export const ModalRemoverCardapio: React.FC<ModalProps> = ({ refeicao }) => {
     const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
     const queryClient = useQueryClient();
 
     const [modalAberto, setModalAberto] = useState(false);
 
     const { mutate: handleCancelar, isPending } = useMutation({
-        mutationFn: () => removerAgendamento({ id: agendamento.id }),
-        mutationKey: ['removerAgendamento', agendamento.id],
+        mutationFn: () => removerCardapio({ meal_id: refeicao.cardapio?.id }),
+        mutationKey: ['removerCardapio', refeicao.cardapio?.id],
         onMutate: () => {
-            atualizarMensagem({ mensagem: 'Cancelando agendamento...' });
+            atualizarMensagem({ mensagem: 'Cancelando cardápio...' });
         },
         onSuccess: (json) => {
             if (!json.sucesso) return atualizarMensagem(json);
 
-            atualizarMensagem({ mensagem: 'Agendamento removido com sucesso!', sucesso: true });
+            atualizarMensagem({ mensagem: 'Cardápio removido com sucesso!', sucesso: true });
 
             setTimeout(() => {
                 setModalAberto(false);
 
                 queryClient.invalidateQueries({
-                    queryKey: ['agendamentos', agendamento],
+                    queryKey: ['refeicoes', refeicao],
                 })
 
                 queryClient.invalidateQueries({
-                    queryKey: ['tabelaDeAgendamentos'],
+                    queryKey: ['tabelaDeCardapios'],
                 })
             }, 500);
         },
@@ -58,13 +58,13 @@ export const ModalRemoverAgendamento: React.FC<ModalProps> = ({ agendamento }) =
                 <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
                 <Dialog.Content className="flex flex-col gap-y-4 overflow-y-auto data-[state=open]:animate-contentShow fixed top-[50%] left-[50%]  w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none   ">
                     <Dialog.Title className="m-0 font-medium text-lg">
-                        Tem certeza que deseja remover este agendamento?
+                        Tem certeza que deseja remover este cardápio?
                     </Dialog.Title>
                     <Dialog.Description className="leading-normal">
                         {
-                            agendamento.menu?.description
-                                ? `Você está prestes a remover o agendamento do dia ${agendamento.menu.date} com a descrição "${agendamento.menu.description}"  e ID ${agendamento.menu.id} para ${agendamento.student.name}`
-                                : `Você está prestes a remover o agendamento do dia ${agendamento.menu?.date}`
+                            refeicao.cardapio?.description
+                                ? `Você está prestes a remover o cardápio do dia ${refeicao.cardapio.date} com a descrição "${refeicao.cardapio.description}"  e ID ${refeicao.cardapio.id}`
+                                : `Você está prestes a remover o cardápio do dia ${refeicao.cardapio?.date}`
                         }
                     </Dialog.Description>
                     <div ref={mensagemDeRespostaRef} className="hidden"></div>

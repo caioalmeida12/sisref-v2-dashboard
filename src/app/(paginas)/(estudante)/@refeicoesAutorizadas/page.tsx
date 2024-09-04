@@ -1,5 +1,5 @@
+import { RefeicoesAutorizadas } from "@/app/elementos/modulos/estudante/RefeicoesAutorizadas";
 import React from "react";
-import { RefeicoesAutorizadas } from "@/app/elementos/modulos/RefeicoesAutorizadas";
 
 export default function RefeicoesAutorizadasParallelPage({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

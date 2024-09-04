@@ -1,9 +1,9 @@
 import React from "react";
-import { Secao } from "../basicos/Secao";
-import { CabecalhoDeSecao } from "../basicos/CabecalhoDeSecao";
-import { RefeicaoAutorizada } from "../componentes/RefeicaoAutorizada";
+import { Secao } from "@elementos/basicos/Secao";
+import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao";
+import { RefeicaoAutorizada } from "@elementos//componentes/RefeicaoAutorizada";
 import { InformacoesDeEstudante } from "./InformacoesDeEstudante";
-import { IBuscarRefeicoesAutorizadas } from "../interfaces/IBuscarRefeicoesAutorizadas";
+import { IBuscarRefeicoesAutorizadas } from "../../interfaces/IBuscarRefeicoesAutorizadas";
 import { buscarRefeicoesAutorizadas } from "@/app/actions/estudante";
 
 const pegarOsDiasDaSemanaAutorizados = (refeicoesAutorizadas: IBuscarRefeicoesAutorizadas[], idDaRefeicao: number) => {
