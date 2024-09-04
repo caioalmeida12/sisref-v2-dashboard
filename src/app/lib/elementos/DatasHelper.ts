@@ -149,4 +149,34 @@ export class DatasHelper {
         const proximoMes = new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 2, 1)
         return proximoMes.toISOString().split('T')[0];
     }
+
+    /**
+     * Aplica uma quantidade de horas ao horário fornecido e retorna o novo horário.
+     * @param horario O horário de referência no formato hh:mm:ss
+     * @param horas A quantidade de horas a serem aplicadas. Pode ser negativa ou positiva.
+     * @returns O novo horário no formato hh:mm:ss
+     * 
+     * @example aplicarHoras("12:00:00", 2) // "14:00:00"
+     * @example aplicarHoras("12:00:00", -2) // "10:00:00"
+     */
+    static aplicarHoras(horario: string, horas: number): string {
+        const [hh, mm, ss] = horario.split(':').map(Number);
+        const dataAtual = new Date();
+        dataAtual.setHours(hh, mm, ss);
+        dataAtual.setHours(dataAtual.getHours() + horas);
+        return dataAtual.toTimeString().split(' ')[0];
+    }
+
+    /**
+     * Aplica uma quantidade de horas ao horário fornecido e retorna o novo horário em formato brasileiro.
+     * @param horario O horário de referência no formato hh:mm:ss.
+     * @param horas A quantidade de horas a serem aplicadas. Pode ser negativa ou positiva.
+     * @returns O novo horário no formato hh:mm:ss.
+     * 
+     * @example aplicarHorasFormatoBrasileiro("12:00:00", 2) // "14:00:00"
+     * @example aplicarHorasFormatoBrasileiro("12:00:00", -2) // "10:00:00"
+     */
+    static aplicarHorasEmFormatoBrasileiro(horario: string, horas: number): string {
+        return this.aplicarHoras(horario, horas);
+    }
 }

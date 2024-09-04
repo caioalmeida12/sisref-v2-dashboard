@@ -69,7 +69,7 @@ export default function NutricionistaPage({
     });
   };
 
-  const colunas = React.useMemo<ColumnDef<IRefeicao, any>[]>(
+  const colunas = React.useMemo<ColumnDef<IRefeicao>[]>(
     () => [
       {
         accessorKey: 'refeicao.id',
@@ -81,7 +81,7 @@ export default function NutricionistaPage({
       }, {
         accessorKey: 'refeicao.date',
         accessorFn: (row) => row.cardapio?.date,
-        cell: info => DatasHelper.converterParaFormatoBrasileiro(info.getValue()),
+        cell: info => info.getValue() && DatasHelper.converterParaFormatoBrasileiro(`${info.getValue()}`) || 'Não informado',
       }, {
         accessorKey: 'refeicao.description',
         accessorFn: (row) => row.refeicao?.description,
