@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useCallback } from "react"
-import { Botao } from "../../../basicos/Botao"
+import { Botao } from "@elementos//basicos/Botao"
 import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { reservarRefeicao } from "@/app/actions/estudante"

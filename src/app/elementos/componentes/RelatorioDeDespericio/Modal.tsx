@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useLayoutEffect, useRef } from "react"
-import Icone from "../../basicos/Icone";
+import Icone from "@elementos/basicos/Icone";
 
 const useModal = () => {
   const modalRef = useRef<HTMLDialogElement>(null);

@@ -6,17 +6,17 @@ import { CabecalhoDeSecao } from '@/app/elementos/basicos/CabecalhoDeSecao';
 import { Secao } from '@/app/elementos/basicos/Secao';
 import { IAgendamento } from '@/app/elementos/interfaces/IAgendamento';
 import { Badge } from "@elementos/basicos/Badge";
-import { ModalConfirmarAgendamento } from '@/app/elementos/modulos/Agendamentos/ModalConfirmarAgendamento';
-import { ModalRemoverAgendamento } from '@/app/elementos/modulos/Agendamentos/ModalRemoverAgendamento';
-import { TabelaDeCrud } from '@/app/elementos/modulos/TabelaDeCrud/TabelaDeCrud';
+import { ModalConfirmarAgendamento } from '@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento';
+import { ModalRemoverAgendamento } from '@/app/elementos/modulos/nutricionista/Agendamentos/ModalRemoverAgendamento';
+import { TabelaDeCrud } from '@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
 import * as Form from '@radix-ui/react-form';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import * as React from 'react';
 import { useRef, useState } from 'react';
-import { ModalAdicionarCardapio } from '@/app/elementos/modulos/Cardapios/ModalAdicionarCardapio';
-import { ModalAdicionarAgendamento } from '@/app/elementos/modulos/Agendamentos/ModalAdicionarAgendamento';
+import { ModalAdicionarCardapio } from '@/app/elementos/modulos/nutricionista/Cardapios/ModalAdicionarCardapio';
+import { ModalAdicionarAgendamento } from '@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento';
 
 export default function Agendamentos() {
     const dataInicialRef = useRef<HTMLInputElement>(null);

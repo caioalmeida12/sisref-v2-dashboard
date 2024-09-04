@@ -1,9 +1,9 @@
 import React from 'react';
-import { Aviso } from '@/app/elementos/modulos/Aviso';
-import { InformacoesDeEstudante } from '@/app/elementos/modulos/InformacoesDeEstudante';
 import { FetchHelper } from '@/app/lib/actions/FetchHelper';
 import { cookies } from 'next/headers';
 import { IRefeicao } from '@/app/elementos/interfaces/IRefeicao';
+import { Aviso } from '@/app/elementos/modulos/estudante/Aviso';
+import { InformacoesDeEstudante } from '@/app/elementos/modulos/estudante/InformacoesDeEstudante';
 
 export default async function Home() {
 

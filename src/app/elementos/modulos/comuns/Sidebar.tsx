@@ -1,12 +1,12 @@
 import React from "react"
 import ifce_logo_horizontal_branco from '@/app/elementos/assets/img/ifce_logo_horizontal_branco.png';
 import Image from "next/image"
-import Icone from "../basicos/Icone";
+import Icone from "@elementos/basicos/Icone";
 import { stringParaCamelCase } from "@/app/lib/elementos/StringParaCamelCase";
 import { linksDaSidebarPorTipoDeUsuario } from "@/app/lib/elementos/LinksDaSidebarPorTipoDeUsuario";
 import { cookies } from "next/headers";
 import { IInformacoesDeLogin } from "@/app/lib/middlewares/IInformacoesDeLogin";
-import { Logout } from "../basicos/Logout";
+import { Logout } from "@elementos/basicos/Logout";
 import Link from "next/link";
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { buscarCampus } from "@/app/actions/campus";

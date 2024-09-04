@@ -6,11 +6,11 @@ import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons
 import { justificativasPermitidas } from "../../interfaces/IJustificativaDeEstudante";
 import classnames from "classnames";
 import { SelectItemProps } from "@radix-ui/react-select";
-import { Botao } from '../../basicos/Botao';
+import { Botao } from '@elementos/basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
-import Icone from '../../basicos/Icone';
-import { CustomTooltipWrapper } from '../../basicos/CustomTooltipWrapper';
+import Icone from '@elementos/basicos/Icone';
+import { CustomTooltipWrapper } from '@elementos/basicos/CustomTooltipWrapper';
 import { justificarRefeicao } from '@/app/actions/estudante';
 
 export const RefeicaoNaoJustificada = ({ meal_id, studentJustification }: { meal_id: number, studentJustification: string | null }) => {

@@ -3,11 +3,11 @@
 import React from "react"
 
 import { useEffect, useState } from "react"
-import { Botao } from "../../basicos/Botao"
-import { CabecalhoDeSecao } from "../../basicos/CabecalhoDeSecao"
-import { Secao } from "../../basicos/Secao"
+import { Botao } from "@elementos/basicos/Botao"
+import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao"
+import { Secao } from "@elementos/basicos/Secao"
 import { TextoDescritivo } from "./TextoDescritivo"
-import { RestricaoAlimentar } from "../../basicos/RestricaoAlimentar"
+import { RestricaoAlimentar } from "@elementos/basicos/RestricaoAlimentar"
 import Skeleton from "react-loading-skeleton"
 
 const TEMPO_DE_CARREGAMENTO = 2000
@@ -55,5 +55,5 @@ export const RestricoesAlimentares = ({ forcarExibicao = false }: { forcarExibic
 }
 
 const LoadingSkeletons = () => {
-    return Array.from({ length: 3 }).map((_, index) => <Skeleton key={index}  height={58} />)
+    return Array.from({ length: 3 }).map((_, index) => <Skeleton key={index} height={58} />)
 }

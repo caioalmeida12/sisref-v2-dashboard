@@ -1,7 +1,7 @@
 "use client"
 import React, { useRef } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Botao } from '../../../basicos/Botao';
+import { Botao } from '@elementos//basicos/Botao';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { BotaoDeRefeicao } from '.';
 

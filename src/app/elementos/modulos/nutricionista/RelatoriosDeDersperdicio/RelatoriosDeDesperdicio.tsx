@@ -1,9 +1,9 @@
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import React from "react";
-import { CabecalhoDeSecao } from "../../basicos/CabecalhoDeSecao";
-import { Secao } from "../../basicos/Secao";
-import { RelatorioDeDesperdicio } from "../../componentes/RelatorioDeDespericio/RelatorioDeDesperdicio";
-import { SliderServerSide } from "../../componentes/SliderServerSide";
+import { CabecalhoDeSecao } from "@elementos//basicos/CabecalhoDeSecao";
+import { Secao } from "@elementos//basicos/Secao";
+import { RelatorioDeDesperdicio } from "../@elementos//componentes/RelatorioDeDespericio/RelatorioDeDesperdicio";
+import { SliderServerSide } from "../@elementos//componentes/SliderServerSide";
 import { ModalAdicionarRelatorioDeDesperdicio } from "./ModalAdicionarRelatorioDeDesperdicio";
 
 export const RelatoriosDeDesperdicio = ({ searchParams }: { searchParams: URLSearchParams }) => {

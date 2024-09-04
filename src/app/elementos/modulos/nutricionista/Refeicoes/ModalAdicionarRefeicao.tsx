@@ -4,12 +4,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
-import SelectRefeicao from '../../componentes/SelectRefeicao';
-import { Botao } from '../../basicos/Botao';
+import SelectRefeicao from '../@elementos//componentes/SelectRefeicao';
+import { Botao } from '@elementos//basicos/Botao';
 import { Cross2Icon } from '@radix-ui/react-icons';
 // import { criarRefeicao } from '@/app/actions/criarRefeicao';
-import { IRefeicao } from '../../interfaces/IRefeicao';
-import Icone from '../../basicos/Icone';
+import { IRefeicao } from '../../../interfaces/IRefeicao';
+import Icone from '@elementos//basicos/Icone';
 import { criarRefeição } from '@/app/actions/criarRefeicao';
 
 export const ModalAdicionarRefeicao = () => {

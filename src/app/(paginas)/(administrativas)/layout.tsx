@@ -1,4 +1,4 @@
-import { Sidebar } from "@/app/elementos/modulos/Sidebar";
+import { Sidebar } from "@/app/elementos/modulos/comuns/Sidebar";
 import { CustomQueryClientProvider } from "@/app/lib/elementos/CustomQueryProviderWrapper";
 // import { validarTokenDosCookies } from "@/app/lib/middlewares/ValidarTokenDosCookies";
 import React from "react";

@@ -3,8 +3,8 @@
 import React from 'react'
 
 import { Footer } from "@/app/elementos/componentes/Footer"
-import { Login } from "@/app/elementos/modulos/Login"
-import { Navbar } from "@/app/elementos/modulos/Navbar"
+import { Login } from "@/app/elementos/modulos/comuns/Login"
+import { Navbar } from "@/app/elementos/modulos/comuns/Navbar"
 
 export default function LoginPage() {
     return (
