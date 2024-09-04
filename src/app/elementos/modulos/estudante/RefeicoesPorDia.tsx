@@ -6,7 +6,7 @@ import { Slider } from "@elementos/componentes/Slider";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { Secao } from "@elementos/basicos/Secao";
 import { useQuery } from "@tanstack/react-query";
-import { IRefeicao } from "../interfaces/IRefeicao";
+import { IRefeicao } from "@elementos/interfaces/IRefeicao";
 import { CustomTooltipWrapper } from "@elementos/basicos/CustomTooltipWrapper";
 import { buscarRefeicoesPorDia } from "@/app/actions/estudante";
 

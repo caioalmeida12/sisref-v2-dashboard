@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Icone from './Icone';
-import { IIconeStatusProps } from '../interfaces/IIcones';
+import { IIconeStatusProps } from '@elementos/interfaces/IIcones';
 import { CustomTooltipWrapper } from './CustomTooltipWrapper';
 
 interface StatusDaRefeicaoProps {

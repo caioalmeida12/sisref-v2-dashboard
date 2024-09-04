@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from 'react'
 import { Secao } from '@elementos/basicos/Secao'
 import { CabecalhoDeSecao } from '@elementos/basicos/CabecalhoDeSecao'
-import { IRefeicaoDoHistorico } from '../interfaces/IRefeicaoDoHistorico'
 import { RefeicaoDoHistorico, RefeicaoDoHistoricoLoading } from '@elementos/componentes/RefeicaoDoHistorico/RefeicaoDoHistorico'
 import { useQuery } from '@tanstack/react-query'
 import { buscarTickets, buscarTicketsSemJustificativa } from '@/app/actions/estudante'
+import { IRefeicaoDoHistorico } from '@elementos/interfaces/IRefeicaoDoHistorico'
 
 const QUANTOS_TICKETS_MOSTRAR = 10
 

@@ -4,7 +4,6 @@ import { buscarAgendamentos } from '@/app/actions/nutricionista';
 import { Botao } from '@/app/elementos/basicos/Botao';
 import { CabecalhoDeSecao } from '@/app/elementos/basicos/CabecalhoDeSecao';
 import { Secao } from '@/app/elementos/basicos/Secao';
-import { IAgendamento } from '@/app/elementos/interfaces/IAgendamento';
 import { Badge } from "@elementos/basicos/Badge";
 import { ModalConfirmarAgendamento } from '@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento';
 import { ModalRemoverAgendamento } from '@/app/elementos/modulos/nutricionista/Agendamentos/ModalRemoverAgendamento';
@@ -16,6 +15,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import * as React from 'react';
 import { useRef } from 'react';
 import { ModalAdicionarAgendamento } from '@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento';
+import { IAgendamento } from '@/app/elementos/interfaces/IAgendamento';
 
 export default function Agendamentos() {
     const dataInicialRef = useRef<HTMLInputElement>(null);

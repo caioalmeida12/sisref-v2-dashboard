@@ -5,10 +5,10 @@
  */
 
 import { cookies } from "next/headers";
-import { IRefeicao, IRefeicaoSchema } from "../elementos/interfaces/IRefeicao";
+import { IRefeicao, IRefeicaoSchema } from "@elementos/interfaces/IRefeicao";
 import { FetchHelper } from "../lib/actions/FetchHelper";
-import { IAgendamento, IAgendamentoSchema } from "../elementos/interfaces/IAgendamento";
-import { IRespostaPaginada } from "../elementos/interfaces/IRespostaPaginada";
+import { IRespostaPaginada } from "@elementos/interfaces/IRespostaPaginada";
+import { IAgendamento, IAgendamentoSchema } from "@elementos/interfaces/IAgendamento";
 
 /**
  * Cria uma refeição.

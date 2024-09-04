@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Secao } from "@elementos/basicos/Secao";
-import { IRefeicaoComTurno } from "../interfaces/IRefeicao";
+import { IRefeicaoComTurno } from "@elementos/interfaces/IRefeicao";
 import { NomeDaRefeicao } from "@elementos/basicos/NomeDaRefeicao";
 
 const varianteNomeRefeicaoPorTurno = {

@@ -3,7 +3,7 @@
 import React from 'react';
 
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
-import { INavbarProps } from '../../interfaces/INavbarProps';
+import { INavbarProps } from '@elementos/interfaces/INavbarProps';
 import Link from 'next/link';
 import { Logout } from '@elementos/basicos/Logout';
 import { MenuDrawer } from '@elementos/componentes/MenuDrawer';

@@ -6,13 +6,13 @@
 
 import { cookies } from "next/headers";
 import { FetchHelper } from "../lib/actions/FetchHelper";
-import { IRefeicao, IRefeicaoSchema } from "../elementos/interfaces/IRefeicao";
+import { IRefeicao, IRefeicaoSchema } from "@elementos/interfaces/IRefeicao";
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
-import { IBuscarRefeicoesAutorizadas } from "../elementos/interfaces/IBuscarRefeicoesAutorizadas";
-import { ParseRefeicaoDoHistorico } from "../elementos/interfaces/IRefeicaoDoHistorico";
-import { IJustificativaDeEstudante, justificativasPermitidas } from "../elementos/interfaces/IJustificativaDeEstudante";
-import { IRelatorioDeDesperdicio } from "../elementos/interfaces/IRelatorioDeDesperdicio";
-import { IInformacoesDeEstudante } from "../elementos/interfaces/IInformacoesDeEstudante";
+import { IBuscarRefeicoesAutorizadas } from "@elementos/interfaces/IBuscarRefeicoesAutorizadas";
+import { ParseRefeicaoDoHistorico } from "@elementos/interfaces/IRefeicaoDoHistorico";
+import { IJustificativaDeEstudante, justificativasPermitidas } from "@elementos/interfaces/IJustificativaDeEstudante";
+import { IRelatorioDeDesperdicio } from "@elementos/interfaces/IRelatorioDeDesperdicio";
+import { IInformacoesDeEstudante } from "@elementos/interfaces/IInformacoesDeEstudante";
 
 /**
  * Busca as refeições disponíveis para o dia solicitado. Se não for passado nenhum parâmetro, a data atual será utilizada.

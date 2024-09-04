@@ -7,7 +7,7 @@ import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { Botao } from '@elementos//basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { removerAgendamento } from '@/app/actions/nutricionista';
-import { IAgendamento } from '../../../interfaces/IAgendamento';
+import { IAgendamento } from '@elementos/interfaces/IAgendamento';
 
 interface ModalProps {
     agendamento: IAgendamento;
