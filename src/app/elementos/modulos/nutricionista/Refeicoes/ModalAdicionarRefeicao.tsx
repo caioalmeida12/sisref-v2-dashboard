@@ -2,86 +2,61 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker';
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
-import SelectRefeicao from '../@elementos//componentes/SelectRefeicao';
 import { Botao } from '@elementos//basicos/Botao';
-import { Cross2Icon } from '@radix-ui/react-icons';
-// import { criarRefeicao } from '@/app/actions/criarRefeicao';
+import { CheckIcon, ChevronDownIcon, Cross2Icon } from '@radix-ui/react-icons';
 import { IRefeicao } from '../../../interfaces/IRefeicao';
 import Icone from '@elementos//basicos/Icone';
-import { criarRefeição } from '@/app/actions/criarRefeicao';
+import * as Select from '@radix-ui/react-select';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
+import { buscarRefeicoes, criarRefeicao } from '@/app/actions/nutricionista';
 
 export const ModalAdicionarRefeicao = () => {
-    const [data, setData] = useState({
-        startDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
-        endDate: new Date(DatasHelper.getDataPosterior(new Date().toISOString().split('T')[0])),
+    const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
+
+    const queryClient = useQueryClient();
+
+    const [modalAberto, setModalAberto] = useState(false);
+
+    const { mutate: handleSalvar, isPending } = useMutation({
+        mutationFn: (formData: FormData) => criarRefeicao(formData),
+        onMutate: () => {
+            atualizarMensagem({ mensagem: 'Salvando refeição...' });
+        },
+        onSuccess: (json) => {
+            if (!json.sucesso) return atualizarMensagem({ mensagem: json.mensagem || 'Erro desconhecido ao salvar refeição.', sucesso: false });
+
+            atualizarMensagem({ mensagem: 'Refeicao salvo com sucesso!', sucesso: true });
+
+            setTimeout(() => {
+                setModalAberto(false);
+
+                queryClient.invalidateQueries({
+                    queryKey: ['tabelaDeRefeicoes'],
+                });
+            }, 500);
+        },
+        onError: (error) => {
+            atualizarMensagem({ mensagem: error.message, sucesso: false });
+        },
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [refeicoes, setRefeicoes] = useState<IRefeicao["refeicao"][]>([]);
-    const [salvando, setSalvando] = useState(false);
-
-    const mensagemDeResposta = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        // fetchRefeicoesParaRefeicao().then((refeicoes) => setRefeicoes(refeicoes));
-    }, [data]);
-
-    const handleDataChange = (novaData: DateValueType) => {
-        if (!novaData?.startDate || !novaData?.endDate) return;
-
-        const corrigirData = (dateStr: string) => {
-            const ontem = new Date(dateStr).toISOString().split('T')[0];
-            const hoje = DatasHelper.getDataPosterior(ontem);
-            return new Date(hoje);
-        };
-
-        const startDate = typeof novaData.startDate === 'string' ? corrigirData(novaData.startDate) : novaData.startDate;
-        const endDate = typeof novaData.endDate === 'string' ? corrigirData(novaData.endDate) : novaData.endDate;
-
-        setData({ startDate, endDate });
-    };
-
-    const handleSalvar = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setSalvando(true);
-
-        // Atualiza a mensagem para mostrar "Salvando..." enquanto a operação está em andamento
-        mensagemDeResposta.current!.textContent = 'Salvando...';
-        mensagemDeResposta.current!.classList.remove('hidden', 'text-verde-400', 'text-vermelho-400');
-        mensagemDeResposta.current!.classList.add('text-azul-400');
-
-        const formData = new FormData(e.currentTarget);
-
-        const { sucesso, mensagem } = await criarRefeição(formData);
-
-        setSalvando(false);
-
-        if (sucesso) {
-            mensagemDeResposta.current!.classList.add('text-verde-400');
-        } else {
-            mensagemDeResposta.current!.classList.add('text-vermelho-400');
-        }
-
-        mensagemDeResposta.current!.textContent = mensagem;
-    };
-
     return (
-        <Dialog.Root>
-            <Dialog.Trigger>
-                <Icone.Adicionar />
+        <Dialog.Root open={modalAberto}>
+            <Dialog.Trigger asChild>
+                <Botao className='h-[36px] py-0 px-10 bg-azul-400' onClick={() => setModalAberto(true)} texto='Criar nova refeição' variante='adicionar' />
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
-                <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none ">
+                <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none">
                     <Dialog.Title className="m-0 font-medium text-lg">
                         Adicionar refeição
                     </Dialog.Title>
-                    <Dialog.Description className="mt-2 mb-5 leading-normal">
-                        Preencha os campos abaixo para adicionar uma nova refeição.
+                    <Dialog.Description>
+                        Preencha os campos abaixo para adicionar um novo refeição.
                     </Dialog.Description>
-                    <form className='flex flex-col gap-y-4' onSubmit={handleSalvar}>
+                    <form className='flex flex-col gap-y-4' onSubmit={(e) => { e.preventDefault(); handleSalvar(new FormData(e.target as HTMLFormElement)); }}>
                         <fieldset className='flex flex-col gap-y-2 justify-start'>
                             <label className='font-medium' htmlFor="description">
                                 Descrição
@@ -89,48 +64,87 @@ export const ModalAdicionarRefeicao = () => {
                             <input
                                 className="shadow-preto-400 focus:shadow-preto-400 inline-flex h-8 w-full flex-1 items-center justify-center rounded-[4px] px-4 py-2 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
                                 id="description"
-                                placeholder='Ex: Pão com ovos + suco de acerola'
+                                placeholder='Ex: Lanche da manhã'
+                                name='description'
                             />
                         </fieldset>
-                        <fieldset className='flex flex-col gap-y-2 justify-start' >
-                            <label className='font-medium' htmlFor="date">
-                                Data
+                        <fieldset className='flex flex-col gap-y-2 justify-start'>
+                            <label className='font-medium' htmlFor="timeStart">
+                                Horário de início
                             </label>
                             <div className='outline outline-1 rounded'>
-                                <Datepicker
-                                    primaryColor='red'
-                                    value={data}
-                                    onChange={(novaData) => handleDataChange(novaData)}
-                                    asSingle={true}
-                                    useRange={false}
-                                    placeholder='AAAA-MM-DD'
-                                    displayFormat='DD/MM/YYYY'
-                                    i18n='pt-br'
+                                <input
+                                    id='timeStart'
+                                    name='timeStart'
+                                    className='px-2 py-1 w-full bg-cinza-400'
+                                    placeholder='Ex: 10:00:00'
                                 />
                             </div>
                         </fieldset>
                         <fieldset className='flex flex-col gap-y-2 justify-start'>
-                            <label className='font-medium' htmlFor="meal">
-                                Refeição
+                            <label className='font-medium' htmlFor="timeEnd">
+                                Horário de término
                             </label>
-                            <SelectRefeicao refeicoes={refeicoes} />
+                            <div className='outline outline-1 rounded'>
+                                <input
+                                    id='timeEnd'
+                                    name='timeEnd'
+                                    className='px-2 py-1 w-full bg-cinza-400'
+                                    placeholder='Ex: 12:00:00'
+                                />
+                            </div>
+                        </fieldset>
+                        <fieldset className='flex flex-col gap-y-2 justify-start'>
+                            <label className='font-medium' htmlFor="qtdTimeReservationStart">
+                                Quantas horas antes do início da refeição as reservas podem ser feitas?
+                            </label>
+                            <div className='outline outline-1 rounded'>
+                                <input
+                                    id='qtdTimeReservationStart'
+                                    name='qtdTimeReservationStart'
+                                    type='number'
+                                    className='px-2 py-1 w-full bg-cinza-400'
+                                    placeholder='Ex: 2 (em duas horas antes de a refeição começar estudantes podem reservar)'
+                                />
+                            </div>
+                        </fieldset>
+                        <fieldset className='flex flex-col gap-y-2 justify-start'>
+                            <label className='font-medium' htmlFor="qtdTimeReservationEnd">
+                                Quantas horas antes do término da refeição as reservas não podem mais ser feitas?
+                            </label>
+                            <div className='outline outline-1 rounded'>
+                                <input
+                                    id='qtdTimeReservationEnd'
+                                    name='qtdTimeReservationEnd'
+                                    type='number'
+                                    className='px-2 py-1 w-full bg-cinza-400'
+                                    placeholder='Ex: 2 (em duas horas antes de a refeição terminar estudantes não podem mais reservar)'
+                                />
+                            </div>
                         </fieldset>
                         <div className="flex justify-end flex-col items-center gap-y-2">
-                            <div className="text-center" ref={mensagemDeResposta}></div>
-                            <Botao texto='Salvar' variante='adicionar' type='submit' className='mt-4' disabled={salvando} />
+                            <div className="text-center" ref={mensagemDeRespostaRef}></div>
+                            <Botao texto='Salvar' variante='adicionar' type='submit' className='mt-4' disabled={isPending} />
                         </div>
                         <Dialog.Close asChild>
                             <button
                                 name='Fechar'
                                 className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-2 right-2 inline-flex p-[0.25em] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                                 aria-label="Fechar"
+                                onClick={() => setModalAberto(false)}
                             >
                                 <Cross2Icon />
                             </button>
                         </Dialog.Close>
+                        <input
+                            readOnly
+                            hidden
+                            name='campus_id'
+                            value={1}
+                        />
                     </form>
                 </Dialog.Content>
             </Dialog.Portal>
         </Dialog.Root>
-    )
+    );
 };

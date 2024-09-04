@@ -15,13 +15,13 @@ import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
 import { Badge } from "@/app/elementos/basicos/Badge";
 import Icone from "@/app/elementos/basicos/Icone";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalAdicionarRefeicao";
 import { ModalAdicionarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalAdicionarCardapio";
 import { ModalRemoverCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalRemoverCardapio";
 import { ModalEditarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalEditarCardapio";
 import { buscarRefeicoes, buscarTabelaDeCardapios } from "@/app/actions/nutricionista";
 import { ModalAdicionarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento";
 import { ModalRemoverRefeição } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalRemoverRefeicao";
+import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalAdicionarRefeicao";
 interface NutricionistaPageProps {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
@@ -66,11 +66,11 @@ export default function NutricionistaPage({
       }, {
         accessorKey: 'Horário para início das reservas',
         accessorFn: (row) => row?.qtdTimeReservationStart,
-        cell: info => info.row.original?.timeStart ? DatasHelper.aplicarHorasEmFormatoBrasileiro(info.row.original?.timeStart, info.row.original.qtdTimeReservationStart || 0) : 'Não informado',
+        cell: info => info.row.original?.timeStart ? DatasHelper.aplicarHorasEmFormatoBrasileiro(info.row.original?.timeStart, -info.row.original.qtdTimeReservationStart || 0) : 'Não informado',
       }, {
         accessorKey: 'Horário para fim das reservas',
         accessorFn: (row) => row?.qtdTimeReservationEnd,
-        cell: info => info.row.original?.timeEnd ? DatasHelper.aplicarHorasEmFormatoBrasileiro(info.row.original?.timeEnd, info.row.original.qtdTimeReservationEnd || 0) : 'Não informado',
+        cell: info => info.row.original?.timeEnd ? DatasHelper.aplicarHorasEmFormatoBrasileiro(info.row.original?.timeEnd, -info.row.original.qtdTimeReservationEnd || 0) : 'Não informado',
       },
       {
         header: 'Ações',
@@ -96,7 +96,7 @@ export default function NutricionistaPage({
           <CabecalhoDeSecao titulo="Cardápios" />
           <Secao className="flex">
             <div className='ml-auto mt-auto'>
-              <ModalAdicionarAgendamento />
+              <ModalAdicionarRefeicao />
             </div>
           </Secao>
           <Secao>

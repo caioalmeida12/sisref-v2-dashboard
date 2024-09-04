@@ -1,7 +1,6 @@
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { mensagemDeErroPorCodigoHTTP } from "./MensagemDeErroPorCodigoHTTP";
 import { redirecionarViaAction } from "./RedirecionarViaAction";
-import fs from "fs";
 
 type RespostaDaAPI<T> = {
     sucesso: false;
