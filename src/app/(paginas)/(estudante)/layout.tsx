@@ -1,6 +1,7 @@
 import { Footer } from "@/app/elementos/componentes/Footer";
 import { Navbar } from "@/app/elementos/modulos/comuns/Navbar";
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react"
 import React from "react";
 
 interface EstudanteLayoutProps {
@@ -25,6 +26,7 @@ export default function EstudanteLayout({ children, refeicoesPorDia, historicoDe
     return (
         <>
             <SpeedInsights />
+            <Analytics />
             <Navbar navItems={[
                 {
                     titulo: 'Refeições', rota: '?pagina=refeicoesPorDia',
