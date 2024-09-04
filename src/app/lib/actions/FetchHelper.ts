@@ -53,8 +53,6 @@ const fetchAPI = async <T>({ metodo, rota, cookies, body, headers, rotaParaRedir
         body: body ? JSON.stringify(body) : undefined,
     });
 
-    metodo == "DELETE" && fs.writeFileSync("erro.html", await resposta_inicial.text());
-
     // Por padrão, redireciona para a página de login em caso de erro 401
     if (resposta_inicial.status === 401 && typeof rotaParaRedirecionarCasoFalhe === "undefined") return redirecionarViaAction(`/login?erro=${encodeURIComponent(mensagemDeErroPorCodigoHTTP(401))}`);
 
