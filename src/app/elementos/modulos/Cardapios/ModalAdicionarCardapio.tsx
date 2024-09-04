@@ -86,7 +86,7 @@ export const ModalAdicionarCardapio = ({ refeicao }: { refeicao: IRefeicao }) =>
                                     type='date'
                                     id='date'
                                     name='date'
-                                    className='px-2 py-1 w-full bg-gray-100 cursor-not-allowed text-cinza-600'
+                                    className='px-2 py-1 w-full bg-cinza-400 cursor-not-allowed text-cinza-600'
                                     defaultValue={refeicao.cardapio?.date}
                                 />
                             </div>
