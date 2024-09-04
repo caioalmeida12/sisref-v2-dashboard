@@ -5,11 +5,8 @@
  */
 
 import { cookies } from "next/headers";
-import { mensagemDeErroPorCodigoHTTP } from "../lib/actions/MensagemDeErroPorCodigoHTTP"
 import { IRefeicao, IRefeicaoSchema } from "../elementos/interfaces/IRefeicao";
 import { FetchHelper } from "../lib/actions/FetchHelper";
-import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
-import { redirect } from "next/navigation";
 import { IAgendamento, IAgendamentoSchema } from "../elementos/interfaces/IAgendamento";
 import { IRespostaPaginada } from "../elementos/interfaces/IRespostaPaginada";
 
