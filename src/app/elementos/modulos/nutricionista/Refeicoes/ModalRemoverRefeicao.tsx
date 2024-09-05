@@ -13,7 +13,7 @@ interface ModalProps {
     refeicao: NonNullable<IRefeicao["refeicao"]>;
 }
 
-export const ModalRemoverRefeição: React.FC<ModalProps> = ({ refeicao }) => {
+export const ModalRemoverRefeicao: React.FC<ModalProps> = ({ refeicao }) => {
     const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
     const queryClient = useQueryClient();
 

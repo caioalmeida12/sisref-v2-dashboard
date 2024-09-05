@@ -10,8 +10,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { buscarRefeicoes } from "@/app/actions/nutricionista";
-import { ModalRemoverRefeição } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalRemoverRefeicao";
+import { ModalRemoverRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalRemoverRefeicao";
 import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalAdicionarRefeicao";
+import { ModalEditarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalEditarRefeicao";
 
 export default function NutricionistaPage() {
   const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela, refetch } = useQuery({
@@ -60,10 +61,10 @@ export default function NutricionistaPage() {
         cell: info => (
           <div className="flex justify-center gap-x-2">
             <div className="w-5 h-5 relative">
-              <ModalRemoverRefeição refeicao={info.row.original!} />
+              <ModalRemoverRefeicao refeicao={info.row.original!} />
             </div>
             <div className="w-5 h-5 relative">
-              {/* <ModalEditarCardapio refeicao={info.row.original} /> */}
+              <ModalEditarRefeicao refeicao={info.row.original} />
             </div>
           </div>)
       }
@@ -75,7 +76,7 @@ export default function NutricionistaPage() {
     <>
       <Secao className="border-none">
         <Secao className="max-w-[1440px] mx-auto flex flex-col gap-y-4">
-          <CabecalhoDeSecao titulo="Cardápios" />
+          <CabecalhoDeSecao titulo="Refeições" />
           <Secao className="flex">
             <div className='ml-auto mt-auto'>
               <ModalAdicionarRefeicao />
