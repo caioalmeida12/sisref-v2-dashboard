@@ -459,3 +459,28 @@ export async function criarRefeicao(formData: FormData) {
 
     return { sucesso: true, mensagem: "Refeição criada com sucesso." };
 }
+
+/**
+ * Realiza uma chamada assíncrona para a API de edição de refeição.
+ * 
+ * @param formData - Os dados do formulário de edição de refeição.
+ * @returns JSON com os campos `sucesso` e `mensagem`.
+ */
+export async function editarRefeicao(formData: FormData) {
+    const resposta = await FetchHelper.put<unknown>({
+        rota: `/meal/${formData.get('meal_id')}`,
+        cookies: cookies(),
+        body: {
+            description: formData.get('description'),
+            timeStart: formData.get('timeStart'),
+            timeEnd: formData.get('timeEnd'),
+            qtdTimeReservationStart: formData.get('qtdTimeReservationStart'),
+            qtdTimeReservationEnd: formData.get('qtdTimeReservationEnd'),
+            campus_id: formData.get('campus_id')
+        }
+    });
+
+    if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
+
+    return { sucesso: true, mensagem: "Refeição editada com sucesso." };
+}
