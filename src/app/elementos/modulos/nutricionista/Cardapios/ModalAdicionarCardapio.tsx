@@ -3,14 +3,14 @@
 import { criarCardapio } from '@/app/actions/nutricionista';
 import { Botao } from '@/app/elementos/basicos/Botao';
 import Icone from '@/app/elementos/basicos/Icone';
-import { IRefeicao } from '@/app/elementos/interfaces/IRefeicao';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
+import { TRefeicaoECardapio } from '@/app/elementos/interfaces/TRefeicao';
 
-export const ModalAdicionarCardapio = ({ refeicao }: { refeicao: IRefeicao }) => {
+export const ModalAdicionarCardapio = ({ refeicao_e_cardapio }: { refeicao_e_cardapio: TRefeicaoECardapio }) => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
 
     const queryClient = useQueryClient();
@@ -19,7 +19,7 @@ export const ModalAdicionarCardapio = ({ refeicao }: { refeicao: IRefeicao }) =>
 
     const { mutate: handleSalvar, isPending } = useMutation({
         mutationFn: (formData: FormData) => criarCardapio(formData),
-        mutationKey: ['criarCardapio', refeicao.cardapio?.date],
+        mutationKey: ['criarCardapio', refeicao_e_cardapio.menu.date],
         onMutate: () => {
             atualizarMensagem({ mensagem: 'Salvando cardápio...' });
         },
@@ -32,7 +32,7 @@ export const ModalAdicionarCardapio = ({ refeicao }: { refeicao: IRefeicao }) =>
                 setModalAberto(false);
 
                 queryClient.invalidateQueries({
-                    queryKey: ['refeicoes', refeicao.cardapio?.date],
+                    queryKey: ['refeicoes', refeicao_e_cardapio.menu.date],
                 });
 
                 queryClient.invalidateQueries({
@@ -85,7 +85,7 @@ export const ModalAdicionarCardapio = ({ refeicao }: { refeicao: IRefeicao }) =>
                                     id='date'
                                     name='date'
                                     className='px-2 py-1 w-full bg-cinza-400 cursor-not-allowed text-cinza-600'
-                                    defaultValue={refeicao.cardapio?.date}
+                                    defaultValue={refeicao_e_cardapio.menu.date}
                                 />
                             </div>
                         </fieldset>
@@ -106,7 +106,8 @@ export const ModalAdicionarCardapio = ({ refeicao }: { refeicao: IRefeicao }) =>
                         <input
                             name='meal_id'
                             className='hidden'
-                            value={refeicao.refeicao?.id}
+                            hidden
+                            value={refeicao_e_cardapio.meal.id}
                             readOnly
                         />
                     </form>

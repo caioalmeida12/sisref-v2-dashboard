@@ -4,7 +4,6 @@ import { DatasHelper } from "@/app/lib/elementos/DatasHelper"
 import { CabecalhoPrincipal } from "@elementos/basicos/CabecalhoPrincipal"
 import { Secao } from "@elementos/basicos/Secao"
 import { CampoDeSecao } from "@elementos/componentes/CampoDeSecao"
-import { IInformacoesDeEstudante } from "@elementos/interfaces/IInformacoesDeEstudante"
 import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao"
 import { IInformacoesDoCampus } from "@elementos/interfaces/IInformacoesDoCampus"
 import { validarTokenDosCookies } from "@/app/lib/middlewares/ValidarTokenDosCookies"
@@ -12,10 +11,12 @@ import Image from "next/image"
 import { stringParaCamelCase } from "@/app/lib/elementos/StringParaCamelCase"
 import { buscarCampus } from "@/app/actions/campus"
 import { buscarEstudante } from "@/app/actions/estudante"
+import { TEstudanteComCurso } from "../../interfaces/TEstudante"
+import { TCampus } from "../../interfaces/TCampus"
 
 interface InformacoesDeEstudanteProps {
-    estudante: IInformacoesDeEstudante
-    campus: IInformacoesDoCampus
+    estudante: TEstudanteComCurso
+    campus: TCampus
 }
 
 const shiftIdParaTurno = {

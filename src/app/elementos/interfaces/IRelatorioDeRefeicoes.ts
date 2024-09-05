@@ -1,30 +1,34 @@
-export interface IRelatorioDeRefeicoes {
-    absenceJustification: string | null;
-    active: number;
-    block: string | null;
-    campus_id: number;
-    canceled_by_student: number;
-    course_id: number;
-    date: string;
-    dateInsert: string;
-    dateValid: string;
-    description: string;
-    id: number;
-    initials: string;
-    mat: string;
-    meal_description: string;
-    meal_id: number;
-    menu_id: number;
-    name: string;
-    observation: string | null;
-    photo: string | null;
-    republic: string | null;
-    semRegular: number;
-    shift_id: number;
-    studentJustification: string | null;
-    student_id: number;
-    ticketCode: string | null;
-    time: string;
-    user_id: string | null;
-    wasPresent: number;
-}
+import { z } from "zod";
+
+export const TRelatorioDeRefeicoesSchema = z.object({
+    absenceJustification: z.string().nullable(),
+    active: z.number(),
+    block: z.string().nullable(),
+    campus_id: z.number(),
+    canceled_by_student: z.number(),
+    course_id: z.number(),
+    date: z.string(),
+    dateInsert: z.string(),
+    dateValid: z.string(),
+    description: z.string(),
+    id: z.number(),
+    initials: z.string(),
+    mat: z.string(),
+    meal_description: z.string(),
+    meal_id: z.number(),
+    menu_id: z.number(),
+    name: z.string(),
+    observation: z.string().nullable(),
+    photo: z.string().nullable(),
+    republic: z.string().nullable(),
+    semRegular: z.number(),
+    shift_id: z.number(),
+    studentJustification: z.string().nullable(),
+    student_id: z.number(),
+    ticketCode: z.string().nullable(),
+    time: z.string(),
+    user_id: z.string().nullable(),
+    wasPresent: z.number(),
+});
+
+export type TRelatorioDeRefeicoes = z.infer<typeof TRelatorioDeRefeicoesSchema>

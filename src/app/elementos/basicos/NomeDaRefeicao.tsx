@@ -17,7 +17,7 @@ const nomePorVariante = {
 export const NomeDaRefeicao: React.FC<NomeDaRefeicaoProps> = ({ variante, className }) => {
     return (
         <div className={classnames("flex gap-x-2 items-center", className)}>
-            <Icone.Refeicao variante={variante} />
+            <Icone.menu variante={variante} />
             <span className="font-bold">{nomePorVariante[variante]}</span>
         </div>
     );

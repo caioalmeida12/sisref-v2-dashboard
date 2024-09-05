@@ -48,7 +48,7 @@ const RefeicaoCurta = (props: IRefeicaoComTurno) => {
 }
 
 const RefeicaoLonga = (props: IRefeicaoComTurno, comBotao: boolean) => {
-    if (!props.refeicao || !props.cardapio) return <RefeicaoCurta turno={props.turno} />
+    if (!props.menu || !props.meal) return <RefeicaoCurta turno={props.turno} />
 
     const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[pegarStatusDaRefeicao(props)];
     const textoStatus = pegarStatusDaRefeicao(props);
@@ -61,16 +61,16 @@ const RefeicaoLonga = (props: IRefeicaoComTurno, comBotao: boolean) => {
             </div>
             <HorarioDaRefeicao
                 variante="horario-e-data"
-                data={DatasHelper.converterParaFormatoBrasileiro(props.cardapio.date)}
+                data={DatasHelper.converterParaFormatoBrasileiro(props.meal.date)}
                 horarios={{
-                    qtdTimeReservationEnd: props.refeicao.qtdTimeReservationEnd,
-                    qtdTimeReservationStart: props.refeicao.qtdTimeReservationStart,
-                    timeEnd: DatasHelper.removerSegundosDoHorario(props.refeicao.timeEnd),
-                    timeStart: DatasHelper.removerSegundosDoHorario(props.refeicao.timeStart)
+                    qtdTimeReservationEnd: props.menu.qtdTimeReservationEnd,
+                    qtdTimeReservationStart: props.menu.qtdTimeReservationStart,
+                    timeEnd: DatasHelper.removerSegundosDoHorario(props.menu.timeEnd),
+                    timeStart: DatasHelper.removerSegundosDoHorario(props.menu.timeStart)
                 }}
             />
             <p className="leading-6">
-                {descricaoCardapioParaArrayStrings(props.cardapio.description).map((descricao, index) => (
+                {descricaoCardapioParaArrayStrings(props.meal.description).map((descricao, index) => (
                     <React.Fragment key={index}>
                         <span>
                             {descricao}
@@ -79,8 +79,8 @@ const RefeicaoLonga = (props: IRefeicaoComTurno, comBotao: boolean) => {
                     </React.Fragment>
                 ))}
             </p>
-            {comBotao && textoStatus === "disponivel" && <BotaoDeRefeicao.Reservar meal_id={props.refeicao.id} date={props.cardapio.date} />}
-            {comBotao && textoStatus === "reservado" && <BotaoDeRefeicao.BotaoDeAbrir meal_id={props.refeicao.id} date={props.cardapio.date} />}
+            {comBotao && textoStatus === "disponivel" && <BotaoDeRefeicao.Reservar meal_id={props.menu.id} date={props.meal.date} />}
+            {comBotao && textoStatus === "reservado" && <BotaoDeRefeicao.BotaoDeAbrir meal_id={props.menu.id} date={props.meal.date} />}
         </Secao>
     )
 }

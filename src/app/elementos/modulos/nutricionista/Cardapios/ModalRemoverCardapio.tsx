@@ -6,22 +6,18 @@ import Icone from '@elementos//basicos/Icone';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { Botao } from '@elementos//basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { IRefeicao } from '@elementos/interfaces/IRefeicao';
 import { removerCardapio } from '@/app/actions/nutricionista';
+import { TRefeicaoECardapio } from '@/app/elementos/interfaces/TRefeicao';
 
-interface ModalProps {
-    refeicao: IRefeicao;
-}
-
-export const ModalRemoverCardapio: React.FC<ModalProps> = ({ refeicao }) => {
+export const ModalRemoverCardapio = ({ refeicao_e_cardapio }: { refeicao_e_cardapio: TRefeicaoECardapio }) => {
     const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
     const queryClient = useQueryClient();
 
     const [modalAberto, setModalAberto] = useState(false);
 
     const { mutate: handleCancelar, isPending } = useMutation({
-        mutationFn: () => removerCardapio({ meal_id: refeicao.cardapio?.id }),
-        mutationKey: ['removerCardapio', refeicao.cardapio?.id],
+        mutationFn: () => removerCardapio({ meal_id: refeicao_e_cardapio.meal.id }),
+        mutationKey: ['removerCardapio', refeicao_e_cardapio.meal.id],
         onMutate: () => {
             atualizarMensagem({ mensagem: 'Cancelando cardápio...' });
         },
@@ -34,7 +30,7 @@ export const ModalRemoverCardapio: React.FC<ModalProps> = ({ refeicao }) => {
                 setModalAberto(false);
 
                 queryClient.invalidateQueries({
-                    queryKey: ['refeicoes', refeicao],
+                    queryKey: ['refeicoes', refeicao_e_cardapio.menu.date],
                 })
 
                 queryClient.invalidateQueries({
@@ -62,9 +58,9 @@ export const ModalRemoverCardapio: React.FC<ModalProps> = ({ refeicao }) => {
                     </Dialog.Title>
                     <Dialog.Description className="leading-normal">
                         {
-                            refeicao.cardapio?.description
-                                ? `Você está prestes a remover o cardápio do dia ${refeicao.cardapio.date} com a descrição "${refeicao.cardapio.description}"  e ID ${refeicao.cardapio.id}`
-                                : `Você está prestes a remover o cardápio do dia ${refeicao.cardapio?.date}`
+                            refeicao_e_cardapio.meal.description
+                                ? `Você está prestes a remover o cardápio do dia ${refeicao_e_cardapio.menu.date} com a descrição "${refeicao_e_cardapio.meal.description}"  e ID ${refeicao_e_cardapio.meal.id}`
+                                : `Você está prestes a remover o cardápio do dia ${refeicao_e_cardapio.menu.date}`
                         }
                     </Dialog.Description>
                     <div ref={mensagemDeRespostaRef} className="hidden"></div>

@@ -15,7 +15,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import * as React from 'react';
 import { useRef } from 'react';
 import { ModalAdicionarAgendamento } from '@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento';
-import { IAgendamento } from '@/app/elementos/interfaces/IAgendamento';
+import { TAgendamento } from '@/app/elementos/interfaces/TAgendamento';
 
 export default function Agendamentos() {
     const dataInicialRef = useRef<HTMLInputElement>(null);
@@ -31,7 +31,7 @@ export default function Agendamentos() {
         initialData: []
     });
 
-    const colunas = React.useMemo<ColumnDef<IAgendamento>[]>(() => [
+    const colunas = React.useMemo<ColumnDef<TAgendamento>[]>(() => [
         {
             accessorKey: 'ID',
             accessorFn: (row) => row.id,

@@ -60,7 +60,7 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
 
         const todosTickets = [...tickets.aSerUtilizado, ...tickets.utilizado, ...tickets.cancelado, ...tickets.naoUtilizado]
         const todosTicketsOrdenados = todosTickets.sort((a, b) => {
-            return new Date(b!.cardapio.date).getTime() - new Date(a!.cardapio.date).getTime()
+            return new Date(b!.meal.date).getTime() - new Date(a!.meal.date).getTime()
         })
 
         const ticketsMaisRecentes = todosTicketsOrdenados.slice(0, QUANTOS_TICKETS_MOSTRAR)
@@ -85,7 +85,7 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
                 {
                     !isLoading && !isError &&
                     ticketsMaisRecentes.map((refeicao, index) => (
-                        <RefeicaoDoHistorico key={index} {...refeicao} />
+                        <RefeicaoDoHistorico key={index} {...menu} />
                     ))
                 }
                 {

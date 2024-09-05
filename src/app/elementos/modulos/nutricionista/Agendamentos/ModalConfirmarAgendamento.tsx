@@ -7,10 +7,10 @@ import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { Botao } from '@elementos//basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { confirmarAgendamento } from '@/app/actions/nutricionista';
-import { IAgendamento } from '@elementos/interfaces/IAgendamento';
+import { TAgendamento } from '@elementos/interfaces/TAgendamento';
 
 interface ModalProps {
-    agendamento: IAgendamento;
+    agendamento: TAgendamento;
 }
 
 export const ModalConfirmarAgendamento: React.FC<ModalProps> = ({ agendamento }) => {

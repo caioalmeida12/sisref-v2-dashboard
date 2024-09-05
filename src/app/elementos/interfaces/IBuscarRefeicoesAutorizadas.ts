@@ -1,4 +1,4 @@
-import { IInformacoesDeEstudante } from "./IInformacoesDeEstudante"
+import { TEstudante } from "./TEstudante"
 
 export interface IBuscarRefeicoesAutorizadas {
     id: number
@@ -20,5 +20,5 @@ export interface IBuscarRefeicoesAutorizadas {
         qtdTimeReservationEnd: number
         qtdTimeReservationStart: number
     }
-    student: IInformacoesDeEstudante
+    student: TEstudante
 }

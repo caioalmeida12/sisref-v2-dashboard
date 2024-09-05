@@ -3,14 +3,14 @@
 import { editarCardapio } from '@/app/actions/nutricionista';
 import { Botao } from '@/app/elementos/basicos/Botao';
 import Icone from '@/app/elementos/basicos/Icone';
-import { IRefeicao } from '@/app/elementos/interfaces/IRefeicao';
+import { TRefeicaoECardapio } from '@/app/elementos/interfaces/TRefeicao';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
-export const ModalEditarCardapio = ({ refeicao }: { refeicao: IRefeicao }) => {
+export const ModalEditarCardapio = ({ refeicao_e_cardapio }: { refeicao_e_cardapio: TRefeicaoECardapio }) => {
     const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
     const queryClient = useQueryClient();
 
@@ -18,7 +18,7 @@ export const ModalEditarCardapio = ({ refeicao }: { refeicao: IRefeicao }) => {
 
     const { mutate: handleEditar, isPending } = useMutation({
         mutationFn: (formData: FormData) => editarCardapio(formData),
-        mutationKey: ['editarCardapio', refeicao.cardapio?.date],
+        mutationKey: ['editarCardapio', refeicao_e_cardapio.menu.date],
         onMutate: () => {
             atualizarMensagem({ mensagem: 'Salvando cardápio...' });
         },
@@ -31,7 +31,7 @@ export const ModalEditarCardapio = ({ refeicao }: { refeicao: IRefeicao }) => {
                 setModalAberto(false);
 
                 queryClient.invalidateQueries({
-                    queryKey: ['refeicoes', refeicao.cardapio?.date],
+                    queryKey: ['refeicoes', refeicao_e_cardapio.menu.date],
                 })
 
                 queryClient.invalidateQueries({
@@ -70,7 +70,7 @@ export const ModalEditarCardapio = ({ refeicao }: { refeicao: IRefeicao }) => {
                                 id="description"
                                 placeholder='Ex: Pão com ovos + suco de acerola'
                                 name='description'
-                                defaultValue={refeicao.cardapio?.description}
+                                defaultValue={refeicao_e_cardapio.menu.description}
                             />
                         </fieldset>
                         <fieldset className='flex flex-col gap-y-2 justify-start'>
@@ -84,7 +84,7 @@ export const ModalEditarCardapio = ({ refeicao }: { refeicao: IRefeicao }) => {
                                     id='date'
                                     name='date'
                                     className='px-2 py-1 w-full bg-cinza-400 cursor-not-allowed text-cinza-600'
-                                    defaultValue={refeicao.cardapio?.date}
+                                    defaultValue={refeicao_e_cardapio.menu.date}
                                 />
                             </div>
                         </fieldset>
@@ -105,14 +105,14 @@ export const ModalEditarCardapio = ({ refeicao }: { refeicao: IRefeicao }) => {
                         <input
                             name='menu_id'
                             className='hidden'
-                            value={refeicao.cardapio?.id}
+                            value={refeicao_e_cardapio.menu.id}
                             readOnly
                             aria-hidden
                         />
                         <input
                             name='meal_id'
                             className='hidden'
-                            value={refeicao.refeicao?.id}
+                            value={refeicao_e_cardapio.meal.id}
                             readOnly
                             aria-hidden
                         />

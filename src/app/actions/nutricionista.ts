@@ -5,12 +5,12 @@
  */
 
 import { cookies } from "next/headers";
-import { IRefeicao, IRefeicaoSchema } from "@elementos/interfaces/IRefeicao";
 import { FetchHelper } from "../lib/actions/FetchHelper";
 import { IRespostaPaginada } from "@elementos/interfaces/IRespostaPaginada";
-import { IAgendamento, IAgendamentoSchema } from "@elementos/interfaces/IAgendamento";
+import { TAgendamento, TAgendamentoSchema } from "@elementos/interfaces/TAgendamento";
 import { IRelatorioDeDesperdicio } from "../elementos/interfaces/IRelatorioDeDesperdicio";
-import { IRelatorioDeRefeicoes } from "../elementos/interfaces/IRelatorioDeRefeicoes";
+import { TRefeicao, TRefeicaoECardapio, TRefeicaoECardapioSchema, TRefeicaoSchema } from "../elementos/interfaces/TRefeicao";
+import { TRelatorioDeRefeicoes } from "../elementos/interfaces/IRelatorioDeRefeicoes";
 
 /**
  * Cria uma refeição.
@@ -31,7 +31,7 @@ export async function criarRefeição(formData: FormData) {
 
     if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
 
-    const formatar = IRefeicaoSchema.pick({ refeicao: true }).safeParse(resposta.resposta[0]);
+    const formatar = TRefeicaoSchema.safeParse(resposta.resposta[0]);
 
     if (!formatar.success || !formatar.data) {
         return { sucesso: false, mensagem: "Erro ao criar refeição." };
@@ -56,7 +56,7 @@ export async function criarRefeição(formData: FormData) {
     const { data: refeicao } = formatar;
 
     const camposParaValidar = ["description", "qtdTimeReservationEnd", "qtdTimeReservationStart", "timeEnd", "timeStart"] as const;
-    const camposInvalidos = camposParaValidar.filter(campo => refeicao.refeicao![campo]);
+    const camposInvalidos = camposParaValidar.filter(campo => refeicao[campo]);
 
     if (camposInvalidos.length) {
         return { sucesso: false, mensagem: `Os campos ${camposInvalidos.join(', ')} são obrigatórios.` };
@@ -75,6 +75,7 @@ export async function criarCardapio(formData: FormData) {
     const resposta = await FetchHelper.post<unknown>({
         rota: "/menu",
         cookies: cookies(),
+        rotaParaRedirecionarCasoFalhe: null,
         body: {
             description: formData.get('description'),
             date: formData.get('date'),
@@ -192,18 +193,17 @@ export const removerCardapio = async ({ meal_id }: { meal_id?: number }) => {
  * @param menu - O a refeição da maneira que é retornada pela API.
  * @returns A refeição formatada para o formato esperado pelo front-end.
  */
-const formatarRefeicaoDoBackendParaOFrontend = (menu: unknown) => {
-    if (!(typeof menu === "object")) return [];
-    if (menu === null) return [];
-    if (!("meal" in menu)) return [];
+const formatarRefeicaoDoBackendParaOFrontend = (menu: any) => {
+    if (!menu?.meal) return [];
 
     const { meal, ...cardapio } = menu;
 
-    const formatar = IRefeicaoSchema.safeParse({
-        refeicao: meal,
-        cardapio: {
+    const formatar = TRefeicaoECardapioSchema.safeParse({
+        meal,
+        menu: {
             ...cardapio,
-            agendado: false
+            agendado: false,
+            permission: false
         }
     });
 
@@ -213,8 +213,22 @@ const formatarRefeicaoDoBackendParaOFrontend = (menu: unknown) => {
 /**
  *  Busca as refeições de um determinado campus para uma determinada data.
  */
-export async function buscarTabelaDeCardapios({ campus_id, data, refeicoes_disponiveis }: { campus_id: number, data: string, refeicoes_disponiveis: IRefeicao["refeicao"][] }) {
-    const resposta = await FetchHelper.get<IRefeicao["refeicao"][]>({
+export async function buscarTabelaDeCardapios({ campus_id, data, refeicoes_disponiveis }: { campus_id: number, data: string, refeicoes_disponiveis?: TRefeicao[] }) {
+    if (!refeicoes_disponiveis?.length) {
+        return { sucesso: false, mensagem: "Refeições disponíveis não foram fornecidas." };
+    }
+
+    // A api retorna um objeto do tipo 
+    // {
+    //   id: 2475,
+    //   date: '2024-09-05',
+    //   description: 'Pão com Manteiga + suco de uva 2 33',
+    //   campus_id: 1,
+    //   meal_id: 7,
+    //   meal: [Object]
+    // } 
+    // Esse objeto deve ser convertido para TRefeicaoECardapio antes de ser retornado.
+    const resposta = await FetchHelper.get<TRefeicao>({
         rota: `/menu/all-by-date?campus_id=${campus_id}&date=${data}`,
         cookies: cookies(),
         rotaParaRedirecionarCasoFalhe: null,
@@ -224,18 +238,22 @@ export async function buscarTabelaDeCardapios({ campus_id, data, refeicoes_dispo
         return { sucesso: false, mensagem: resposta.message };
     }
 
-
     // Formata a resposta da API
-    const refeicoesFormatadas: IRefeicao[] = resposta.resposta.flatMap(formatarRefeicaoDoBackendParaOFrontend);
+    const refeicoesFormatadas = resposta.resposta.flatMap(formatarRefeicaoDoBackendParaOFrontend);
+
+    // Verifica se refeicoes_disponiveis está definida
+    if (!refeicoes_disponiveis) {
+        return { sucesso: false, mensagem: "Refeições disponíveis não foram fornecidas." };
+    }
 
     // Pode ocorrer de entre as refeições disponíveis, algumas não estarem cadastradas ainda. Ex: o lanche da tarde do dia em questão não foi preenchido ainda.
     // Nesse caso, é necessário retornar todas as refeições disponíveis, mesmo que algumas não tenham sido cadastradas, para que a pessoa nutricionista possa preencher.
-    const todasAsRefeicoes = refeicoes_disponiveis.map(refeicao => {
-        const refeicaoEncontrada = refeicoesFormatadas.find(refeicaoFormatada => refeicaoFormatada.refeicao?.id === refeicao?.id);
+    const todasAsRefeicoes: TRefeicaoECardapio[] = refeicoes_disponiveis.map(cardapio => {
+        const refeicaoEncontrada = refeicoesFormatadas.find(refeicaoFormatada => refeicaoFormatada.meal.id === cardapio.id);
 
         return refeicaoEncontrada ? refeicaoEncontrada : {
-            refeicao,
-            cardapio: {
+            meal: cardapio,
+            menu: {
                 agendado: false,
                 description: "Não cadastrado",
                 campus_id,
@@ -251,12 +269,11 @@ export async function buscarTabelaDeCardapios({ campus_id, data, refeicoes_dispo
         resposta: todasAsRefeicoes
     };
 }
-
 /**
  * Realiza uma chamada assíncrona para a API que busca todas as refeições disponíveis.
  */
 export async function buscarRefeicoes() {
-    const resposta = await FetchHelper.get<IRefeicao["refeicao"][]>({
+    const resposta = await FetchHelper.get<TRefeicao[]>({
         rota: "/meal/all",
         cookies: cookies(),
         rotaParaRedirecionarCasoFalhe: null,
@@ -270,7 +287,7 @@ export async function buscarRefeicoes() {
     }
 
     // Refeições buscadas com sucesso
-    const refeicoes: IRefeicao["refeicao"][] = resposta.resposta.map((refeicao: any) => ({
+    const refeicoes: TRefeicao[] = resposta.resposta.map((refeicao: any) => ({
         id: refeicao.id,
         description: refeicao.description,
         qtdTimeReservationEnd: refeicao.qtdTimeReservationEnd,
@@ -310,10 +327,10 @@ export async function criarRelatorioDeDesperdicio(formData: FormData) {
  * Realiza uma chamada assíncrona para a API de agendamentos.
  * 
  * @param formData - Os dados do formulário de agendamento.
- * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: IRefeicao[] }.
+ * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: TRefeicao[] }.
  */
 export async function buscarAgendamentos({ data_inicial }: { data_inicial: string }) {
-    const resposta = await FetchHelper.get<IRespostaPaginada<IAgendamento>>({
+    const resposta = await FetchHelper.get<IRespostaPaginada<TAgendamento>>({
         rota: `/scheduling/list-by-date?page=1&date=${data_inicial}`,
         cookies: cookies(),
         rotaParaRedirecionarCasoFalhe: null,
@@ -325,7 +342,7 @@ export async function buscarAgendamentos({ data_inicial }: { data_inicial: strin
 
     // Formata a resposta da API
     const agendamentos = resposta.resposta[0].data.flatMap(agendamento => {
-        const formatar = IAgendamentoSchema.safeParse(agendamento);
+        const formatar = TAgendamentoSchema.safeParse(agendamento);
 
         return formatar.success ? formatar.data : [];
     });
@@ -392,10 +409,10 @@ export async function confirmarAgendamento({ student_id, meal_id, date }: { stud
  * Realiza uma chamada assíncrona para a API de criação de agendamento.
  * 
  * @param formData - Os dados do formulário de agendamento.
- * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: IAgendamento }.
+ * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: TAgendamento }.
  */
 export async function criarAgendamento(formData: FormData) {
-    const resposta = await FetchHelper.post<IAgendamento>({
+    const resposta = await FetchHelper.post<TAgendamento>({
         rota: "/scheduling",
         cookies: cookies(),
         body: {
@@ -444,7 +461,7 @@ export async function removerRefeicao({ id }: { id?: number }) {
  * @returns JSON com os campos `sucesso` e `mensagem`.
  */
 export async function criarRefeicao(formData: FormData) {
-    const resposta = await FetchHelper.post<IRefeicao["refeicao"]>({
+    const resposta = await FetchHelper.post<TRefeicao>({
         rota: "/meal",
         cookies: cookies(),
         body: {
@@ -499,7 +516,7 @@ export async function buscarRelatorioDeRefeicoes({ data_inicial, data_final }: {
         return { sucesso: false, mensagem: "Data inicial e data final são obrigatórias." };
     }
 
-    const resposta = await FetchHelper.get<IRespostaPaginada<IRelatorioDeRefeicoes>>({
+    const resposta = await FetchHelper.get<IRespostaPaginada<TRelatorioDeRefeicoes>>({
         rota: `/report/list-scheduling?start_date=${data_inicial}&end_date=${data_final}`,
         cookies: cookies(),
         rotaParaRedirecionarCasoFalhe: null,

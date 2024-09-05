@@ -22,16 +22,16 @@ const descricaoCardapioParaArrayStrings = (descricao: string) => {
 
 
 export const RefeicaoDoCardapio = (props: IRefeicaoComTurno) => {
-    if (!props.cardapio) return null;
+    if (!props.meal) return null;
 
     return (
         <Secao className="flex flex-col gap-y-2">
             <div className="flex justify-between">
                 <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
-                <div className="text-cinza-600"> Id: {props.cardapio.id} </div>
+                <div className="text-cinza-600"> Id: {props.meal.id} </div>
             </div>
             <p className="leading-6">
-                {descricaoCardapioParaArrayStrings(props.cardapio.description).map((descricao, index) => (
+                {descricaoCardapioParaArrayStrings(props.meal.description).map((descricao, index) => (
                     <React.Fragment key={index}>
                         <span>
                             {descricao}

@@ -61,7 +61,7 @@ Icone.Menu = (props: IIconeMenuProps) => (
     </svg>
 );
 
-Icone.Refeicao = (props: IIconeRefeicaoProps) => {
+Icone.menu = (props: IIconeRefeicaoProps) => {
     switch (props.variante) {
         case 'manha':
             return (
