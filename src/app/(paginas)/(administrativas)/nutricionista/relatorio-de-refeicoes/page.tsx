@@ -7,17 +7,12 @@ import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
 import { useQuery } from "@tanstack/react-query";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import { ColumnDef } from "@tanstack/react-table";
-import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { buscarRelatorioDeRefeicoes } from "@/app/actions/nutricionista";
-import { ModalRemoverRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalRemoverRefeicao";
-import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalAdicionarRefeicao";
-import { ModalEditarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalEditarRefeicao";
 import * as Form from "@radix-ui/react-form";
 import { Botao } from "@/app/elementos/basicos/Botao";
-import { pegarStatusDaRefeicao } from "@/app/lib/elementos/Refeicao";
 import { StatusDaRefeicao } from "@/app/elementos/basicos/StatusDaRefeicao";
-import { ValueOf } from "next/dist/shared/lib/constants";
+import { IRelatorioDeRefeicoes } from "@/app/elementos/interfaces/IRelatorioDeRefeicoes";
 
 export default function NutricionistaPage() {
   const dataInicialRef = useRef<HTMLInputElement>(null);

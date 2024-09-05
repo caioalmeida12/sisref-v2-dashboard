@@ -10,6 +10,7 @@ import { FetchHelper } from "../lib/actions/FetchHelper";
 import { IRespostaPaginada } from "@elementos/interfaces/IRespostaPaginada";
 import { IAgendamento, IAgendamentoSchema } from "@elementos/interfaces/IAgendamento";
 import { IRelatorioDeDesperdicio } from "../elementos/interfaces/IRelatorioDeDesperdicio";
+import { IRelatorioDeRefeicoes } from "../elementos/interfaces/IRelatorioDeRefeicoes";
 
 /**
  * Cria uma refeição.
