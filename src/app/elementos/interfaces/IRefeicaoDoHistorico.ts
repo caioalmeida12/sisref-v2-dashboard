@@ -27,7 +27,7 @@ const IRefeicaoDoHistoricoSchema = z.object({
 
 export const ParseRefeicaoDoHistorico = (refeicao: any) => {
     return typeof refeicao === "object" ? IRefeicaoDoHistoricoSchema.safeParse({
-        ...refeicao,
+        ...menu,
         ticket_id: refeicao.id,
         turno: refeicao.meal_id,
         cardapio: refeicao.menu,

@@ -9,12 +9,12 @@ import * as Form from '@radix-ui/react-form';
 import { useQuery } from "@tanstack/react-query";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import { ColumnDef } from "@tanstack/react-table";
-import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { ModalAdicionarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalAdicionarCardapio";
 import { ModalRemoverCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalRemoverCardapio";
 import { ModalEditarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalEditarCardapio";
 import { buscarRefeicoes, buscarTabelaDeCardapios } from "@/app/actions/nutricionista";
+import { TRefeicaoECardapio } from "@/app/elementos/interfaces/TRefeicao";
 
 export default function NutricionistaPage() {
   // As datas são armazenadas no formato  yyyy-MM-dd
@@ -39,7 +39,9 @@ export default function NutricionistaPage() {
   const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela, refetch: refetchDadosDaTabela } = useQuery({
     queryKey: ['tabelaDeCardapios', datas, refeicoesDisponiveis],
     queryFn: async () => {
-      const resposta = await buscarTabelaDeCardapios({ campus_id: 1, data: datas.dataInicial, refeicoes_disponiveis: (refeicoesDisponiveis as any[])?.filter(refeicao => refeicao?.id) || [] })
+      const resposta = await buscarTabelaDeCardapios({ campus_id: 1, data: datas.dataInicial, refeicoes_disponiveis: refeicoesDisponiveis });
+
+      console.log(resposta);
 
       return resposta.sucesso ? resposta.resposta : []
     },
@@ -56,45 +58,46 @@ export default function NutricionistaPage() {
     });
   };
 
-  const colunas = React.useMemo<ColumnDef<IRefeicao>[]>(
+  const colunas = React.useMemo<ColumnDef<TRefeicaoECardapio>[]>(
     () => [
       {
-        accessorKey: 'refeicao.id',
-        accessorFn: (row) => row.refeicao?.id,
+        accessorKey: 'ID',
+        accessorFn: (row) => row.meal.id,
         cell: info => info.getValue(),
         meta: {
           filterVariant: "range"
         }
       }, {
-        accessorKey: 'refeicao.date',
-        accessorFn: (row) => row.cardapio?.date,
+        accessorKey: 'Data',
+        accessorFn: (row) => row.menu.date,
         cell: info => info.getValue() && DatasHelper.converterParaFormatoBrasileiro(`${info.getValue()}`) || 'Não informado',
       }, {
-        accessorKey: 'refeicao.description',
-        accessorFn: (row) => row.refeicao?.description,
+        accessorKey: 'Refeição',
+        accessorFn: (row) => row.meal.description,
         cell: info => info.getValue(),
         meta: {
           filterVariant: "text"
         }
       }, {
-        accessorKey: 'cardapio.description',
-        accessorFn: (row) => row.cardapio?.description,
+        accessorKey: 'Cardápio',
+        accessorFn: (row) => row.menu.description,
         cell: info => info.getValue(),
       }, {
         header: 'Ações',
         id: 'Ações',
         cell: info => (
           // Refeições não cadastradas retornam id = 0
-          info.row.original.cardapio?.id != undefined && info.row.original.cardapio.id > 0 ? (<div className="flex justify-center gap-x-2">
-            <div className="w-5 h-5 relative">
-              <ModalRemoverCardapio refeicao={info.row.original} />
-            </div>
-            <div className="w-5 h-5 relative">
-              <ModalEditarCardapio refeicao={info.row.original} />
-            </div>
-          </div>) : (
+          info.row.original.meal.id && info.row.original.menu.id != 0 ? (
             <div className="flex justify-center gap-x-2">
-              <ModalAdicionarCardapio refeicao={info.row.original} />
+              <div className="w-5 h-5 relative">
+                <ModalRemoverCardapio refeicao_e_cardapio={info.row.original} />
+              </div>
+              <div className="w-5 h-5 relative">
+                <ModalEditarCardapio refeicao_e_cardapio={info.row.original} />
+              </div>
+            </div>) : (
+            <div className="flex justify-center gap-x-2">
+              <ModalAdicionarCardapio refeicao_e_cardapio={info.row.original} />
             </div>
           )
         )

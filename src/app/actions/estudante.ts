@@ -6,13 +6,13 @@
 
 import { cookies } from "next/headers";
 import { FetchHelper } from "../lib/actions/FetchHelper";
-import { IRefeicao, IRefeicaoSchema } from "@elementos/interfaces/IRefeicao";
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
 import { IBuscarRefeicoesAutorizadas } from "@elementos/interfaces/IBuscarRefeicoesAutorizadas";
-import { ParseRefeicaoDoHistorico } from "@elementos/interfaces/IRefeicaoDoHistorico";
 import { IJustificativaDeEstudante, justificativasPermitidas } from "@elementos/interfaces/IJustificativaDeEstudante";
 import { IRelatorioDeDesperdicio } from "@elementos/interfaces/IRelatorioDeDesperdicio";
-import { IInformacoesDeEstudante } from "@elementos/interfaces/IInformacoesDeEstudante";
+import { TEstudante, TEstudanteComCurso } from "../elementos/interfaces/TEstudante";
+import { ParseRefeicaoDoHistorico } from "../elementos/interfaces/IRefeicaoDoHistorico";
+import { TRefeicao, TRefeicaoECardapioSchema } from "../elementos/interfaces/TRefeicao";
 
 /**
  * Busca as refeições disponíveis para o dia solicitado. Se não for passado nenhum parâmetro, a data atual será utilizada.
@@ -21,7 +21,7 @@ import { IInformacoesDeEstudante } from "@elementos/interfaces/IInformacoesDeEst
  * @returns Um array de objetos contendo as refeições disponíveis para o dia solicitado.
  */
 export async function buscarRefeicoesPorDia({ data = new Date().toISOString().split('T')[0] }: { data?: string }) {
-    const resposta = await FetchHelper.get<IRefeicao>({
+    const resposta = await FetchHelper.get<TRefeicao>({
         rota: `/all/menus-today?date=${data}`,
         cookies: cookies(),
     })
@@ -32,11 +32,11 @@ export async function buscarRefeicoesPorDia({ data = new Date().toISOString().sp
 
     const refeicoes = resposta.resposta.map((refeicao: any) => {
         // mapear o campo "meal" para o campo "refeicao" e utilizar o restante dos campos como "cardapio"
-        const { meal, ...cardapio } = refeicao
+        const { meal, ...menu } = refeicao
 
-        const formatar = IRefeicaoSchema.parse({
+        const formatar = TRefeicaoECardapioSchema.parse({
             refeicao: meal,
-            cardapio: cardapio
+            cardapio: menu
         })
 
         return formatar
@@ -84,7 +84,7 @@ export async function buscarRefeicoesAutorizadas() {
 
 interface IRespostaBuscarTickets {
     current_page: number;
-    data: IRefeicao[];
+    data: TRefeicao[];
     first_page_url: string;
     from: number;
     last_page: number;
@@ -133,7 +133,7 @@ export const buscarTickets = async (tipo: keyof typeof urlPorTipoDeTicket) => {
  * @returns Um array de objetos contendo os tickets de refeição.
  */
 export const buscarTicketsSemJustificativa = async () => {
-    const resposta = await FetchHelper.get<IRefeicao>({
+    const resposta = await FetchHelper.get<TRefeicao>({
         rota: '/student/schedulings/not-used-without-justification',
         cookies: cookies(),
     });
@@ -185,7 +185,7 @@ export const justificarRefeicao = async ({ indiceDaJustificativa, meal_id }: { i
     const auth = cookies().get("authorization")?.value;
     if (!auth) return redirecionarViaAction();
 
-    const resposta = await FetchHelper.put<IRefeicao>({
+    const resposta = await FetchHelper.put<TRefeicao>({
         rota: `/student/schedulings/student-justification/${meal_id}`,
         cookies: cookies(),
         body: { studentJustification: justificativa.label }
@@ -219,9 +219,10 @@ export const buscarRelatorioDeDesperdicio = async ({ data }: { data: string }) =
  *  Busca as informações de estudante.
  * 
  * @param sub o sub de estudante, obtido no token decodificado
+ * @returns Um objeto contendo as informações de estudante com curso incluso.
  */
-export const buscarEstudante = async (sub: string): Promise<IInformacoesDeEstudante> => {
-    const resposta = await FetchHelper.get<IInformacoesDeEstudante>({
+export const buscarEstudante = async (sub: string): Promise<TEstudanteComCurso> => {
+    const resposta = await FetchHelper.get<TEstudanteComCurso>({
         rota: `/all/show-student/${sub}`,
         cookies: cookies(),
     })

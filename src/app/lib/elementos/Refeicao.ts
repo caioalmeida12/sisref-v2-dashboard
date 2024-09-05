@@ -39,20 +39,20 @@ type StatusDaRefeicao = "disponivel" | "encerrado" | "bloqueado" | "cancelado" |
  * @returns O status da refeição.
  */
 export const pegarStatusDaRefeicao = (props: IRefeicaoComTurno): StatusDaRefeicao => {
-    if (!(props.cardapio) || !(props.refeicao)) return "indisponivel";
-    if (!(props.cardapio.permission)) return "bloqueado";
-    if (props.cardapio.canceled_by_student) return "cancelado";
-    if (props.cardapio.agendado) return "reservado";
+    if (!(props.meal) || !(props.menu)) return "indisponivel";
+    if (!(props.meal.permission)) return "bloqueado";
+    if (props.meal.canceled_by_student) return "cancelado";
+    if (props.meal.agendado) return "reservado";
 
-    const dataHoraDoComecoDaRefeicao = DatasHelper.compilarDataHora(props.cardapio.date, props.refeicao.timeStart);
+    const dataHoraDoComecoDaRefeicao = DatasHelper.compilarDataHora(props.meal.date, props.menu.timeStart);
     const diferencaEmHorasAteOComeco = DatasHelper.getDiferencaEmHoras(dataHoraDoComecoDaRefeicao);
 
-    const dataHoraDoFimDaRefeicao = DatasHelper.compilarDataHora(props.cardapio.date, props.refeicao.timeEnd);
+    const dataHoraDoFimDaRefeicao = DatasHelper.compilarDataHora(props.meal.date, props.menu.timeEnd);
     const diferencaEmHorasAteOFim = DatasHelper.getDiferencaEmHoras(dataHoraDoFimDaRefeicao);
 
     if (diferencaEmHorasAteOComeco < 0 || diferencaEmHorasAteOFim < 0) return "encerrado";
-    if (diferencaEmHorasAteOComeco > props.refeicao?.qtdTimeReservationStart) return "indisponivel";
-    if (diferencaEmHorasAteOComeco < props.refeicao?.qtdTimeReservationEnd) return "indisponivel";
+    if (diferencaEmHorasAteOComeco > props.menu?.qtdTimeReservationStart) return "indisponivel";
+    if (diferencaEmHorasAteOComeco < props.menu?.qtdTimeReservationEnd) return "indisponivel";
     return "disponivel";
 
 }

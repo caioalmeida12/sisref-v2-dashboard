@@ -44,16 +44,16 @@ export const RefeicaoDoHistorico = (props: IRefeicaoDoHistorico) => {
             </div>
             <HorarioDaRefeicao
                 variante="horario-e-data"
-                data={DatasHelper.converterParaFormatoBrasileiro(props.cardapio.date)}
+                data={DatasHelper.converterParaFormatoBrasileiro(props.meal.date)}
                 horarios={{
-                    qtdTimeReservationEnd: props.refeicao.qtdTimeReservationEnd,
-                    qtdTimeReservationStart: props.refeicao.qtdTimeReservationStart,
-                    timeEnd: DatasHelper.removerSegundosDoHorario(props.refeicao.timeEnd),
-                    timeStart: DatasHelper.removerSegundosDoHorario(props.refeicao.timeStart)
+                    qtdTimeReservationEnd: props.menu.qtdTimeReservationEnd,
+                    qtdTimeReservationStart: props.menu.qtdTimeReservationStart,
+                    timeEnd: DatasHelper.removerSegundosDoHorario(props.menu.timeEnd),
+                    timeStart: DatasHelper.removerSegundosDoHorario(props.menu.timeStart)
                 }}
             />
             <p className="leading-6">
-                {descricaoCardapioParaArrayStrings(props.cardapio.description).map((descricao, index) => (
+                {descricaoCardapioParaArrayStrings(props.meal.description).map((descricao, index) => (
                     <React.Fragment key={index}>
                         <span>
                             {descricao}

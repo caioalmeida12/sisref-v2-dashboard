@@ -68,9 +68,9 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
                 refeicoes &&
                 ([1, 2, 3, 4] as const).map((turno) => (
                     <Refeicao key={turno} turno={turno} refeicao={
-                        refeicoes.find((refeicao: IRefeicao) => refeicao.refeicao?.id === turno)?.refeicao
+                        refeicoes.find((refeicao: IRefeicao) => refeicao.menu?.id === turno)?.menu
                     } cardapio={
-                        refeicoes.find((refeicao: IRefeicao) => refeicao.refeicao?.id === turno)?.cardapio
+                        refeicoes.find((refeicao: IRefeicao) => refeicao.menu?.id === turno)?.meal
                     } />
                 ))
             }
