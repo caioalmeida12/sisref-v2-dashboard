@@ -17,6 +17,7 @@ import * as Form from "@radix-ui/react-form";
 import { Botao } from "@/app/elementos/basicos/Botao";
 import { pegarStatusDaRefeicao } from "@/app/lib/elementos/Refeicao";
 import { StatusDaRefeicao } from "@/app/elementos/basicos/StatusDaRefeicao";
+import { ValueOf } from "next/dist/shared/lib/constants";
 
 export default function NutricionistaPage() {
   const dataInicialRef = useRef<HTMLInputElement>(null);
@@ -36,36 +37,46 @@ export default function NutricionistaPage() {
 
   // Colunas: código (id), estudante (nome), refeição (nome), cardápio (nome), data, curso (iniciais), situação
 
-  const elementoStatusRefeicaoPorTextoStatusRefeicao = {
-    "a-ser-utilizado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Reservado" textoTooltip="O ticket ainda pode ser utilizado." />,
-    "nao-utilizado": <StatusDaRefeicao cor="amarelo-200" icone="circulo-check" texto="Disponível" textoTooltip="A refeição foi reservada e o ticket ainda pode ser utilizado." />,
-    "justificado": <StatusDaRefeicao cor="azul-400" icone="circulo-check" texto="Justificado" textoTooltip="A ausência a esta refeição foi justificada." />,
-    "cancelado": <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" textoTooltip="Esta reserva foi cancelada." />,
-    "utilizado": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Utilizado" textoTooltip="A refeição foi reservada e o ticket já foi utilizado." />,
-    "nao-utilizado-sem-justificativa": <StatusDaRefeicao cor="vermelho-400" icone="circulo-x" texto="Não justificado" textoTooltip="A pessoa não esteve presente nesta refeição. É necessário justificar a ausência." />
-  } as const;
+  const pegarStatusDaRefeicao = (refeicao: IRelatorioDeRefeicoes): { tipo: string, elemento: React.ReactNode } => {
+    if (refeicao.wasPresent) return {
+      tipo: "Utilizado",
+      elemento: <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Utilizado" textoTooltip="A refeição foi reservada e o ticket já foi utilizado." />
+    }
 
+    if (refeicao.canceled_by_student) return {
+      tipo: "Cancelado",
+      elemento: <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" textoTooltip="Esta reserva foi cancelada." />
+    }
+
+    if (refeicao.absenceJustification) return {
+      tipo: "Justificado",
+      elemento: <StatusDaRefeicao cor="azul-400" icone="circulo-check" texto="Justificado" textoTooltip={`A ausência a esta refeição foi justificada. Justificativa: ${refeicao.studentJustification}`} />
+    }
+
+    if (!refeicao.absenceJustification) return {
+      tipo: "Ausente",
+      elemento: <StatusDaRefeicao cor="vermelho-400" icone="circulo-x" texto="Ausente" textoTooltip="A pessoa reservou mas não esteve presente nesta refeição. É necessário justificar a ausência." />
+    }
+
+    return {
+      tipo: "Disponível",
+      elemento: <StatusDaRefeicao cor="amarelo-200" icone="circulo-check" texto="Disponível" textoTooltip="A refeição foi reservada e o ticket ainda pode ser utilizado." />
+    }
+  }
 
   const colunas = React.useMemo<ColumnDef<IRelatorioDeRefeicoes>[]>(
     () => [
       {
         accessorKey: 'ID',
         accessorFn: (row) => row?.id,
-        cell: info => info.getValue(),
-        meta: {
-          filterVariant: "range"
-        }
+        cell: info => info.getValue()
       }, {
-        accessorKey: 'Nome',
-        accessorFn: (row) => row?.description,
+        accessorKey: 'Estudante',
+        accessorFn: (row) => row?.name,
         cell: info => info.getValue(),
       }, {
         accessorKey: 'Refeição',
         accessorFn: (row) => row?.meal_description,
-        cell: info => info.getValue(),
-      }, {
-        accessorKey: 'Cardápio',
-        accessorFn: (row) => row?.name,
         cell: info => info.getValue(),
       }, {
         accessorKey: 'Data',
@@ -77,27 +88,8 @@ export default function NutricionistaPage() {
         cell: info => info.getValue(),
       }, {
         accessorKey: 'Situação',
-        accessorFn: (row) => row?.active,
-        cell: info => {
-          if (info.row.original.wasPresent) return elementoStatusRefeicaoPorTextoStatusRefeicao["utilizado"];
-          if (info.row.original.canceled_by_student) return elementoStatusRefeicaoPorTextoStatusRefeicao["cancelado"];
-          if (info.row.original.absenceJustification) return elementoStatusRefeicaoPorTextoStatusRefeicao["justificado"];
-          if (!info.row.original.absenceJustification) return elementoStatusRefeicaoPorTextoStatusRefeicao["nao-utilizado-sem-justificativa"];
-          return elementoStatusRefeicaoPorTextoStatusRefeicao["nao-utilizado"];
-        }
-      },
-      {
-        header: 'Ações',
-        id: 'Ações',
-        cell: info => (
-          <div className="flex justify-center gap-x-2">
-            <div className="w-5 h-5 relative">
-              {/* <ModalRemoverRefeicao refeicao={info.row.original!} /> */}
-            </div>
-            <div className="w-5 h-5 relative">
-              {/* <ModalEditarRefeicao refeicao={info.row.original} /> */}
-            </div>
-          </div>)
+        accessorFn: (row) => pegarStatusDaRefeicao(row).tipo,
+        cell: info => pegarStatusDaRefeicao(info.row.original).elemento,
       }
     ],
     []
@@ -107,7 +99,7 @@ export default function NutricionistaPage() {
     <>
       <Secao className="border-none">
         <Secao className="max-w-[1440px] mx-auto flex flex-col gap-y-4">
-          <CabecalhoDeSecao titulo="Refeições" />
+          <CabecalhoDeSecao titulo="Reflatório de refeições" />
           <Secao className="flex">
             <div className="flex gap-x-4 items-end">
               <Form.Root className="flex">
@@ -129,9 +121,6 @@ export default function NutricionistaPage() {
                 <Form.Submit />
               </Form.Root>
               <Botao variante="adicionar" texto="Buscar" className="h-[36px] py-0 px-10" onClick={() => refetch()} />
-            </div>
-            <div className='ml-auto mt-auto'>
-              <ModalAdicionarRefeicao />
             </div>
           </Secao>
           <Secao>
