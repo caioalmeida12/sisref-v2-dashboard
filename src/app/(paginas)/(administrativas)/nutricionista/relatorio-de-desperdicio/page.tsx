@@ -9,7 +9,7 @@ import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/Tabela
 import { ColumnDef } from "@tanstack/react-table";
 import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { buscarRelatorioDeRefeicoes } from "@/app/actions/nutricionista";
+import { buscarRelatorioDeDesperdicio } from "@/app/actions/nutricionista";
 import { ModalRemoverRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalRemoverRefeicao";
 import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalAdicionarRefeicao";
 import { ModalEditarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalEditarRefeicao";
@@ -18,6 +18,7 @@ import { Botao } from "@/app/elementos/basicos/Botao";
 import { pegarStatusDaRefeicao } from "@/app/lib/elementos/Refeicao";
 import { StatusDaRefeicao } from "@/app/elementos/basicos/StatusDaRefeicao";
 import { ValueOf } from "next/dist/shared/lib/constants";
+import { IRelatorioDeDesperdicio } from "@/app/elementos/interfaces/IRelatorioDeDesperdicio";
 
 export default function NutricionistaPage() {
   const dataInicialRef = useRef<HTMLInputElement>(null);
@@ -26,66 +27,47 @@ export default function NutricionistaPage() {
   const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela, refetch } = useQuery({
     queryKey: ['relatorioDeRefeicoes', dataInicialRef.current?.value, dataFinalRef.current?.value],
     queryFn: async () => {
-      const resposta = await buscarRelatorioDeRefeicoes({ data_inicial: dataInicialRef.current?.value, data_final: dataFinalRef.current?.value });
+      const resposta = await buscarRelatorioDeDesperdicio({ data_inicial: dataInicialRef.current?.value, data_final: dataFinalRef.current?.value });
 
       return resposta.sucesso ? resposta.resposta : []
     },
     initialData: []
   });
 
-  const pegarStatusDaRefeicao = (refeicao: IRelatorioDeRefeicoes): { tipo: string, elemento: React.ReactNode } => {
-    if (refeicao.wasPresent) return {
-      tipo: "Utilizado",
-      elemento: <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Utilizado" textoTooltip="A refeição foi reservada e o ticket já foi utilizado." />
-    }
-
-    if (refeicao.canceled_by_student) return {
-      tipo: "Cancelado",
-      elemento: <StatusDaRefeicao cor="vermelho-400" icone="tag-x" texto="Cancelado" textoTooltip="Esta reserva foi cancelada." />
-    }
-
-    if (refeicao.absenceJustification) return {
-      tipo: "Justificado",
-      elemento: <StatusDaRefeicao cor="azul-400" icone="circulo-check" texto="Justificado" textoTooltip={`A ausência a esta refeição foi justificada. Justificativa: ${refeicao.studentJustification}`} />
-    }
-
-    if (!refeicao.absenceJustification) return {
-      tipo: "Ausente",
-      elemento: <StatusDaRefeicao cor="vermelho-400" icone="circulo-x" texto="Ausente" textoTooltip="A pessoa reservou mas não esteve presente nesta refeição. É necessário justificar a ausência." />
-    }
-
-    return {
-      tipo: "Disponível",
-      elemento: <StatusDaRefeicao cor="amarelo-200" icone="circulo-check" texto="Disponível" textoTooltip="A refeição foi reservada e o ticket ainda pode ser utilizado." />
-    }
-  }
-
-  const colunas = React.useMemo<ColumnDef<IRelatorioDeRefeicoes>[]>(
+  const colunas = React.useMemo<ColumnDef<IRelatorioDeDesperdicio>[]>(
     () => [
       {
         accessorKey: 'ID',
         accessorFn: (row) => row?.id,
         cell: info => info.getValue()
       }, {
-        accessorKey: 'Estudante',
-        accessorFn: (row) => row?.name,
-        cell: info => info.getValue(),
-      }, {
         accessorKey: 'Refeição',
-        accessorFn: (row) => row?.meal_description,
-        cell: info => info.getValue(),
+        accessorFn: (row) => row?.menu?.description,
+        cell: info => info.getValue()
+      }, {
+        accessorKey: 'Rejeito total',
+        accessorFn: (row) => row?.total_food_waste,
+        cell: info => info.getValue()
+      }, {
+        accessorKey: 'Rejeito por pessoa',
+        accessorFn: (row) => row?.reject_per_person,
+        cell: info => info.getValue()
+      }, {
+        accessorKey: 'Porcentagem de resto',
+        accessorFn: (row) => row?.ingestion_percentage,
+        cell: info => info.getValue()
       }, {
         accessorKey: 'Data',
-        accessorFn: (row) => row?.date,
-        cell: info => info.getValue(),
+        accessorFn: (row) => row?.waste_date,
+        cell: info => info.getValue()
       }, {
-        accessorKey: 'Curso',
-        accessorFn: (row) => row?.initials,
-        cell: info => info.getValue(),
+        accessorKey: 'Poderia alimentar',
+        accessorFn: (row) => row?.people_fed,
+        cell: info => info.getValue()
       }, {
-        accessorKey: 'Situação',
-        accessorFn: (row) => pegarStatusDaRefeicao(row).tipo,
-        cell: info => pegarStatusDaRefeicao(info.row.original).elemento,
+        accessorKey: 'Avaliação',
+        accessorFn: (row) => row?.classification,
+        cell: info => info.getValue()
       }
     ],
     []
@@ -95,7 +77,7 @@ export default function NutricionistaPage() {
     <>
       <Secao className="border-none">
         <Secao className="max-w-[1440px] mx-auto flex flex-col gap-y-4">
-          <CabecalhoDeSecao titulo="Reflatório de refeições" />
+          <CabecalhoDeSecao titulo="Relatório de desperdício" />
           <Secao className="flex">
             <div className="flex gap-x-4 items-end">
               <Form.Root className="flex">

@@ -9,6 +9,7 @@ import { IRefeicao, IRefeicaoSchema } from "@elementos/interfaces/IRefeicao";
 import { FetchHelper } from "../lib/actions/FetchHelper";
 import { IRespostaPaginada } from "@elementos/interfaces/IRespostaPaginada";
 import { IAgendamento, IAgendamentoSchema } from "@elementos/interfaces/IAgendamento";
+import { IRelatorioDeDesperdicio } from "../elementos/interfaces/IRelatorioDeDesperdicio";
 
 /**
  * Cria uma refeição.
@@ -490,7 +491,7 @@ export async function editarRefeicao(formData: FormData) {
  * 
  * @param data_inicial - A data inicial do relatório.
  * @param data_final - A data final do relatório.
- * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: IRefeicao[] }.
+ * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: [] }.
  */
 export async function buscarRelatorioDeRefeicoes({ data_inicial, data_final }: { data_inicial?: string, data_final?: string }) {
     if (!data_inicial || !data_final) {
@@ -510,5 +511,33 @@ export async function buscarRelatorioDeRefeicoes({ data_inicial, data_final }: {
     return {
         sucesso: true,
         resposta: resposta.resposta[0].data
+    };
+}
+
+/**
+ * Realiza uma chamada assíncrona para a API de relatório de desperdício.
+ * 
+ * @param data_inicial - A data inicial do relatório.
+ * @param data_final - A data final do relatório.
+ * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: [] }.
+ */
+export async function buscarRelatorioDeDesperdicio({ data_inicial, data_final }: { data_inicial?: string, data_final?: string }) {
+    if (!data_inicial || !data_final) {
+        return { sucesso: false, mensagem: "Data inicial e data final são obrigatórias." };
+    }
+
+    const resposta = await FetchHelper.get<IRelatorioDeDesperdicio>({
+        rota: `/food-waste?start_date=${data_inicial}&end_date=${data_final}`,
+        cookies: cookies(),
+        rotaParaRedirecionarCasoFalhe: null,
+    });
+
+    if (!resposta.sucesso) {
+        return { sucesso: false, mensagem: resposta.message };
+    }
+
+    return {
+        sucesso: true,
+        resposta: resposta.resposta
     };
 }
