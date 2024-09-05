@@ -49,10 +49,10 @@ export const linksDaSidebarPorTipoDeUsuario: Record<ISidebarProps["tipo_de_usuar
             titulo: 'Refeições', rota: '/nutricionista/refeicoes', icone: 'GarfoEFaca'
         },
         {
-            titulo: 'Relatório de refeições', rota: '?pagina=relatorioDeRefeicoes', icone: 'GraficoDeBarras'
+            titulo: 'Relatório de refeições', rota: '/nutricionista/relatorio-de-refeicoes', icone: 'GraficoDeBarras'
         },
         {
-            titulo: 'Relatório de desperdício', rota: '?pagina=relatorioDeDesperdicio', icone: 'Lixeira'
+            titulo: 'Relatório de desperdício', rota: '/nutricionista/relatorio-de-desperdicio', icone: 'Lixeira'
         }
     ],
     RECEPCAO: [

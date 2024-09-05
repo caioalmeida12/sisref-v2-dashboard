@@ -1,0 +1,30 @@
+interface IRelatorioDeRefeicoes {
+    absenceJustification: string | null;
+    active: number;
+    block: string | null;
+    campus_id: number;
+    canceled_by_student: number;
+    course_id: number;
+    date: string;
+    dateInsert: string;
+    dateValid: string;
+    description: string;
+    id: number;
+    initials: string;
+    mat: string;
+    meal_description: string;
+    meal_id: number;
+    menu_id: number;
+    name: string;
+    observation: string | null;
+    photo: string | null;
+    republic: string | null;
+    semRegular: number;
+    shift_id: number;
+    studentJustification: string | null;
+    student_id: number;
+    ticketCode: string | null;
+    time: string;
+    user_id: string | null;
+    wasPresent: number;
+}

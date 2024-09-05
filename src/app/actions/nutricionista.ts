@@ -484,3 +484,31 @@ export async function editarRefeicao(formData: FormData) {
 
     return { sucesso: true, mensagem: "Refeição editada com sucesso." };
 }
+
+/**
+ * Realiza uma chamada assíncrona para a API de relatório de refeições.
+ * 
+ * @param data_inicial - A data inicial do relatório.
+ * @param data_final - A data final do relatório.
+ * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: IRefeicao[] }.
+ */
+export async function buscarRelatorioDeRefeicoes({ data_inicial, data_final }: { data_inicial?: string, data_final?: string }) {
+    if (!data_inicial || !data_final) {
+        return { sucesso: false, mensagem: "Data inicial e data final são obrigatórias." };
+    }
+
+    const resposta = await FetchHelper.get<IRespostaPaginada<IRelatorioDeRefeicoes>>({
+        rota: `/report/list-scheduling?start_date=${data_inicial}&end_date=${data_final}`,
+        cookies: cookies(),
+        rotaParaRedirecionarCasoFalhe: null,
+    });
+
+    if (!resposta.sucesso) {
+        return { sucesso: false, mensagem: resposta.message };
+    }
+
+    return {
+        sucesso: true,
+        resposta: resposta.resposta[0].data
+    };
+}
