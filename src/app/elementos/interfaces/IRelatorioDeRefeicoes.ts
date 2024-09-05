@@ -1,4 +1,4 @@
-interface IRelatorioDeRefeicoes {
+export interface IRelatorioDeRefeicoes {
     absenceJustification: string | null;
     active: number;
     block: string | null;
