@@ -10,7 +10,7 @@ import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
 import { TAgendamento, TAgendamentoSchema } from "@/app/interfaces/TAgendamento";
 import { IRelatorioDeDesperdicio } from "../interfaces/IRelatorioDeDesperdicio";
 import { TRefeicao, TRefeicaoECardapio, TRefeicaoECardapioSchema, TRefeicaoSchema } from "../interfaces/TRefeicao";
-import { TRelatorioDeRefeicoes } from "../interfaces/IRelatorioDeRefeicoes";
+import { TRelatorioDeRefeicoes } from "../interfaces/TRelatorioDeRefeicoes";
 
 /**
  * Cria uma refeição.

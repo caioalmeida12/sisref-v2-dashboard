@@ -7,12 +7,12 @@ import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
 import { useQuery } from "@tanstack/react-query";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import { ColumnDef } from "@tanstack/react-table";
-import { IRefeicao } from "@/app/elementos/interfaces/IRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { buscarRefeicoes } from "@/app/actions/nutricionista";
 import { ModalRemoverRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalRemoverRefeicao";
 import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalAdicionarRefeicao";
 import { ModalEditarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalEditarRefeicao";
+import { TRefeicao } from "@/app/interfaces/TRefeicao";
 
 export default function NutricionistaPage() {
   const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela, refetch } = useQuery({
@@ -25,7 +25,7 @@ export default function NutricionistaPage() {
     initialData: []
   });
 
-  const colunas = React.useMemo<ColumnDef<IRefeicao["refeicao"]>[]>(
+  const colunas = React.useMemo<ColumnDef<TRefeicao>[]>(
     () => [
       {
         accessorKey: 'ID',

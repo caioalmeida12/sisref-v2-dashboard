@@ -10,7 +10,7 @@ import { IRefeicao } from '@/app/elementos/interfaces/IRefeicao';
 import { removerRefeicao } from '@/app/actions/nutricionista';
 
 interface ModalProps {
-    refeicao: NonNullable<IRefeicao["refeicao"]>;
+    refeicao: NonNullable<TRefeicao>;
 }
 
 export const ModalRemoverRefeicao: React.FC<ModalProps> = ({ refeicao }) => {

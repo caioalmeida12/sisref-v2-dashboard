@@ -5,16 +5,24 @@ import { Secao } from "@elementos/basicos/Secao";
 import { StatusDaRefeicao } from "@elementos/basicos/StatusDaRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { pegarStatusDaRefeicao } from "@/app/lib/elementos/Refeicao";
-import { IRefeicaoComTurno } from "@elementos/interfaces/IRefeicao";
 import Skeleton from "react-loading-skeleton";
 import { BotaoDeRefeicao } from "./BotaoDeRefeicao";
+import { TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
 
-const varianteNomeRefeicaoPorTurno = {
-    1: "manha",
-    2: "almoco",
-    3: "tarde",
-    4: "noite"
-} as const;
+const getVarianteNomeRefeicaoPorTurno = (turno: number) => {
+    switch (turno) {
+        case 1:
+            return "manha";
+        case 2:
+            return "almoco";
+        case 3:
+            return "tarde";
+        case 4:
+            return "noite";
+        default:
+            return "manha";
+    }
+};
 
 const elementoStatusRefeicaoPorTextoStatusRefeicao = {
     "disponivel": <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Disponível" textoTooltip="Você pode reservar esta refeição." />,
@@ -34,21 +42,21 @@ const descricaoCardapioParaArrayStrings = (descricao: string) => {
     return descricao.split(/[;+]/).filter(naoVazio => naoVazio)
 }
 
-const RefeicaoCurta = (props: IRefeicaoComTurno) => {
+const RefeicaoCurta = (props: TRefeicaoECardapio) => {
     const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[pegarStatusDaRefeicao(props)];
 
     return (
         <Secao className="h-fit">
             <div className="flex justify-between">
-                <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
+                <NomeDaRefeicao variante={getVarianteNomeRefeicaoPorTurno(props.meal.id)} />
                 {StatusRefeicao}
             </div>
         </Secao>
     )
 }
 
-const RefeicaoLonga = (props: IRefeicaoComTurno, comBotao: boolean) => {
-    if (!props.menu || !props.meal) return <RefeicaoCurta turno={props.turno} />
+const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
+    if (!props.menu || !props.meal) return <RefeicaoCurta {...props} />
 
     const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[pegarStatusDaRefeicao(props)];
     const textoStatus = pegarStatusDaRefeicao(props);
@@ -56,17 +64,17 @@ const RefeicaoLonga = (props: IRefeicaoComTurno, comBotao: boolean) => {
     return (
         <Secao className="flex flex-col gap-y-2 h-fit">
             <div className="flex justify-between">
-                <NomeDaRefeicao variante={varianteNomeRefeicaoPorTurno[props.turno]} />
+                <NomeDaRefeicao variante={getVarianteNomeRefeicaoPorTurno(props.meal.id)} />
                 {StatusRefeicao}
             </div>
             <HorarioDaRefeicao
                 variante="horario-e-data"
-                data={DatasHelper.converterParaFormatoBrasileiro(props.meal.date)}
+                data={DatasHelper.converterParaFormatoBrasileiro(props.menu.date)}
                 horarios={{
-                    qtdTimeReservationEnd: props.menu.qtdTimeReservationEnd,
-                    qtdTimeReservationStart: props.menu.qtdTimeReservationStart,
-                    timeEnd: DatasHelper.removerSegundosDoHorario(props.menu.timeEnd),
-                    timeStart: DatasHelper.removerSegundosDoHorario(props.menu.timeStart)
+                    qtdTimeReservationEnd: props.meal.qtdTimeReservationEnd,
+                    qtdTimeReservationStart: props.meal.qtdTimeReservationStart,
+                    timeEnd: DatasHelper.removerSegundosDoHorario(props.meal.timeEnd),
+                    timeStart: DatasHelper.removerSegundosDoHorario(props.meal.timeStart)
                 }}
             />
             <p className="leading-6">
@@ -79,13 +87,13 @@ const RefeicaoLonga = (props: IRefeicaoComTurno, comBotao: boolean) => {
                     </React.Fragment>
                 ))}
             </p>
-            {comBotao && textoStatus === "disponivel" && <BotaoDeRefeicao.Reservar meal_id={props.menu.id} date={props.meal.date} />}
-            {comBotao && textoStatus === "reservado" && <BotaoDeRefeicao.BotaoDeAbrir meal_id={props.menu.id} date={props.meal.date} />}
+            {comBotao && textoStatus === "disponivel" && <BotaoDeRefeicao.Reservar meal_id={props.menu.id} date={props.menu.date} />}
+            {comBotao && textoStatus === "reservado" && <BotaoDeRefeicao.BotaoDeAbrir meal_id={props.menu.id} date={props.menu.date} />}
         </Secao>
     )
 }
 
-export const Refeicao = (props: IRefeicaoComTurno) => {
+export const Refeicao = (props: TRefeicaoECardapio) => {
     const textoStatus = pegarStatusDaRefeicao(props);
     const comBotao = textoStatus === "disponivel" || textoStatus === "reservado";
     return RefeicaoLonga(props, comBotao);

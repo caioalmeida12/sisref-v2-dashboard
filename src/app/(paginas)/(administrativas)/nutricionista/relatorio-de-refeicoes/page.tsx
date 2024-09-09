@@ -12,7 +12,8 @@ import { buscarRelatorioDeRefeicoes } from "@/app/actions/nutricionista";
 import * as Form from "@radix-ui/react-form";
 import { Botao } from "@/app/elementos/basicos/Botao";
 import { StatusDaRefeicao } from "@/app/elementos/basicos/StatusDaRefeicao";
-import { IRelatorioDeRefeicoes } from "@/app/interfaces/IRelatorioDeRefeicoes";
+import { TRefeicaoDoHistorico } from "@/app/interfaces/TRefeicaoDoHistorico";
+import { TRelatorioDeRefeicoes } from "@/app/interfaces/TRelatorioDeRefeicoes";
 
 export default function NutricionistaPage() {
   const dataInicialRef = useRef<HTMLInputElement>(null);
@@ -28,7 +29,7 @@ export default function NutricionistaPage() {
     initialData: []
   });
 
-  const pegarStatusDaRefeicao = (refeicao: IRelatorioDeRefeicoes): { tipo: string, elemento: React.ReactNode } => {
+  const pegarStatusDaRefeicao = (refeicao: TRelatorioDeRefeicoes): { tipo: string, elemento: React.ReactNode } => {
     if (refeicao.wasPresent) return {
       tipo: "Utilizado",
       elemento: <StatusDaRefeicao cor="verde-300" icone="circulo-check" texto="Utilizado" textoTooltip="A refeição foi reservada e o ticket já foi utilizado." />
@@ -55,7 +56,7 @@ export default function NutricionistaPage() {
     }
   }
 
-  const colunas = React.useMemo<ColumnDef<IRelatorioDeRefeicoes>[]>(
+  const colunas = React.useMemo<ColumnDef<TRelatorioDeRefeicoes>[]>(
     () => [
       {
         accessorKey: 'ID',

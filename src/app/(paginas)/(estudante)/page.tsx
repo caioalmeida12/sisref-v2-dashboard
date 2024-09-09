@@ -1,13 +1,13 @@
 import React from 'react';
 import { FetchHelper } from '@/app/lib/actions/FetchHelper';
 import { cookies } from 'next/headers';
-import { IRefeicao } from '@/app/elementos/interfaces/IRefeicao';
 import { Aviso } from '@/app/elementos/modulos/estudante/Aviso';
 import { InformacoesDeEstudante } from '@/app/elementos/modulos/estudante/InformacoesDeEstudante';
+import { TRefeicao } from '@/app/interfaces/TRefeicao';
 
 export default async function Home() {
 
-  const ticketsSemJustificativa = await FetchHelper.get<IRefeicao>({
+  const ticketsSemJustificativa = await FetchHelper.get<TRefeicao>({
     rota: '/student/schedulings/not-used-without-justification',
     cookies: cookies(),
   })

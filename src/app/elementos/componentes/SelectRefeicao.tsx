@@ -2,7 +2,7 @@ import React from 'react';
 import * as Select from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import classnames from 'classnames';
-import { IRefeicao } from '@elementos/interfaces/IRefeicao';
+import { TRefeicao } from '@/app/interfaces/TRefeicao';
 
 interface SelectItemProps {
     children: React.ReactNode;
@@ -34,7 +34,7 @@ const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
 
 SelectItem.displayName = 'SelectItem';
 
-const SelectRefeicao = ({ refeicoes }: { refeicoes: IRefeicao["refeicao"][] }) => (
+const SelectRefeicao = ({ refeicoes }: { refeicoes: TRefeicao[] }) => (
     <Select.Root>
         <Select.Trigger
             disabled={refeicoes.length === 0}
