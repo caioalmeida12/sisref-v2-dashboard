@@ -12,7 +12,7 @@ import { buscarRelatorioDeRefeicoes } from "@/app/actions/nutricionista";
 import * as Form from "@radix-ui/react-form";
 import { Botao } from "@/app/elementos/basicos/Botao";
 import { StatusDaRefeicao } from "@/app/elementos/basicos/StatusDaRefeicao";
-import { IRelatorioDeRefeicoes } from "@/app/elementos/interfaces/IRelatorioDeRefeicoes";
+import { IRelatorioDeRefeicoes } from "@/app/interfaces/IRelatorioDeRefeicoes";
 
 export default function NutricionistaPage() {
   const dataInicialRef = useRef<HTMLInputElement>(null);

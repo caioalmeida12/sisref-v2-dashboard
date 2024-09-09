@@ -11,8 +11,8 @@ import Image from "next/image"
 import { stringParaCamelCase } from "@/app/lib/elementos/StringParaCamelCase"
 import { buscarCampus } from "@/app/actions/campus"
 import { buscarEstudante } from "@/app/actions/estudante"
-import { TEstudanteComCurso } from "../../interfaces/TEstudante"
-import { TCampus } from "../../interfaces/TCampus"
+import { TEstudanteComCurso } from "../../../interfaces/TEstudante"
+import { TCampus } from "../../../interfaces/TCampus"
 
 interface InformacoesDeEstudanteProps {
     estudante: TEstudanteComCurso

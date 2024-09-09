@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { IApenasHorario, IApenasData, IHorarioEData } from "@elementos/interfaces/IHorarios";
+import { IApenasHorario, IApenasData, IHorarioEData } from "@/app/interfaces/IHorarios";
 import classnames from 'classnames';
 
 type HorarioDaRefeicaoProps =

@@ -1,4 +1,4 @@
-import { ISidebarProps } from "@/app/elementos/interfaces/ISidebar";
+import { ISidebarProps } from "@/app/interfaces/ISidebar";
 
 export const linksDaSidebarPorTipoDeUsuario: Record<ISidebarProps["tipo_de_usuario"], ISidebarProps["itens"]> = {
     STUDENT: [

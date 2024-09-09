@@ -7,7 +7,7 @@ import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { Botao } from '@elementos//basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { confirmarAgendamento } from '@/app/actions/nutricionista';
-import { TAgendamento } from '@elementos/interfaces/TAgendamento';
+import { TAgendamento } from '@/app/interfaces/TAgendamento';
 
 interface ModalProps {
     agendamento: TAgendamento;

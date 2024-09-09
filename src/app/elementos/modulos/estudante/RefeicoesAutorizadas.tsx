@@ -3,7 +3,7 @@ import { Secao } from "@elementos/basicos/Secao";
 import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao";
 import { RefeicaoAutorizada } from "@elementos//componentes/RefeicaoAutorizada";
 import { InformacoesDeEstudante } from "./InformacoesDeEstudante";
-import { IBuscarRefeicoesAutorizadas } from "@elementos/interfaces/IBuscarRefeicoesAutorizadas";
+import { IBuscarRefeicoesAutorizadas } from "@/app/interfaces/IBuscarRefeicoesAutorizadas";
 import { buscarRefeicoesAutorizadas } from "@/app/actions/estudante";
 
 const pegarOsDiasDaSemanaAutorizados = (refeicoesAutorizadas: IBuscarRefeicoesAutorizadas[], idDaRefeicao: number) => {
