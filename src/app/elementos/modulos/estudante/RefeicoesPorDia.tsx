@@ -6,9 +6,9 @@ import { Slider } from "@elementos/componentes/Slider";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { Secao } from "@elementos/basicos/Secao";
 import { useQuery } from "@tanstack/react-query";
-import { IRefeicao } from "@elementos/interfaces/IRefeicao";
 import { CustomTooltipWrapper } from "@elementos/basicos/CustomTooltipWrapper";
 import { buscarRefeicoesPorDia } from "@/app/actions/estudante";
+import { TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
 
 
 export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
@@ -68,17 +68,15 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
                 refeicoes &&
                 ([1, 2, 3, 4] as const).map((turno) => (
                     <Refeicao key={turno} turno={turno} refeicao={
-                        refeicoes.find((refeicao: IRefeicao) => refeicao.menu?.id === turno)?.menu
+                        refeicoes.find((refeicao: TRefeicaoECardapio) => refeicao.menu?.id === turno)?.menu
                     } cardapio={
-                        refeicoes.find((refeicao: IRefeicao) => refeicao.menu?.id === turno)?.meal
+                        refeicoes.find((refeicao: TRefeicaoECardapio) => refeicao.menu?.id === turno)?.meal
                     } />
                 ))
             }
             {
                 isError &&
-                ([1, 2, 3, 4] as const).map((turno) => (
-                    <Refeicao key={turno} turno={turno} />
-                ))
+                <Refeicao key={turno} turno={turno} />
             }
 
         </Secao>

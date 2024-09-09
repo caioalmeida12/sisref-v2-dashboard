@@ -10,7 +10,7 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
-export const ModalEditarRefeicao = ({ refeicao }: { refeicao: IRefeicao["refeicao"] }) => {
+export const ModalEditarRefeicao = ({ refeicao }: { refeicao: TRefeicao }) => {
     const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
     const queryClient = useQueryClient();
 

@@ -6,6 +6,10 @@ import classnames from 'classnames';
 
 const Icone = () => null;
 
+Icone.Refeicao = (props: IIconeRefeicaoProps) => {
+    return Icone.menu(props);
+}
+
 Icone.Confirmar = (props: React.SVGAttributes<SVGElement>) => (
     <svg className={props.className} width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M5.94444 10.8889L2.05556 7L3.15222 5.89556L5.94444 8.68778L11.8478 2.78444L12.9444 3.88889M12.9444 0H2.05556C1.19222 0 0.5 0.692222 0.5 1.55556V12.4444C0.5 12.857 0.663888 13.2527 0.955612 13.5444C1.24733 13.8361 1.643 14 2.05556 14H12.9444C13.357 14 13.7527 13.8361 14.0444 13.5444C14.3361 13.2527 14.5 12.857 14.5 12.4444V1.55556C14.5 0.692222 13.8 0 12.9444 0Z" fill="#359830" />
