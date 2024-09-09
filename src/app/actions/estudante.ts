@@ -10,9 +10,10 @@ import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
 import { IBuscarRefeicoesAutorizadas } from "@/app/interfaces/IBuscarRefeicoesAutorizadas";
 import { IJustificativaDeEstudante, justificativasPermitidas } from "@/app/interfaces/IJustificativaDeEstudante";
 import { IRelatorioDeDesperdicio } from "@/app/interfaces/IRelatorioDeDesperdicio";
-import { TEstudante, TEstudanteComCurso } from "../interfaces/TEstudante";
-import { ParseRefeicaoDoHistorico } from "../interfaces/IRefeicaoDoHistorico";
+import { TEstudanteComCurso } from "../interfaces/TEstudante";
 import { TRefeicao, TRefeicaoECardapioSchema } from "../interfaces/TRefeicao";
+import { IRespostaPaginada } from "../interfaces/IRespostaPaginada";
+import { TRefeicaoDoHistorico, TRefeicaoDoHistoricoSchema } from "../interfaces/TRefeicaoDoHistorico";
 
 /**
  * Busca as refeições disponíveis para o dia solicitado. Se não for passado nenhum parâmetro, a data atual será utilizada.
@@ -113,7 +114,7 @@ const urlPorTipoDeTicket = {
 export const buscarTickets = async (tipo: keyof typeof urlPorTipoDeTicket) => {
     const API_URL = `/student/schedulings${urlPorTipoDeTicket[tipo]}?page=1`;
 
-    const resposta = await FetchHelper.get<IRespostaBuscarTickets>({
+    const resposta = await FetchHelper.get<IRespostaPaginada<unknown>>({
         rota: API_URL,
         cookies: cookies(),
     });
@@ -123,7 +124,7 @@ export const buscarTickets = async (tipo: keyof typeof urlPorTipoDeTicket) => {
     }
 
     return resposta.resposta[0].data
-        .map((refeicao) => ParseRefeicaoDoHistorico(refeicao))
+        .map((refeicao) => TRefeicaoDoHistoricoSchema.safeParse(refeicao))
         .flatMap((refeicao) => refeicao.success ? refeicao.data : []);
 };
 
@@ -143,7 +144,7 @@ export const buscarTicketsSemJustificativa = async () => {
     }
 
     return resposta.resposta
-        .map((refeicao) => ParseRefeicaoDoHistorico(refeicao))
+        .map((refeicao) => TRefeicaoDoHistoricoSchema.safeParse(refeicao))
         .flatMap((refeicao) => refeicao.success ? refeicao.data : []);
 };
 
