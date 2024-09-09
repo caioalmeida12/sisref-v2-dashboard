@@ -85,7 +85,7 @@ const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
                 }}
             />
             <p className="leading-6">
-                {descricaoCardapioParaArrayStrings(props.meal.description).map((descricao, index) => (
+                {descricaoCardapioParaArrayStrings(props.menu.description).map((descricao, index) => (
                     <React.Fragment key={index}>
                         <span>
                             {descricao}
