@@ -6,11 +6,11 @@
 
 import { cookies } from "next/headers";
 import { FetchHelper } from "../lib/actions/FetchHelper";
-import { IRespostaPaginada } from "@elementos/interfaces/IRespostaPaginada";
-import { TAgendamento, TAgendamentoSchema } from "@elementos/interfaces/TAgendamento";
-import { IRelatorioDeDesperdicio } from "../elementos/interfaces/IRelatorioDeDesperdicio";
-import { TRefeicao, TRefeicaoECardapio, TRefeicaoECardapioSchema, TRefeicaoSchema } from "../elementos/interfaces/TRefeicao";
-import { TRelatorioDeRefeicoes } from "../elementos/interfaces/IRelatorioDeRefeicoes";
+import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
+import { TAgendamento, TAgendamentoSchema } from "@/app/interfaces/TAgendamento";
+import { IRelatorioDeDesperdicio } from "../interfaces/IRelatorioDeDesperdicio";
+import { TRefeicao, TRefeicaoECardapio, TRefeicaoECardapioSchema, TRefeicaoSchema } from "../interfaces/TRefeicao";
+import { TRelatorioDeRefeicoes } from "../interfaces/IRelatorioDeRefeicoes";
 
 /**
  * Cria uma refeição.

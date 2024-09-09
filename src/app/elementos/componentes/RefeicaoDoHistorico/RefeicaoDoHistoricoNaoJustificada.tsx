@@ -3,7 +3,7 @@
 import React from 'react';
 import * as Select from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
-import { justificativasPermitidas } from "@elementos/interfaces/IJustificativaDeEstudante";
+import { justificativasPermitidas } from "@/app/interfaces/IJustificativaDeEstudante";
 import classnames from "classnames";
 import { SelectItemProps } from "@radix-ui/react-select";
 import { Botao } from '@elementos/basicos/Botao';

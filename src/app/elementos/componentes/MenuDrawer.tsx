@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { INavbarProps } from "@elementos/interfaces/INavbarProps";
+import { INavbarProps } from "@/app/interfaces/INavbarProps";
 import { useState } from "react";
 import { NavbarNavigation } from '../modulos/comuns/Navbar';
 import Icone from '@elementos/basicos/Icone';

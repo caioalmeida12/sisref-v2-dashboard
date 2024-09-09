@@ -8,7 +8,7 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { TRefeicaoECardapio } from '@/app/elementos/interfaces/TRefeicao';
+import { TRefeicaoECardapio } from '@/app/interfaces/TRefeicao';
 
 export const ModalAdicionarCardapio = ({ refeicao_e_cardapio }: { refeicao_e_cardapio: TRefeicaoECardapio }) => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();

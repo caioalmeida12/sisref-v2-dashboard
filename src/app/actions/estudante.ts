@@ -7,12 +7,12 @@
 import { cookies } from "next/headers";
 import { FetchHelper } from "../lib/actions/FetchHelper";
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
-import { IBuscarRefeicoesAutorizadas } from "@elementos/interfaces/IBuscarRefeicoesAutorizadas";
-import { IJustificativaDeEstudante, justificativasPermitidas } from "@elementos/interfaces/IJustificativaDeEstudante";
-import { IRelatorioDeDesperdicio } from "@elementos/interfaces/IRelatorioDeDesperdicio";
-import { TEstudante, TEstudanteComCurso } from "../elementos/interfaces/TEstudante";
-import { ParseRefeicaoDoHistorico } from "../elementos/interfaces/IRefeicaoDoHistorico";
-import { TRefeicao, TRefeicaoECardapioSchema } from "../elementos/interfaces/TRefeicao";
+import { IBuscarRefeicoesAutorizadas } from "@/app/interfaces/IBuscarRefeicoesAutorizadas";
+import { IJustificativaDeEstudante, justificativasPermitidas } from "@/app/interfaces/IJustificativaDeEstudante";
+import { IRelatorioDeDesperdicio } from "@/app/interfaces/IRelatorioDeDesperdicio";
+import { TEstudante, TEstudanteComCurso } from "../interfaces/TEstudante";
+import { ParseRefeicaoDoHistorico } from "../interfaces/IRefeicaoDoHistorico";
+import { TRefeicao, TRefeicaoECardapioSchema } from "../interfaces/TRefeicao";
 
 /**
  * Busca as refeições disponíveis para o dia solicitado. Se não for passado nenhum parâmetro, a data atual será utilizada.

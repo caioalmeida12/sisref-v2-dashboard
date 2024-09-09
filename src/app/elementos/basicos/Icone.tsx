@@ -1,5 +1,5 @@
 import React from 'react';
-import { IIconeFecharProps, IIconeMenuProps, IIconeRefeicaoProps, IIconeSetaProps, IIconeStatusProps } from '@elementos/interfaces/IIcones';
+import { IIconeFecharProps, IIconeMenuProps, IIconeRefeicaoProps, IIconeSetaProps, IIconeStatusProps } from '@/app/interfaces/IIcones';
 import { CaretDownIcon } from '@radix-ui/react-icons';
 
 import classnames from 'classnames';

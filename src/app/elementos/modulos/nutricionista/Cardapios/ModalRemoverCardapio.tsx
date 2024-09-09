@@ -7,7 +7,7 @@ import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { Botao } from '@elementos//basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { removerCardapio } from '@/app/actions/nutricionista';
-import { TRefeicaoECardapio } from '@/app/elementos/interfaces/TRefeicao';
+import { TRefeicaoECardapio } from '@/app/interfaces/TRefeicao';
 
 export const ModalRemoverCardapio = ({ refeicao_e_cardapio }: { refeicao_e_cardapio: TRefeicaoECardapio }) => {
     const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();

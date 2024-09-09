@@ -3,7 +3,7 @@
 import { editarCardapio } from '@/app/actions/nutricionista';
 import { Botao } from '@/app/elementos/basicos/Botao';
 import Icone from '@/app/elementos/basicos/Icone';
-import { TRefeicaoECardapio } from '@/app/elementos/interfaces/TRefeicao';
+import { TRefeicaoECardapio } from '@/app/interfaces/TRefeicao';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';

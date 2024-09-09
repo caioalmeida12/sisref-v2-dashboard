@@ -15,7 +15,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import * as React from 'react';
 import { useRef } from 'react';
 import { ModalAdicionarAgendamento } from '@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento';
-import { TAgendamento } from '@/app/elementos/interfaces/TAgendamento';
+import { TAgendamento } from '@/app/interfaces/TAgendamento';
 
 export default function Agendamentos() {
     const dataInicialRef = useRef<HTMLInputElement>(null);

@@ -11,7 +11,7 @@ import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { buscarRelatorioDeDesperdicio } from "@/app/actions/nutricionista";
 import * as Form from "@radix-ui/react-form";
 import { Botao } from "@/app/elementos/basicos/Botao";
-import { IRelatorioDeDesperdicio } from "@/app/elementos/interfaces/IRelatorioDeDesperdicio";
+import { IRelatorioDeDesperdicio } from "@/app/interfaces/IRelatorioDeDesperdicio";
 
 export default function NutricionistaPage() {
   const dataInicialRef = useRef<HTMLInputElement>(null);
