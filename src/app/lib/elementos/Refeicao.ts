@@ -22,7 +22,7 @@
  * - canceled_by_student: Se o cardápio foi cancelado pelo estudante.
  */
 
-import { IRefeicaoComTurno } from "@/app/elementos/interfaces/IRefeicao";
+import { TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
 import { DatasHelper } from "./DatasHelper";
 
 type StatusDaRefeicao = "disponivel" | "encerrado" | "bloqueado" | "cancelado" | "reservado" | "indisponivel";
@@ -38,21 +38,21 @@ type StatusDaRefeicao = "disponivel" | "encerrado" | "bloqueado" | "cancelado" |
  * @param props - As propriedades da refeição.
  * @returns O status da refeição.
  */
-export const pegarStatusDaRefeicao = (props: IRefeicaoComTurno): StatusDaRefeicao => {
+export const pegarStatusDaRefeicao = (props: TRefeicaoECardapio): StatusDaRefeicao => {
     if (!(props.meal) || !(props.menu)) return "indisponivel";
-    if (!(props.meal.permission)) return "bloqueado";
-    if (props.meal.canceled_by_student) return "cancelado";
-    if (props.meal.agendado) return "reservado";
+    if (!(props.menu.permission)) return "bloqueado";
+    if (props.menu.canceled_by_student) return "cancelado";
+    if (props.menu.agendado) return "reservado";
 
-    const dataHoraDoComecoDaRefeicao = DatasHelper.compilarDataHora(props.meal.date, props.menu.timeStart);
+    const dataHoraDoComecoDaRefeicao = DatasHelper.compilarDataHora(props.menu.date, props.meal.timeStart);
     const diferencaEmHorasAteOComeco = DatasHelper.getDiferencaEmHoras(dataHoraDoComecoDaRefeicao);
 
-    const dataHoraDoFimDaRefeicao = DatasHelper.compilarDataHora(props.meal.date, props.menu.timeEnd);
+    const dataHoraDoFimDaRefeicao = DatasHelper.compilarDataHora(props.menu.date, props.meal.timeEnd);
     const diferencaEmHorasAteOFim = DatasHelper.getDiferencaEmHoras(dataHoraDoFimDaRefeicao);
 
     if (diferencaEmHorasAteOComeco < 0 || diferencaEmHorasAteOFim < 0) return "encerrado";
-    if (diferencaEmHorasAteOComeco > props.menu?.qtdTimeReservationStart) return "indisponivel";
-    if (diferencaEmHorasAteOComeco < props.menu?.qtdTimeReservationEnd) return "indisponivel";
+    if (diferencaEmHorasAteOComeco > props.meal.qtdTimeReservationStart) return "indisponivel";
+    if (diferencaEmHorasAteOComeco < props.meal.qtdTimeReservationEnd) return "indisponivel";
     return "disponivel";
 
 }

@@ -6,14 +6,10 @@ import Icone from '@elementos//basicos/Icone';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { Botao } from '@elementos//basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { IRefeicao } from '@/app/elementos/interfaces/IRefeicao';
 import { removerRefeicao } from '@/app/actions/nutricionista';
+import { TRefeicao } from '@/app/interfaces/TRefeicao';
 
-interface ModalProps {
-    refeicao: NonNullable<TRefeicao>;
-}
-
-export const ModalRemoverRefeicao: React.FC<ModalProps> = ({ refeicao }) => {
+export const ModalRemoverRefeicao = ({ refeicao }: { refeicao: TRefeicao }) => {
     const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
     const queryClient = useQueryClient();
 

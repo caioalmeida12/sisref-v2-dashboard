@@ -8,14 +8,13 @@ import { Secao } from "@elementos/basicos/Secao";
 import { useQuery } from "@tanstack/react-query";
 import { CustomTooltipWrapper } from "@elementos/basicos/CustomTooltipWrapper";
 import { buscarRefeicoesPorDia } from "@/app/actions/estudante";
-import { TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
 
 
 export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
     const [dataDaPesquisa, setDataDaPesquisa] = useState(new Date().toISOString().split('T')[0]);
     const textoData = new Date().toISOString().split('T')[0] === dataDaPesquisa ? "hoje" : DatasHelper.converterParaFormatoBrasileiro(dataDaPesquisa);
 
-    const { data: refeicoes, isLoading, isError } = useQuery({
+    const { data: refeicoes, isLoading } = useQuery({
         queryKey: ['refeicoesPorDia', dataDaPesquisa],
         queryFn: () => buscarRefeicoesPorDia({ data: dataDaPesquisa }),
     });
@@ -66,19 +65,10 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
             }
             {
                 refeicoes &&
-                ([1, 2, 3, 4] as const).map((turno) => (
-                    <Refeicao key={turno} turno={turno} refeicao={
-                        refeicoes.find((refeicao: TRefeicaoECardapio) => refeicao.menu?.id === turno)?.menu
-                    } cardapio={
-                        refeicoes.find((refeicao: TRefeicaoECardapio) => refeicao.menu?.id === turno)?.meal
-                    } />
+                refeicoes.map((refeicao) => (
+                    <Refeicao {...refeicao} key={refeicao.meal.id} />
                 ))
             }
-            {
-                isError &&
-                <Refeicao key={turno} turno={turno} />
-            }
-
         </Secao>
     )
 }
