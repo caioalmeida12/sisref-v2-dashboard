@@ -4,7 +4,6 @@ import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { useState } from "react";
 import { Secao } from "@elementos/basicos/Secao"
 import { Slider } from "@elementos/componentes/Slider"
-import { IRefeicao } from "@elementos/interfaces/IRefeicao";
 import { Refeicao, RefeicaoLoading } from "@elementos/componentes/Refeicao/Refeicao";
 import ReservasPorDia from "@elementos/componentes/ReservasPorDia";
 import { TicketsPorDia } from "@elementos/componentes/TicketsPorDia";
@@ -60,10 +59,8 @@ export default function EstatisticasDeHoje() {
             }
             {
                 refeicoes &&
-                ([1, 2, 3, 4] as const).map((turno) => (
-                    <Refeicao key={turno} turno={turno} refeicao={
-                        refeicoes.find((refeicao: IRefeicao) => refeicao.menu?.id === turno)?.menu
-                    } />
+                refeicoes.map((refeicao) => (
+                    <Refeicao {...refeicao} key={refeicao.meal.id} />
                 ))
             }
             <div className="grid col-span-2 grid-cols-3">

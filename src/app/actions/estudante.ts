@@ -13,7 +13,7 @@ import { IRelatorioDeDesperdicio } from "@/app/interfaces/IRelatorioDeDesperdici
 import { TEstudanteComCurso } from "../interfaces/TEstudante";
 import { TRefeicao, TRefeicaoECardapioSchema } from "../interfaces/TRefeicao";
 import { IRespostaPaginada } from "../interfaces/IRespostaPaginada";
-import { TRefeicaoDoHistorico, TRefeicaoDoHistoricoSchema } from "../interfaces/TRefeicaoDoHistorico";
+import { TRefeicaoDoHistoricoSchema } from "../interfaces/TRefeicaoDoHistorico";
 
 /**
  * Busca as refeições disponíveis para o dia solicitado. Se não for passado nenhum parâmetro, a data atual será utilizada.
@@ -81,21 +81,6 @@ export async function buscarRefeicoesAutorizadas() {
     if (!resposta.sucesso) return redirecionarViaAction(`/login?erro=${encodeURIComponent(resposta.message)}`)
 
     return resposta.resposta
-}
-
-interface IRespostaBuscarTickets {
-    current_page: number;
-    data: TRefeicao[];
-    first_page_url: string;
-    from: number;
-    last_page: number;
-    last_page_url: string;
-    next_page_url: string | null;
-    path: string;
-    per_page: number;
-    prev_page_url: string | null;
-    to: number;
-    total: number;
 }
 
 const urlPorTipoDeTicket = {

@@ -12,7 +12,6 @@ import { buscarRelatorioDeRefeicoes } from "@/app/actions/nutricionista";
 import * as Form from "@radix-ui/react-form";
 import { Botao } from "@/app/elementos/basicos/Botao";
 import { StatusDaRefeicao } from "@/app/elementos/basicos/StatusDaRefeicao";
-import { TRefeicaoDoHistorico } from "@/app/interfaces/TRefeicaoDoHistorico";
 import { TRelatorioDeRefeicoes } from "@/app/interfaces/TRelatorioDeRefeicoes";
 
 export default function NutricionistaPage() {
