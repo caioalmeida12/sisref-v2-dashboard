@@ -6,7 +6,7 @@ import { CabecalhoDeSecao } from '@elementos/basicos/CabecalhoDeSecao'
 import { RefeicaoDoHistorico, RefeicaoDoHistoricoLoading } from '@elementos/componentes/RefeicaoDoHistorico/RefeicaoDoHistorico'
 import { useQuery } from '@tanstack/react-query'
 import { buscarTickets, buscarTicketsSemJustificativa } from '@/app/actions/estudante'
-import { IRefeicaoDoHistorico } from '@/app/interfaces/IRefeicaoDoHistorico'
+import { TRefeicaoDoHistorico } from '@/app/interfaces/TRefeicaoDoHistorico'
 
 const QUANTOS_TICKETS_MOSTRAR = 10
 
@@ -14,7 +14,7 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
     /**
      * Armazena os n tickets mais recentes dentre os 40 que são retornados pela API.
      */
-    const [ticketsMaisRecentes, setTicketsMaisRecentes] = useState<IRefeicaoDoHistorico[]>([])
+    const [ticketsMaisRecentes, setTicketsMaisRecentes] = useState<TRefeicaoDoHistorico[]>([])
 
     const { data: tickets, isLoading, isError } = useQuery({
         queryKey: ['historicoDeRefeicoes'],
@@ -33,20 +33,17 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
                 naoUtilizado,
                 naoUtilizadoSemJustificativa
             }
+        },
+        initialData: {
+            aSerUtilizado: [],
+            utilizado: [],
+            cancelado: [],
+            naoUtilizado: [],
+            naoUtilizadoSemJustificativa: []
         }
     })
 
     useEffect(() => {
-        const todosSaoArray =
-            tickets
-            && Array.isArray(tickets.aSerUtilizado)
-            && Array.isArray(tickets.utilizado)
-            && Array.isArray(tickets.cancelado)
-            && Array.isArray(tickets.naoUtilizado)
-            && Array.isArray(tickets.naoUtilizadoSemJustificativa)
-
-        if (!todosSaoArray) return
-
         // Adiciona o status de cada ticket para que possa ser exibido no componente.
         tickets.aSerUtilizado.forEach(ticket => ticket!.status = 'a-ser-utilizado')
         tickets.utilizado.forEach(ticket => ticket!.status = 'utilizado')
@@ -60,13 +57,13 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
 
         const todosTickets = [...tickets.aSerUtilizado, ...tickets.utilizado, ...tickets.cancelado, ...tickets.naoUtilizado]
         const todosTicketsOrdenados = todosTickets.sort((a, b) => {
-            return new Date(b!.meal.date).getTime() - new Date(a!.meal.date).getTime()
+            return new Date(b!.menu.date).getTime() - new Date(a!.menu.date).getTime()
         })
 
         const ticketsMaisRecentes = todosTicketsOrdenados.slice(0, QUANTOS_TICKETS_MOSTRAR)
 
         // Sempre mantém os tickets sem justificativa no início da lista.
-        const concatenarTicketsETicketsSemJustificativa = [...tickets.naoUtilizadoSemJustificativa, ...ticketsMaisRecentes] as IRefeicaoDoHistorico[]
+        const concatenarTicketsETicketsSemJustificativa = [...tickets.naoUtilizadoSemJustificativa, ...ticketsMaisRecentes]
 
         setTicketsMaisRecentes(concatenarTicketsETicketsSemJustificativa)
     }, [tickets])
@@ -85,7 +82,7 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
                 {
                     !isLoading && !isError &&
                     ticketsMaisRecentes.map((refeicao, index) => (
-                        <RefeicaoDoHistorico key={index} {...menu} />
+                        <RefeicaoDoHistorico key={index} {...refeicao} />
                     ))
                 }
                 {
