@@ -259,7 +259,7 @@ export async function buscarTabelaDeCardapios({ campus_id, data, refeicoes_dispo
                 campus_id,
                 date: data,
                 id: 0,
-                permission: false,
+                permission: 0,
             }
         };
     });
@@ -293,7 +293,8 @@ export async function buscarRefeicoes() {
         qtdTimeReservationEnd: refeicao.qtdTimeReservationEnd,
         qtdTimeReservationStart: refeicao.qtdTimeReservationStart,
         timeEnd: refeicao.timeEnd,
-        timeStart: refeicao.timeStart
+        timeStart: refeicao.timeStart,
+        campus_id: refeicao.campus_id
     }))
 
     return {

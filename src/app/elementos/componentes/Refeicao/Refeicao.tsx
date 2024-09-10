@@ -7,7 +7,7 @@ import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { pegarStatusDaRefeicao } from "@/app/lib/elementos/Refeicao";
 import Skeleton from "react-loading-skeleton";
 import { BotaoDeRefeicao } from "./BotaoDeRefeicao";
-import { TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
+import { TCardapio, TRefeicao, TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
 
 const getVarianteNomeRefeicaoPorTurno = (turno: number) => {
     switch (turno) {
@@ -42,6 +42,13 @@ const descricaoCardapioParaArrayStrings = (descricao: string) => {
     return descricao.split(/[;+]/).filter(naoVazio => naoVazio)
 }
 
+type IRefeicaoProps = {
+    meal: TRefeicao;
+    menu: TCardapio;
+} | {
+    turno: number;
+}
+
 const RefeicaoCurta = (props: TRefeicaoECardapio) => {
     const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[pegarStatusDaRefeicao(props)];
 
@@ -56,7 +63,7 @@ const RefeicaoCurta = (props: TRefeicaoECardapio) => {
 }
 
 const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
-    if (!props.menu || !props.meal) return <RefeicaoCurta {...props} />
+    if ("turno" in props) return <RefeicaoCurta {...props} />
 
     const StatusRefeicao = elementoStatusRefeicaoPorTextoStatusRefeicao[pegarStatusDaRefeicao(props)];
     const textoStatus = pegarStatusDaRefeicao(props);
@@ -93,7 +100,20 @@ const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
     )
 }
 
-export const Refeicao = (props: TRefeicaoECardapio) => {
+const RefeicaoIndisponivel = (props: IRefeicaoProps) => {
+    if ("turno" in props) return (
+        <Secao className="flex flex-col gap-y-2 h-fit">
+            <div className="flex justify-between">
+                <NomeDaRefeicao variante={getVarianteNomeRefeicaoPorTurno(props.turno)} />
+                <StatusDaRefeicao cor="cinza-600" icone="relogio-x" texto="Indisponível" textoTooltip="Está muito cedo ou muito tarde para reservar esta refeição." />
+            </div>
+        </Secao>
+    )
+}
+
+export const Refeicao = (props: IRefeicaoProps) => {
+    if ("turno" in props) return <RefeicaoIndisponivel {...props} />
+
     const textoStatus = pegarStatusDaRefeicao(props);
     const comBotao = textoStatus === "disponivel" || textoStatus === "reservado";
     return RefeicaoLonga(props, comBotao);

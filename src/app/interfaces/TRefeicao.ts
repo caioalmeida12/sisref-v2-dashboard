@@ -1,5 +1,4 @@
 import z from 'zod';
-import { TCampusSchema } from './TCampus';
 
 export const TTurnoSchema = z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]);
 
@@ -10,7 +9,7 @@ export const TRefeicaoSchema = z.object({
     qtdTimeReservationStart: z.number(),
     timeEnd: z.string(),
     timeStart: z.string(),
-    campus_id: TCampusSchema.pick({ id: true }).optional()
+    campus_id: z.number(),
 });
 
 export const TRefeicaoComTurnoSchema = TRefeicaoSchema.extend({
@@ -22,12 +21,12 @@ export const TCardapioSchema = z.object({
     agendado: z.boolean(),
     date: z.string(),
     description: z.string(),
-    permission: z.boolean(),
+    permission: z.number(),
     id: z.number(),
     campus_id: z.number(),
     canceled_by_student: z.boolean().optional(),
     absenceJustification: z.string().nullable().optional(),
-    meal_id: TRefeicaoSchema.pick({ id: true }).optional(),
+    meal_id: z.number().optional(),
 });
 
 export const TRefeicaoECardapioSchema = z.object({
