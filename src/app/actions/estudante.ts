@@ -35,15 +35,15 @@ export async function buscarRefeicoesPorDia({ data = new Date().toISOString().sp
         // mapear o campo "meal" para o campo "refeicao" e utilizar o restante dos campos como "cardapio"
         const { meal, ...menu } = refeicao
 
-        const formatar = TRefeicaoECardapioSchema.parse({
-            refeicao: meal,
-            cardapio: menu
+        const formatar = TRefeicaoECardapioSchema.safeParse({
+            meal,
+            menu
         })
 
-        return formatar
+        return formatar.success ? formatar.data : []
     })
 
-    return refeicoes
+    return refeicoes.flat()
 }
 
 /**

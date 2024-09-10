@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Refeicao, RefeicaoLoading } from "@elementos/componentes/Refeicao/Refeicao";
 import { Slider } from "@elementos/componentes/Slider";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
@@ -8,16 +8,39 @@ import { Secao } from "@elementos/basicos/Secao";
 import { useQuery } from "@tanstack/react-query";
 import { CustomTooltipWrapper } from "@elementos/basicos/CustomTooltipWrapper";
 import { buscarRefeicoesPorDia } from "@/app/actions/estudante";
+import { TRefeicao, TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
 
 
 export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: boolean }) => {
     const [dataDaPesquisa, setDataDaPesquisa] = useState(new Date().toISOString().split('T')[0]);
+    const [todasAsRefeicoes, setTodasAsRefeicoes] = useState<(TRefeicaoECardapio | { meal: TRefeicao, menu: null })[]>([]);
     const textoData = new Date().toISOString().split('T')[0] === dataDaPesquisa ? "hoje" : DatasHelper.converterParaFormatoBrasileiro(dataDaPesquisa);
 
-    const { data: refeicoes, isLoading } = useQuery({
+    const { data: refeicoesEncontradas, isLoading } = useQuery({
         queryKey: ['refeicoesPorDia', dataDaPesquisa],
         queryFn: () => buscarRefeicoesPorDia({ data: dataDaPesquisa }),
     });
+
+    useEffect(() => {
+        // Sempre é necessário ter 4 refeições, mesmo que não tenha sido encontrada nenhuma. Essas refeições são as refeições padrão e têm meal.id de 1 a 4.
+        const refeicoesAdicionadas = [1, 2, 3, 4].map((id) => {
+            return refeicoesEncontradas?.find(refeicao => refeicao.meal.id === id) || {
+                meal: {
+                    id: id,
+                    description: "",
+                    qtdTimeReservationStart: 0,
+                    qtdTimeReservationEnd: 0,
+                    timeStart: "",
+                    timeEnd: "",
+                    campus_id: 1
+                }, menu: null
+            }
+        });
+
+        console.log(refeicoesAdicionadas);
+
+        setTodasAsRefeicoes(refeicoesAdicionadas);
+    }, [refeicoesEncontradas])
 
     // Limitar a distância de dias entre a data atual e a data selecionada
     const dataSelecionada = new Date(dataDaPesquisa).toISOString().split('T')[0];
@@ -41,7 +64,7 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
                 }}
 
                 tooltip={
-                    refeicoes?.length === 0 && <CustomTooltipWrapper
+                    refeicoesEncontradas?.length === 0 && <CustomTooltipWrapper
                         elementoContent={
                             <p>
                                 Nenhuma refeição encontrada para esta data.
@@ -64,9 +87,14 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
                 ))
             }
             {
-                refeicoes &&
-                refeicoes.map((refeicao) => (
-                    <Refeicao {...refeicao} key={refeicao.meal.id} />
+                !isLoading &&
+                refeicoesEncontradas &&
+                todasAsRefeicoes.map((refeicao) => (
+                    // Se a refeição não for encontrada, passar o turno da refeição para o componente Refeicao
+                    // O componente refeição, por sua vez, irá exibir uma mensagem de refeição indisponível
+                    refeicao.menu && refeicao.meal ?
+                        <Refeicao {...refeicao} key={refeicao.meal.id} />
+                        : <Refeicao turno={refeicao.meal.id} key={refeicao.meal.id} />
                 ))
             }
         </Secao>
