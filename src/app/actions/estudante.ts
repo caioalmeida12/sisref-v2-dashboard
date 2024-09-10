@@ -7,13 +7,13 @@
 import { cookies } from "next/headers";
 import { FetchHelper } from "../lib/actions/FetchHelper";
 import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
-import { IBuscarRefeicoesAutorizadas } from "@/app/interfaces/IBuscarRefeicoesAutorizadas";
 import { IJustificativaDeEstudante, justificativasPermitidas } from "@/app/interfaces/IJustificativaDeEstudante";
 import { IRelatorioDeDesperdicio } from "@/app/interfaces/IRelatorioDeDesperdicio";
 import { TEstudanteComCurso } from "../interfaces/TEstudante";
 import { TRefeicao, TRefeicaoECardapioSchema } from "../interfaces/TRefeicao";
 import { IRespostaPaginada } from "../interfaces/IRespostaPaginada";
 import { TRefeicaoDoHistoricoSchema } from "../interfaces/TRefeicaoDoHistorico";
+import { TBuscarRefeicoesAutorizadas, TBuscarRefeicoesAutorizadasSchema } from "../interfaces/TBuscarRefeicoesAutorizadas";
 
 /**
  * Busca as refeições disponíveis para o dia solicitado. Se não for passado nenhum parâmetro, a data atual será utilizada.
@@ -73,7 +73,7 @@ export const cancelarRefeicao = async ({ meal_id, date }: { meal_id?: number, da
  * @returns Um array de objetos contendo as refeições autorizadas.
  */
 export async function buscarRefeicoesAutorizadas() {
-    const resposta = await FetchHelper.get<IBuscarRefeicoesAutorizadas>({
+    const resposta = await FetchHelper.get<unknown>({
         rota: `/student/schedulings/allows-meal-by-day`,
         cookies: cookies(),
     })
@@ -81,6 +81,8 @@ export async function buscarRefeicoesAutorizadas() {
     if (!resposta.sucesso) return redirecionarViaAction(`/login?erro=${encodeURIComponent(resposta.message)}`)
 
     return resposta.resposta
+        .map((refeicao: any) => TBuscarRefeicoesAutorizadasSchema.safeParse(refeicao))
+        .flatMap((refeicao) => refeicao.success ? refeicao.data : [])
 }
 
 const urlPorTipoDeTicket = {
