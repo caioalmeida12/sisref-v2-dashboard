@@ -345,8 +345,6 @@ export async function buscarAgendamentos({ data_inicial }: { data_inicial: strin
     const agendamentos = resposta.resposta[0].data.flatMap(agendamento => {
         const formatar = TAgendamentoSchema.safeParse(agendamento);
 
-        console.log(formatar.error?.errors)
-
         return formatar.success ? formatar.data : [];
     });
 
