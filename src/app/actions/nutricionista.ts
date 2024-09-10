@@ -9,7 +9,7 @@ import { FetchHelper } from "../lib/actions/FetchHelper";
 import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
 import { TAgendamento, TAgendamentoSchema } from "@/app/interfaces/TAgendamento";
 import { IRelatorioDeDesperdicio } from "../interfaces/IRelatorioDeDesperdicio";
-import { TRefeicao, TRefeicaoECardapio, TRefeicaoECardapioSchema, TRefeicaoSchema } from "../interfaces/TRefeicao";
+import { TCardapio, TRefeicao, TRefeicaoECardapio, TRefeicaoECardapioSchema, TRefeicaoSchema } from "../interfaces/TRefeicao";
 import { TRelatorioDeRefeicoes } from "../interfaces/TRelatorioDeRefeicoes";
 
 /**
@@ -203,8 +203,8 @@ const formatarRefeicaoDoBackendParaOFrontend = (menu: any) => {
         menu: {
             ...cardapio,
             agendado: false,
-            permission: false
-        }
+            permission: 1
+        } satisfies TCardapio
     });
 
     return formatar.success ? formatar.data : [];
@@ -228,7 +228,7 @@ export async function buscarTabelaDeCardapios({ campus_id, data, refeicoes_dispo
     //   meal: [Object]
     // } 
     // Esse objeto deve ser convertido para TRefeicaoECardapio antes de ser retornado.
-    const resposta = await FetchHelper.get<TRefeicao>({
+    const resposta = await FetchHelper.get<unknown>({
         rota: `/menu/all-by-date?campus_id=${campus_id}&date=${data}`,
         cookies: cookies(),
         rotaParaRedirecionarCasoFalhe: null,
