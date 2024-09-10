@@ -1,3 +1,6 @@
+/**
+ * Este modelo de relatório está em processo de depreciação. Não é recomendado o uso deste modelo.
+ */
 export interface IRelatorioDeDesperdicio {
     id: number;
     total_food_waste: number | string;
