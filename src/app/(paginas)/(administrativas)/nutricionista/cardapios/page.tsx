@@ -41,8 +41,6 @@ export default function NutricionistaPage() {
     queryFn: async () => {
       const resposta = await buscarTabelaDeCardapios({ campus_id: 1, data: datas.dataInicial, refeicoes_disponiveis: refeicoesDisponiveis });
 
-      console.log(resposta);
-
       return resposta.sucesso ? resposta.resposta : []
     },
     initialData: []
