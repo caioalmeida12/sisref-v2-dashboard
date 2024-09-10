@@ -1,7 +1,6 @@
 import { z } from "zod";
-import { TEstudanteComCursoSchema, TEstudanteSchema } from "./TEstudante";
+import { TEstudanteComCursoSchema } from "./TEstudante";
 import { TCardapioSchema, TRefeicaoSchema } from "./TRefeicao";
-import { TCampusSchema } from "./TCampus";
 
 export const TAgendamentoSchema = z.object({
     id: z.number(),
@@ -9,14 +8,14 @@ export const TAgendamentoSchema = z.object({
     dateInsert: z.string(),
     time: z.string(),
     wasPresent: z.number(),
-    meal_id: TRefeicaoSchema.pick({ id: true }),
-    student_id: TEstudanteSchema.pick({ id: true }),
+    meal_id: z.number(),
+    student_id: z.number(),
     user_id: z.number().nullable(),
-    campus_id: TCampusSchema.pick({ id: true }),
+    campus_id: z.number(),
     absenceJustification: z.string().nullable(),
     canceled_by_student: z.number(),
     ticketCode: z.string().nullable(),
-    menu_id: TCardapioSchema.pick({ id: true }),
+    menu_id: z.number(),
     studentJustification: z.string().nullable(),
     student: TEstudanteComCursoSchema,
     menu: TCardapioSchema.omit({ agendado: true, permission: true }),
