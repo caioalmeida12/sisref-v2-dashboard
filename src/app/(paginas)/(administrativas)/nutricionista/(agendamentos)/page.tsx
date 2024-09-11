@@ -11,7 +11,7 @@ import { TabelaDeCrud } from '@/app/elementos/modulos/comuns/TabelaDeCrud/Tabela
 import { DatasHelper } from '@/app/lib/elementos/DatasHelper';
 import * as Form from '@radix-ui/react-form';
 import { useQuery } from '@tanstack/react-query';
-import { ColumnDef } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/react-table';
 import * as React from 'react';
 import { useRef } from 'react';
 import { ModalAdicionarAgendamento } from '@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento';
@@ -31,61 +31,64 @@ export default function Agendamentos() {
         initialData: []
     });
 
-    const colunas = React.useMemo<ColumnDef<TAgendamento>[]>(() => [
-        {
-            accessorKey: 'ID',
-            accessorFn: (row) => row.id,
-            cell: info => <div className="flex flex-col justify-center items-center gap-4">{`${info.getValue()}`}</div>,
-            meta: {
-                filterVariant: "range"
-            },
-        },
-        {
-            accessorKey: 'Refeição',
-            accessorFn: (row) => row.meal.description,
-            cell: info => <div className="flex flex-col justify-center items-start gap-4">{`${info.getValue()}`}</div>,
-        },
-        {
-            accessorKey: 'Estudante',
-            accessorFn: (row) => row.student.name,
-            cell: info => <div className="flex flex-col justify-center items-center gap-4 flex-[1,0,0]">{`${info.getValue()}`}</div>,
-        },
-        {
-            accessorKey: 'Cardápio',
-            accessorFn: (row) => row.menu.description,
-            cell: info => <div className="flex flex-col justify-center items-start gap-4 flex-[1,0,0]">{`${info.getValue()}`}</div>,
-        },
-        {
-            accessorKey: 'Vencimento',
-            accessorFn: (row) => row.student.dateValid,
-            cell: info => <div className="flex flex-col justify-center items-center gap-4">
-                <Badge texto={`${info.getValue()}`} corDaBadge="bg-verde-300" />
-            </div>,
-        },
-        {
-            accessorKey: 'Curso',
-            accessorFn: (row) => row.student.course.initials,
-            cell: info => <div className="flex flex-col justify-center items-center gap-4">{`${info.getValue()}`}</div>,
-        }, {
-            header: 'Ações',
-            id: 'Ações',
-            accessorFn: (row) => row,
-            cell: info => (
+    const colunasHelper = createColumnHelper<TAgendamento>();
+
+    const colunas = React.useMemo(() => [
+        colunasHelper.accessor('id', {
+            cell: props => props.getValue(),
+            header: 'ID',
+            enableResizing: false,
+            size: 80,
+        }),
+        colunasHelper.accessor('meal.description', {
+            cell: props => props.getValue(),
+            header: 'Refeição',
+            maxSize: 175,
+        }),
+        colunasHelper.accessor('student.name', {
+            cell: props => props.getValue(),
+            header: 'Estudante',
+            size: 400
+        }),
+        colunasHelper.accessor('menu.description', {
+            cell: props => props.getValue(),
+            header: 'Cardápio',
+        }),
+        colunasHelper.accessor('menu.date', {
+            cell: props => props.getValue(),
+            header: 'Data',
+            maxSize: 100
+        }),
+        colunasHelper.accessor('student.dateValid', {
+            cell: props => <Badge texto={props.getValue()} corDaBadge="bg-verde-300" />,
+            header: 'Vencimento',
+            maxSize: 130
+        }),
+        colunasHelper.accessor('student.course.initials', {
+            cell: props => props.getValue(),
+            header: 'Curso',
+            maxSize: 80
+        }),
+        colunasHelper.display({
+            cell: props => (
                 <div className="flex justify-center gap-x-2">
                     <div className="w-5 h-5 relative">
-                        <ModalRemoverAgendamento agendamento={info.row.original} />
+                        <ModalRemoverAgendamento agendamento={props.row.original} />
                     </div>
                     {
-                        !(info.row.original.wasPresent) && (
+                        !(props.row.original.wasPresent) && (
                             <div className="w-5 h-5 relative">
-                                <ModalConfirmarAgendamento agendamento={info.row.original} />
+                                <ModalConfirmarAgendamento agendamento={props.row.original} />
                             </div>
                         )
                     }
                 </div>
-            )
-        }
-    ], []);
+            ),
+            size: 75,
+            enableResizing: false,
+            header: 'Ações',
+        })
+    ], [])
 
     return (
         <Secao className="border-none">

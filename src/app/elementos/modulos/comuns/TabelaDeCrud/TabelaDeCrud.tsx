@@ -1,9 +1,12 @@
-import React from 'react'
+"use client"
 
+import React from 'react'
 import {
     Column,
     ColumnDef,
     ColumnFiltersState,
+    ColumnResizeDirection,
+    ColumnResizeMode,
     RowData,
     flexRender,
     getCoreRowModel,
@@ -17,8 +20,6 @@ import {
 } from '@tanstack/react-table'
 
 declare module '@tanstack/react-table' {
-    //allows us to define custom properties for our columns
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface ColumnMeta<TData extends RowData, TValue> {
         filterVariant?: 'text' | 'range' | 'select'
     }
@@ -26,6 +27,21 @@ declare module '@tanstack/react-table' {
 
 export function TabelaDeCrud<TipoDeDado>({ colunas, dados, refetch }: { colunas: ColumnDef<TipoDeDado, any>[], dados: TipoDeDado[], refetch: () => void }) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+    const [sorting, setSorting] = React.useState<{ id: string; desc: boolean }[]>([{
+        id: 'id',
+        desc: true,
+    }])
+    const [pagination, setPagination] = React.useState({
+        pageIndex: 0,
+        pageSize: 50,
+    })
+    const [columnResizeMode, setColumnResizeMode] =
+        React.useState<ColumnResizeMode>('onChange')
+
+    const [columnResizeDirection, setColumnResizeDirection] =
+        React.useState<ColumnResizeDirection>('ltr')
+
+    const rerender = React.useReducer(() => ({}), {})[1]
 
     const refreshData = refetch
 
@@ -34,78 +50,91 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, refetch }: { colunas:
         columns: colunas,
         state: {
             columnFilters,
+            sorting,
+            pagination
         },
-        onColumnFiltersChange: setColumnFilters,
+        columnResizeMode,
+        columnResizeDirection,
         getCoreRowModel: getCoreRowModel(),
+        onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(), //client-side filtering
+        onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
+        onPaginationChange: setPagination,
         getPaginationRowModel: getPaginationRowModel(),
-        getFacetedRowModel: getFacetedRowModel(), // client-side faceting
-        getFacetedUniqueValues: getFacetedUniqueValues(), // generate unique values for select filter/autocomplete
-        getFacetedMinMaxValues: getFacetedMinMaxValues(), // generate min/max values for range filter
+        enableColumnResizing: true,
+        // getFacetedRowModel: getFacetedRowModel(), // client-side faceting
+        // getFacetedUniqueValues: getFacetedUniqueValues(), // generate unique values for select filter/autocomplete
+        // getFacetedMinMaxValues: getFacetedMinMaxValues(), // generate min/max values for range filter
         debugTable: true,
         debugHeaders: true,
         debugColumns: false,
     })
 
     return (
-        <div className="p-2">
-            <table>
+        <div className="p-2 grid">
+            <table
+                {...{
+                    style: {
+                        width: table.getCenterTotalSize(),
+                    },
+                }}
+            >
                 <thead>
                     {table.getHeaderGroups().map(headerGroup => (
-                        <tr key={headerGroup.id}>
-                            {headerGroup.headers.map(header => {
-                                return (
-                                    <th key={header.id} colSpan={header.colSpan}>
-                                        {header.isPlaceholder ? null : (
-                                            <>
-                                                <div
-                                                    {...{
-                                                        className: header.column.getCanSort()
-                                                            ? 'cursor-pointer select-none flex px-3 py-1.5 justify-center items-start rounded bg-preto-400 text-branco-400'
-                                                            : '',
-                                                        onClick: header.column.getToggleSortingHandler(),
-                                                    }}
-                                                >
-                                                    {flexRender(
-                                                        header.column.columnDef.header,
-                                                        header.getContext()
-                                                    )}
-                                                    {{
-                                                        asc: ' 🔼',
-                                                        desc: ' 🔽',
-                                                    }[header.column.getIsSorted() as string] ?? null}
-                                                </div>
-                                                {header.column.getCanFilter() ? (
-                                                    <div>
-                                                        <Filter column={header.column} />
-                                                    </div>
-                                                ) : null}
-                                            </>
+                        <tr key={headerGroup.id} className="flex">
+                            {headerGroup.headers.map(header => (
+                                <th
+                                    key={header.id}
+                                    colSpan={header.colSpan}
+                                    style={{
+                                        width: header.getSize(),
+                                    }}
+                                    className="p-1 font-bold text-center relative h-8 group"
+                                >
+                                    {header.isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext()
                                         )}
-                                    </th>
-                                )
-                            })}
+                                    <div
+                                        onDoubleClick={() => header.column.resetSize()}
+                                        onMouseDown={header.getResizeHandler()}
+                                        onTouchStart={header.getResizeHandler()}
+                                        className={`opacity-0 group-hover:opacity-100 absolute right-0 inset-y-0 my-2 w-1 rounded bg-cinza-600 cursor-col-resize select-none touch-none ${table.options.columnResizeDirection} ${header.column.getIsResizing() ? 'isResizing' : ''}`}
+                                        style={{
+                                            transform:
+                                                columnResizeMode === 'onEnd' &&
+                                                    header.column.getIsResizing()
+                                                    ? `translateX(${(table.options.columnResizeDirection === 'rtl' ? -1 : 1) * (table.getState().columnSizingInfo.deltaOffset ?? 0)}px)`
+                                                    : '',
+                                        }}
+                                    />
+                                </th>
+                            ))}
                         </tr>
                     ))}
                 </thead>
                 <tbody>
-                    {table.getRowModel().rows.map(row => {
-                        return (
-                            <tr key={row.id}>
-                                {row.getVisibleCells().map(cell => {
-                                    return (
-                                        <td key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
-                                        </td>
-                                    )
-                                })}
-                            </tr>
-                        )
-                    })}
+                    {table.getRowModel().rows.map(row => (
+                        <tr key={row.id} className="flex flex-wrap items-stretch bg-vermelho-200 overflow-clip">
+                            {row.getVisibleCells().map(cell => (
+                                <td
+                                    key={cell.id}
+                                    style={{
+                                        width: cell.column.getSize(),
+                                    }}
+                                    className="border bg-branco-400 flex flex-col justify-center"
+                                >
+                                    {flexRender(
+                                        cell.column.columnDef.cell,
+                                        cell.getContext()
+                                    )}
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
                 </tbody>
             </table>
             <div className="h-2" />
@@ -241,7 +270,6 @@ function Filter({ column }: { column: Column<any, unknown> }) {
         >
             <option value="">All</option>
             {sortedUniqueValues.map(value => (
-                //dynamically generated select options from faceted values feature
                 <option value={value} key={value}>
                     {value}
                 </option>
@@ -249,7 +277,6 @@ function Filter({ column }: { column: Column<any, unknown> }) {
         </select>
     ) : (
         <>
-            {/* Autocomplete suggestions from faceted values feature */}
             <datalist id={column.id + 'list'}>
                 {sortedUniqueValues.map((value: any, index) => (
                     <option value={value} key={index} />
@@ -268,7 +295,6 @@ function Filter({ column }: { column: Column<any, unknown> }) {
     )
 }
 
-// A typical debounced input react component
 function DebouncedInput({
     value: initialValue,
     onChange,
