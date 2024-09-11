@@ -25,7 +25,7 @@ declare module '@tanstack/react-table' {
     }
 }
 
-export function TabelaDeCrud<TipoDeDado>({ colunas, dados, refetch }: { colunas: ColumnDef<TipoDeDado, any>[], dados: TipoDeDado[], refetch: () => void }) {
+export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDef<TipoDeDado, any>[], dados: TipoDeDado[] }) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [sorting, setSorting] = React.useState<{ id: string; desc: boolean }[]>([{
         id: 'id',
@@ -40,10 +40,6 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, refetch }: { colunas:
 
     const [columnResizeDirection, setColumnResizeDirection] =
         React.useState<ColumnResizeDirection>('ltr')
-
-    const rerender = React.useReducer(() => ({}), {})[1]
-
-    const refreshData = refetch
 
     const table = useReactTable({
         data: dados,
@@ -63,22 +59,18 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, refetch }: { colunas:
         onPaginationChange: setPagination,
         getPaginationRowModel: getPaginationRowModel(),
         enableColumnResizing: true,
-        // getFacetedRowModel: getFacetedRowModel(), // client-side faceting
-        // getFacetedUniqueValues: getFacetedUniqueValues(), // generate unique values for select filter/autocomplete
-        // getFacetedMinMaxValues: getFacetedMinMaxValues(), // generate min/max values for range filter
+        getFacetedRowModel: getFacetedRowModel(), // client-side faceting
+        getFacetedUniqueValues: getFacetedUniqueValues(), // generate unique values for select filter/autocomplete
+        getFacetedMinMaxValues: getFacetedMinMaxValues(), // generate min/max values for range filter
         debugTable: true,
         debugHeaders: true,
         debugColumns: false,
     })
 
     return (
-        <div className="p-2 grid">
+        <div className="p-2">
             <table
-                {...{
-                    style: {
-                        width: table.getCenterTotalSize(),
-                    },
-                }}
+                className='text-center w-full max-w-full table-fixed'
             >
                 <thead>
                     {table.getHeaderGroups().map(headerGroup => (
@@ -92,25 +84,31 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, refetch }: { colunas:
                                     }}
                                     className="p-1 font-bold text-center relative h-8 group"
                                 >
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
-                                    <div
-                                        onDoubleClick={() => header.column.resetSize()}
-                                        onMouseDown={header.getResizeHandler()}
-                                        onTouchStart={header.getResizeHandler()}
-                                        className={`opacity-0 group-hover:opacity-100 absolute right-0 inset-y-0 my-2 w-1 rounded bg-cinza-600 cursor-col-resize select-none touch-none ${table.options.columnResizeDirection} ${header.column.getIsResizing() ? 'isResizing' : ''}`}
-                                        style={{
-                                            transform:
-                                                columnResizeMode === 'onEnd' &&
-                                                    header.column.getIsResizing()
-                                                    ? `translateX(${(table.options.columnResizeDirection === 'rtl' ? -1 : 1) * (table.getState().columnSizingInfo.deltaOffset ?? 0)}px)`
-                                                    : '',
-                                        }}
-                                    />
+                                    <div className="bg-preto-400 text-branco-400 rounded ">
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                        {
+                                            header.column.getCanResize() && (
+                                                <div
+                                                    onDoubleClick={() => header.column.resetSize()}
+                                                    onMouseDown={header.getResizeHandler()}
+                                                    onTouchStart={header.getResizeHandler()}
+                                                    className={`opacity-0 group-hover:opacity-100 absolute right-0 inset-y-0 my-2 w-1 rounded bg-cinza-600 cursor-col-resize select-none touch-none ${table.options.columnResizeDirection} ${header.column.getIsResizing() ? 'isResizing' : ''}`}
+                                                    style={{
+                                                        transform:
+                                                            columnResizeMode === 'onEnd' &&
+                                                                header.column.getIsResizing()
+                                                                ? `translateX(${(table.options.columnResizeDirection === 'rtl' ? -1 : 1) * (table.getState().columnSizingInfo.deltaOffset ?? 0)}px)`
+                                                                : '',
+                                                    }}
+                                                />
+                                            )
+                                        }
+                                    </div>
                                 </th>
                             ))}
                         </tr>
@@ -118,14 +116,14 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, refetch }: { colunas:
                 </thead>
                 <tbody>
                     {table.getRowModel().rows.map(row => (
-                        <tr key={row.id} className="flex flex-wrap items-stretch bg-vermelho-200 overflow-clip">
+                        <tr key={row.id} className="flex items-stretch overflow-clip bg-branco-400 [&:nth-of-type(odd)]:bg-cinza-400 hover:!bg-amarelo-200 transition-colors">
                             {row.getVisibleCells().map(cell => (
                                 <td
                                     key={cell.id}
                                     style={{
                                         width: cell.column.getSize(),
                                     }}
-                                    className="border bg-branco-400 flex flex-col justify-center"
+                                    className="flex flex-col justify-center overflow-clip"
                                 >
                                     {flexRender(
                                         cell.column.columnDef.cell,
@@ -200,9 +198,6 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, refetch }: { colunas:
                 </select>
             </div>
             <div>{table.getPrePaginationRowModel().rows.length} Rows</div>
-            <div>
-                <button onClick={() => refreshData()}>Refresh Data</button>
-            </div>
             <pre>
                 {JSON.stringify(
                     { columnFilters: table.getState().columnFilters },
