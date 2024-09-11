@@ -13,7 +13,7 @@ import { TEstudanteComCurso } from "../interfaces/TEstudante";
 import { TRefeicao, TRefeicaoECardapioSchema } from "../interfaces/TRefeicao";
 import { IRespostaPaginada } from "../interfaces/IRespostaPaginada";
 import { TRefeicaoDoHistoricoSchema } from "../interfaces/TRefeicaoDoHistorico";
-import { TBuscarRefeicoesAutorizadas, TBuscarRefeicoesAutorizadasSchema } from "../interfaces/TBuscarRefeicoesAutorizadas";
+import { TBuscarRefeicoesAutorizadasSchema } from "../interfaces/TBuscarRefeicoesAutorizadas";
 
 /**
  * Busca as refeições disponíveis para o dia solicitado. Se não for passado nenhum parâmetro, a data atual será utilizada.

@@ -36,7 +36,7 @@ export default function NutricionistaPage() {
     initialData: []
   });
 
-  const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela, refetch: refetchDadosDaTabela } = useQuery({
+  const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela } = useQuery({
     queryKey: ['tabelaDeCardapios', datas, refeicoesDisponiveis],
     queryFn: async () => {
       const resposta = await buscarTabelaDeCardapios({ campus_id: 1, data: datas.dataInicial, refeicoes_disponiveis: refeicoesDisponiveis });
