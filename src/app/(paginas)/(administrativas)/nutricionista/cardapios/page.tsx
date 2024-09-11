@@ -142,7 +142,7 @@ export default function NutricionistaPage() {
             {
               !isLoadingDadosDaTabela &&
               dadosDaTabela &&
-              <TabelaDeCrud colunas={colunas} dados={dadosDaTabela} refetch={refetchDadosDaTabela} />
+              <TabelaDeCrud colunas={colunas} dados={dadosDaTabela} />
             }
           </Secao>
         </Secao>

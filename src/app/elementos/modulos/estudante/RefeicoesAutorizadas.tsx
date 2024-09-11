@@ -3,10 +3,10 @@ import { Secao } from "@elementos/basicos/Secao";
 import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao";
 import { RefeicaoAutorizada } from "@elementos//componentes/RefeicaoAutorizada";
 import { InformacoesDeEstudante } from "./InformacoesDeEstudante";
-import { IBuscarRefeicoesAutorizadas } from "@/app/interfaces/IBuscarRefeicoesAutorizadas";
 import { buscarRefeicoesAutorizadas } from "@/app/actions/estudante";
+import { TBuscarRefeicoesAutorizadas } from "@/app/interfaces/TBuscarRefeicoesAutorizadas";
 
-const pegarOsDiasDaSemanaAutorizados = (refeicoesAutorizadas: IBuscarRefeicoesAutorizadas[], idDaRefeicao: number) => {
+const pegarOsDiasDaSemanaAutorizados = (refeicoesAutorizadas: TBuscarRefeicoesAutorizadas[], idDaRefeicao: number) => {
     const diasQueSaoAutorizados: string[] = [];
     refeicoesAutorizadas
         .filter(refeicao => refeicao.meal_id === idDaRefeicao)
