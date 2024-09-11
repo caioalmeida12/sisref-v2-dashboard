@@ -15,7 +15,7 @@ import { ModalEditarRefeicao } from "@/app/elementos/modulos/nutricionista/Refei
 import { TRefeicao } from "@/app/interfaces/TRefeicao";
 
 export default function NutricionistaPage() {
-  const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela, refetch } = useQuery({
+  const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela } = useQuery({
     queryKey: ['tabelaDeRefeicoes'],
     queryFn: async () => {
       const resposta = await buscarRefeicoes()
