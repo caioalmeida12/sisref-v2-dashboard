@@ -38,36 +38,32 @@ export default function Agendamentos() {
             cell: props => props.getValue(),
             header: 'ID',
             enableResizing: false,
-            size: 80,
         }),
         colunasHelper.accessor('meal.description', {
             cell: props => props.getValue(),
             header: 'Refeição',
-            maxSize: 175,
         }),
         colunasHelper.accessor('student.name', {
-            cell: props => props.getValue(),
+            cell: props => <p className='text-left'>{props.getValue()}</p>,
             header: 'Estudante',
-            size: 400
+            size: 600,
         }),
         colunasHelper.accessor('menu.description', {
             cell: props => props.getValue(),
             header: 'Cardápio',
+            size: 1000,
         }),
         colunasHelper.accessor('menu.date', {
-            cell: props => props.getValue(),
+            cell: props => DatasHelper.converterParaFormatoBrasileiro(props.getValue()),
             header: 'Data',
-            maxSize: 100
         }),
         colunasHelper.accessor('student.dateValid', {
-            cell: props => <Badge texto={props.getValue()} corDaBadge="bg-verde-300" />,
+            cell: props => <Badge texto={props.getValue()} corDaBadge="bg-verde-300" className='min-w-max' />,
             header: 'Vencimento',
-            maxSize: 130
         }),
         colunasHelper.accessor('student.course.initials', {
             cell: props => props.getValue(),
             header: 'Curso',
-            maxSize: 80
         }),
         colunasHelper.display({
             cell: props => (
@@ -121,7 +117,7 @@ export default function Agendamentos() {
                     </div>
                 </Secao>
                 <Secao>
-                    <TabelaDeCrud colunas={colunas} dados={dadosDaTabela ?? []} refetch={refetch} />
+                    <TabelaDeCrud colunas={colunas} dados={dadosDaTabela ?? []} />
                 </Secao>
             </Secao>
         </Secao>
