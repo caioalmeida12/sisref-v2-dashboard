@@ -68,23 +68,20 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDe
     })
 
     return (
-        <div className="p-2">
+        <div className="p-2 max-w-full overflow-x-auto">
             <table
-                className='text-center w-full max-w-full table-fixed'
+                className='text-center w-full max-w-full'
             >
                 <thead>
                     {table.getHeaderGroups().map(headerGroup => (
-                        <tr key={headerGroup.id} className="flex">
+                        <tr key={headerGroup.id} >
                             {headerGroup.headers.map(header => (
                                 <th
                                     key={header.id}
                                     colSpan={header.colSpan}
-                                    style={{
-                                        width: header.getSize(),
-                                    }}
-                                    className="p-1 font-bold text-center relative h-8 group"
+                                    className='relative group px-[0.125em]'
                                 >
-                                    <div className="bg-preto-400 text-branco-400 rounded ">
+                                    <div className="bg-preto-400 text-branco-400 rounded">
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
@@ -97,7 +94,7 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDe
                                                     onDoubleClick={() => header.column.resetSize()}
                                                     onMouseDown={header.getResizeHandler()}
                                                     onTouchStart={header.getResizeHandler()}
-                                                    className={`opacity-0 group-hover:opacity-100 absolute right-0 inset-y-0 my-2 w-1 rounded bg-cinza-600 cursor-col-resize select-none touch-none ${table.options.columnResizeDirection} ${header.column.getIsResizing() ? 'isResizing' : ''}`}
+                                                    className={`opacity-0 group-hover:opacity-100 absolute right-0 inset-y-0 w-1 rounded bg-cinza-600/75 cursor-col-resize select-none touch-none ${table.options.columnResizeDirection} ${header.column.getIsResizing() ? 'isResizing' : ''}`}
                                                     style={{
                                                         transform:
                                                             columnResizeMode === 'onEnd' &&
@@ -116,14 +113,17 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDe
                 </thead>
                 <tbody>
                     {table.getRowModel().rows.map(row => (
-                        <tr key={row.id} className="flex items-stretch overflow-clip bg-branco-400 [&:nth-of-type(odd)]:bg-cinza-400 hover:!bg-amarelo-200 transition-colors">
+                        <tr
+                            key={row.id}
+                            className='[&:nth-of-type(odd)]:bg-cinza-400 hover:!bg-amarelo-200/75'
+                        >
                             {row.getVisibleCells().map(cell => (
                                 <td
                                     key={cell.id}
                                     style={{
                                         width: cell.column.getSize(),
                                     }}
-                                    className="flex flex-col justify-center overflow-clip"
+                                    className='px-2'
                                 >
                                     {flexRender(
                                         cell.column.columnDef.cell,
@@ -197,14 +197,6 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDe
                     ))}
                 </select>
             </div>
-            <div>{table.getPrePaginationRowModel().rows.length} Rows</div>
-            <pre>
-                {JSON.stringify(
-                    { columnFilters: table.getState().columnFilters },
-                    null,
-                    2
-                )}
-            </pre>
         </div>
     )
 }
