@@ -37,28 +37,27 @@ export default function Agendamentos() {
         colunasHelper.accessor('id', {
             cell: props => props.getValue(),
             header: 'ID',
-            enableResizing: false,
         }),
         colunasHelper.accessor('meal.description', {
-            cell: props => props.getValue(),
+            cell: props => <div className="whitespace-nowrap">{props.getValue()}</div>,
             header: 'Refeição',
         }),
         colunasHelper.accessor('student.name', {
             cell: props => <p className='text-left'>{props.getValue()}</p>,
             header: 'Estudante',
-            size: 600,
+            size: 750
         }),
         colunasHelper.accessor('menu.description', {
-            cell: props => props.getValue(),
+            cell: props => <div className="line-clamp-1 hover:line-clamp-none">{props.getValue()}</div>,
             header: 'Cardápio',
-            size: 1000,
+            size: 1000
         }),
         colunasHelper.accessor('menu.date', {
             cell: props => DatasHelper.converterParaFormatoBrasileiro(props.getValue()),
             header: 'Data',
         }),
         colunasHelper.accessor('student.dateValid', {
-            cell: props => <Badge texto={props.getValue()} corDaBadge="bg-verde-300" className='min-w-max' />,
+            cell: props => <Badge texto={props.getValue()} corDaBadge="bg-verde-300" className='min-w-max whitespace-nowrap border-none' />,
             header: 'Vencimento',
         }),
         colunasHelper.accessor('student.course.initials', {
@@ -80,7 +79,6 @@ export default function Agendamentos() {
                     }
                 </div>
             ),
-            size: 75,
             enableResizing: false,
             header: 'Ações',
         })
