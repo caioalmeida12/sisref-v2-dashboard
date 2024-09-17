@@ -2,7 +2,6 @@
 
 import React from 'react'
 import {
-    Column,
     ColumnDef,
     ColumnFiltersState,
     ColumnResizeDirection,
@@ -18,12 +17,6 @@ import {
     getSortedRowModel,
     useReactTable,
 } from '@tanstack/react-table'
-
-declare module '@tanstack/react-table' {
-    interface ColumnMeta<TData extends RowData, TValue> {
-        filterVariant?: 'text' | 'range' | 'select'
-    }
-}
 
 export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDef<TipoDeDado, any>[], dados: TipoDeDado[] }) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
