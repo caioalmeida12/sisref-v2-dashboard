@@ -254,18 +254,16 @@ export async function buscarTabelaDeCardapios({ campus_id, data, refeicoes_dispo
 /**
  * Realiza uma chamada assíncrona para a API que busca todas as refeições disponíveis.
  */
-export async function buscarRefeicoes() {
+export async function buscarRefeicoes(): Promise<IRespostaDeAction<TRefeicao>> {
     const resposta = await FetchHelper.get<TRefeicao[]>({
         rota: "/meal/all",
         cookies: cookies(),
         rotaParaRedirecionarCasoFalhe: null,
     });
 
-    if (!resposta.sucesso) {
-        return {
-            sucesso: false,
-            mensagem: resposta.message
-        }
+    if (!resposta.sucesso) return {
+        sucesso: false,
+        mensagem: resposta.message
     }
 
     // Refeições buscadas com sucesso
