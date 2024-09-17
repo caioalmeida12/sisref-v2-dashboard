@@ -134,7 +134,7 @@ export default function Agendamentos() {
                     </div>
                 </Secao>
                 <Secao>
-                    <TabelaDeCrud colunas={colunas} dados={dadosDaTabela ?? []} estaCarregando={isLoadingDadosDaTabela} />
+                    <TabelaDeCrud colunas={colunas} dados={dadosDaTabela ?? []} estaCarregando={isLoadingDadosDaTabela} ordenacaoPadrao={[{ id: 'id', desc: true }]} />
                 </Secao>
             </Secao>
         </Secao>

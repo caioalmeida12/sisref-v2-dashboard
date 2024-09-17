@@ -213,22 +213,12 @@ const formatarRefeicaoDoBackendParaOFrontend = (menu: any) => {
 /**
  *  Busca as refeições de um determinado campus para uma determinada data.
  */
-export async function buscarTabelaDeCardapios({ campus_id, data, refeicoes_disponiveis }: { campus_id: number, data: string, refeicoes_disponiveis?: TRefeicao[] }) {
+export async function buscarTabelaDeCardapios({ campus_id, data, refeicoes_disponiveis }: { campus_id: number, data: string, refeicoes_disponiveis?: TRefeicao[] }): Promise<{ sucesso: false, mensagem: string } | { sucesso: true, resposta: TRefeicaoECardapio[] }> {
     if (!refeicoes_disponiveis?.length) {
         return { sucesso: false, mensagem: "Refeições disponíveis não foram fornecidas." };
     }
 
-    // A api retorna um objeto do tipo 
-    // {
-    //   id: 2475,
-    //   date: '2024-09-05',
-    //   description: 'Pão com Manteiga + suco de uva 2 33',
-    //   campus_id: 1,
-    //   meal_id: 7,
-    //   meal: [Object]
-    // } 
-    // Esse objeto deve ser convertido para TRefeicaoECardapio antes de ser retornado.
-    const resposta = await FetchHelper.get<unknown>({
+    const resposta = await FetchHelper.get<{ sucesso: boolean, message: string, resposta: any[] }>({
         rota: `/menu/all-by-date?campus_id=${campus_id}&date=${data}`,
         cookies: cookies(),
         rotaParaRedirecionarCasoFalhe: null,
@@ -238,16 +228,8 @@ export async function buscarTabelaDeCardapios({ campus_id, data, refeicoes_dispo
         return { sucesso: false, mensagem: resposta.message };
     }
 
-    // Formata a resposta da API
     const refeicoesFormatadas = resposta.resposta.flatMap(formatarRefeicaoDoBackendParaOFrontend);
 
-    // Verifica se refeicoes_disponiveis está definida
-    if (!refeicoes_disponiveis) {
-        return { sucesso: false, mensagem: "Refeições disponíveis não foram fornecidas." };
-    }
-
-    // Pode ocorrer de entre as refeições disponíveis, algumas não estarem cadastradas ainda. Ex: o lanche da tarde do dia em questão não foi preenchido ainda.
-    // Nesse caso, é necessário retornar todas as refeições disponíveis, mesmo que algumas não tenham sido cadastradas, para que a pessoa nutricionista possa preencher.
     const todasAsRefeicoes: TRefeicaoECardapio[] = refeicoes_disponiveis.map(cardapio => {
         const refeicaoEncontrada = refeicoesFormatadas.find(refeicaoFormatada => refeicaoFormatada.meal.id === cardapio.id);
 

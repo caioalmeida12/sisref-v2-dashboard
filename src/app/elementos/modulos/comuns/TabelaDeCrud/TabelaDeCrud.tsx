@@ -18,12 +18,16 @@ import {
 } from '@tanstack/react-table'
 import Skeleton from 'react-loading-skeleton'
 
-export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando }: { colunas: ColumnDef<TipoDeDado, any>[], dados: TipoDeDado[], estaCarregando?: boolean }) {
+interface ITabelaDeCrudProps<TipoDeDado> {
+    colunas: ColumnDef<TipoDeDado, any>[]
+    dados: TipoDeDado[]
+    estaCarregando?: boolean
+    ordenacaoPadrao?: { id: string; desc: boolean }[]
+}
+
+export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando, ordenacaoPadrao }: ITabelaDeCrudProps<TipoDeDado>) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const [sorting, setSorting] = React.useState<{ id: string; desc: boolean }[]>([{
-        id: 'id',
-        desc: true,
-    }])
+    const [sorting, setSorting] = React.useState<{ id: string; desc: boolean }[]>(ordenacaoPadrao ?? [])
     const [pagination, setPagination] = React.useState({
         pageIndex: 0,
         pageSize: 50,
@@ -72,7 +76,7 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando }: { c
                                 <th
                                     key={header.id}
                                     colSpan={header.colSpan}
-                                    className='relative group px-[0.125em] cursor-pointer [&:first-of-type]:pl-0 [&:last-of-type]:pr-0'
+                                    className='relative group px-[0.125em] cursor-pointer [&:first-of-type]:pl-0 [&:last-of-type]:pr-0 h-1'
                                     onClick={() => {
                                         const isDesc = sorting.find(sort => sort.id === header.id)?.desc
                                         setSorting([{ id: header.id, desc: !isDesc }])
@@ -81,8 +85,8 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando }: { c
                                     <div
                                         className={
                                             header.column.getCanSort()
-                                                ? 'cursor-pointer select-none bg-preto-400 text-branco-400 rounded'
-                                                : 'bg-preto-400 text-branco-400 rounded'
+                                                ? 'h-full flex flex-col justify-center cursor-pointer select-none bg-preto-400 text-branco-400 rounded'
+                                                : 'h-full flex flex-col justify-center bg-preto-400 text-branco-400 rounded'
                                         }
                                         onClick={header.column.getToggleSortingHandler()}
                                         title={

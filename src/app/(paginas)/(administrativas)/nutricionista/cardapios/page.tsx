@@ -8,7 +8,7 @@ import { Botao } from "@/app/elementos/basicos/Botao";
 import * as Form from '@radix-ui/react-form';
 import { useQuery } from "@tanstack/react-query";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import { ColumnDef } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { ModalAdicionarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalAdicionarCardapio";
 import { ModalRemoverCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalRemoverCardapio";
@@ -36,7 +36,7 @@ export default function NutricionistaPage() {
     initialData: []
   });
 
-  const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela } = useQuery({
+  const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
     queryKey: ['tabelaDeCardapios', datas, refeicoesDisponiveis],
     queryFn: async () => {
       const resposta = await buscarTabelaDeCardapios({ campus_id: 1, data: datas.dataInicial, refeicoes_disponiveis: refeicoesDisponiveis });
@@ -56,33 +56,33 @@ export default function NutricionistaPage() {
     });
   };
 
-  const colunas = React.useMemo<ColumnDef<TRefeicaoECardapio>[]>(
+  const colunasHelper = createColumnHelper<TRefeicaoECardapio>();
+
+  const colunas = React.useMemo(
     () => [
-      {
-        accessorKey: 'ID',
-        accessorFn: (row) => row.meal.id,
+      colunasHelper.accessor('meal.id', {
         cell: info => info.getValue(),
+        header: 'ID',
         meta: {
           filterVariant: "range"
         }
-      }, {
-        accessorKey: 'Data',
-        accessorFn: (row) => row.menu.date,
+      }),
+      colunasHelper.accessor('menu.date', {
         cell: info => info.getValue() && DatasHelper.converterParaFormatoBrasileiro(`${info.getValue()}`) || 'Não informado',
-      }, {
-        accessorKey: 'Refeição',
-        accessorFn: (row) => row.meal.description,
+        header: 'Data',
+      }),
+      colunasHelper.accessor('meal.description', {
         cell: info => info.getValue(),
+        header: 'Refeição',
         meta: {
           filterVariant: "text"
         }
-      }, {
-        accessorKey: 'Cardápio',
-        accessorFn: (row) => row.menu.description,
+      }),
+      colunasHelper.accessor('menu.description', {
         cell: info => info.getValue(),
-      }, {
-        header: 'Ações',
-        id: 'Ações',
+        header: 'Cardápio',
+      }),
+      colunasHelper.display({
         cell: info => (
           // Refeições não cadastradas retornam id = 0
           info.row.original.meal.id && info.row.original.menu.id != 0 ? (
@@ -98,8 +98,9 @@ export default function NutricionistaPage() {
               <ModalAdicionarCardapio refeicao_e_cardapio={info.row.original} />
             </div>
           )
-        )
-      }
+        ),
+        header: 'Ações',
+      })
     ],
     []
   )
@@ -134,15 +135,7 @@ export default function NutricionistaPage() {
           </Secao>
           <Secao>
             {
-              isLoadingDadosDaTabela &&
-              <div className="flex justify-center items-center h-40">
-                <span>Carregando...</span>
-              </div>
-            }
-            {
-              !isLoadingDadosDaTabela &&
-              dadosDaTabela &&
-              <TabelaDeCrud colunas={colunas} dados={dadosDaTabela} />
+              <TabelaDeCrud colunas={colunas} dados={dadosDaTabela} estaCarregando={isLoadingDadosDaTabela} />
             }
           </Secao>
         </Secao>
