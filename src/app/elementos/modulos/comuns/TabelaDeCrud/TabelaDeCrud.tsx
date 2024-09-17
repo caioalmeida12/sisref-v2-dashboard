@@ -79,7 +79,7 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDe
                                 <th
                                     key={header.id}
                                     colSpan={header.colSpan}
-                                    className='relative group px-[0.125em] cursor-pointer'
+                                    className='relative group px-[0.125em] cursor-pointer [&:first-of-type]:pl-0 [&:last-of-type]:pr-0'
                                     onClick={() => {
                                         const isDesc = sorting.find(sort => sort.id === header.id)?.desc
                                         setSorting([{ id: header.id, desc: !isDesc }])
@@ -95,10 +95,10 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDe
                                         title={
                                             header.column.getCanSort()
                                                 ? header.column.getNextSortingOrder() === 'asc'
-                                                    ? 'Sort ascending'
+                                                    ? 'Crescente'
                                                     : header.column.getNextSortingOrder() === 'desc'
-                                                        ? 'Sort descending'
-                                                        : 'Clear sort'
+                                                        ? 'Decrescente'
+                                                        : 'Limpar ordenação'
                                                 : undefined
                                         }
                                     >
@@ -133,6 +133,7 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDe
                         </tr>
                     ))}
                 </thead>
+                <tbody className="block p-[.125em]"></tbody>
                 <tbody>
                     {table.getRowModel().rows.map(row => (
                         <tr
@@ -145,7 +146,7 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDe
                                     style={{
                                         width: cell.column.getSize(),
                                     }}
-                                    className='px-2'
+                                    className='px-2 [&:first-of-type]:rounded-tl [&:first-of-type]:rounded-bl [&:last-of-type]:rounded-tr [&:last-of-type]:rounded-br'
                                 >
 
                                     {flexRender(
