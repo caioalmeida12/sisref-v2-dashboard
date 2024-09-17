@@ -1,26 +1,28 @@
 "use client"
 
-import React, { useMemo } from "react";
+import React, { useRef, useState, useMemo } from "react";
 
 import { Secao } from "@/app/elementos/basicos/Secao";
 import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
+import { Botao } from "@/app/elementos/basicos/Botao";
+import * as Form from '@radix-ui/react-form';
 import { useQuery } from "@tanstack/react-query";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { buscarRefeicoes } from "@/app/actions/nutricionista";
-import { ModalRemoverRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalRemoverRefeicao";
 import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalAdicionarRefeicao";
+import { ModalRemoverRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalRemoverRefeicao";
 import { ModalEditarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalEditarRefeicao";
+import { buscarRefeicoes } from "@/app/actions/nutricionista";
 import { TRefeicao } from "@/app/interfaces/TRefeicao";
 
 export default function NutricionistaPage() {
-  const { data: dadosDaTabela, isLoading: isLoadingDadosDaTabela } = useQuery({
+  const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
     queryKey: ['tabelaDeRefeicoes'],
     queryFn: async () => {
-      const resposta = await buscarRefeicoes()
+      const resposta = await buscarRefeicoes();
 
-      return resposta.sucesso ? resposta.resposta : []
+      return resposta.sucesso ? resposta.resposta : [];
     },
     initialData: []
   });
@@ -69,30 +71,18 @@ export default function NutricionistaPage() {
   ], []);
 
   return (
-    <>
-      <Secao className="border-none">
-        <Secao className="max-w-[1440px] mx-auto flex flex-col gap-y-4">
-          <CabecalhoDeSecao titulo="Refeições" />
-          <Secao className="flex">
-            <div className='ml-auto mt-auto'>
-              <ModalAdicionarRefeicao />
-            </div>
-          </Secao>
-          <Secao>
-            {
-              isLoadingDadosDaTabela &&
-              <div className="flex justify-center items-center h-40">
-                <span>Carregando...</span>
-              </div>
-            }
-            {
-              !isLoadingDadosDaTabela &&
-              dadosDaTabela &&
-              <TabelaDeCrud colunas={colunas} dados={dadosDaTabela} />
-            }
-          </Secao>
+    <Secao className="border-none">
+      <Secao className="max-w-[1440px] mx-auto flex flex-col gap-y-4">
+        <CabecalhoDeSecao titulo="Refeições" />
+        <Secao className="flex">
+          <div className='ml-auto mt-auto'>
+            <ModalAdicionarRefeicao />
+          </div>
+        </Secao>
+        <Secao>
+          <TabelaDeCrud colunas={colunas} dados={dadosDaTabela ?? []} estaCarregando={isLoadingDadosDaTabela} />
         </Secao>
       </Secao>
-    </>
+    </Secao>
   );
 }
