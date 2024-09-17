@@ -59,9 +59,10 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando, orden
         getFacetedRowModel: getFacetedRowModel(), // client-side faceting
         getFacetedUniqueValues: getFacetedUniqueValues(), // generate unique values for select filter/autocomplete
         getFacetedMinMaxValues: getFacetedMinMaxValues(), // generate min/max values for range filter
-        debugTable: true,
+        debugTable: false,
         debugHeaders: true,
         debugColumns: false,
+        debugAll: false,
     })
 
     return (
