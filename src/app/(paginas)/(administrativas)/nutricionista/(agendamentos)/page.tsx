@@ -37,7 +37,7 @@ export default function Agendamentos() {
         initialData: []
     });
 
-    const colunasHelper = createColumnHelper<TAgendamento>();
+    const colunasHelper = createColumnHelper<typeof dadosDaTabela[number]>();
 
     const colunas = useMemo(() => [
         colunasHelper.accessor('id', {

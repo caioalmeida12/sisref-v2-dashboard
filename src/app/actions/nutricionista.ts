@@ -310,7 +310,7 @@ export async function criarRelatorioDeDesperdicio(formData: FormData) {
  * @param formData - Os dados do formulário de agendamento.
  * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: TRefeicao[] }.
  */
-export async function buscarAgendamentos({ data_inicial }: { data_inicial: string }) {
+export async function buscarAgendamentos({ data_inicial }: { data_inicial: string }): Promise<IRespostaDeAction<TAgendamento>> {
     const resposta = await FetchHelper.get<IRespostaPaginada<TAgendamento>>({
         rota: `/scheduling/list-by-date?page=1&date=${data_inicial}`,
         cookies: cookies(),
