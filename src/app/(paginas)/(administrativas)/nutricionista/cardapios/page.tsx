@@ -56,7 +56,7 @@ export default function NutricionistaPage() {
     });
   };
 
-  const colunasHelper = createColumnHelper<TRefeicaoECardapio>();
+  const colunasHelper = createColumnHelper<typeof dadosDaTabela[number]>();
 
   const colunas = React.useMemo(
     () => [
