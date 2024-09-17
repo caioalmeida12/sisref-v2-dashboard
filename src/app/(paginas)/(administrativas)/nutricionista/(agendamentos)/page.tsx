@@ -13,18 +13,24 @@ import * as Form from '@radix-ui/react-form';
 import { useQuery } from '@tanstack/react-query';
 import { createColumnHelper } from '@tanstack/react-table';
 import * as React from 'react';
-import { useRef } from 'react';
+import { useMemo, useState } from 'react';
 import { ModalAdicionarAgendamento } from '@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento';
 import { TAgendamento } from '@/app/interfaces/TAgendamento';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function Agendamentos() {
-    const dataInicialRef = useRef<HTMLInputElement>(null);
-    const dataFinalRef = useRef<HTMLInputElement>(null);
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const [datas, setDatas] = useState({
+        dataInicial: searchParams.get('dataInicial') || DatasHelper.getDataDeHoje(),
+        dataFinal: searchParams.get('dataFinal') || DatasHelper.getDataDeHoje()
+    });
 
-    const { data: dadosDaTabela, refetch } = useQuery({
-        queryKey: ['tabelaDeAgendamentos', dataInicialRef.current?.value, dataFinalRef.current?.value],
+    const { data: dadosDaTabela } = useQuery({
+        queryKey: ['tabelaDeAgendamentos', datas.dataInicial, datas.dataFinal],
         queryFn: async () => {
-            const resposta = await buscarAgendamentos({ data_inicial: dataInicialRef.current?.value || new Date().toISOString() });
+            const resposta = await buscarAgendamentos({ data_inicial: datas.dataInicial || new Date().toISOString() });
 
             return resposta.sucesso ? resposta.resposta : [];
         },
@@ -33,7 +39,7 @@ export default function Agendamentos() {
 
     const colunasHelper = createColumnHelper<TAgendamento>();
 
-    const colunas = React.useMemo(() => [
+    const colunas = useMemo(() => [
         colunasHelper.accessor('id', {
             cell: props => props.getValue(),
             header: 'ID',
@@ -84,31 +90,44 @@ export default function Agendamentos() {
         })
     ], [])
 
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+
+        const dataInicial = formData.get('dataInicial') as string;
+        const dataFinal = formData.get('dataFinal') as string;
+
+        const urlAtual = new URL(window.location.href);
+        urlAtual.searchParams.set('dataInicial', dataInicial);
+        urlAtual.searchParams.set('dataFinal', dataFinal);
+
+        setDatas({ dataInicial, dataFinal });
+        router.push(urlAtual.toString());
+    }
+
     return (
         <Secao className="border-none">
             <Secao className="max-w-[1440px] mx-auto flex flex-col gap-y-4">
                 <CabecalhoDeSecao titulo="Agendamentos" />
                 <Secao className="flex">
                     <div className="flex gap-x-4 items-end">
-                        <Form.Root className="flex">
+                        <Form.Root className="flex gap-x-2 items-end" onSubmit={handleSubmit}>
                             <Form.Field name="dataInicial" className="flex flex-col gap-y-2" >
                                 <Form.Label className="font-bold">
                                     Data Inicial
                                 </Form.Label>
-                                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={DatasHelper.getDataDeHoje()} ref={dataInicialRef} />
+                                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={datas.dataInicial} />
                             </Form.Field>
                             <Form.Submit />
-                        </Form.Root>
-                        <Form.Root className="flex">
-                            <Form.Field name="dataInicial" className="flex flex-col gap-y-2" >
+                            <Form.Field name="dataFinal" className="flex flex-col gap-y-2" >
                                 <Form.Label className="font-bold">
                                     Data Final
                                 </Form.Label>
-                                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={DatasHelper.getDataDeHoje()} ref={dataFinalRef} />
+                                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={datas.dataFinal} />
                             </Form.Field>
                             <Form.Submit />
+                            <Botao variante="adicionar" texto="Buscar" className="h-[36px] py-0 px-10" type='submit' />
                         </Form.Root>
-                        <Botao variante="adicionar" texto="Buscar" className="h-[36px] py-0 px-10" onClick={() => refetch()} />
                     </div>
                     <div className='ml-auto mt-auto'>
                         <ModalAdicionarAgendamento />
