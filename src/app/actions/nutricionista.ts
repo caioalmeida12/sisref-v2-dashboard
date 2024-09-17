@@ -492,9 +492,9 @@ export async function editarRefeicao(formData: FormData) {
  * 
  * @param data_inicial - A data inicial do relatório.
  * @param data_final - A data final do relatório.
- * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: [] }.
+ * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: TRelatorioDeRefeicoes[] }.
  */
-export async function buscarRelatorioDeRefeicoes({ data_inicial, data_final }: { data_inicial?: string, data_final?: string }) {
+export async function buscarRelatorioDeRefeicoes({ data_inicial, data_final }: { data_inicial?: string, data_final?: string }): Promise<{ sucesso: false, mensagem: string } | { sucesso: true, resposta: TRelatorioDeRefeicoes[] }> {
     if (!data_inicial || !data_final) {
         return { sucesso: false, mensagem: "Data inicial e data final são obrigatórias." };
     }
