@@ -27,7 +27,7 @@ export default function Agendamentos() {
         dataFinal: searchParams.get('dataFinal') || DatasHelper.getDataDeHoje()
     });
 
-    const { data: dadosDaTabela } = useQuery({
+    const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
         queryKey: ['tabelaDeAgendamentos', datas.dataInicial, datas.dataFinal],
         queryFn: async () => {
             const resposta = await buscarAgendamentos({ data_inicial: datas.dataInicial || new Date().toISOString() });
@@ -134,7 +134,7 @@ export default function Agendamentos() {
                     </div>
                 </Secao>
                 <Secao>
-                    <TabelaDeCrud colunas={colunas} dados={dadosDaTabela ?? []} />
+                    <TabelaDeCrud colunas={colunas} dados={dadosDaTabela ?? []} estaCarregando={isLoadingDadosDaTabela} />
                 </Secao>
             </Secao>
         </Secao>

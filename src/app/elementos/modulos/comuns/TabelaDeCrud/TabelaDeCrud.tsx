@@ -6,7 +6,6 @@ import {
     ColumnFiltersState,
     ColumnResizeDirection,
     ColumnResizeMode,
-    RowData,
     flexRender,
     getCoreRowModel,
     getFacetedMinMaxValues,
@@ -17,8 +16,9 @@ import {
     getSortedRowModel,
     useReactTable,
 } from '@tanstack/react-table'
+import Skeleton from 'react-loading-skeleton'
 
-export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDef<TipoDeDado, any>[], dados: TipoDeDado[] }) {
+export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando }: { colunas: ColumnDef<TipoDeDado, any>[], dados: TipoDeDado[], estaCarregando?: boolean }) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [sorting, setSorting] = React.useState<{ id: string; desc: boolean }[]>([{
         id: 'id',
@@ -126,30 +126,49 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDe
                         </tr>
                     ))}
                 </thead>
-                <tbody className="block p-[.125em]"></tbody>
+                <tbody className="block py-[.125em]"></tbody>
                 <tbody>
-                    {table.getRowModel().rows.map(row => (
-                        <tr
-                            key={row.id}
-                            className='[&:nth-of-type(odd)]:bg-cinza-400 hover:!bg-amarelo-200/75'
-                        >
-                            {row.getVisibleCells().map(cell => (
-                                <td
-                                    key={cell.id}
-                                    style={{
-                                        width: cell.column.getSize(),
-                                    }}
-                                    className='px-2 [&:first-of-type]:rounded-tl [&:first-of-type]:rounded-bl [&:last-of-type]:rounded-tr [&:last-of-type]:rounded-br'
-                                >
-
-                                    {flexRender(
-                                        cell.column.columnDef.cell,
-                                        cell.getContext()
-                                    )}
-                                </td>
-                            ))}
+                    {estaCarregando ? (
+                        Array.from({ length: 10 }).map((_, index) => (
+                            <tr key={index}>
+                                {
+                                    colunas.map((_coluna, index) => (
+                                        <td key={index} className='px-[.125em] [&:first-of-type]:pl-0 [&:last-of-type]:pr-0'>
+                                            <Skeleton className='h-5' />
+                                        </td>
+                                    ))
+                                }
+                            </tr>
+                        ))
+                    ) : dados.length === 0 ? (
+                        <tr className='hover:!bg-amarelo-200/75'>
+                            <td colSpan={colunas.length} className='text-center bg-cinza-400 rounded'>
+                                Nenhum dado encontrado
+                            </td>
                         </tr>
-                    ))}
+                    ) : (
+                        table.getRowModel().rows.map(row => (
+                            <tr
+                                key={row.id}
+                                className='[&:nth-of-type(odd)]:bg-cinza-400 hover:!bg-amarelo-200/75'
+                            >
+                                {row.getVisibleCells().map(cell => (
+                                    <td
+                                        key={cell.id}
+                                        style={{
+                                            width: cell.column.getSize(),
+                                        }}
+                                        className='px-2 [&:first-of-type]:rounded-tl [&:first-of-type]:rounded-bl [&:last-of-type]:rounded-tr [&:last-of-type]:rounded-br'
+                                    >
+                                        {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
+                                        )}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </table>
             <div className="h-2" />
@@ -207,8 +226,8 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDe
                         table.setPageSize(Number(e.target.value))
                     }}
                 >
-                    {[10, 25, 50, 100, dados.length].map(pageSize => (
-                        <option key={pageSize} value={pageSize}>
+                    {[10, 25, 50, 100, dados.length].map((pageSize, index) => (
+                        <option key={index} value={pageSize}>
                             {
                                 pageSize === dados.length ? 'Todos' : `Mostrar ${pageSize}`
                             }
