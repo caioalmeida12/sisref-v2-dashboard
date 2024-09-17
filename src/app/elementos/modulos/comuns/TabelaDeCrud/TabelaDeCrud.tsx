@@ -190,14 +190,14 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDe
                     {'>>'}
                 </button>
                 <span className="flex items-center gap-1">
-                    <div>Page</div>
+                    <div>Página</div>
                     <strong>
-                        {table.getState().pagination.pageIndex + 1} of{' '}
+                        {table.getState().pagination.pageIndex + 1} de{' '}
                         {table.getPageCount()}
                     </strong>
                 </span>
                 <span className="flex items-center gap-1">
-                    | Go to page:
+                    | Ir para página:
                     <input
                         type="number"
                         defaultValue={table.getState().pagination.pageIndex + 1}
@@ -214,9 +214,11 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados }: { colunas: ColumnDe
                         table.setPageSize(Number(e.target.value))
                     }}
                 >
-                    {[10, 20, 30, 40, 50].map(pageSize => (
+                    {[10, 25, 50, 100, dados.length].map(pageSize => (
                         <option key={pageSize} value={pageSize}>
-                            Show {pageSize}
+                            {
+                                pageSize === dados.length ? 'Todos' : `Mostrar ${pageSize}`
+                            }
                         </option>
                     ))}
                 </select>
