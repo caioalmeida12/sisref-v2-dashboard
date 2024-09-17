@@ -14,7 +14,6 @@ import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/nutricionista/Re
 import { ModalRemoverRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalRemoverRefeicao";
 import { ModalEditarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalEditarRefeicao";
 import { buscarRefeicoes } from "@/app/actions/nutricionista";
-import { TRefeicao } from "@/app/interfaces/TRefeicao";
 
 export default function NutricionistaPage() {
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
@@ -27,10 +26,10 @@ export default function NutricionistaPage() {
     initialData: []
   });
 
-  const colunasHelper = createColumnHelper<TRefeicao>();
+  const colunasHelper = createColumnHelper<typeof dadosDaTabela[number]>();
 
   const colunas = useMemo(() => [
-    colunasHelper.accessor('id', {
+    colunasHelper.accessor("id", {
       cell: props => <p>{props.getValue()}</p>,
       header: 'ID',
     }),
@@ -80,7 +79,7 @@ export default function NutricionistaPage() {
           </div>
         </Secao>
         <Secao>
-          <TabelaDeCrud colunas={colunas} dados={dadosDaTabela ?? []} estaCarregando={isLoadingDadosDaTabela} />
+          <TabelaDeCrud colunas={colunas} dados={dadosDaTabela} estaCarregando={isLoadingDadosDaTabela} />
         </Secao>
       </Secao>
     </Secao>
