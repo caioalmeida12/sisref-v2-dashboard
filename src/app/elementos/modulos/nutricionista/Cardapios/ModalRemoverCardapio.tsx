@@ -16,7 +16,7 @@ export const ModalRemoverCardapio = ({ refeicao_e_cardapio }: { refeicao_e_carda
     const [modalAberto, setModalAberto] = useState(false);
 
     const { mutate: handleCancelar, isPending } = useMutation({
-        mutationFn: () => removerCardapio({ meal_id: refeicao_e_cardapio.meal.id }),
+        mutationFn: () => removerCardapio({ menu_id: refeicao_e_cardapio.menu.id }),
         mutationKey: ['removerCardapio', refeicao_e_cardapio.meal.id],
         onMutate: () => {
             atualizarMensagem({ mensagem: 'Cancelando cardápio...' });
@@ -59,7 +59,7 @@ export const ModalRemoverCardapio = ({ refeicao_e_cardapio }: { refeicao_e_carda
                     <Dialog.Description className="leading-normal">
                         {
                             refeicao_e_cardapio.meal.description
-                                ? `Você está prestes a remover o cardápio do dia ${refeicao_e_cardapio.menu.date} com a descrição "${refeicao_e_cardapio.meal.description}"  e ID ${refeicao_e_cardapio.meal.id}`
+                                ? `Você está prestes a remover o cardápio do dia ${refeicao_e_cardapio.menu.date} com a descrição "${refeicao_e_cardapio.meal.description}"  e ID ${refeicao_e_cardapio.menu.id}`
                                 : `Você está prestes a remover o cardápio do dia ${refeicao_e_cardapio.menu.date}`
                         }
                     </Dialog.Description>
