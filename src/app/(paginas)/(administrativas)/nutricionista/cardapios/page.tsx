@@ -60,8 +60,8 @@ export default function NutricionistaPage() {
 
   const colunas = React.useMemo(
     () => [
-      colunasHelper.accessor('meal.id', {
-        cell: info => info.getValue(),
+      colunasHelper.accessor('menu', {
+        cell: info => info.getValue().id,
         header: 'ID',
         meta: {
           filterVariant: "range"

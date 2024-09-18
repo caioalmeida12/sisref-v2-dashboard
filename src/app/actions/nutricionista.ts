@@ -165,11 +165,11 @@ export async function editarCardapio(formData: FormData) {
  * @param formData - Os dados do formulário de criação de cardápio.
  * @returns JSON com os campos `sucesso` e `mensagem`.
  */
-export const removerCardapio = async ({ meal_id }: { meal_id?: number }) => {
-    if (!meal_id) return { sucesso: false, mensagem: "ID do cardápio não informado" };
+export const removerCardapio = async ({ menu_id }: { menu_id?: number }) => {
+    if (!menu_id) return { sucesso: false, mensagem: "ID do cardápio não informado" };
 
     const resposta = await FetchHelper.delete<{ message: string }>({
-        rota: `/menu/${meal_id}`,
+        rota: `/menu/${menu_id}`,
         cookies: cookies(),
         rotaParaRedirecionarCasoFalhe: null,
     });
