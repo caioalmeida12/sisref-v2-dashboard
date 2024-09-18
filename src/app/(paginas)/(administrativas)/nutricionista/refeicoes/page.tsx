@@ -32,6 +32,7 @@ export default function NutricionistaPage() {
     colunasHelper.accessor("id", {
       cell: props => <p>{props.getValue()}</p>,
       header: 'ID',
+      meta: { filterVariant: 'range' }
     }),
     colunasHelper.accessor('description', {
       cell: props => <div className="whitespace-nowrap">{props.getValue()}</div>,

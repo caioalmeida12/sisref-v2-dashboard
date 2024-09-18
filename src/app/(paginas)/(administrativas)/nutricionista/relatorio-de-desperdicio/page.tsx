@@ -40,6 +40,7 @@ export default function NutricionistaPage() {
     colunasHelper.accessor('id', {
       cell: info => info.getValue(),
       header: 'ID',
+      meta: { filterVariant: 'range' }
     }),
     colunasHelper.accessor('menu.description', {
       cell: info => info.getValue(),

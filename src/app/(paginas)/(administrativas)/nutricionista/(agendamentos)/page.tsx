@@ -43,6 +43,7 @@ export default function Agendamentos() {
         colunasHelper.accessor('id', {
             cell: props => props.getValue(),
             header: 'ID',
+            meta: { filterVariant: 'range' }
         }),
         colunasHelper.accessor('meal.description', {
             cell: props => <div className="whitespace-nowrap">{props.getValue()}</div>,
