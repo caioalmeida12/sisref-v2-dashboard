@@ -559,8 +559,6 @@ export async function criarRelatorioDeDesperdicio(formData: FormData) {
         }
     });
 
-    console.log(resposta);
-
     if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
 
     return { sucesso: true, mensagem: "Relatório de desperdício criado com sucesso." };

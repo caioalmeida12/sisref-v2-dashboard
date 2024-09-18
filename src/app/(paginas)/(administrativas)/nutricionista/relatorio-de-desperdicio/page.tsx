@@ -14,6 +14,7 @@ import { buscarRelatorioDeDesperdicio } from "@/app/actions/nutricionista";
 import { IRelatorioDeDesperdicio } from "@/app/interfaces/IRelatorioDeDesperdicio";
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { ModalAdicionarRelatorioDeDesperdicio } from "@/app/elementos/modulos/nutricionista/RelatoriosDeDesperdicio/ModalAdicionarRelatorioDeDesperdicio";
 
 export default function NutricionistaPage() {
   const searchParams = useSearchParams();
@@ -109,6 +110,9 @@ export default function NutricionistaPage() {
               <Form.Submit />
               <Botao variante="adicionar" texto="Buscar" className="h-[36px] py-0 px-10" type='submit' />
             </Form.Root>
+          </div>
+          <div className='ml-auto mt-auto'>
+            <ModalAdicionarRelatorioDeDesperdicio />
           </div>
         </Secao>
         <Secao>
