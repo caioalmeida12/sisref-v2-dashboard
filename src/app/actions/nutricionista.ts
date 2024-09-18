@@ -11,6 +11,7 @@ import { TAgendamento, TAgendamentoSchema } from "@/app/interfaces/TAgendamento"
 import { IRelatorioDeDesperdicio } from "../interfaces/IRelatorioDeDesperdicio";
 import { TCardapio, TRefeicao, TRefeicaoECardapio, TRefeicaoECardapioSchema, TRefeicaoSchema } from "../interfaces/TRefeicao";
 import { TRelatorioDeRefeicoes } from "../interfaces/TRelatorioDeRefeicoes";
+import { IRespostaDeAction } from "../interfaces/IRespostaDeAction";
 
 /**
  * Cria uma refeição.
