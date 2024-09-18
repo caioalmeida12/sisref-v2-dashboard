@@ -7,6 +7,7 @@ import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { criarRelatorioDeDesperdicio, buscarRefeicoes, buscarTabelaDeCardapios } from '@/app/actions/nutricionista';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { useState, useRef, useEffect } from 'react';
+import { SelectGeral } from '@/app/elementos/componentes/SelectGeral';
 
 export const ModalAdicionarRelatorioDeDesperdicio = () => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
@@ -56,7 +57,7 @@ export const ModalAdicionarRelatorioDeDesperdicio = () => {
 
             setTimeout(() => {
                 setModalAberto(false);
-                queryClient.invalidateQueries({ queryKey: ['tabelaDeDesperdicio'] });
+                queryClient.invalidateQueries({ queryKey: ['relatorioDeDesperdicio'] });
             }, 500);
         },
         onError: (error) => {
@@ -84,12 +85,13 @@ export const ModalAdicionarRelatorioDeDesperdicio = () => {
                                 Data do Desperdício
                             </label>
                             <input
-                                className="shadow-preto-400 focus:shadow-preto-400  h-8 w-full flex-1  rounded-[4px] px-4 py-2 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+                                className="shadow-preto-400 focus:shadow-preto-400 h-8 w-full flex-1 px-0 rounded-[4px] py-2 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
                                 id="waste_date"
                                 name='waste_date'
                                 type='date'
                                 ref={dataRef}
                                 onChange={handleDataChange}
+                                defaultValue={dataDoCardapio}
                                 required
                             />
                         </fieldset>
@@ -98,38 +100,24 @@ export const ModalAdicionarRelatorioDeDesperdicio = () => {
                                 Total de Desperdício (kg)
                             </label>
                             <input
-                                className="shadow-preto-400 focus:shadow-preto-400 inline-flex h-8 w-full flex-1 items-center justify-center rounded-[4px] px-4 py-2 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+                                className="disabled:cursor-not-allowed shadow-preto-400 focus:shadow-preto-400 inline-flex h-8 w-full flex-1 items-center justify-center rounded-[4px] py-2 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
                                 id="total_food_waste"
                                 name='total_food_waste'
                                 type='number'
+                                placeholder='Ex: 10'
                                 required
                                 disabled={dataDoCardapio.length !== 10}
                             />
                         </fieldset>
-                        <fieldset className='flex flex-col gap-y-2 justify-start'>
-                            <label className='font-medium' htmlFor="menu_id">
-                                ID do Cardápio
-                            </label>
-                            <select
-                                className="shadow-preto-400 focus:shadow-preto-400 inline-flex h-8 w-full flex-1 items-center justify-center rounded-[4px] px-4 py-2 leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-                                id="menu_id"
-                                name='menu_id'
-                                required
-                                disabled={dataDoCardapio.length !== 10 || isLoadingCardapiosDisponiveis || isLoadingRefeicoes || cardapiosDisponiveis.length === 0}
-                            >
-                                {isLoadingCardapiosDisponiveis || isLoadingRefeicoes ? (
-                                    <option value="">Carregando...</option>
-                                ) : cardapiosDisponiveis.length > 0 ? (
-                                    cardapiosDisponiveis.map((refeicao, index) => (
-                                        <option key={index} value={refeicao.menu.id}>
-                                            {refeicao.menu.id} - {refeicao.meal.description} - {refeicao.menu.description}
-                                        </option>
-                                    ))
-                                ) : (
-                                    <option value="">Não há refeições disponíveis</option>
-                                )}
-                            </select>
-                        </fieldset>
+                        <SelectGeral label='ID do Cardápio' name='menu_id' estaCarregando={isLoadingCardapiosDisponiveis || isLoadingRefeicoes}
+                            opcoes={() => {
+                                return cardapiosDisponiveis
+                                    .filter((refeicao) => refeicao.menu.id != 0)
+                                    .map((refeicao) => ({
+                                        valor: refeicao.menu.id,
+                                        texto: `${refeicao.menu.id} - ${refeicao.meal.description} - ${refeicao.menu.description}`,
+                                    }));
+                            }} />
                         <div className="flex justify-end flex-col items-center gap-y-2">
                             <div className="text-center" ref={mensagemDeRespostaRef}></div>
                             <Botao texto='Salvar' variante='adicionar' type='submit' className='mt-4' disabled={isPending || dataDoCardapio.length !== 10} />
