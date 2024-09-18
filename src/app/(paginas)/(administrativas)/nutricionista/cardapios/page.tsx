@@ -110,7 +110,7 @@ export default function NutricionistaPage() {
       <Secao className="border-none">
         <Secao className="max-w-[1440px] mx-auto flex flex-col gap-y-4">
           <CabecalhoDeSecao titulo="Cardápios" />
-          <Secao className="flex">
+          <Secao className="flex flex-wrap gap-y-2">
             <div className="flex gap-x-4 items-end">
               <Form.Root className="flex">
                 <Form.Field name="dataInicial" className="flex flex-col gap-y-2" ref={dataInicialRef}>
