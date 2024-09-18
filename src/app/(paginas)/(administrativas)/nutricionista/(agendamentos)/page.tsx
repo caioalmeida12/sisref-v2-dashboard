@@ -15,7 +15,6 @@ import { createColumnHelper } from '@tanstack/react-table';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
 import { ModalAdicionarAgendamento } from '@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento';
-import { TAgendamento } from '@/app/interfaces/TAgendamento';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
