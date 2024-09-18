@@ -20,11 +20,13 @@ import {
 } from '@tanstack/react-table'
 import Skeleton from 'react-loading-skeleton'
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 declare module '@tanstack/react-table' {
     interface ColumnMeta<TData extends RowData, TValue> {
         filterVariant?: 'text' | 'range' | 'select'
     }
 }
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 interface ITabelaDeCrudProps<TipoDeDado> {
     colunas: ColumnDef<TipoDeDado, any>[]
@@ -40,11 +42,14 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando, orden
         pageIndex: 0,
         pageSize: 50,
     })
+
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     const [columnResizeMode, _setColumnResizeMode] =
         React.useState<ColumnResizeMode>('onChange')
 
     const [columnResizeDirection, _setColumnResizeDirection] =
         React.useState<ColumnResizeDirection>('ltr')
+    /* eslint-enable @typescript-eslint/no-unused-vars */
 
     const table = useReactTable({
         data: dados,

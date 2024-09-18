@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 
 import { Secao } from "@/app/elementos/basicos/Secao";
 import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";

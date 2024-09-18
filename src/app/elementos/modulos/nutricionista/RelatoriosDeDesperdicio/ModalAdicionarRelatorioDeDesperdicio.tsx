@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
 import { criarRelatorioDeDesperdicio, buscarRefeicoes, buscarTabelaDeCardapios } from '@/app/actions/nutricionista';
 import { Cross2Icon } from '@radix-ui/react-icons';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { SelectGeral } from '@/app/elementos/componentes/SelectGeral';
 
 export const ModalAdicionarRelatorioDeDesperdicio = () => {

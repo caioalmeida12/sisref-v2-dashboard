@@ -1,4 +1,4 @@
-type IRespostaDeAction<T> = {
+export type IRespostaDeAction<T> = {
     sucesso: false,
     mensagem: string
 } | {
