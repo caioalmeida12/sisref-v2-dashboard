@@ -73,9 +73,6 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando, orden
         debugAll: false,
     })
 
-    console.log('dados', dados)
-    console.log('rowModel', table)
-
     return (
         <div className="p-2 max-w-full overflow-x-auto">
             <table
