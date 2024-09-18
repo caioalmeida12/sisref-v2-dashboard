@@ -1,47 +1,50 @@
 "use client"
 
 import React, { useRef, useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useSearchParams, useRouter } from 'next/navigation';
+import * as Form from '@radix-ui/react-form';
 
 import { Secao } from "@/app/elementos/basicos/Secao";
 import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
-import { useQuery } from "@tanstack/react-query";
+import { Botao } from "@/app/elementos/basicos/Botao";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { buscarRelatorioDeRefeicoes } from "@/app/actions/nutricionista";
-import * as Form from "@radix-ui/react-form";
-import { Botao } from "@/app/elementos/basicos/Botao";
 import { StatusDaRefeicao } from "@/app/elementos/basicos/StatusDaRefeicao";
 import { TRelatorioDeRefeicoes } from "@/app/interfaces/TRelatorioDeRefeicoes";
 
 export default function NutricionistaPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [datas, setDatas] = useState({
-    dataInicial: DatasHelper.getDataDeHoje(),
-    dataFinal: DatasHelper.getDataDeHoje()
+    dataInicial: searchParams.get('dataInicial') || DatasHelper.getDataDeHoje(),
+    dataFinal: searchParams.get('dataFinal') || DatasHelper.getDataDeHoje()
   });
-
-  const dataInicialRef = useRef<HTMLInputElement>(null);
-  const dataFinalRef = useRef<HTMLInputElement>(null);
 
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela, refetch } = useQuery({
     queryKey: ['relatorioDeRefeicoes', datas],
     queryFn: async () => {
       const resposta = await buscarRelatorioDeRefeicoes({ data_inicial: datas.dataInicial, data_final: datas.dataFinal });
-
-      return resposta.sucesso ? resposta.resposta : []
+      return resposta.sucesso ? resposta.resposta : [];
     },
     initialData: []
   });
 
-  const handleBuscar = () => {
-    const dataInicial = dataInicialRef.current?.value;
-    const dataFinal = dataFinalRef.current?.value;
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
 
-    setDatas({
-      dataInicial: dataInicial || datas.dataInicial,
-      dataFinal: dataFinal || datas.dataFinal
-    });
+    const dataInicial = formData.get('dataInicial') as string;
+    const dataFinal = formData.get('dataFinal') as string;
 
+    const urlAtual = new URL(window.location.href);
+    urlAtual.searchParams.set('dataInicial', dataInicial);
+    urlAtual.searchParams.set('dataFinal', dataFinal);
+
+    setDatas({ dataInicial, dataFinal });
+    router.push(urlAtual.toString());
     refetch();
   };
 
@@ -69,10 +72,17 @@ export default function NutricionistaPage() {
       cell: props => props.getValue(),
       header: 'Curso',
     }),
-    colunasHelper.display({
-      cell: props => <div className="flex justify-center">{pegarStatusDaRefeicao(props.row.original).elemento}</div>,
-      header: 'Situação',
-    })
+    {
+      id: 'Status',
+      accessorFn: (props: TRelatorioDeRefeicoes) => {
+        return pegarStatusDaRefeicao(props).tipo;
+      },
+      cell: (props: any) => {
+        return <div className="flex justify-center">
+          {pegarStatusDaRefeicao(props.row.original).elemento}
+        </div>
+      }
+    }
   ], []);
 
   const pegarStatusDaRefeicao = (refeicao: TRelatorioDeRefeicoes): { tipo: string, elemento: React.ReactNode } => {
@@ -108,32 +118,27 @@ export default function NutricionistaPage() {
         <CabecalhoDeSecao titulo="Relatório de refeições" />
         <Secao className="flex flex-wrap gap-y-2">
           <div className="flex gap-x-4 items-end">
-            <Form.Root className="flex">
+            <Form.Root className="flex gap-x-2 items-end" onSubmit={handleSubmit}>
               <Form.Field name="dataInicial" className="flex flex-col gap-y-2">
                 <Form.Label className="font-bold">
                   Data Inicial
                 </Form.Label>
-                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={datas.dataInicial} ref={dataInicialRef} />
+                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={datas.dataInicial} />
               </Form.Field>
               <Form.Submit />
-            </Form.Root>
-            <Form.Root className="flex">
               <Form.Field name="dataFinal" className="flex flex-col gap-y-2">
                 <Form.Label className="font-bold">
                   Data Final
                 </Form.Label>
-                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={datas.dataFinal} ref={dataFinalRef} />
+                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={datas.dataFinal} />
               </Form.Field>
               <Form.Submit />
+              <Botao variante="adicionar" texto="Buscar" className="h-[36px] py-0 px-10" type='submit' />
             </Form.Root>
-            <Botao variante="adicionar" texto="Buscar" className="h-[36px] py-0 px-10" onClick={handleBuscar} />
           </div>
         </Secao>
         <Secao>
-          {
-            dadosDaTabela &&
-            <TabelaDeCrud colunas={colunas} dados={dadosDaTabela} estaCarregando={isLoadingDadosDaTabela} />
-          }
+          <TabelaDeCrud colunas={colunas} dados={dadosDaTabela ?? []} estaCarregando={isLoadingDadosDaTabela} />
         </Secao>
       </Secao>
     </Secao>
