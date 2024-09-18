@@ -51,6 +51,7 @@ export default function NutricionistaPage() {
     colunasHelper.accessor('id', {
       cell: props => props.getValue(),
       header: 'ID',
+      meta: { filterVariant: 'range' }
     }),
     colunasHelper.accessor('name', {
       cell: props => <p className='text-left'>{props.getValue()}</p>,

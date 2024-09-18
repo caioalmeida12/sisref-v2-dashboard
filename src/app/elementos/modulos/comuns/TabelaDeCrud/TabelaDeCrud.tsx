@@ -2,6 +2,7 @@
 
 import React from 'react'
 import {
+    Column,
     ColumnDef,
     ColumnFiltersState,
     ColumnResizeDirection,
@@ -15,8 +16,15 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
+    RowData,
 } from '@tanstack/react-table'
 import Skeleton from 'react-loading-skeleton'
+
+declare module '@tanstack/react-table' {
+    interface ColumnMeta<TData extends RowData, TValue> {
+        filterVariant?: 'text' | 'range' | 'select'
+    }
+}
 
 interface ITabelaDeCrudProps<TipoDeDado> {
     colunas: ColumnDef<TipoDeDado, any>[]
@@ -65,6 +73,8 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando, orden
         debugAll: false,
     })
 
+    console.log(dados)
+
     return (
         <div className="p-2 max-w-full overflow-x-auto">
             <table
@@ -72,63 +82,78 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando, orden
             >
                 <thead>
                     {table.getHeaderGroups().map(headerGroup => (
-                        <tr key={headerGroup.id} >
-                            {headerGroup.headers.map(header => (
-                                <th
-                                    key={header.id}
-                                    colSpan={header.colSpan}
-                                    className='relative group px-[0.125em] cursor-pointer [&:first-of-type]:pl-0 [&:last-of-type]:pr-0 h-1'
-                                    onClick={() => {
-                                        const isDesc = sorting.find(sort => sort.id === header.id)?.desc
-                                        setSorting([{ id: header.id, desc: !isDesc }])
-                                    }}
-                                >
-                                    <div
-                                        className={
-                                            header.column.getCanSort()
-                                                ? 'h-full flex flex-col justify-center cursor-pointer select-none bg-preto-400 text-branco-400 rounded'
-                                                : 'h-full flex flex-col justify-center bg-preto-400 text-branco-400 rounded'
-                                        }
-                                        onClick={header.column.getToggleSortingHandler()}
-                                        title={
-                                            header.column.getCanSort()
-                                                ? header.column.getNextSortingOrder() === 'asc'
-                                                    ? 'Crescente'
-                                                    : header.column.getNextSortingOrder() === 'desc'
-                                                        ? 'Decrescente'
-                                                        : 'Limpar ordenação'
-                                                : undefined
-                                        }
+                        <React.Fragment key={headerGroup.id}>
+                            <tr>
+                                {headerGroup.headers.map(header => (
+                                    <th
+                                        key={header.id}
+                                        colSpan={header.colSpan}
+                                        className='relative group px-[0.125em] cursor-pointer [&:first-of-type]:pl-0 [&:last-of-type]:pr-0 h-1'
+                                        onClick={() => {
+                                            const isDesc = sorting.find(sort => sort.id === header.id)?.desc
+                                            setSorting([{ id: header.id, desc: !isDesc }])
+                                        }}
                                     >
-                                        {flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
-                                        {{
-                                            asc: ' 🔼',
-                                            desc: ' 🔽',
-                                        }[header.column.getIsSorted() as string] ?? null}
-                                    </div>
-                                    {
-                                        header.column.getCanResize() && (
-                                            <div
-                                                onDoubleClick={() => header.column.resetSize()}
-                                                onMouseDown={header.getResizeHandler()}
-                                                onTouchStart={header.getResizeHandler()}
-                                                className={`opacity-0 group-hover:opacity-100 absolute right-0 inset-y-0 w-1 rounded bg-cinza-600/75 cursor-col-resize select-none touch-none ${table.options.columnResizeDirection} ${header.column.getIsResizing() ? 'isResizing' : ''}`}
-                                                style={{
-                                                    transform:
-                                                        columnResizeMode === 'onEnd' &&
-                                                            header.column.getIsResizing()
-                                                            ? `translateX(${(table.options.columnResizeDirection === 'rtl' ? -1 : 1) * (table.getState().columnSizingInfo.deltaOffset ?? 0)}px)`
-                                                            : '',
-                                                }}
-                                            />
-                                        )
-                                    }
-                                </th>
-                            ))}
-                        </tr>
+                                        <div
+                                            className={
+                                                header.column.getCanSort()
+                                                    ? 'h-full flex flex-col justify-center cursor-pointer select-none bg-preto-400 text-branco-400 rounded'
+                                                    : 'h-full flex flex-col justify-center bg-preto-400 text-branco-400 rounded'
+                                            }
+                                            onClick={header.column.getToggleSortingHandler()}
+                                            title={
+                                                header.column.getCanSort()
+                                                    ? header.column.getNextSortingOrder() === 'asc'
+                                                        ? 'Crescente'
+                                                        : header.column.getNextSortingOrder() === 'desc'
+                                                            ? 'Decrescente'
+                                                            : 'Limpar ordenação'
+                                                    : undefined
+                                            }
+                                        >
+                                            {flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                            {{
+                                                asc: ' 🔼',
+                                                desc: ' 🔽',
+                                            }[header.column.getIsSorted() as string] ?? null}
+                                        </div>
+                                        {
+                                            header.column.getCanResize() && (
+                                                <div
+                                                    onDoubleClick={() => header.column.resetSize()}
+                                                    onMouseDown={header.getResizeHandler()}
+                                                    onTouchStart={header.getResizeHandler()}
+                                                    className={`opacity-0 group-hover:opacity-100 absolute right-0 inset-y-0 w-1 rounded bg-cinza-600/75 cursor-col-resize select-none touch-none ${table.options.columnResizeDirection} ${header.column.getIsResizing() ? 'isResizing' : ''}`}
+                                                    style={{
+                                                        transform:
+                                                            columnResizeMode === 'onEnd' &&
+                                                                header.column.getIsResizing()
+                                                                ? `translateX(${(table.options.columnResizeDirection === 'rtl' ? -1 : 1) * (table.getState().columnSizingInfo.deltaOffset ?? 0)}px)`
+                                                                : '',
+                                                    }}
+                                                />
+                                            )
+                                        }
+                                    </th>
+                                ))}
+                            </tr>
+                            <tr>
+                                {headerGroup.headers.map(header => (
+                                    <th
+                                        key={header.id}
+                                        colSpan={header.colSpan}
+                                        className='relative group px-[0.125em] cursor-pointer [&:first-of-type]:pl-0 [&:last-of-type]:pr-0 h-1'
+                                    >
+                                        {header.column.getCanFilter() ? (
+                                            <Filter column={header.column} />
+                                        ) : null}
+                                    </th>
+                                ))}
+                            </tr>
+                        </React.Fragment>
                     ))}
                 </thead>
                 <tbody className="block py-[.125em]"></tbody>
@@ -241,5 +266,116 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando, orden
                 </select>
             </div>
         </div>
+    )
+}
+
+function Filter({ column }: { column: Column<any, unknown> }) {
+    const { filterVariant } = column.columnDef.meta ?? {}
+
+    const columnFilterValue = column.getFilterValue()
+
+    const sortedUniqueValues = React.useMemo(
+        () =>
+            filterVariant === 'range'
+                ? []
+                : Array.from(column.getFacetedUniqueValues().keys())
+                    .sort()
+                    .slice(0, 5000),
+        [column.getFacetedUniqueValues(), filterVariant]
+    )
+
+    return filterVariant === 'range' ? (
+        <div>
+            <div className="flex space-x-2">
+                <DebouncedInput
+                    type="number"
+                    min={Number(column.getFacetedMinMaxValues()?.[0] ?? '')}
+                    max={Number(column.getFacetedMinMaxValues()?.[1] ?? '')}
+                    value={(columnFilterValue as [number, number])?.[0] ?? ''}
+                    onChange={value =>
+                        column.setFilterValue((old: [number, number]) => [value, old?.[1]])
+                    }
+                    placeholder={`Mín ${column.getFacetedMinMaxValues()?.[0] !== undefined
+                        ? `(${column.getFacetedMinMaxValues()?.[0]})`
+                        : ''
+                        }`}
+                    className="w-full border border-1 border-cinza-600 rounded"
+                />
+                <DebouncedInput
+                    type="number"
+                    min={Number(column.getFacetedMinMaxValues()?.[0] ?? '')}
+                    max={Number(column.getFacetedMinMaxValues()?.[1] ?? '')}
+                    value={(columnFilterValue as [number, number])?.[1] ?? ''}
+                    onChange={value =>
+                        column.setFilterValue((old: [number, number]) => [old?.[0], value])
+                    }
+                    placeholder={`Máx ${column.getFacetedMinMaxValues()?.[1]
+                        ? `(${column.getFacetedMinMaxValues()?.[1]})`
+                        : ''
+                        }`}
+                    className="w-full border border-1 border-cinza-600 rounded"
+                />
+            </div>
+        </div>
+    ) : filterVariant === 'select' ? (
+        <select
+            onChange={e => column.setFilterValue(e.target.value)}
+            value={columnFilterValue?.toString()}
+        >
+            <option value="">All</option>
+            {sortedUniqueValues.map(value => (
+                //dynamically generated select options from faceted values feature
+                <option value={value} key={value}>
+                    {value}
+                </option>
+            ))}
+        </select>
+    ) : (
+        <>
+            {/* Autocomplete suggestions from faceted values feature */}
+            <datalist id={column.id + 'list'}>
+                {sortedUniqueValues.map((value: any) => (
+                    <option value={value} key={value} />
+                ))}
+            </datalist>
+            <DebouncedInput
+                type="text"
+                value={(columnFilterValue ?? '') as string}
+                onChange={value => column.setFilterValue(value)}
+                placeholder={`Buscar... (${column.getFacetedUniqueValues().size})`}
+                className="w-full border border-1 border-cinza-600 rounded"
+                list={column.id + 'list'}
+            />
+        </>
+    )
+}
+
+// A typical debounced input react component
+function DebouncedInput({
+    value: initialValue,
+    onChange,
+    debounce = 500,
+    ...props
+}: {
+    value: string | number
+    onChange: (value: string | number) => void
+    debounce?: number
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
+    const [value, setValue] = React.useState(initialValue)
+
+    React.useEffect(() => {
+        setValue(initialValue)
+    }, [initialValue])
+
+    React.useEffect(() => {
+        const timeout = setTimeout(() => {
+            onChange(value)
+        }, debounce)
+
+        return () => clearTimeout(timeout)
+    }, [value])
+
+    return (
+        <input {...props} value={value} onChange={e => setValue(e.target.value)} />
     )
 }

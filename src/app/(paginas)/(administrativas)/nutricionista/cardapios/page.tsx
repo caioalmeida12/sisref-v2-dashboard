@@ -14,7 +14,6 @@ import { ModalAdicionarCardapio } from "@/app/elementos/modulos/nutricionista/Ca
 import { ModalRemoverCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalRemoverCardapio";
 import { ModalEditarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalEditarCardapio";
 import { buscarRefeicoes, buscarTabelaDeCardapios } from "@/app/actions/nutricionista";
-import { TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
 
 export default function NutricionistaPage() {
   // As datas são armazenadas no formato  yyyy-MM-dd
@@ -63,9 +62,7 @@ export default function NutricionistaPage() {
       colunasHelper.accessor('menu', {
         cell: info => info.getValue().id,
         header: 'ID',
-        meta: {
-          filterVariant: "range"
-        }
+        meta: { filterVariant: 'range' }
       }),
       colunasHelper.accessor('menu.date', {
         cell: info => info.getValue() && DatasHelper.converterParaFormatoBrasileiro(`${info.getValue()}`) || 'Não informado',
