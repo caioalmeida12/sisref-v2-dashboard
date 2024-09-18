@@ -288,8 +288,9 @@ export async function buscarRefeicoes(): Promise<IRespostaDeAction<TRefeicao>> {
  * 
  * @param formData - Os dados do formulário de criação de relatório de desperdício.
  * @returns JSON com os campos `sucesso` e `mensagem`.
- */
-export async function criarRelatorioDeDesperdicio(formData: FormData) {
+ * @deprecated
+*/
+export async function deprecated_criarRelatorioDeDesperdicio(formData: FormData) {
     const resposta = await FetchHelper.post<unknown>({
         rota: "/report/add-waste-report",
         cookies: cookies(),
@@ -539,4 +540,28 @@ export async function buscarRelatorioDeDesperdicio({ data_inicial, data_final }:
         sucesso: true,
         resposta: resposta.resposta
     };
+}
+
+/**
+ * Cria um novo relatório de desperdício.
+ * 
+ * @param formData - Os dados do formulário de criação de relatório de desperdício.
+ * @returns JSON com os campos `sucesso` e `mensagem`.
+ */
+export async function criarRelatorioDeDesperdicio(formData: FormData) {
+    const resposta = await FetchHelper.post<unknown>({
+        rota: "/food-waste",
+        cookies: cookies(),
+        body: {
+            total_food_waste: formData.get('total_food_waste'),
+            menu_id: formData.get('menu_id'),
+            waste_date: formData.get('waste_date')
+        }
+    });
+
+    console.log(resposta);
+
+    if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
+
+    return { sucesso: true, mensagem: "Relatório de desperdício criado com sucesso." };
 }
