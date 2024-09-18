@@ -73,7 +73,7 @@ export default function NutricionistaPage() {
     <Secao className="border-none">
       <Secao className="max-w-[1440px] mx-auto flex flex-col gap-y-4">
         <CabecalhoDeSecao titulo="Refeições" />
-        <Secao className="flex">
+        <Secao className="flex flex-wrap gap-y-2">
           <div className='ml-auto mt-auto'>
             <ModalAdicionarRefeicao />
           </div>
