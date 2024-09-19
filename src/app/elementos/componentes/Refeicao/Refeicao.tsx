@@ -94,8 +94,8 @@ const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
                     </React.Fragment>
                 ))}
             </p>
-            {comBotao && textoStatus === "disponivel" && <BotaoDeRefeicao.Reservar meal_id={props.menu.id} date={props.menu.date} />}
-            {comBotao && textoStatus === "reservado" && <BotaoDeRefeicao.BotaoDeAbrir meal_id={props.menu.id} date={props.menu.date} />}
+            {comBotao && textoStatus === "disponivel" && <BotaoDeRefeicao.Reservar meal_id={props.meal.id} date={props.menu.date} />}
+            {comBotao && textoStatus === "reservado" && <BotaoDeRefeicao.BotaoDeAbrir meal_id={props.meal.id} date={props.menu.date} />}
         </Secao>
     )
 }
