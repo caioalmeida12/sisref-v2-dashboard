@@ -100,12 +100,12 @@ export default function NutricionistaPage() {
   };
 
   return (
-    <Secao className="border-none">
+    <Secao className="border-none min-w-[768px]">
       <Secao className="max-w-[1440px] mx-auto flex flex-col gap-y-4">
         <CabecalhoDeSecao titulo="Cardápios" />
         <Secao className="flex flex-wrap gap-y-2">
           <div className="flex gap-x-4 items-end">
-            <Form.Root className="flex gap-x-2 items-end" onSubmit={handleSubmit}>
+            <Form.Root className="flex gap-x-2 items-end gap-y-2" onSubmit={handleSubmit}>
               <Form.Field name="dataInicial" className="flex flex-col gap-y-2">
                 <Form.Label className="font-bold">
                   Data Inicial
@@ -120,7 +120,7 @@ export default function NutricionistaPage() {
                 <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={datas.dataFinal} />
               </Form.Field>
               <Form.Submit />
-              <Botao variante="adicionar" texto="Buscar" className="h-[36px] py-0 px-10" type='submit' />
+              <Botao variante="adicionar" texto="Buscar" className="h-[36px] px-10 leading-tight py-2" type='submit' />
             </Form.Root>
           </div>
         </Secao>

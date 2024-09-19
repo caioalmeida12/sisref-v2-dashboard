@@ -26,7 +26,7 @@ export const Sidebar = async () => {
     const links = linksDaSidebarPorTipoDeUsuario[tipo_de_usuario]
 
     return (
-        <div className="flex flex-col gap-y-6 bg-preto-300 text-branco-400 px-6 py-4 h-[100vh]">
+        <div className="flex flex-col gap-y-6 bg-preto-300 text-branco-400 px-6 py-4 h-screen">
             <div>
                 <Image src={ifce_logo_horizontal_branco} alt="Logo" width={200} height={200} />
                 <p className="font-bold">Sisref &nbsp;|&nbsp;
