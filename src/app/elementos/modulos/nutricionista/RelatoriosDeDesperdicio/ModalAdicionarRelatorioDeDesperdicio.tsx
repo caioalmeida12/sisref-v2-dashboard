@@ -68,7 +68,7 @@ export const ModalAdicionarRelatorioDeDesperdicio = () => {
     return (
         <Dialog.Root open={modalAberto}>
             <Dialog.Trigger asChild>
-                <Botao className='h-[36px] py-0 px-10 bg-azul-400' onClick={() => setModalAberto(true)} texto='Adicionar Relatório de Desperdício' variante='adicionar' />
+                <Botao className='h-[36px] px-10 bg-azul-400 leading-tight py-2' onClick={() => setModalAberto(true)} texto='Adicionar Relatório de Desperdício' variante='adicionar' />
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />

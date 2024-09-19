@@ -69,7 +69,7 @@ export default function NutricionistaPage() {
   ], []);
 
   return (
-    <Secao className="border-none">
+    <Secao className="border-none min-w-[768px]">
       <Secao className="max-w-[1440px] mx-auto flex flex-col gap-y-4">
         <CabecalhoDeSecao titulo="Refeições" />
         <Secao className="flex flex-wrap gap-y-2">

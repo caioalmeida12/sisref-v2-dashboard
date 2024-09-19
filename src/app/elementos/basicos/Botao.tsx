@@ -17,7 +17,7 @@ const classNamePorVariante = {
 
 export const Botao = forwardRef<HTMLButtonElement, BotaoProps>(({ texto, variante, className, disabled, ...rest }, ref) => {
     return (
-        <button {...rest} ref={ref} className={classnames(`p-4 rounded-md text-branco-400 font-bold w-full outline-2 hover:outline hover:animate-outline`, classNamePorVariante[variante], className, { 'opacity-50 cursor-not-allowed': disabled })} disabled={disabled}>
+        <button {...rest} ref={ref} className={classnames(`p-4 rounded-md text-branco-400 font-bold w-full outline-2 hover:outline hover:animate-outline h-fit`, classNamePorVariante[variante], className, { 'opacity-50 cursor-not-allowed': disabled })} disabled={disabled}>
             {texto}
         </button>
     );
