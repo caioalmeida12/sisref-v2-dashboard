@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Column,
     ColumnDef,
@@ -32,23 +32,30 @@ interface ITabelaDeCrudProps<TipoDeDado> {
     colunas: ColumnDef<TipoDeDado, any>[]
     dados: TipoDeDado[]
     estaCarregando?: boolean
-    ordenacaoPadrao?: { id: string; desc: boolean }[]
+    ordenacaoPadrao?: { id: string; desc: boolean }[],
+    filtros?: ColumnFiltersState
 }
 
-export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando, ordenacaoPadrao }: ITabelaDeCrudProps<TipoDeDado>) {
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const [sorting, setSorting] = React.useState<{ id: string; desc: boolean }[]>(ordenacaoPadrao ?? [])
-    const [pagination, setPagination] = React.useState({
+export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando, ordenacaoPadrao, filtros }: ITabelaDeCrudProps<TipoDeDado>) {
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(filtros ?? [])
+    const [sorting, setSorting] = useState<{ id: string; desc: boolean }[]>(ordenacaoPadrao ?? [])
+    const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: 50,
     })
 
+    // Garante que os filtros sejam atualizados quando a propriedade `filtros` for alterada
+    // Sem isso, os filtros só são atualizados quando a página é recarregada
+    useEffect(() => {
+        setColumnFilters(filtros ?? [])
+    }, [filtros])
+
     /* eslint-disable @typescript-eslint/no-unused-vars */
     const [columnResizeMode, _setColumnResizeMode] =
-        React.useState<ColumnResizeMode>('onChange')
+        useState<ColumnResizeMode>('onChange')
 
     const [columnResizeDirection, _setColumnResizeDirection] =
-        React.useState<ColumnResizeDirection>('ltr')
+        useState<ColumnResizeDirection>('ltr')
     /* eslint-enable @typescript-eslint/no-unused-vars */
 
     const table = useReactTable({
@@ -173,7 +180,7 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando, orden
                                 }
                             </tr>
                         ))
-                    ) : dados.length === 0 ? (
+                    ) : dados.length === 0 || table.getRowCount() == 0 ? (
                         <tr className='hover:!bg-amarelo-200/75'>
                             <td colSpan={colunas.length} className='text-center bg-cinza-400 rounded'>
                                 Nenhum dado encontrado
@@ -364,7 +371,7 @@ function DebouncedInput({
     onChange: (value: string | number) => void
     debounce?: number
 } & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
-    const [value, setValue] = React.useState(initialValue)
+    const [value, setValue] = useState(initialValue)
 
     React.useEffect(() => {
         setValue(initialValue)
