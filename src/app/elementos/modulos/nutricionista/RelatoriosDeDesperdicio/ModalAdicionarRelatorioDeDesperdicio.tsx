@@ -4,10 +4,11 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { Botao } from '@elementos/basicos/Botao';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
-import { criarRelatorioDeDesperdicio, buscarRefeicoes, buscarTabelaDeCardapios } from '@/app/actions/nutricionista';
+import { criarRelatorioDeDesperdicio, buscarRefeicoes } from '@/app/actions/nutricionista';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { useState, useRef } from 'react';
 import { SelectGeral } from '@/app/elementos/componentes/SelectGeral';
+import { buscarTabelaDeCardapios } from '@/app/actions/recepcao';
 
 export const ModalAdicionarRelatorioDeDesperdicio = () => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();

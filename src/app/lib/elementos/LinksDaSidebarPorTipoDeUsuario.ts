@@ -57,13 +57,13 @@ export const linksDaSidebarPorTipoDeUsuario: Record<ISidebarProps["tipo_de_usuar
     ],
     RECEPCAO: [
         {
-            titulo: 'Confirmar refeições', rota: '?pagina=confirmarRefeicoes', icone: 'GarfoEFaca'
+            titulo: 'Confirmar refeições', rota: '/recepcao', icone: 'GarfoEFaca'
         },
         {
-            titulo: 'Desperdício', rota: '?pagina=desperdicio', icone: 'Lixeira'
+            titulo: 'Desperdício', rota: '/recepcao/relatorio-de-desperdicio', icone: 'Lixeira'
         },
         {
-            titulo: 'Relatório de refeições', rota: '?pagina=relatorioDeRefeicoes', icone: 'GraficoDeBarras'
+            titulo: 'Relatório de refeições', rota: '/recepcao/relatorio-de-refeicoes', icone: 'GraficoDeBarras'
         }
     ],
     ADMIN: [
