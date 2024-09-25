@@ -37,7 +37,11 @@ export async function buscarRefeicoesPorDia({ data = new Date().toISOString().sp
 
         const formatar = TRefeicaoECardapioSchema.safeParse({
             meal,
-            menu
+            menu: {
+                ...menu,
+                agendado: menu.agendado,
+                permission: menu.permission,
+            }
         })
 
         return formatar.success ? formatar.data : []
