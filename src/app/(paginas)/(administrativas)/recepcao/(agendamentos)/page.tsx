@@ -7,14 +7,12 @@ import { Botao } from "@/app/elementos/basicos/Botao";
 import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
 import { Secao } from "@/app/elementos/basicos/Secao";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import { ModalAdicionarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento";
 import * as Form from '@radix-ui/react-form';
 import { createColumnHelper } from "@tanstack/react-table";
 import { buscarAgendamentos } from "@/app/actions/nutricionista";
 import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/app/elementos/basicos/Badge";
 import { ModalConfirmarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento";
-import { ModalRemoverAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalRemoverAgendamento";
 
 export default function RecepcaoPage() {
   const [pesquisa, setPesquisa] = useQueryStates({
