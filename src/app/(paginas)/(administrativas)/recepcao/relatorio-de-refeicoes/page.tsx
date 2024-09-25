@@ -23,7 +23,7 @@ export default function NutricionistaPage() {
     clearOnDefault: true,
   });
 
-  const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela, refetch } = useQuery({
+  const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
     queryKey: ['relatorioDeRefeicoes', pesquisa],
     queryFn: async () => {
       const resposta = await buscarRelatorioDeRefeicoes({ data_inicial: pesquisa.dataInicial, data_final: pesquisa.dataFinal });
