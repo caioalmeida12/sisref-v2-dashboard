@@ -1,8 +1,8 @@
 "use client"
 
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams, useRouter } from 'next/navigation';
+import { parseAsString, useQueryStates } from 'nuqs';
 import * as Form from '@radix-ui/react-form';
 
 import { Secao } from "@/app/elementos/basicos/Secao";
@@ -16,17 +16,17 @@ import { StatusDaRefeicao } from "@/app/elementos/basicos/StatusDaRefeicao";
 import { TRelatorioDeRefeicoes } from "@/app/interfaces/TRelatorioDeRefeicoes";
 
 export default function NutricionistaPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [datas, setDatas] = useState({
-    dataInicial: searchParams.get('dataInicial') || DatasHelper.getDataDeHoje(),
-    dataFinal: searchParams.get('dataFinal') || DatasHelper.getDataDeHoje()
+  const [pesquisa, setPesquisa] = useQueryStates({
+    dataInicial: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
+    dataFinal: parseAsString.withDefault(DatasHelper.getDataDeHoje())
+  }, {
+    clearOnDefault: true,
   });
 
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela, refetch } = useQuery({
-    queryKey: ['relatorioDeRefeicoes', datas],
+    queryKey: ['relatorioDeRefeicoes', pesquisa],
     queryFn: async () => {
-      const resposta = await buscarRelatorioDeRefeicoes({ data_inicial: datas.dataInicial, data_final: datas.dataFinal });
+      const resposta = await buscarRelatorioDeRefeicoes({ data_inicial: pesquisa.dataInicial, data_final: pesquisa.dataFinal });
       return resposta.sucesso ? resposta.resposta : [];
     },
     initialData: []
@@ -39,16 +39,10 @@ export default function NutricionistaPage() {
     const dataInicial = formData.get('dataInicial') as string;
     const dataFinal = formData.get('dataFinal') as string;
 
-    const urlAtual = new URL(window.location.href);
-    urlAtual.searchParams.set('dataInicial', dataInicial);
-    urlAtual.searchParams.set('dataFinal', dataFinal);
-
-    setDatas({ dataInicial, dataFinal });
-    router.push(urlAtual.toString());
-    refetch();
+    setPesquisa({ dataInicial, dataFinal });
   };
 
-  const colunasHelper = createColumnHelper<typeof dadosDaTabela[number]>();
+  const colunasHelper = createColumnHelper<TRelatorioDeRefeicoes>();
 
   const colunas = useMemo(() => [
     colunasHelper.accessor('id', {
@@ -123,16 +117,14 @@ export default function NutricionistaPage() {
                 <Form.Label className="font-bold">
                   Data Inicial
                 </Form.Label>
-                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={datas.dataInicial} />
+                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={pesquisa.dataInicial} />
               </Form.Field>
-              <Form.Submit />
               <Form.Field name="dataFinal" className="flex flex-col gap-y-2">
                 <Form.Label className="font-bold">
                   Data Final
                 </Form.Label>
-                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={datas.dataFinal} />
+                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={pesquisa.dataFinal} />
               </Form.Field>
-              <Form.Submit />
               <Botao variante="adicionar" texto="Buscar" className="h-[36px] px-10 leading-tight py-2" type='submit' />
             </Form.Root>
           </div>
