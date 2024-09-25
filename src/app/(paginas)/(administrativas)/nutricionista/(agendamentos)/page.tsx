@@ -17,6 +17,7 @@ import { useMemo, useState } from 'react';
 import { ModalAdicionarAgendamento } from '@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { BadgeDeVencimento } from '@/app/elementos/basicos/BadgeDeVencimento';
 
 export default function Agendamentos() {
     const searchParams = useSearchParams();
@@ -63,7 +64,7 @@ export default function Agendamentos() {
             header: 'Data',
         }),
         colunasHelper.accessor('student.dateValid', {
-            cell: props => <Badge texto={props.getValue()} corDaBadge="bg-verde-300" className='min-w-max whitespace-nowrap border-none' />,
+            cell: props => <BadgeDeVencimento data={props.getValue()} />,
             header: 'Vencimento',
         }),
         colunasHelper.accessor('student.course.initials', {
