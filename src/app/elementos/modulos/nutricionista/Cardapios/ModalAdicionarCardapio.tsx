@@ -9,6 +9,7 @@ import { useQueryClient, useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { TRefeicaoECardapio } from '@/app/interfaces/TRefeicao';
+import { CustomTooltipWrapper } from '@/app/elementos/basicos/CustomTooltipWrapper';
 
 export const ModalAdicionarCardapio = ({ refeicao_e_cardapio }: { refeicao_e_cardapio: TRefeicaoECardapio }) => {
     const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
@@ -48,9 +49,13 @@ export const ModalAdicionarCardapio = ({ refeicao_e_cardapio }: { refeicao_e_car
     return (
         <Dialog.Root open={modalAberto}>
             <Dialog.Trigger>
-                <div className="w-5 h-5 relative" onClick={() => setModalAberto(true)}>
-                    <Icone.Adicionar className="absolute inset-0 block w-full h-full" />
-                </div>
+                <CustomTooltipWrapper
+                    elementoContent='Adicionar cardápio'
+                    elementoTrigger={
+                        <div className="w-5 h-5 relative" onClick={() => setModalAberto(true)}>
+                            <Icone.Adicionar className="absolute inset-0 block w-full h-full" />
+                        </div>}
+                />
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />

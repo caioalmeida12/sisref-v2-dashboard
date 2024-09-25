@@ -8,6 +8,7 @@ import { Botao } from '@elementos//basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { removerCardapio } from '@/app/actions/nutricionista';
 import { TRefeicaoECardapio } from '@/app/interfaces/TRefeicao';
+import { CustomTooltipWrapper } from '@/app/elementos/basicos/CustomTooltipWrapper';
 
 export const ModalRemoverCardapio = ({ refeicao_e_cardapio }: { refeicao_e_cardapio: TRefeicaoECardapio }) => {
     const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
@@ -46,9 +47,14 @@ export const ModalRemoverCardapio = ({ refeicao_e_cardapio }: { refeicao_e_carda
     return (
         <Dialog.Root open={modalAberto}>
             <Dialog.Trigger>
-                <div className="w-5 h-5 relative" onClick={() => setModalAberto(true)}>
-                    <Icone.Deletar className="absolute inset-0 block w-full h-full" />
-                </div>
+                <CustomTooltipWrapper
+                    elementoContent='Remover cardápio'
+                    elementoTrigger={
+                        <div className="w-5 h-5 relative" onClick={() => setModalAberto(true)}>
+                            <Icone.Deletar className="absolute inset-0 block w-full h-full" />
+                        </div>
+                    }
+                />
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
