@@ -13,6 +13,7 @@ import { buscarAgendamentos } from "@/app/actions/nutricionista";
 import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/app/elementos/basicos/Badge";
 import { ModalConfirmarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento";
+import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
 
 export default function RecepcaoPage() {
   const [pesquisa, setPesquisa] = useQueryStates({
@@ -60,7 +61,7 @@ export default function RecepcaoPage() {
       header: 'Data',
     }),
     colunasHelper.accessor('student.dateValid', {
-      cell: props => <Badge texto={props.getValue()} corDaBadge="bg-verde-300" className='min-w-max whitespace-nowrap border-none' />,
+      cell: props => <BadgeDeVencimento data={props.getValue()} />,
       header: 'Vencimento',
     }),
     colunasHelper.accessor('student.course.initials', {

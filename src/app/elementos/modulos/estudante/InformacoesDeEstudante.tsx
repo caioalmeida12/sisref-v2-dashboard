@@ -12,6 +12,7 @@ import { buscarCampus } from "@/app/actions/campus"
 import { buscarEstudante } from "@/app/actions/estudante"
 import { TEstudanteComCurso } from "../../../interfaces/TEstudante"
 import { TCampus } from "../../../interfaces/TCampus"
+import { BadgeDeVencimento } from "../../basicos/BadgeDeVencimento"
 
 interface InformacoesDeEstudanteProps {
     estudante: TEstudanteComCurso
@@ -47,7 +48,12 @@ const Desktop = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
             <CampoDeSecao titulo="Matrícula" complemento={estudante.mat} variante="vertical" />
             <div className="flex gap-x-4 justify-between">
                 <CampoDeSecao titulo="Código" complemento={String(estudante.id)} variante='vertical-com-badge' corDaBadge='bg-azul-400' />
-                <CampoDeSecao titulo="Validade" complemento={DatasHelper.converterParaFormatoBrasileiro(estudante.dateValid)} variante='vertical-com-badge' corDaBadge='bg-verde-300' />
+                <div className="flex gap-x-4 justify-between">
+                    <div className="grid gap-y-1">
+                        <h3 className="font-bold">Vencimento:</h3>
+                        <BadgeDeVencimento data={estudante.dateValid} />
+                    </div>
+                </div>
             </div>
             <CampoDeSecao titulo='Curso' complemento={estudante.course.description} variante='vertical' />
             <div className="flex gap-x-4 justify-between">
@@ -69,7 +75,12 @@ const MobileCompleta = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
             <CampoDeSecao titulo="Matrícula" complemento="20211035000020" variante="vertical" />
             <div className="flex gap-x-4 justify-between">
                 <CampoDeSecao titulo="Código" complemento={String(estudante.id)} variante='vertical-com-badge' corDaBadge='bg-azul-400' />
-                <CampoDeSecao titulo="Validade" complemento={DatasHelper.converterParaFormatoBrasileiro(estudante.dateValid)} variante='vertical-com-badge' corDaBadge='bg-verde-300' />
+                <div className="flex gap-x-4 justify-between">
+                    <div className="grid gap-y-1">
+                        <h3 className="font-bold">Vencimento:</h3>
+                        <BadgeDeVencimento data={estudante.dateValid} />
+                    </div>
+                </div>
             </div>
             <CampoDeSecao titulo='Curso' complemento={estudante.course.description} variante='vertical' />
             <div className="flex gap-x-4 justify-between">
