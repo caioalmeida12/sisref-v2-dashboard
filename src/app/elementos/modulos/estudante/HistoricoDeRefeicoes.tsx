@@ -20,7 +20,6 @@ export const HistoricoDeRefeicoes = ({ forcarExibicao = false }: { forcarExibica
         queryKey: ['historicoDeRefeicoes'],
         queryFn: async () => {
             const aSerUtilizado = (await buscarTickets('a-ser-utilizado')).filter(ticket => ticket !== null)
-            console.log(aSerUtilizado)
             const utilizado = (await buscarTickets('utilizado')).filter(ticket => ticket !== null)
             const cancelado = (await buscarTickets('cancelado')).filter(ticket => ticket !== null)
             const naoUtilizado = (await buscarTickets('nao-utilizado')).filter(ticket => ticket !== null)

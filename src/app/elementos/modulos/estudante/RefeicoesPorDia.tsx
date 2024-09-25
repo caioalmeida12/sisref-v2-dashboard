@@ -37,8 +37,6 @@ export const RefeicoesPorDia = ({ forcarExibicao = false }: { forcarExibicao?: b
             }
         });
 
-        console.log(refeicoesAdicionadas);
-
         setTodasAsRefeicoes(refeicoesAdicionadas);
     }, [refeicoesEncontradas])
 
