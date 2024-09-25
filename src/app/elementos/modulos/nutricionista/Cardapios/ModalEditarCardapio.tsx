@@ -2,6 +2,7 @@
 
 import { editarCardapio } from '@/app/actions/nutricionista';
 import { Botao } from '@/app/elementos/basicos/Botao';
+import { CustomTooltipWrapper } from '@/app/elementos/basicos/CustomTooltipWrapper';
 import Icone from '@/app/elementos/basicos/Icone';
 import { TRefeicaoECardapio } from '@/app/interfaces/TRefeicao';
 import useMensagemDeResposta from '@/app/lib/elementos/UseMensagemDeResposta';
@@ -47,9 +48,14 @@ export const ModalEditarCardapio = ({ refeicao_e_cardapio }: { refeicao_e_cardap
     return (
         <Dialog.Root open={modalAberto}>
             <Dialog.Trigger>
-                <div className="w-5 h-5 relative" onClick={() => setModalAberto(true)}>
-                    <Icone.Editar className="absolute inset-0 block w-full h-full" />
-                </div>
+                <CustomTooltipWrapper
+                    elementoContent='Editar cardápio'
+                    elementoTrigger={
+                        <div className="w-5 h-5 relative" onClick={() => setModalAberto(true)}>
+                            <Icone.Editar className="absolute inset-0 block w-full h-full" />
+                        </div>
+                    }
+                />
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />

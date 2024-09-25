@@ -8,6 +8,7 @@ import { Botao } from '@elementos//basicos/Botao';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { removerAgendamento } from '@/app/actions/nutricionista';
 import { TAgendamento } from '@/app/interfaces/TAgendamento';
+import { CustomTooltipWrapper } from '@/app/elementos/basicos/CustomTooltipWrapper';
 
 interface ModalProps {
     agendamento: TAgendamento;
@@ -50,9 +51,14 @@ export const ModalRemoverAgendamento: React.FC<ModalProps> = ({ agendamento }) =
     return (
         <Dialog.Root open={modalAberto}>
             <Dialog.Trigger>
-                <div className="w-5 h-5 relative" onClick={() => setModalAberto(true)}>
-                    <Icone.Deletar className="absolute inset-0 block w-full h-full" />
-                </div>
+                <CustomTooltipWrapper
+                    elementoContent='Remover agendamento'
+                    elementoTrigger={
+                        <div className="w-5 h-5 relative" onClick={() => setModalAberto(true)}>
+                            <Icone.Deletar className="absolute inset-0 block w-full h-full" />
+                        </div>
+                    }
+                />
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0 " />
