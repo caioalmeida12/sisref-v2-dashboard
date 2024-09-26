@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`bg-cinza-400 min-w-80 ${fontFamily.className}`}>
+      <body className={`min-w-80 bg-cinza-400 ${fontFamily.className}`}>
         {children}
       </body>
     </html>

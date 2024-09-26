@@ -4,22 +4,22 @@ import { CustomQueryClientProvider } from "@/app/lib/elementos/CustomQueryProvid
 import React, { Suspense } from "react";
 
 interface NutricionistaLayoutProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
-export default async function NutricionistaLayout({ children }: NutricionistaLayoutProps) {
-    // const decodificado = validarTokenDosCookies()
+export default async function NutricionistaLayout({
+  children,
+}: NutricionistaLayoutProps) {
+  // const decodificado = validarTokenDosCookies()
 
-    return (
-        <CustomQueryClientProvider>
-            <div className="flex">
-                <Sidebar />
-                <div className="p-8 w-full">
-                    <Suspense fallback={<div>Carregando...</div>}>
-                        {children}
-                    </Suspense>
-                </div>
-            </div>
-        </CustomQueryClientProvider>
-    );
+  return (
+    <CustomQueryClientProvider>
+      <div className="flex">
+        <Sidebar />
+        <div className="w-full p-8">
+          <Suspense fallback={<div>Carregando...</div>}>{children}</Suspense>
+        </div>
+      </div>
+    </CustomQueryClientProvider>
+  );
 }

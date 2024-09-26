@@ -2,12 +2,16 @@ import { RefeicoesAutorizadas } from "@/app/elementos/modulos/estudante/Refeicoe
 import React from "react";
 
 export default function RefeicoesAutorizadasParallelPage({
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    params,
-    searchParams,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  params,
+  searchParams,
 }: {
-    params: { slug: string };
-    searchParams?: { [key: string]: string | string[] | undefined };
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-    return <RefeicoesAutorizadas forcarExibicao={(searchParams?.pagina === 'refeicoesAutorizadas')} />
+  return (
+    <RefeicoesAutorizadas
+      forcarExibicao={searchParams?.pagina === "refeicoesAutorizadas"}
+    />
+  );
 }
