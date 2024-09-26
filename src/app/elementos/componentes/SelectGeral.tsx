@@ -1,5 +1,6 @@
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import * as Select from "@radix-ui/react-select";
+import classNames from "classnames";
 
 interface ISelectProps {
   name: string;
@@ -9,6 +10,7 @@ interface ISelectProps {
     texto: string | number;
   }[];
   estaCarregando?: boolean;
+  triggerClassname?: string;
 }
 
 export const SelectGeral = ({
@@ -16,6 +18,7 @@ export const SelectGeral = ({
   label,
   opcoes,
   estaCarregando,
+  triggerClassname,
 }: ISelectProps) => {
   const opcoesArray = opcoes();
 
@@ -26,7 +29,10 @@ export const SelectGeral = ({
       </label>
       <Select.Root name={name}>
         <Select.Trigger
-          className="flex h-fit min-h-[34px] min-w-[250px] items-center overflow-hidden rounded px-2 py-1 text-left outline outline-1 outline-preto-400 disabled:cursor-not-allowed disabled:text-cinza-600"
+          className={classNames(
+            "flex h-fit min-h-[34px] min-w-[250px] items-center overflow-hidden rounded px-2 py-1 text-left outline outline-1 outline-preto-400 disabled:cursor-not-allowed disabled:text-cinza-600",
+            triggerClassname,
+          )}
           disabled={estaCarregando || opcoesArray.length === 0}
         >
           <Select.Value
