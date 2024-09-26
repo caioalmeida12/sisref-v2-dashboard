@@ -112,7 +112,6 @@ export const ModalAdicionarCardapio: React.FC<ModalProps> = ({
               id="date"
               name="date"
               className="w-full rounded px-2 py-1 outline outline-1 cursor-not-allowed disabled:bg-cinza-400"
-              disabled
               defaultValue={refeicao_e_cardapio.menu.date}
               />
             </Form.Field>
