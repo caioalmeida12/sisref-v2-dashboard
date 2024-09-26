@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
+import { parseAsString, useQueryStates } from 'nuqs';
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams, useRouter } from 'next/navigation';
 import * as Form from '@radix-ui/react-form';
 
 import { Secao } from "@/app/elementos/basicos/Secao";
@@ -17,15 +17,15 @@ import { ModalEditarCardapio } from "@/app/elementos/modulos/nutricionista/Carda
 import { buscarRefeicoes, buscarTabelaDeCardapios } from "@/app/actions/nutricionista";
 
 export default function NutricionistaPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [datas, setDatas] = useState({
-    dataInicial: searchParams.get('dataInicial') || DatasHelper.getDataDeHoje(),
-    dataFinal: searchParams.get('dataFinal') || DatasHelper.getDataDeHoje()
+  const [pesquisa, setPesquisa] = useQueryStates({
+    dataInicial: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
+    dataFinal: parseAsString.withDefault(DatasHelper.getDataDeHoje())
+  }, {
+    clearOnDefault: true,
   });
 
   const { data: refeicoesDisponiveis } = useQuery({
-    queryKey: ['refeicoes', datas],
+    queryKey: ['refeicoes', pesquisa],
     queryFn: async () => {
       const resposta = await buscarRefeicoes();
       return resposta.sucesso ? resposta.resposta : [];
@@ -34,9 +34,9 @@ export default function NutricionistaPage() {
   });
 
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
-    queryKey: ['tabelaDeCardapios', datas, refeicoesDisponiveis],
+    queryKey: ['tabelaDeCardapios', pesquisa, refeicoesDisponiveis],
     queryFn: async () => {
-      const resposta = await buscarTabelaDeCardapios({ campus_id: 1, data: datas.dataInicial, refeicoes_disponiveis: refeicoesDisponiveis });
+      const resposta = await buscarTabelaDeCardapios({ campus_id: 1, data: pesquisa.dataInicial, refeicoes_disponiveis: refeicoesDisponiveis });
       return resposta.sucesso ? resposta.resposta : [];
     },
     initialData: []
@@ -91,12 +91,10 @@ export default function NutricionistaPage() {
     const dataInicial = formData.get('dataInicial') as string;
     const dataFinal = formData.get('dataFinal') as string;
 
-    const urlAtual = new URL(window.location.href);
-    urlAtual.searchParams.set('dataInicial', dataInicial);
-    urlAtual.searchParams.set('dataFinal', dataFinal);
-
-    setDatas({ dataInicial, dataFinal });
-    router.push(urlAtual.toString());
+    setPesquisa({
+      dataInicial,
+      dataFinal
+    });
   };
 
   return (
@@ -110,16 +108,14 @@ export default function NutricionistaPage() {
                 <Form.Label className="font-bold">
                   Data Inicial
                 </Form.Label>
-                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={datas.dataInicial} />
+                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={pesquisa.dataInicial} />
               </Form.Field>
-              <Form.Submit />
               <Form.Field name="dataFinal" className="flex flex-col gap-y-2">
                 <Form.Label className="font-bold">
                   Data Final
                 </Form.Label>
-                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={datas.dataFinal} />
+                <Form.Control type="date" className="px-2 py-1 rounded outline outline-1 outline-cinza-600" defaultValue={pesquisa.dataFinal} />
               </Form.Field>
-              <Form.Submit />
               <Botao variante="adicionar" texto="Buscar" className="h-[36px] px-10 leading-tight py-2" type='submit' />
             </Form.Root>
           </div>
