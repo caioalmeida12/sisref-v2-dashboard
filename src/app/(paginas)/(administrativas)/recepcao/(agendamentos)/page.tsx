@@ -9,17 +9,25 @@ import { Secao } from "@/app/elementos/basicos/Secao";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import * as Form from "@radix-ui/react-form";
 import { createColumnHelper } from "@tanstack/react-table";
-import { buscarAgendamentos } from "@/app/actions/nutricionista";
+import {
+  buscarAgendamentos,
+  buscarRefeicoes,
+} from "@/app/actions/nutricionista";
 import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/app/elementos/basicos/Badge";
 import { ModalConfirmarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento";
 import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
+import SelectRefeicao from "@/app/elementos/componentes/SelectRefeicao";
+import * as Select from "@radix-ui/react-select";
+import { ChevronDownIcon, CheckIcon } from "@radix-ui/react-icons";
+import { SelectGeral } from "@/app/elementos/componentes/SelectGeral";
 
 export default function RecepcaoPage() {
   const [pesquisa, setPesquisa] = useQueryStates(
     {
       data: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
       codigoOuMatricula: parseAsString.withDefault(""),
+      refeicao: parseAsString.withDefault("todas"),
     },
     {
       clearOnDefault: true,
@@ -27,12 +35,24 @@ export default function RecepcaoPage() {
   );
 
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
-    queryKey: ["tabelaDeAgendamentos", pesquisa.data],
+    queryKey: ["tabelaDeAgendamentos", pesquisa.data, pesquisa.refeicao],
     queryFn: async () => {
       const resposta = await buscarAgendamentos({
         data_inicial: pesquisa.data,
       });
 
+      return resposta.sucesso ? resposta.resposta : [];
+    },
+    initialData: [],
+  });
+
+  const {
+    data: refeicoesDisponiveis,
+    isFetching: isLoadingRefeicoesDisponiveis,
+  } = useQuery({
+    queryKey: ["refeicoes"],
+    queryFn: async () => {
+      const resposta = await buscarRefeicoes();
       return resposta.sucesso ? resposta.resposta : [];
     },
     initialData: [],
@@ -49,6 +69,7 @@ export default function RecepcaoPage() {
         meta: { filterVariant: "range" },
       }),
       colunasHelper.accessor("meal.description", {
+        id: "refeicao",
         cell: (props) => (
           <div className="whitespace-nowrap">{props.getValue()}</div>
         ),
@@ -109,6 +130,7 @@ export default function RecepcaoPage() {
     setPesquisa({
       data,
       codigoOuMatricula,
+      refeicao: encodeURIComponent(formData.get("meal_id") as string),
     });
   };
 
@@ -116,6 +138,7 @@ export default function RecepcaoPage() {
     setPesquisa({
       data: pesquisa.data,
       codigoOuMatricula: "",
+      refeicao: "todas",
     });
   };
 
@@ -165,6 +188,26 @@ export default function RecepcaoPage() {
                   defaultValue={pesquisa.data}
                 />
               </Form.Field>
+              <Form.Field
+                name="meal_id"
+                className="flex flex-col justify-start gap-y-1"
+              >
+                <SelectGeral
+                  label="Refeição"
+                  name="meal_id"
+                  opcoes={() => {
+                    return [
+                      { valor: "todas", texto: "Todas as refeições" },
+                      ...refeicoesDisponiveis.map((refeicao) => ({
+                        valor: refeicao.description,
+                        texto: refeicao.description,
+                      })),
+                    ];
+                  }}
+                  estaCarregando={isLoadingRefeicoesDisponiveis}
+                  triggerClassname="!outline-cinza-600"
+                />
+              </Form.Field>
               <Botao
                 variante="adicionar"
                 texto="Buscar"
@@ -190,6 +233,14 @@ export default function RecepcaoPage() {
                 id: "codigoOuMatricula",
                 value: [pesquisa.codigoOuMatricula, pesquisa.codigoOuMatricula],
               },
+              ...(pesquisa.refeicao !== "todas"
+                ? [
+                    {
+                      id: "refeicao",
+                      value: decodeURIComponent(pesquisa.refeicao),
+                    },
+                  ]
+                : []),
             ]}
           />
         </Secao>
