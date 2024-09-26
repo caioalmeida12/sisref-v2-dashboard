@@ -86,7 +86,7 @@ export function TabelaDeCrud<TipoDeDado>({ colunas, dados, estaCarregando, orden
     })
 
     return (
-        <div className="p-2 max-w-full overflow-x-auto">
+        <div className="max-w-full overflow-x-auto">
             <table
                 className='text-center w-full max-w-full'
             >
