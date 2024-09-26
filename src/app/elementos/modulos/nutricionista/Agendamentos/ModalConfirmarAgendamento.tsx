@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { confirmarAgendamento } from "@/app/actions/nutricionista";
 import { TAgendamento } from "@/app/interfaces/TAgendamento";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 
 interface ModalProps {
   agendamento: TAgendamento;
@@ -59,13 +60,13 @@ export const ModalConfirmarAgendamento: React.FC<ModalProps> = ({
   });
 
   return (
-    <Dialog.Root open={modalAberto}>
-      <Dialog.Trigger>
+    <Dialog.Root open={modalAberto} onOpenChange={setModalAberto}>
+      <Dialog.Trigger asChild>
         <CustomTooltipWrapper
           elementoContent="Confirmar agendamento"
           elementoTrigger={
             <div
-              className="relative h-5 w-5"
+              className="relative h-5 w-5 cursor-pointer"
               onClick={() => setModalAberto(true)}
             >
               <Icone.Confirmar className="absolute inset-0 block h-full w-full" />
@@ -75,37 +76,65 @@ export const ModalConfirmarAgendamento: React.FC<ModalProps> = ({
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-preto-400/25 data-[state=open]:animate-overlayShow" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] flex w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] flex-col gap-y-4 overflow-y-auto rounded bg-branco-400 p-6 focus:outline-none data-[state=open]:animate-contentShow">
+        <Dialog.Content className="fixed left-[50%] top-[50%] flex max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] flex-col gap-y-2 rounded bg-branco-400 p-6 outline outline-1 outline-cinza-600 focus:outline-none data-[state=open]:animate-contentShow">
           <Dialog.Title className="m-0 text-lg font-medium">
             Tem certeza que deseja confirmar este agendamento?
           </Dialog.Title>
           <Dialog.Description className="leading-normal">
-            {agendamento.menu?.description
-              ? `Você está prestes a confirmar o agendamento do dia ${agendamento.menu.date} com a descrição "${agendamento.menu.description}"  e ID ${agendamento.menu.id} para ${agendamento.student.name}`
-              : `Você está prestes a confirmar o agendamento do dia ${agendamento.menu?.date}`}
+            Você está prestes a confirmar o agendamento abaixo:
           </Dialog.Description>
+          <ul className="list-disc pl-5">
+            <li>
+              Estudante: <strong>{agendamento.student.name}</strong>
+            </li>
+            <li>
+              Data:{" "}
+              <strong>
+                {DatasHelper.converterParaFormatoBrasileiro(
+                  agendamento.menu.date,
+                )}
+              </strong>
+            </li>
+            {agendamento.meal.description && (
+              <li>
+                Refeição: <strong>{agendamento.meal.description}</strong>
+              </li>
+            )}
+            {agendamento.menu.description && (
+              <li>
+                Cardápio: <strong>{agendamento.menu.description}</strong>
+              </li>
+            )}
+            <li>
+              ID do Menu: <strong>{agendamento.menu.id}</strong>
+            </li>
+          </ul>
           <div ref={mensagemDeRespostaRef} className="hidden"></div>
           <Botao
             variante="adicionar"
             texto="Sim, desejo confirmar"
             disabled={isPending}
             onClick={() => handleConfirmar()}
+            className="mt-2"
           />
+          <div className="flex justify-end gap-x-2">
+            <Dialog.Close asChild>
+              <Botao
+                variante="editar"
+                texto="Não, não desejo confirmar"
+                onClick={() => setModalAberto(false)}
+              />
+            </Dialog.Close>
+          </div>
           <Dialog.Close asChild>
-            <div
-              className="absolute right-2 top-2 inline-flex cursor-pointer appearance-none items-center justify-center rounded-full p-[0.25em] hover:bg-cinza-400 focus:shadow-[0_0_0_2px] focus:shadow-cinza-400 focus:outline-none"
+            <button
+              name="Fechar"
+              className="absolute right-2 top-2 inline-flex appearance-none items-center justify-center rounded-full p-[0.25em] hover:bg-cinza-400 focus:shadow-[0_0_0_2px] focus:shadow-cinza-400 focus:outline-none"
               aria-label="Fechar"
               onClick={() => setModalAberto(false)}
             >
               <Cross2Icon />
-            </div>
-          </Dialog.Close>
-          <Dialog.Close asChild>
-            <Botao
-              variante="editar"
-              texto="Não, não desejo confirmar"
-              onClick={() => setModalAberto(false)}
-            />
+            </button>
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>
