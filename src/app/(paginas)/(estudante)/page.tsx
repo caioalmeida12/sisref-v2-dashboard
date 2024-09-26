@@ -16,7 +16,7 @@ export default async function Home() {
     <>
       <InformacoesDeEstudante />
       {
-        ticketsSemJustificativa.sucesso ?
+        ticketsSemJustificativa.sucesso && ticketsSemJustificativa.resposta.length > 0 ?
           <Aviso titulo='Aviso' texto='Você possui um ou mais tickets pendentes de justificativa. Por favor, acesse o histórico de refeições para regularizar sua situação.' />
           : null
       }
