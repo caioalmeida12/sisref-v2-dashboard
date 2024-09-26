@@ -10,10 +10,12 @@ import { removerCardapio } from "@/app/actions/nutricionista";
 import { TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 
-export const ModalRemoverCardapio = ({
-  refeicao_e_cardapio,
-}: {
+interface ModalProps {
   refeicao_e_cardapio: TRefeicaoECardapio;
+}
+
+export const ModalRemoverCardapio: React.FC<ModalProps> = ({
+  refeicao_e_cardapio,
 }) => {
   const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
   const queryClient = useQueryClient();
@@ -52,13 +54,13 @@ export const ModalRemoverCardapio = ({
   });
 
   return (
-    <Dialog.Root open={modalAberto}>
-      <Dialog.Trigger>
+    <Dialog.Root open={modalAberto} onOpenChange={setModalAberto}>
+      <Dialog.Trigger asChild>
         <CustomTooltipWrapper
           elementoContent="Remover cardápio"
           elementoTrigger={
             <div
-              className="relative h-5 w-5"
+              className="relative h-5 w-5 cursor-pointer"
               onClick={() => setModalAberto(true)}
             >
               <Icone.Deletar className="absolute inset-0 block h-full w-full" />
@@ -68,37 +70,57 @@ export const ModalRemoverCardapio = ({
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-preto-400/25 data-[state=open]:animate-overlayShow" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] flex w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] flex-col gap-y-4 overflow-y-auto rounded bg-branco-400 p-6 focus:outline-none data-[state=open]:animate-contentShow">
+        <Dialog.Content className="fixed left-[50%] top-[50%] flex max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] flex-col gap-y-2 rounded bg-branco-400 p-6 outline outline-1 outline-cinza-600 focus:outline-none data-[state=open]:animate-contentShow">
           <Dialog.Title className="m-0 text-lg font-medium">
             Tem certeza que deseja remover este cardápio?
           </Dialog.Title>
           <Dialog.Description className="leading-normal">
-            {refeicao_e_cardapio.meal.description
-              ? `Você está prestes a remover o cardápio do dia ${refeicao_e_cardapio.menu.date} com a descrição "${refeicao_e_cardapio.meal.description}"  e ID ${refeicao_e_cardapio.menu.id}`
-              : `Você está prestes a remover o cardápio do dia ${refeicao_e_cardapio.menu.date}`}
+            Você está prestes a remover o cardápio abaixo:
           </Dialog.Description>
+          <ul className="list-disc pl-5">
+            {refeicao_e_cardapio.meal.description && (
+              <li>
+                Refeição: <strong>{refeicao_e_cardapio.meal.description}</strong>
+              </li>
+            )}
+            {refeicao_e_cardapio.menu.description && (
+              <li>
+                Cardápio: <strong>{refeicao_e_cardapio.menu.description}</strong>
+              </li>
+            )}
+            <li>
+              Data: <strong>{refeicao_e_cardapio.menu.date}</strong>
+            </li>
+            <li>
+              ID do Menu: <strong>{refeicao_e_cardapio.menu.id}</strong>
+            </li>
+          </ul>
           <div ref={mensagemDeRespostaRef} className="hidden"></div>
           <Botao
             variante="remover"
             texto="Sim, desejo remover"
             disabled={isPending}
             onClick={() => handleCancelar()}
+            className="mt-2"
           />
+          <div className="flex justify-end gap-x-2">
+            <Dialog.Close asChild>
+              <Botao
+                variante="editar"
+                texto="Não, não desejo remover"
+                onClick={() => setModalAberto(false)}
+              />
+            </Dialog.Close>
+          </div>
           <Dialog.Close asChild>
-            <div
-              className="absolute right-2 top-2 inline-flex cursor-pointer appearance-none items-center justify-center rounded-full p-[0.25em] hover:bg-cinza-400 focus:shadow-[0_0_0_2px] focus:shadow-cinza-400 focus:outline-none"
+            <button
+              name="Fechar"
+              className="absolute right-2 top-2 inline-flex appearance-none items-center justify-center rounded-full p-[0.25em] hover:bg-cinza-400 focus:shadow-[0_0_0_2px] focus:shadow-cinza-400 focus:outline-none"
               aria-label="Fechar"
               onClick={() => setModalAberto(false)}
             >
               <Cross2Icon />
-            </div>
-          </Dialog.Close>
-          <Dialog.Close asChild>
-            <Botao
-              variante="editar"
-              texto="Não, não desejo remover"
-              onClick={() => setModalAberto(false)}
-            />
+            </button>
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>

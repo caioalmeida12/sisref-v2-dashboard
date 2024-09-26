@@ -12,6 +12,7 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { useState, useRef } from "react";
 import { SelectGeral } from "@/app/elementos/componentes/SelectGeral";
 import { buscarTabelaDeCardapios } from "@/app/actions/recepcao";
+import * as Form from "@radix-ui/react-form";
 
 export const ModalAdicionarRelatorioDeDesperdicio = () => {
   const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
@@ -87,7 +88,7 @@ export const ModalAdicionarRelatorioDeDesperdicio = () => {
   });
 
   return (
-    <Dialog.Root open={modalAberto}>
+    <Dialog.Root open={modalAberto} onOpenChange={setModalAberto}>
       <Dialog.Trigger asChild>
         <Botao
           className="h-[36px] bg-azul-400 px-10 py-2 leading-tight"
@@ -98,27 +99,27 @@ export const ModalAdicionarRelatorioDeDesperdicio = () => {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-preto-400/25 data-[state=open]:animate-overlayShow" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none data-[state=open]:animate-contentShow">
+        <Dialog.Content className="fixed left-[50%] top-[50%] flex max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] flex-col gap-y-2 rounded bg-branco-400 p-6 outline outline-1 outline-cinza-600 focus:outline-none data-[state=open]:animate-contentShow">
           <Dialog.Title className="m-0 text-lg font-medium">
             Adicionar Relatório de Desperdício
           </Dialog.Title>
           <Dialog.Description>
-            Preencha os campos abaixo para adicionar um novo relatório de
-            desperdício.
+            Preencha os campos abaixo para adicionar um novo relatório de desperdício.
           </Dialog.Description>
-          <form
+          <hr />
+          <Form.Root
             className="flex flex-col gap-y-4"
             onSubmit={(e) => {
               e.preventDefault();
               handleSalvar(new FormData(e.target as HTMLFormElement));
             }}
           >
-            <fieldset className="flex flex-col justify-start gap-y-2">
-              <label className="font-medium" htmlFor="waste_date">
+            <Form.Field name="waste_date" className="flex flex-col gap-y-1">
+              <Form.Label className="font-medium" htmlFor="waste_date">
                 Data do Desperdício
-              </label>
-              <input
-                className="h-8 w-full flex-1 rounded-[4px] px-0 py-2 leading-none shadow-[0_0_0_1px] shadow-preto-400 outline-none focus:shadow-[0_0_0_2px] focus:shadow-preto-400"
+              </Form.Label>
+              <Form.Control
+                className="h-[34px] w-full rounded px-2 py-1 outline outline-1"
                 id="waste_date"
                 name="waste_date"
                 type="date"
@@ -127,13 +128,13 @@ export const ModalAdicionarRelatorioDeDesperdicio = () => {
                 defaultValue={dataDoCardapio}
                 required
               />
-            </fieldset>
-            <fieldset className="flex flex-col justify-start gap-y-2">
-              <label className="font-medium" htmlFor="total_food_waste">
+            </Form.Field>
+            <Form.Field name="total_food_waste" className="flex flex-col gap-y-1">
+              <Form.Label className="font-medium" htmlFor="total_food_waste">
                 Total de Desperdício (kg)
-              </label>
-              <input
-                className="inline-flex h-8 w-full flex-1 items-center justify-center rounded-[4px] py-2 leading-none shadow-[0_0_0_1px] shadow-preto-400 outline-none focus:shadow-[0_0_0_2px] focus:shadow-preto-400 disabled:cursor-not-allowed"
+              </Form.Label>
+              <Form.Control
+                className="h-[34px] w-full rounded px-2 py-1 outline outline-1"
                 id="total_food_waste"
                 name="total_food_waste"
                 type="number"
@@ -141,7 +142,7 @@ export const ModalAdicionarRelatorioDeDesperdicio = () => {
                 required
                 disabled={dataDoCardapio.length !== 10}
               />
-            </fieldset>
+            </Form.Field>
             <SelectGeral
               label="ID do Cardápio"
               name="menu_id"
@@ -177,7 +178,7 @@ export const ModalAdicionarRelatorioDeDesperdicio = () => {
                 <Cross2Icon />
               </button>
             </Dialog.Close>
-          </form>
+          </Form.Root>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
