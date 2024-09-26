@@ -15,6 +15,7 @@ import { Badge } from "@/app/elementos/basicos/Badge";
 import { ModalConfirmarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento";
 import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
 import { ModalAdicionarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento";
+import { ModalRemoverAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalRemoverAgendamento";
 
 export default function Agendamentos() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -89,8 +90,13 @@ export default function Agendamentos() {
         cell: (props) => (
           <div className="flex justify-center gap-x-2">
             <div className="relative h-5 w-5">
-              <ModalConfirmarAgendamento agendamento={props.row.original} />
+              <ModalRemoverAgendamento agendamento={props.row.original} />
             </div>
+            {!props.row.original.wasPresent && (
+              <div className="relative h-5 w-5">
+                <ModalConfirmarAgendamento agendamento={props.row.original} />
+              </div>
+            )}
           </div>
         ),
         enableResizing: false,
