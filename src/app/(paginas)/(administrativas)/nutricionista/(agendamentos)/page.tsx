@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/app/elementos/basicos/Badge";
 import { ModalConfirmarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento";
 import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
+import { ModalAdicionarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento";
 
 export default function Agendamentos() {
     const [pesquisa, setPesquisa] = useQueryStates({
@@ -113,6 +114,9 @@ export default function Agendamentos() {
                             </Form.Field>
                             <Botao variante="adicionar" texto="Buscar" className='leading-tight py-2' type='submit' />
                         </Form.Root>
+                    </div>
+                    <div className='ml-auto mt-auto'>
+                        <ModalAdicionarAgendamento />
                     </div>
                 </Secao>
                 <Secao>
