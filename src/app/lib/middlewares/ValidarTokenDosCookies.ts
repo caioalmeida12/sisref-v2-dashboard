@@ -8,17 +8,19 @@ import { redirecionarViaMiddleware } from "./RedirecionarViaMiddleware";
  * @returns ITokenDecodificado
  */
 export const validarTokenDosCookies = (): ITokenDecodificado => {
-    const bearer = cookies().get("authorization");
-    if (!bearer) return redirecionarViaMiddleware()
+  const bearer = cookies().get("authorization");
+  if (!bearer) return redirecionarViaMiddleware();
 
-    const token = bearer.value.split(" ")[1];
-    const decodificado = jwt.decode(token) as Partial<ITokenDecodificado>;
+  const token = bearer.value.split(" ")[1];
+  const decodificado = jwt.decode(token) as Partial<ITokenDecodificado>;
 
-    if (!decodificado) return redirecionarViaMiddleware()
-    if (typeof decodificado.sub === "undefined") return redirecionarViaMiddleware()
+  if (!decodificado) return redirecionarViaMiddleware();
+  if (typeof decodificado.sub === "undefined")
+    return redirecionarViaMiddleware();
 
-    if (typeof decodificado.exp === "undefined") return redirecionarViaMiddleware()
-    if ((Date.now() / 1000) >= decodificado.exp) return redirecionarViaMiddleware()
-    
-    return decodificado as ITokenDecodificado;
-}
+  if (typeof decodificado.exp === "undefined")
+    return redirecionarViaMiddleware();
+  if (Date.now() / 1000 >= decodificado.exp) return redirecionarViaMiddleware();
+
+  return decodificado as ITokenDecodificado;
+};
