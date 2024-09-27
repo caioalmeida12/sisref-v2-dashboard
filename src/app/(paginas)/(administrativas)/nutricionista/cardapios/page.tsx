@@ -57,6 +57,7 @@ export default function NutricionistaPage() {
   const colunas = useMemo(
     () => [
       colunasHelper.accessor("menu.id", {
+        id: "menu.id",
         cell: (info) => info.getValue(),
         header: "ID",
         meta: { filterVariant: "range" },
