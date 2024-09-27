@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import Icone from "@elementos//basicos/Icone";
+import Icone from "@/app/elementos/basicos/Icone";
 import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta";
-import { Botao } from "@elementos//basicos/Botao";
+import { Botao } from "@/app/elementos/basicos/Botao";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editarCardapio } from "@/app/actions/nutricionista";
 import { TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
@@ -103,15 +103,13 @@ export const ModalEditarCardapio: React.FC<ModalProps> = ({
               <Form.Label className="font-medium" htmlFor="date">
                 Data
               </Form.Label>
-              <Form.Message>
-                Para alterar a data, altere a busca.
-              </Form.Message>
+              <Form.Message>Para alterar a data, altere a busca.</Form.Message>
               <Form.Control
                 readOnly
                 type="date"
                 id="date"
                 name="date"
-                className="w-full rounded px-2 py-1 outline outline-1 cursor-not-allowed disabled:bg-cinza-400"
+                className="w-full cursor-not-allowed rounded px-2 py-1 outline outline-1 disabled:bg-cinza-400"
                 disabled
                 defaultValue={refeicao_e_cardapio.menu.date}
               />
