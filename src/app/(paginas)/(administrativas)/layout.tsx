@@ -16,7 +16,7 @@ export default async function NutricionistaLayout({
     <CustomQueryClientProvider>
       <div className="flex">
         <Sidebar />
-        <div className="w-full p-8">
+        <div className="max-h-screen w-full overflow-y-auto p-8">
           <Suspense fallback={<div>Carregando...</div>}>{children}</Suspense>
         </div>
       </div>
