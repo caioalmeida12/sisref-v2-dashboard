@@ -2,13 +2,13 @@
 import React, { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import Icone from "@elementos//basicos/Icone";
 import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta";
-import { Botao } from "@elementos//basicos/Botao";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { removerCardapio } from "@/app/actions/nutricionista";
 import { TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
+import { Botao } from "@/app/elementos/basicos/Botao";
+import Icone from "@/app/elementos/basicos/Icone";
 
 interface ModalProps {
   refeicao_e_cardapio: TRefeicaoECardapio;
@@ -80,12 +80,14 @@ export const ModalRemoverCardapio: React.FC<ModalProps> = ({
           <ul className="list-disc pl-5">
             {refeicao_e_cardapio.meal.description && (
               <li>
-                Refeição: <strong>{refeicao_e_cardapio.meal.description}</strong>
+                Refeição:{" "}
+                <strong>{refeicao_e_cardapio.meal.description}</strong>
               </li>
             )}
             {refeicao_e_cardapio.menu.description && (
               <li>
-                Cardápio: <strong>{refeicao_e_cardapio.menu.description}</strong>
+                Cardápio:{" "}
+                <strong>{refeicao_e_cardapio.menu.description}</strong>
               </li>
             )}
             <li>
