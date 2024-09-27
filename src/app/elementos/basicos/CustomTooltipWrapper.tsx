@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import * as Tooltip from "@radix-ui/react-tooltip";
 
 interface CustomTooltipWrapperProps {
@@ -6,10 +6,10 @@ interface CustomTooltipWrapperProps {
   elementoContent: React.ReactNode;
 }
 
-export const CustomTooltipWrapper = ({
-  elementoContent,
-  elementoTrigger,
-}: CustomTooltipWrapperProps) => {
+export const CustomTooltipWrapper = forwardRef<
+  HTMLDivElement,
+  CustomTooltipWrapperProps
+>(({ elementoContent, elementoTrigger }, ref) => {
   const [aberto, setAberto] = useState(false);
 
   const handleAbrirTooltip = () => setAberto(true);
@@ -25,7 +25,7 @@ export const CustomTooltipWrapper = ({
           onMouseLeave={handleFecharTooltip}
           onBlur={handleFecharTooltip}
         >
-          {elementoTrigger}
+          <div ref={ref}>{elementoTrigger}</div>
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content
@@ -39,4 +39,6 @@ export const CustomTooltipWrapper = ({
       </Tooltip.Root>
     </Tooltip.Provider>
   );
-};
+});
+
+CustomTooltipWrapper.displayName = "CustomTooltipWrapper";
