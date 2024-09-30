@@ -14,6 +14,8 @@ import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { buscarRelatorioDeDesperdicio } from "@/app/actions/nutricionista";
 import { IRelatorioDeDesperdicio } from "@/app/interfaces/IRelatorioDeDesperdicio";
 import { ModalAdicionarRelatorioDeDesperdicio } from "@/app/elementos/modulos/nutricionista/RelatoriosDeDesperdicio/ModalAdicionarRelatorioDeDesperdicio";
+import { ModalRemoverRelatorioDeDesperdicio } from "@/app/elementos/modulos/nutricionista/RelatoriosDeDesperdicio/ModalRemoverRelatorioDeDesperdicio";
+import { ModalEditarRelatorioDeDesperdicio } from "@/app/elementos/modulos/nutricionista/RelatoriosDeDesperdicio/ModalEditarRelatorioDeDesperdicio";
 
 export default function NutricionistaPage() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -54,8 +56,12 @@ export default function NutricionistaPage() {
       }),
       colunasHelper.accessor("menu.description", {
         cell: (info) => info.getValue(),
-        header: "Refeição",
+        header: "Cardápio",
         size: 750,
+      }),
+      colunasHelper.accessor("menu.meal.description", {
+        cell: (info) => info.row.original.menu.meal.description,
+        header: "Refeição",
       }),
       colunasHelper.accessor("total_food_waste", {
         cell: (info) => info.getValue(),
@@ -81,8 +87,25 @@ export default function NutricionistaPage() {
         cell: (info) => info.getValue(),
         header: "Avaliação",
       }),
+      colunasHelper.display({
+        cell: (info) => (
+          <div className="flex justify-center gap-x-2">
+            <div className="relative h-5 w-5">
+              <ModalRemoverRelatorioDeDesperdicio
+                relatorio={info.row.original}
+              />
+            </div>
+            <div className="relative h-5 w-5">
+              <ModalEditarRelatorioDeDesperdicio
+                relatorio={info.row.original}
+              />
+            </div>
+          </div>
+        ),
+        header: "Remover",
+      }),
     ],
-    [],
+    [colunasHelper],
   );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

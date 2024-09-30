@@ -98,7 +98,7 @@ export const ModalEditarRefeicao: React.FC<ModalProps> = ({ refeicao }) => {
                 Horário de início
               </Form.Label>
               <Form.Control
-                className="w-full px-2 py-1 rounded outline outline-1"
+                className="w-full rounded px-2 py-1 outline outline-1"
                 id="timeStart"
                 name="timeStart"
                 placeholder="Ex: 10:00:00"
@@ -110,19 +110,26 @@ export const ModalEditarRefeicao: React.FC<ModalProps> = ({ refeicao }) => {
                 Horário de término
               </Form.Label>
               <Form.Control
-                className="w-full px-2 py-1 rounded outline outline-1"
+                className="w-full rounded px-2 py-1 outline outline-1"
                 id="timeEnd"
                 name="timeEnd"
                 placeholder="Ex: 12:00:00"
                 defaultValue={refeicao?.timeEnd}
               />
             </Form.Field>
-            <Form.Field name="qtdTimeReservationStart" className="flex flex-col gap-y-1">
-              <Form.Label className="font-medium" htmlFor="qtdTimeReservationStart">
-                Quantas horas antes do início da refeição as reservas podem ser feitas?
+            <Form.Field
+              name="qtdTimeReservationStart"
+              className="flex flex-col gap-y-1"
+            >
+              <Form.Label
+                className="font-medium"
+                htmlFor="qtdTimeReservationStart"
+              >
+                Quantas horas antes do início da refeição as reservas podem ser
+                feitas?
               </Form.Label>
               <Form.Control
-                className="w-full px-2 py-1 rounded outline outline-1"
+                className="w-full rounded px-2 py-1 outline outline-1"
                 id="qtdTimeReservationStart"
                 name="qtdTimeReservationStart"
                 type="number"
@@ -130,12 +137,19 @@ export const ModalEditarRefeicao: React.FC<ModalProps> = ({ refeicao }) => {
                 defaultValue={refeicao?.qtdTimeReservationStart}
               />
             </Form.Field>
-            <Form.Field name="qtdTimeReservationEnd" className="flex flex-col gap-y-1">
-              <Form.Label className="font-medium" htmlFor="qtdTimeReservationEnd">
-                Quantas horas antes do término da refeição as reservas não podem mais ser feitas?
+            <Form.Field
+              name="qtdTimeReservationEnd"
+              className="flex flex-col gap-y-1"
+            >
+              <Form.Label
+                className="font-medium"
+                htmlFor="qtdTimeReservationEnd"
+              >
+                Quantas horas antes do término da refeição as reservas não podem
+                mais ser feitas?
               </Form.Label>
               <Form.Control
-                className="w-full px-2 py-1 rounded outline outline-1"
+                className="w-full rounded px-2 py-1 outline outline-1"
                 id="qtdTimeReservationEnd"
                 name="qtdTimeReservationEnd"
                 type="number"

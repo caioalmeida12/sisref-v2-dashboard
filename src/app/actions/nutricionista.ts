@@ -664,3 +664,59 @@ export async function criarRelatorioDeDesperdicio(formData: FormData) {
     mensagem: "Relatório de desperdício criado com sucesso.",
   };
 }
+
+/**
+ * Remove um relatório de desperdício.
+ *
+ * @param id - O ID do relatório de desperdício a ser removido.
+ * @returns JSON com os campos `sucesso` e `mensagem`.
+ */
+export async function removerRelatorioDeDesperdicio({ id }: { id?: number }) {
+  if (!id)
+    return {
+      sucesso: false,
+      mensagem: "ID do relatório de desperdício não informado.",
+    };
+
+  const resposta = await FetchHelper.delete<{ message: string }>({
+    rota: `/food-waste/${id}`,
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+  });
+
+  // Se a resposta for erro e a mensagem for "O Rejeito foi deletado.", retornar sucesso.
+  if (!resposta.sucesso && resposta.message == "O Rejeito foi deletado.") {
+    return { sucesso: true, mensagem: resposta.message };
+  }
+
+  if (!resposta.sucesso) {
+    return { sucesso: false, mensagem: resposta.message };
+  }
+
+  return { sucesso: false, mensagem: resposta.resposta[0].message };
+}
+
+/**
+ * Edita um relatório de desperdício.
+ *
+ * @param formData - Os dados do formulário de edição de relatório de desperdício.
+ * @returns JSON com os campos `sucesso` e `mensagem`.
+ */
+export async function editarRelatorioDeDesperdicio(formData: FormData) {
+  const resposta = await FetchHelper.put<unknown>({
+    rota: `/food-waste/${formData.get("id")}`,
+    cookies: cookies(),
+    body: {
+      total_food_waste: formData.get("total_food_waste"),
+      menu_id: formData.get("menu_id"),
+      waste_date: formData.get("waste_date"),
+    },
+  });
+
+  if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
+
+  return {
+    sucesso: true,
+    mensagem: "Relatório de desperdício editado com sucesso.",
+  };
+}
