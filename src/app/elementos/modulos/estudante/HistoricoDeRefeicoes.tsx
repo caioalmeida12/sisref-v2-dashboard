@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Secao } from "@elementos/basicos/Secao";
 import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao";
 import {
@@ -8,10 +8,6 @@ import {
   RefeicaoDoHistoricoLoading,
 } from "@elementos/componentes/RefeicaoDoHistorico/RefeicaoDoHistorico";
 import { useQuery } from "@tanstack/react-query";
-import {
-  buscarTickets,
-  buscarTicketsSemJustificativa,
-} from "@/app/actions/estudante";
 import { TRefeicaoDoHistorico } from "@/app/interfaces/TRefeicaoDoHistorico";
 import { IRespostaDeAction } from "@/app/interfaces/IRespostaDeAction";
 
@@ -26,7 +22,6 @@ export const HistoricoDeRefeicoes = ({
     data: ticketsMaisRecentes,
     isFetching,
     isError,
-    error,
   } = useQuery<TRefeicaoDoHistorico[]>({
     queryKey: ["historico-de-refeicoes"],
     queryFn: async () => {

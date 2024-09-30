@@ -11,7 +11,6 @@ import * as Form from "@radix-ui/react-form";
 import { createColumnHelper } from "@tanstack/react-table";
 import { buscarAgendamentos } from "@/app/actions/nutricionista";
 import { useQuery } from "@tanstack/react-query";
-import { Badge } from "@/app/elementos/basicos/Badge";
 import { ModalConfirmarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento";
 import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
 import { ModalAdicionarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento";

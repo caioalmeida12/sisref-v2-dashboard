@@ -2,15 +2,11 @@
 
 import * as Dialog from "@radix-ui/react-dialog";
 import { Botao } from "@elementos/basicos/Botao";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta";
-import {
-  editarRelatorioDeDesperdicio,
-  buscarRefeicoes,
-} from "@/app/actions/nutricionista";
+import { editarRelatorioDeDesperdicio } from "@/app/actions/nutricionista";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useState, useRef } from "react";
-import { buscarTabelaDeCardapios } from "@/app/actions/recepcao";
+import { useState } from "react";
 import * as Form from "@radix-ui/react-form";
 import { IRelatorioDeDesperdicio } from "@/app/interfaces/IRelatorioDeDesperdicio";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
@@ -27,47 +23,7 @@ export const ModalEditarRelatorioDeDesperdicio: React.FC<ModalProps> = ({
   const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
   const queryClient = useQueryClient();
   const [modalAberto, setModalAberto] = useState(false);
-  const [dataDoCardapio, setDataDoCardapio] = useState<string>(
-    relatorio.menu.date,
-  );
-
-  const dataRef = useRef<HTMLInputElement>(null);
-
-  const { data: refeicoesDisponiveis, isFetching: isLoadingRefeicoes } =
-    useQuery({
-      queryKey: ["refeicoes", dataDoCardapio],
-      queryFn: async () => {
-        const resposta = await buscarRefeicoes();
-        return resposta.sucesso ? resposta.resposta : [];
-      },
-      enabled: dataDoCardapio.length === 10, // Verifica se a data está completa no formato yyyy-mm-dd
-      initialData: [],
-    });
-
-  const {
-    data: cardapiosDisponiveis,
-    isFetching: isLoadingCardapiosDisponiveis,
-  } = useQuery({
-    queryKey: ["tabelaDeCardapios", dataDoCardapio, refeicoesDisponiveis],
-    queryFn: async () => {
-      const resposta = await buscarTabelaDeCardapios({
-        campus_id: 1,
-        data: dataDoCardapio,
-        refeicoes_disponiveis: refeicoesDisponiveis,
-      });
-      return resposta.sucesso ? resposta.resposta : [];
-    },
-    enabled: dataDoCardapio.length === 10 && refeicoesDisponiveis.length > 0, // Verifica se a data está completa no formato yyyy-mm-dd
-    initialData: [],
-  });
-
-  const handleDataChange = () => {
-    const data = dataRef.current?.value;
-
-    if (data) {
-      setDataDoCardapio(data);
-    }
-  };
+  const [dataDoCardapio] = useState<string>(relatorio.menu.date);
 
   const { mutate: handleSalvar, isPending } = useMutation({
     mutationFn: (formData: FormData) => editarRelatorioDeDesperdicio(formData),

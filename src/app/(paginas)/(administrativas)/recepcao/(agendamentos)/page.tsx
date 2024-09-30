@@ -14,12 +14,8 @@ import {
   buscarRefeicoes,
 } from "@/app/actions/nutricionista";
 import { useQuery } from "@tanstack/react-query";
-import { Badge } from "@/app/elementos/basicos/Badge";
 import { ModalConfirmarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento";
 import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
-import SelectRefeicao from "@/app/elementos/componentes/SelectRefeicao";
-import * as Select from "@radix-ui/react-select";
-import { ChevronDownIcon, CheckIcon } from "@radix-ui/react-icons";
 import { SelectGeral } from "@/app/elementos/componentes/SelectGeral";
 
 export default function RecepcaoPage() {
