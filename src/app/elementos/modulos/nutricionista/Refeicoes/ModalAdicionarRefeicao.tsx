@@ -7,11 +7,12 @@ import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta";
 import { criarRefeicao } from "@/app/actions/nutricionista";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useState } from "react";
-import * as Form from "@radix-ui/react-form";
 
 export const ModalAdicionarRefeicao = () => {
   const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
+
   const queryClient = useQueryClient();
+
   const [modalAberto, setModalAberto] = useState(false);
 
   const { mutate: handleSalvar, isPending } = useMutation({
@@ -27,13 +28,16 @@ export const ModalAdicionarRefeicao = () => {
         });
 
       atualizarMensagem({
-        mensagem: "Refeição salva com sucesso!",
+        mensagem: "Refeicao salvo com sucesso!",
         sucesso: true,
       });
 
       setTimeout(() => {
         setModalAberto(false);
-        queryClient.invalidateQueries({ queryKey: ["tabelaDeRefeicoes"] });
+
+        queryClient.invalidateQueries({
+          queryKey: ["tabelaDeRefeicoes"],
+        });
       }, 500);
     },
     onError: (error) => {
@@ -42,7 +46,7 @@ export const ModalAdicionarRefeicao = () => {
   });
 
   return (
-    <Dialog.Root open={modalAberto} onOpenChange={setModalAberto}>
+    <Dialog.Root open={modalAberto}>
       <Dialog.Trigger asChild>
         <Botao
           className="h-[36px] bg-azul-400 px-10 py-2 leading-tight"
@@ -53,92 +57,87 @@ export const ModalAdicionarRefeicao = () => {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-preto-400/25 data-[state=open]:animate-overlayShow" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] flex max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] flex-col gap-y-2 rounded bg-branco-400 p-6 outline outline-1 outline-cinza-600 focus:outline-none data-[state=open]:animate-contentShow">
+        <Dialog.Content className="fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded bg-branco-400 p-6 focus:outline-none data-[state=open]:animate-contentShow">
           <Dialog.Title className="m-0 text-lg font-medium">
             Adicionar refeição
           </Dialog.Title>
           <Dialog.Description>
-            Preencha os campos abaixo para adicionar uma nova refeição.
+            Preencha os campos abaixo para adicionar um novo refeição.
           </Dialog.Description>
-          <hr />
-          <Form.Root
+          <form
             className="flex flex-col gap-y-4"
             onSubmit={(e) => {
               e.preventDefault();
               handleSalvar(new FormData(e.target as HTMLFormElement));
             }}
           >
-            <Form.Field name="description" className="flex flex-col gap-y-1">
-              <Form.Label className="font-medium" htmlFor="description">
+            <fieldset className="flex flex-col justify-start gap-y-2">
+              <label className="font-medium" htmlFor="description">
                 Descrição
-              </Form.Label>
-              <Form.Control
-                className="h-[34px] w-full rounded px-2 py-1 outline outline-1"
+              </label>
+              <input
+                className="inline-flex h-8 w-full flex-1 items-center justify-center rounded-[4px] px-4 py-2 leading-none shadow-[0_0_0_1px] shadow-preto-400 outline-none focus:shadow-[0_0_0_2px] focus:shadow-preto-400"
                 id="description"
                 placeholder="Ex: Lanche da manhã"
                 name="description"
               />
-            </Form.Field>
-            <Form.Field name="timeStart" className="flex flex-col gap-y-1">
-              <Form.Label className="font-medium" htmlFor="timeStart">
+            </fieldset>
+            <fieldset className="flex flex-col justify-start gap-y-2">
+              <label className="font-medium" htmlFor="timeStart">
                 Horário de início
-              </Form.Label>
-              <Form.Control
-                id="timeStart"
-                name="timeStart"
-                className="w-full rounded px-2 py-1 outline outline-1"
-                placeholder="Ex: 10:00:00"
-              />
-            </Form.Field>
-            <Form.Field name="timeEnd" className="flex flex-col gap-y-1">
-              <Form.Label className="font-medium" htmlFor="timeEnd">
+              </label>
+              <div className="rounded outline outline-1">
+                <input
+                  id="timeStart"
+                  name="timeStart"
+                  className="w-full bg-cinza-400 px-2 py-1"
+                  placeholder="Ex: 10:00:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset className="flex flex-col justify-start gap-y-2">
+              <label className="font-medium" htmlFor="timeEnd">
                 Horário de término
-              </Form.Label>
-              <Form.Control
-                id="timeEnd"
-                name="timeEnd"
-                className="w-full rounded px-2 py-1 outline outline-1"
-                placeholder="Ex: 12:00:00"
-              />
-            </Form.Field>
-            <Form.Field
-              name="qtdTimeReservationStart"
-              className="flex flex-col gap-y-1"
-            >
-              <Form.Label
-                className="font-medium"
-                htmlFor="qtdTimeReservationStart"
-              >
+              </label>
+              <div className="rounded outline outline-1">
+                <input
+                  id="timeEnd"
+                  name="timeEnd"
+                  className="w-full bg-cinza-400 px-2 py-1"
+                  placeholder="Ex: 12:00:00"
+                />
+              </div>
+            </fieldset>
+            <fieldset className="flex flex-col justify-start gap-y-2">
+              <label className="font-medium" htmlFor="qtdTimeReservationStart">
                 Quantas horas antes do início da refeição as reservas podem ser
                 feitas?
-              </Form.Label>
-              <Form.Control
-                id="qtdTimeReservationStart"
-                name="qtdTimeReservationStart"
-                type="number"
-                className="w-full rounded px-2 py-1 outline outline-1"
-                placeholder="Ex: 2 (em duas horas antes de a refeição começar estudantes podem reservar)"
-              />
-            </Form.Field>
-            <Form.Field
-              name="qtdTimeReservationEnd"
-              className="flex flex-col gap-y-1"
-            >
-              <Form.Label
-                className="font-medium"
-                htmlFor="qtdTimeReservationEnd"
-              >
+              </label>
+              <div className="rounded outline outline-1">
+                <input
+                  id="qtdTimeReservationStart"
+                  name="qtdTimeReservationStart"
+                  type="number"
+                  className="w-full bg-cinza-400 px-2 py-1"
+                  placeholder="Ex: 2 (em duas horas antes de a refeição começar estudantes podem reservar)"
+                />
+              </div>
+            </fieldset>
+            <fieldset className="flex flex-col justify-start gap-y-2">
+              <label className="font-medium" htmlFor="qtdTimeReservationEnd">
                 Quantas horas antes do término da refeição as reservas não podem
                 mais ser feitas?
-              </Form.Label>
-              <Form.Control
-                id="qtdTimeReservationEnd"
-                name="qtdTimeReservationEnd"
-                type="number"
-                className="w-full rounded px-2 py-1 outline outline-1"
-                placeholder="Ex: 2 (em duas horas antes de a refeição terminar estudantes não podem mais reservar)"
-              />
-            </Form.Field>
+              </label>
+              <div className="rounded outline outline-1">
+                <input
+                  id="qtdTimeReservationEnd"
+                  name="qtdTimeReservationEnd"
+                  type="number"
+                  className="w-full bg-cinza-400 px-2 py-1"
+                  placeholder="Ex: 2 (em duas horas antes de a refeição terminar estudantes não podem mais reservar)"
+                />
+              </div>
+            </fieldset>
             <div className="flex flex-col items-center justify-end gap-y-2">
               <div className="text-center" ref={mensagemDeRespostaRef}></div>
               <Botao
@@ -160,7 +159,7 @@ export const ModalAdicionarRefeicao = () => {
               </button>
             </Dialog.Close>
             <input readOnly hidden name="campus_id" value={1} />
-          </Form.Root>
+          </form>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

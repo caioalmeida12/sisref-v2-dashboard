@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Badge } from "@elementos/basicos/Badge";
 
 type CampoDeSecaoProps =
@@ -8,7 +7,7 @@ type CampoDeSecaoProps =
       variante: "horizontal-com-badge" | "vertical-com-badge";
       titulo: string;
       complemento: string;
-      corDaBadge: string;
+      className?: string;
     };
 
 const Vertical: React.FC<CampoDeSecaoProps> = ({ titulo, complemento }) => (
@@ -30,12 +29,12 @@ const HorizontalComBadge: React.FC<CampoDeSecaoProps> = (props) => {
     throw new Error("Invalid variant for HorizontalComBadge");
   }
 
-  const { titulo, complemento, corDaBadge } = props;
+  const { titulo, complemento, className } = props;
 
   return (
     <div className="flex flex-col items-start gap-1 sm:flex-row sm:items-center">
       <h3 className="font-bold">{titulo}:</h3>
-      <Badge texto={complemento} corDaBadge={corDaBadge} />
+      <Badge texto={complemento} className={className} />
     </div>
   );
 };
@@ -45,12 +44,12 @@ const VerticalComBadge: React.FC<CampoDeSecaoProps> = (props) => {
     throw new Error("Invalid variant for VerticalComBadge");
   }
 
-  const { titulo, complemento, corDaBadge } = props;
+  const { titulo, complemento, className } = props;
 
   return (
     <div className="grid gap-y-1">
       <h3 className="font-bold">{titulo}:</h3>
-      <Badge texto={complemento} corDaBadge={corDaBadge} />
+      <Badge texto={complemento} className={className} />
     </div>
   );
 };

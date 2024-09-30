@@ -1,41 +1,36 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { parseAsString, useQueryStates } from "nuqs";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { buscarAgendamentos } from "@/app/actions/nutricionista";
 import { Botao } from "@/app/elementos/basicos/Botao";
 import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
 import { Secao } from "@/app/elementos/basicos/Secao";
-import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import * as Form from "@radix-ui/react-form";
-import { createColumnHelper } from "@tanstack/react-table";
-import { buscarAgendamentos } from "@/app/actions/nutricionista";
-import { useQuery } from "@tanstack/react-query";
+import { Badge } from "@elementos/basicos/Badge";
 import { ModalConfirmarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento";
-import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
-import { ModalAdicionarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento";
 import { ModalRemoverAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalRemoverAgendamento";
+import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import * as Form from "@radix-ui/react-form";
+import { useQuery } from "@tanstack/react-query";
+import { createColumnHelper } from "@tanstack/react-table";
+import * as React from "react";
+import { useMemo, useState } from "react";
+import { ModalAdicionarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Agendamentos() {
-  const [pesquisa, setPesquisa] = useQueryStates(
-    {
-      dataInicial: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
-      dataFinal: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
-    },
-    {
-      clearOnDefault: true,
-    },
-  );
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [datas, setDatas] = useState({
+    dataInicial: searchParams.get("dataInicial") || DatasHelper.getDataDeHoje(),
+    dataFinal: searchParams.get("dataFinal") || DatasHelper.getDataDeHoje(),
+  });
 
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
-    queryKey: [
-      "tabelaDeAgendamentos",
-      pesquisa.dataInicial,
-      pesquisa.dataFinal,
-    ],
+    queryKey: ["tabelaDeAgendamentos", datas.dataInicial, datas.dataFinal],
     queryFn: async () => {
       const resposta = await buscarAgendamentos({
-        data_inicial: pesquisa.dataInicial,
+        data_inicial: datas.dataInicial || new Date().toISOString(),
       });
 
       return resposta.sucesso ? resposta.resposta : [];
@@ -78,7 +73,12 @@ export default function Agendamentos() {
         header: "Data",
       }),
       colunasHelper.accessor("student.dateValid", {
-        cell: (props) => <BadgeDeVencimento data={props.getValue()} />,
+        cell: (props) => (
+          <Badge
+            texto={props.getValue()}
+            className="min-w-max whitespace-nowrap border-none bg-verde-300"
+          />
+        ),
         header: "Vencimento",
       }),
       colunasHelper.accessor("student.course.initials", {
@@ -108,13 +108,16 @@ export default function Agendamentos() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+
     const dataInicial = formData.get("dataInicial") as string;
     const dataFinal = formData.get("dataFinal") as string;
 
-    setPesquisa({
-      dataInicial,
-      dataFinal,
-    });
+    const urlAtual = new URL(window.location.href);
+    urlAtual.searchParams.set("dataInicial", dataInicial);
+    urlAtual.searchParams.set("dataFinal", dataFinal);
+
+    setDatas({ dataInicial, dataFinal });
+    router.push(urlAtual.toString());
   };
 
   return (
@@ -132,17 +135,19 @@ export default function Agendamentos() {
                 <Form.Control
                   type="date"
                   className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
-                  defaultValue={pesquisa.dataInicial}
+                  defaultValue={datas.dataInicial}
                 />
               </Form.Field>
+              <Form.Submit />
               <Form.Field name="dataFinal" className="flex flex-col gap-y-2">
                 <Form.Label className="font-bold">Data Final</Form.Label>
                 <Form.Control
                   type="date"
                   className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
-                  defaultValue={pesquisa.dataFinal}
+                  defaultValue={datas.dataFinal}
                 />
               </Form.Field>
+              <Form.Submit />
               <Botao
                 variante="adicionar"
                 texto="Buscar"

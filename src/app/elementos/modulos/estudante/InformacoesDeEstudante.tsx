@@ -12,7 +12,6 @@ import { buscarCampus } from "@/app/actions/campus";
 import { buscarEstudante } from "@/app/actions/estudante";
 import { TEstudanteComCurso } from "../../../interfaces/TEstudante";
 import { TCampus } from "../../../interfaces/TCampus";
-import { BadgeDeVencimento } from "../../basicos/BadgeDeVencimento";
 
 interface InformacoesDeEstudanteProps {
   estudante: TEstudanteComCurso;
@@ -48,7 +47,7 @@ const Mobile = ({ estudante }: InformacoesDeEstudanteProps) => {
           titulo="Código"
           complemento={String(estudante.id)}
           variante="horizontal-com-badge"
-          corDaBadge="bg-azul-400"
+          className="bg-azul-400"
         />
         <CampoDeSecao
           titulo="Validade"
@@ -56,7 +55,7 @@ const Mobile = ({ estudante }: InformacoesDeEstudanteProps) => {
             estudante.dateValid,
           )}
           variante="horizontal-com-badge"
-          corDaBadge="bg-verde-300"
+          className="bg-verde-300"
         />
       </div>
     </Secao>
@@ -82,14 +81,16 @@ const Desktop = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
           titulo="Código"
           complemento={String(estudante.id)}
           variante="vertical-com-badge"
-          corDaBadge="bg-azul-400"
+          className="bg-azul-400"
         />
-        <div className="flex justify-between gap-x-4">
-          <div className="grid gap-y-1">
-            <h3 className="font-bold">Vencimento:</h3>
-            <BadgeDeVencimento data={estudante.dateValid} />
-          </div>
-        </div>
+        <CampoDeSecao
+          titulo="Validade"
+          complemento={DatasHelper.converterParaFormatoBrasileiro(
+            estudante.dateValid,
+          )}
+          variante="vertical-com-badge"
+          className="bg-verde-300"
+        />
       </div>
       <CampoDeSecao
         titulo="Curso"
@@ -143,14 +144,16 @@ const MobileCompleta = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
           titulo="Código"
           complemento={String(estudante.id)}
           variante="vertical-com-badge"
-          corDaBadge="bg-azul-400"
+          className="bg-azul-400"
         />
-        <div className="flex justify-between gap-x-4">
-          <div className="grid gap-y-1">
-            <h3 className="font-bold">Vencimento:</h3>
-            <BadgeDeVencimento data={estudante.dateValid} />
-          </div>
-        </div>
+        <CampoDeSecao
+          titulo="Validade"
+          complemento={DatasHelper.converterParaFormatoBrasileiro(
+            estudante.dateValid,
+          )}
+          variante="vertical-com-badge"
+          className="bg-verde-300"
+        />
       </div>
       <CampoDeSecao
         titulo="Curso"
