@@ -86,7 +86,7 @@ export const RefeicoesPorDia = ({
                 <p>Nenhuma refeição encontrada para esta data.</p>
               }
               elementoTrigger={
-                <div className="my-auto">
+                <div className="flex h-full flex-col justify-center">
                   <svg
                     width="12"
                     height="12"
