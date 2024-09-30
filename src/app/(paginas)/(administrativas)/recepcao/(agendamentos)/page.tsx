@@ -9,14 +9,10 @@ import { Secao } from "@/app/elementos/basicos/Secao";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import * as Form from "@radix-ui/react-form";
 import { createColumnHelper } from "@tanstack/react-table";
-import {
-  buscarAgendamentos,
-  buscarRefeicoes,
-} from "@/app/actions/nutricionista";
+import { buscarAgendamentos } from "@/app/actions/nutricionista";
 import { useQuery } from "@tanstack/react-query";
 import { ModalConfirmarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento";
-import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
-import { SelectGeral } from "@/app/elementos/componentes/SelectGeral";
+import { Badge } from "@/app/elementos/basicos/Badge";
 
 export default function RecepcaoPage() {
   const [pesquisa, setPesquisa] = useQueryStates(
