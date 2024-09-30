@@ -35,8 +35,24 @@ const respostaFoiErro = (resposta: unknown) => {
   ) {
     return true;
   }
+  if (
+    typeof resposta === "object" &&
+    resposta !== null &&
+    "errors" in resposta
+  ) {
+    return true;
+  }
 
   return false;
+};
+
+const extrairMensagemDeErro = (json_resolvido: any) => {
+  if (json_resolvido.errors)
+    return `${Array(Object.values(json_resolvido.errors[0]))[0].flat()[0]}`;
+
+  if (json_resolvido.error) return json_resolvido.error;
+
+  return json_resolvido.message;
 };
 
 /**
@@ -116,17 +132,11 @@ const fetchAPI = async <T>({
     // Na resposta da API, quando retorna status 202 geralmente é porque a requisição contém campos inválidos
     // Nesse caso, a resposta vem como { message: "Mensagem de erro" }
     if (resposta_inicial.status === 202)
-      return {
-        sucesso: false,
-        message: json_resolvido.message || json_resolvido.error,
-      };
+      return { sucesso: false, message: extrairMensagemDeErro(json_resolvido) };
 
     // Passa mais uma checagem manual para verificar se a resposta foi um erro
     if (respostaFoiErro(json_resolvido))
-      return {
-        sucesso: false,
-        message: json_resolvido.message || json_resolvido.error,
-      };
+      return { sucesso: false, message: extrairMensagemDeErro(json_resolvido) };
 
     return {
       sucesso: true,
