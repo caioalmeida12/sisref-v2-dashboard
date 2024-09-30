@@ -8,8 +8,6 @@ import { criarRefeicao } from "@/app/actions/nutricionista";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import * as Form from "@radix-ui/react-form";
-import Icone from "@elementos//basicos/Icone";
-import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 
 export const ModalAdicionarRefeicao = () => {
   const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
@@ -126,7 +124,10 @@ export const ModalAdicionarRefeicao = () => {
               name="qtdTimeReservationEnd"
               className="flex flex-col gap-y-1"
             >
-              <Form.Label className="font-medium" htmlFor="qtdTimeReservationEnd">
+              <Form.Label
+                className="font-medium"
+                htmlFor="qtdTimeReservationEnd"
+              >
                 Quantas horas antes do término da refeição as reservas não podem
                 mais ser feitas?
               </Form.Label>

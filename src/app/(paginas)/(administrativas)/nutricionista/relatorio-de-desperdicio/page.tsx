@@ -102,7 +102,7 @@ export default function NutricionistaPage() {
             </div>
           </div>
         ),
-        header: "Remover",
+        header: "Ações",
       }),
     ],
     [colunasHelper],
