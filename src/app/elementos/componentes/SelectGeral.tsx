@@ -51,7 +51,7 @@ export const SelectGeral = ({
         <Select.Portal>
           <Select.Content>
             <Select.ScrollUpButton />
-            <Select.Viewport className="flex max-w-md flex-col gap-y-2 rounded bg-branco-400 p-3 outline outline-1 outline-cinza-600">
+            <Select.Viewport className="flex max-w-[80vw] flex-col gap-y-2 rounded bg-branco-400 p-3 outline outline-1 outline-cinza-600">
               {estaCarregando ? (
                 <Select.Item
                   className="bg-cinza-200 relative flex cursor-not-allowed items-center rounded border border-cinza-600 px-2 py-1"

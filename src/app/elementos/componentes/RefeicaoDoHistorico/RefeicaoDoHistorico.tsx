@@ -87,7 +87,7 @@ export const RefeicaoDoHistorico = (props: TRefeicaoDoHistorico) => {
   if (!props.status || !props.meal.id) return null;
 
   return (
-    <Secao className="flex flex-col gap-4">
+    <Secao className="flex flex-col gap-y-1">
       <div className="flex justify-between gap-x-2">
         <NomeDaRefeicao
           variante={getVarianteNomeRefeicaoPorTurno(props.meal.id)}
@@ -108,7 +108,7 @@ export const RefeicaoDoHistorico = (props: TRefeicaoDoHistorico) => {
           timeStart: DatasHelper.removerSegundosDoHorario(props.meal.timeStart),
         }}
       />
-      <p className="leading-6">
+      <p className="mt-2 leading-6">
         {descricaoCardapioParaArrayStrings(props.menu.description).map(
           (descricao, index) => (
             <React.Fragment key={index}>

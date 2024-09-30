@@ -44,7 +44,7 @@ export const RefeicaoAutorizada = ({
 
   return (
     <Secao>
-      <div className="flex flex-col gap-y-4 rounded">
+      <div className="flex flex-col gap-y-2 rounded">
         <div className="flex items-start justify-between">
           <NomeDaRefeicao variante={variante} />
           <HorarioDaRefeicao

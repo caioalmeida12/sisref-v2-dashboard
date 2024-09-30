@@ -121,7 +121,7 @@ const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
   const textoStatus = pegarStatusDaRefeicao(props);
 
   return (
-    <Secao className="flex h-fit flex-col gap-y-2">
+    <Secao className="flex h-fit flex-col gap-y-1">
       <div className="flex justify-between">
         <NomeDaRefeicao
           variante={getVarianteNomeRefeicaoPorTurno(props.meal.id)}
@@ -138,7 +138,7 @@ const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
           timeStart: DatasHelper.removerSegundosDoHorario(props.meal.timeStart),
         }}
       />
-      <p className="leading-6">
+      <p className="mt-2 leading-6">
         {descricaoCardapioParaArrayStrings(props.menu.description).map(
           (descricao, index) => (
             <React.Fragment key={index}>
@@ -149,10 +149,12 @@ const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
         )}
       </p>
       {comBotao && textoStatus === "disponivel" && (
-        <BotaoDeRefeicao.Reservar
-          meal_id={props.meal.id}
-          date={props.menu.date}
-        />
+        <div className="mt-2">
+          <BotaoDeRefeicao.Reservar
+            meal_id={props.meal.id}
+            date={props.menu.date}
+          />
+        </div>
       )}
       {comBotao && textoStatus === "reservado" && (
         <BotaoDeRefeicao.BotaoDeAbrir
