@@ -13,21 +13,21 @@ import { justificarRefeicao } from "@/app/actions/estudante";
 import { SelectGeral } from "@/app/elementos/componentes/SelectGeral";
 
 export const RefeicaoNaoJustificada = ({
-  meal_id,
+  ticket_id,
   studentJustification,
 }: {
-  meal_id: number;
+  ticket_id: number;
   studentJustification: string | null;
 }) => {
   const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["justificarRefeicao", meal_id],
+    mutationKey: ["justificarRefeicao", ticket_id],
     mutationFn: (formData: FormData) =>
       justificarRefeicao({
         indiceDaJustificativa: formData.get("justificativa") as any,
-        meal_id,
+        ticket_id,
       }),
     onMutate: () => {
       atualizarMensagem({
@@ -98,6 +98,7 @@ export const RefeicaoNaoJustificada = ({
             }));
           }}
         />
+        <input type="hidden" name="ticket_id" value={ticket_id} />
         <div className="hidden" ref={mensagemDeRespostaRef}></div>
         <Botao texto="Justificar" variante="adicionar" disabled={isPending} />
       </form>

@@ -124,7 +124,7 @@ export const RefeicaoDoHistorico = (props: TRefeicaoDoHistorico) => {
 
       {props.status === "nao-utilizado-sem-justificativa" && (
         <RefeicaoNaoJustificada
-          meal_id={props.meal.id}
+          ticket_id={props.id}
           studentJustification={props.studentJustification}
         />
       )}
