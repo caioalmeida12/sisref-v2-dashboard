@@ -70,7 +70,7 @@ export const RefeicaoNaoJustificada = ({
               <p>Justificativa solicitada: {studentJustification}</p>
             }
             elementoTrigger={
-              <div className="my-auto">
+              <div className="flex h-full flex-col justify-center">
                 <Icone.Informacao cor="cinza-600" />
               </div>
             }
