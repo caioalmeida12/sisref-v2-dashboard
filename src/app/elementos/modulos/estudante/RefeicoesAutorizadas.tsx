@@ -72,8 +72,8 @@ export const RefeicoesAutorizadas = async ({
         {Object.values(refeicoes).map((refeicao, index) => (
           <RefeicaoAutorizada
             key={index}
-            variante={(["manha", "almoco", "tarde", "noite"] as const)[index]}
             dias={refeicao.dias}
+            refeicao={refeicao.refeicao.meal}
           />
         ))}
       </Secao>
