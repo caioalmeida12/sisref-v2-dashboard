@@ -20,7 +20,7 @@ export const RefeicaoAutorizada = ({
     <Secao>
       <div className="flex flex-col gap-y-2 rounded">
         <div className="flex items-start justify-between">
-          <NomeDaRefeicao variante={"manha"} />
+          <NomeDaRefeicao refeicao={refeicao} />
           <HorarioDaRefeicao variante="horario" horarios={refeicao} />
         </div>
         <div>

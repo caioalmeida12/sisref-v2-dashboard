@@ -90,7 +90,10 @@ export const RefeicaoDoHistorico = (props: TRefeicaoDoHistorico) => {
     <Secao className="flex flex-col gap-y-1">
       <div className="flex justify-between gap-x-2">
         <NomeDaRefeicao
-          variante={getVarianteNomeRefeicaoPorTurno(props.meal.id)}
+          refeicao={{
+            campus_id: props.campus_id,
+            ...props.meal,
+          }}
         />
         {
           elementoStatusRefeicaoPorTextoStatusRefeicao[

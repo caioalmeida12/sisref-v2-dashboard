@@ -12,10 +12,6 @@ import classnames from "classnames";
 
 const Icone = () => null;
 
-Icone.Refeicao = (props: IIconeRefeicaoProps) => {
-  return Icone.menu(props);
-};
-
 Icone.Confirmar = (props: React.SVGAttributes<SVGElement>) => (
   <svg
     className={props.className}
@@ -148,7 +144,7 @@ Icone.Menu = (props: IIconeMenuProps) => (
   </svg>
 );
 
-Icone.menu = (props: IIconeRefeicaoProps) => {
+Icone.Refeicao = (props: IIconeRefeicaoProps) => {
   switch (props.variante) {
     case "manha":
       return (
@@ -228,7 +224,20 @@ Icone.menu = (props: IIconeRefeicaoProps) => {
         </svg>
       );
     default:
-      return null;
+      return (
+        <svg
+          width="8"
+          height="9"
+          viewBox="0 0 8 9"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6.85714 0H1.14286C0.839753 0 0.549062 0.105357 0.334735 0.292893C0.120408 0.48043 0 0.734784 0 1V9L4 7.5L8 9V1C8 0.445 7.48571 0 6.85714 0Z"
+            fill="black"
+          />
+        </svg>
+      );
   }
 };
 

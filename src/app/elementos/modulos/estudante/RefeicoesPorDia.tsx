@@ -41,7 +41,12 @@ export const RefeicoesPorDia = ({
         refeicoesEncontradas?.find((refeicao) => refeicao.meal.id === id) || {
           meal: {
             id: id,
-            description: "",
+            description: [
+              "Lanche da manhã",
+              "Almoço",
+              "Lanche da tarde",
+              "Lanche da noite",
+            ][id - 1],
             qtdTimeReservationStart: 0,
             qtdTimeReservationEnd: 0,
             timeStart: "",
@@ -115,7 +120,7 @@ export const RefeicoesPorDia = ({
           refeicao.menu && refeicao.meal ? (
             <Refeicao {...refeicao} key={refeicao.meal.id} />
           ) : (
-            <Refeicao turno={refeicao.meal.id} key={refeicao.meal.id} />
+            <Refeicao meal={refeicao.meal} key={refeicao.meal.id} />
           ),
         )}
     </Secao>

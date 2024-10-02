@@ -94,7 +94,7 @@ type IRefeicaoProps =
       menu: TCardapio;
     }
   | {
-      turno: number;
+      meal: TRefeicao;
     };
 
 const RefeicaoCurta = (props: TRefeicaoECardapio) => {
@@ -104,9 +104,7 @@ const RefeicaoCurta = (props: TRefeicaoECardapio) => {
   return (
     <Secao className="h-fit">
       <div className="flex justify-between">
-        <NomeDaRefeicao
-          variante={getVarianteNomeRefeicaoPorTurno(props.meal.id)}
-        />
+        <NomeDaRefeicao refeicao={props.meal} />
         {StatusRefeicao}
       </div>
     </Secao>
@@ -123,9 +121,7 @@ const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
   return (
     <Secao className="flex h-fit flex-col gap-y-1">
       <div className="flex justify-between">
-        <NomeDaRefeicao
-          variante={getVarianteNomeRefeicaoPorTurno(props.meal.id)}
-        />
+        <NomeDaRefeicao refeicao={props.meal} />
         {StatusRefeicao}
       </div>
       <HorarioDaRefeicao
@@ -166,27 +162,26 @@ const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
   );
 };
 
-const RefeicaoIndisponivel = (props: IRefeicaoProps) => {
-  if ("turno" in props)
-    return (
-      <Secao className="flex h-fit flex-col gap-y-2">
-        <div className="flex justify-between">
-          <NomeDaRefeicao
-            variante={getVarianteNomeRefeicaoPorTurno(props.turno)}
-          />
-          <StatusDaRefeicao
-            cor="cinza-600"
-            icone="relogio-x"
-            texto="Indisponível"
-            textoTooltip="Está muito cedo ou muito tarde para reservar esta refeição."
-          />
-        </div>
-      </Secao>
-    );
+const RefeicaoIndisponivel = ({ refeicao }: { refeicao: TRefeicao }) => {
+  return (
+    <Secao className="flex h-fit flex-col gap-y-2">
+      <div className="flex justify-between">
+        <NomeDaRefeicao refeicao={refeicao} />
+        <StatusDaRefeicao
+          cor="cinza-600"
+          icone="relogio-x"
+          texto="Indisponível"
+          textoTooltip="Está muito cedo ou muito tarde para reservar esta refeição."
+        />
+      </div>
+    </Secao>
+  );
 };
 
 export const Refeicao = (props: IRefeicaoProps) => {
-  if ("turno" in props) return <RefeicaoIndisponivel {...props} />;
+  if ("meal" in props && !("menu" in props)) {
+    return <RefeicaoIndisponivel refeicao={props.meal} />;
+  }
 
   const textoStatus = pegarStatusDaRefeicao(props);
   const comBotao = textoStatus === "disponivel" || textoStatus === "reservado";

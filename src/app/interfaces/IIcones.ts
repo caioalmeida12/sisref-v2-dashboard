@@ -30,7 +30,7 @@ export interface IIconeDropdownProps extends HTMLAttributes<HTMLElement> {
 export interface IIconeFecharProps extends React.SVGProps<SVGSVGElement> {}
 export interface IIconeMenuProps extends React.SVGProps<SVGSVGElement> {}
 export interface IIconeRefeicaoProps extends SVGProps<SVGSVGElement> {
-  variante: "manha" | "almoco" | "tarde" | "noite";
+  variante: "manha" | "almoco" | "tarde" | "noite" | (string & {});
 }
 export interface IIconeSetaProps extends SVGProps<SVGSVGElement> {
   fill: string;
