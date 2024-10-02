@@ -80,7 +80,12 @@ const fetchAllTickets = async (): Promise<TRefeicaoDoHistorico[]> => {
     ...aSerUtilizado,
     ...utilizado,
     ...cancelado,
-    ...naoUtilizado,
+    ...naoUtilizado.filter((ticket) => {
+      // Remove os tickets que possuem um id que já está presente nos tickets utilizados sem justificativa
+      return !naoUtilizadoSemJustificativa.some(
+        (ticketSemJustificativa) => ticket.id === ticketSemJustificativa.id,
+      );
+    }),
   ];
   const todosTicketsOrdenados = todosTickets.sort((a, b) => {
     return new Date(b.menu.date).getTime() - new Date(a.menu.date).getTime();
