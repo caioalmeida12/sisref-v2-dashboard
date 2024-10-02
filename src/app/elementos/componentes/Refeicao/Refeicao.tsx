@@ -13,21 +13,6 @@ import {
   TRefeicaoECardapio,
 } from "@/app/interfaces/TRefeicao";
 
-const getVarianteNomeRefeicaoPorTurno = (turno: number) => {
-  switch (turno) {
-    case 1:
-      return "manha";
-    case 2:
-      return "almoco";
-    case 3:
-      return "tarde";
-    case 4:
-      return "noite";
-    default:
-      return "manha";
-  }
-};
-
 const elementoStatusRefeicaoPorTextoStatusRefeicao = {
   disponivel: (
     <StatusDaRefeicao

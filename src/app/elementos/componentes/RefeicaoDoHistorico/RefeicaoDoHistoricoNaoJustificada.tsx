@@ -1,9 +1,7 @@
 "use client";
 
 import React from "react";
-import { CheckIcon } from "@radix-ui/react-icons";
 import { justificativasPermitidas } from "@/app/interfaces/IJustificativaDeEstudante";
-import classnames from "classnames";
 import { Botao } from "@elementos/basicos/Botao";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta";
