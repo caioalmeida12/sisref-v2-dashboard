@@ -23,7 +23,7 @@ export const HistoricoDeRefeicoes = ({
     isFetching,
     isError,
   } = useQuery<TRefeicaoDoHistorico[]>({
-    queryKey: ["historico-de-refeicoes"],
+    queryKey: ["historicoDeRefeicoes"],
     queryFn: async () => {
       // este componente não utiliza o `buscarTickets` e `buscarTicketsSemJustificativa` do arquivo `estudante.ts` por questões de performance
       // explicadas no arquivo `historico-de-refeicoes/route.ts`

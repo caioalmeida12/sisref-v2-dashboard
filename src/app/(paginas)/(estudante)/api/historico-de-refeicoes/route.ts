@@ -91,6 +91,7 @@ const fetchAllTickets = async (): Promise<TRefeicaoDoHistorico[]> => {
     return new Date(b.menu.date).getTime() - new Date(a.menu.date).getTime();
   });
 
+  console.log(naoUtilizadoSemJustificativa);
   // Seleciona os tickets mais recentes
   const ticketsMaisRecentes = todosTicketsOrdenados.slice(
     0,

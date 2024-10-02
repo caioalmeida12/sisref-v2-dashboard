@@ -191,16 +191,16 @@ export const reservarRefeicao = async ({
 /**
  * Solicita a justificativa da ausência de uma refeição.
  *
- * @param meal_id ID da refeição
+ * @param ticket_id ID da reserva
  * @param justificativa Justificativa da ausência
  * @returns Um objeto com { sucesso: boolean, mensagem: string }
  */
 export const justificarRefeicao = async ({
   indiceDaJustificativa,
-  meal_id,
+  ticket_id,
 }: {
   indiceDaJustificativa: IJustificativaDeEstudante["value"];
-  meal_id: number;
+  ticket_id: number;
 }) => {
   if (!indiceDaJustificativa)
     return {
@@ -221,7 +221,7 @@ export const justificarRefeicao = async ({
   if (!auth) return redirecionarViaAction();
 
   const resposta = await FetchHelper.put<TRefeicao>({
-    rota: `/student/schedulings/student-justification/${meal_id}`,
+    rota: `/student/schedulings/student-justification/${ticket_id}`,
     cookies: cookies(),
     body: { studentJustification: justificativa.label },
   });
