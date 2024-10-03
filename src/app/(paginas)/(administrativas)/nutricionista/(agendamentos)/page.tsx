@@ -47,16 +47,20 @@ export default function Agendamentos() {
         header: "ID",
         meta: { filterVariant: "range" },
       }),
-      colunasHelper.accessor("meal.description", {
-        cell: (props) => (
-          <div className="whitespace-nowrap">{props.getValue()}</div>
-        ),
-        header: "Refeição",
+      colunasHelper.accessor("student.id", {
+        cell: (props) => props.getValue(),
+        header: "Código",
       }),
       colunasHelper.accessor("student.name", {
         cell: (props) => <p className="text-left">{props.getValue()}</p>,
         header: "Estudante",
         size: 750,
+      }),
+      colunasHelper.accessor("meal.description", {
+        cell: (props) => (
+          <div className="whitespace-nowrap">{props.getValue()}</div>
+        ),
+        header: "Refeição",
       }),
       colunasHelper.accessor("menu.description", {
         cell: (props) => (
