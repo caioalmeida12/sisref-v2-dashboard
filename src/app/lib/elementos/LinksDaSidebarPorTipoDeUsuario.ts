@@ -24,42 +24,42 @@ export const linksDaSidebarPorTipoDeUsuario: Record<
   ASSIS_ESTU: [
     {
       titulo: "Agendamentos",
-      rota: "?pagina=agendamentos",
+      rota: "/assistencia_estudantil",
       icone: "Calendario",
     },
     {
       titulo: "Estudantes",
-      rota: "?pagina=estudantes",
+      rota: "/assistencia_estudantil/estudantes",
       icone: "Usuario",
     },
     {
       titulo: "Cardápios",
-      rota: "?pagina=cardapios",
+      rota: "/assistencia_estudantil/cardapios",
       icone: "GarfoEFaca",
     },
     {
       titulo: "Repúblicas",
-      rota: "?pagina=republicas",
+      rota: "/assistencia_estudantil/republicas",
       icone: "Casa",
     },
     {
       titulo: "Cursos",
-      rota: "?pagina=cursos",
+      rota: "/assistencia_estudantil/cursos",
       icone: "EstudanteComChapeu",
     },
     {
       titulo: "Turnos",
-      rota: "?pagina=turnos",
+      rota: "/assistencia_estudantil/turnos",
       icone: "Ampulheta",
     },
     {
       titulo: "Relatório de refeições",
-      rota: "?pagina=relatorioDeRefeicoes",
+      rota: "/assistencia_estudantil/relatorioDeRefeicoes",
       icone: "GraficoDeBarras",
     },
     {
       titulo: "Relatório de desperdício",
-      rota: "?pagina=relatorioDeDesperdicio",
+      rota: "/assistencia_estudantil/relatorioDeDesperdicio",
       icone: "Lixeira",
     },
   ],
