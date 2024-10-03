@@ -17,6 +17,7 @@ import { useMemo, useState } from "react";
 import { ModalAdicionarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { buscarJustificativasNaoProcessadas } from "@/app/actions/assistencia_estudantil";
 
 export default function Agendamentos() {
   const searchParams = useSearchParams();
@@ -24,6 +25,19 @@ export default function Agendamentos() {
   const [datas, setDatas] = useState({
     dataInicial: searchParams.get("dataInicial") || DatasHelper.getDataDeHoje(),
     dataFinal: searchParams.get("dataFinal") || DatasHelper.getDataDeHoje(),
+  });
+
+  const { data: justificativasNaoProcessadas } = useQuery({
+    queryKey: ["justificativasNaoProcessadas"],
+    queryFn: async () => {
+      const resposta = await buscarJustificativasNaoProcessadas();
+
+      console.log(resposta);
+
+      return resposta.sucesso ? resposta.resposta : [];
+    },
+    // staleTime: 1000 * 60 * 5,
+    initialData: [],
   });
 
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
