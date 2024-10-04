@@ -19,6 +19,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { buscarJustificativasNaoProcessadas } from "@/app/actions/assistencia_estudantil";
 import { ModalJustificativasNaoProcessadas } from "@/app/elementos/modulos/assistencia_estudantil/Agendamentos/ModalJustificativasNaoProcessadas";
+import { ModalAdicionarJustificativa } from "@/app/elementos/modulos/assistencia_estudantil/Agendamentos/ModalAdicionarJustificativa";
 
 export default function Agendamentos() {
   const searchParams = useSearchParams();
@@ -103,18 +104,34 @@ export default function Agendamentos() {
         header: "Curso",
       }),
       colunasHelper.display({
-        cell: (props) => (
-          <div className="flex justify-center gap-x-2">
-            <div className="relative h-5 w-5">
-              <ModalRemoverAgendamento agendamento={props.row.original} />
-            </div>
-            {!props.row.original.wasPresent && (
+        cell: (props) => {
+          console.log(props.row.original);
+
+          return (
+            <div className="flex justify-center gap-x-2">
               <div className="relative h-5 w-5">
-                <ModalConfirmarAgendamento agendamento={props.row.original} />
+                <ModalRemoverAgendamento agendamento={props.row.original} />
               </div>
-            )}
-          </div>
-        ),
+              {!props.row.original.wasPresent && (
+                <>
+                  <div className="relative h-5 w-5">
+                    <ModalAdicionarJustificativa
+                      agendamento={props.row.original}
+                    />
+                  </div>
+                  {/* TODO: tooltip informando justificativas */}
+                  {!props.row.original.absenceJustification && (
+                    <div className="relative h-5 w-5">
+                      <ModalConfirmarAgendamento
+                        agendamento={props.row.original}
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          );
+        },
         enableResizing: false,
         header: "Ações",
       }),

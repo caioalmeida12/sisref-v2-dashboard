@@ -48,5 +48,30 @@ export async function marcarJustificativaComoProcessada(id: number) {
 
   if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
 
-  return { sucesso: true };
+  return { sucesso: true, resposta: resposta.resposta };
+}
+
+/**
+ * Justifica uma ausência sem a necessidade de solicitação por parte de estudante.
+ * @param id O ID da justificativa.
+ * @param absenceJustification O motivo da justificativa.
+ */
+export async function justificarAusencia(
+  id: number,
+  absenceJustification: string,
+): Promise<IRespostaDeAction<any>> {
+  console.log(absenceJustification);
+
+  const resposta = await FetchHelper.post({
+    rota: `/scheduling/justification/${id}`,
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+    body: {
+      absenceJustification,
+    },
+  });
+
+  if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
+
+  return { sucesso: true, resposta: resposta.resposta };
 }
