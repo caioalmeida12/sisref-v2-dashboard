@@ -4,20 +4,21 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 interface CustomTooltipWrapperProps {
   elementoTrigger: React.ReactNode;
   elementoContent: React.ReactNode;
+  defaultOpen?: boolean;
 }
 
 export const CustomTooltipWrapper = forwardRef<
   HTMLDivElement,
   CustomTooltipWrapperProps
->(({ elementoContent, elementoTrigger }, ref) => {
-  const [aberto, setAberto] = useState(false);
+>(({ elementoContent, elementoTrigger, defaultOpen }, ref) => {
+  const [aberto, setAberto] = useState(defaultOpen ?? false);
 
   const handleAbrirTooltip = () => setAberto(true);
   const handleFecharTooltip = () => setAberto(false);
 
   return (
     <Tooltip.Provider delayDuration={100}>
-      <Tooltip.Root open={aberto}>
+      <Tooltip.Root open={aberto} defaultOpen={true}>
         <Tooltip.Trigger
           asChild
           onMouseEnter={handleAbrirTooltip}
