@@ -18,6 +18,7 @@ import { ModalAdicionarAgendamento } from "@/app/elementos/modulos/nutricionista
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { buscarJustificativasNaoProcessadas } from "@/app/actions/assistencia_estudantil";
+import { ModalJustificativasNaoProcessadas } from "@/app/elementos/modulos/assistencia_estudantil/Agendamentos/ModalJustificativasNaoProcessadas";
 
 export default function Agendamentos() {
   const searchParams = useSearchParams();
@@ -32,11 +33,9 @@ export default function Agendamentos() {
     queryFn: async () => {
       const resposta = await buscarJustificativasNaoProcessadas();
 
-      console.log(resposta);
-
       return resposta.sucesso ? resposta.resposta : [];
     },
-    // staleTime: 1000 * 60 * 5,
+    refetchInterval: 1000 * 60 * 5,
     initialData: [],
   });
 
@@ -174,7 +173,10 @@ export default function Agendamentos() {
               />
             </Form.Root>
           </div>
-          <div className="ml-auto mt-auto">
+          <div className="ml-auto mt-auto flex gap-x-2">
+            <ModalJustificativasNaoProcessadas
+              justificativas={justificativasNaoProcessadas}
+            />
             <ModalAdicionarAgendamento />
           </div>
         </Secao>

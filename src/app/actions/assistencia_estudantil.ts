@@ -33,3 +33,20 @@ export async function buscarJustificativasNaoProcessadas(): Promise<
 
   return { sucesso: true, resposta: formatadas };
 }
+
+/**
+ * Marca uma justificativa como processada.
+ * @param id O ID da justificativa.
+ */
+export async function marcarJustificativaComoProcessada(id: number) {
+  const resposta = await FetchHelper.put({
+    rota: `/scheduling/processed-justifications/${id}`,
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+    body: {},
+  });
+
+  if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
+
+  return { sucesso: true };
+}
