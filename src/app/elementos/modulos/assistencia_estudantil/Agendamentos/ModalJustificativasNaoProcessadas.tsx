@@ -73,7 +73,7 @@ export const ModalJustificativasNaoProcessadas = ({
       )}
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-preto-400/25 data-[state=open]:animate-overlayShow" />
-        <Dialog.Content className="max-w-[min(768px, 80vw)] fixed left-[50%] top-[50%] flex max-h-[85vh] w-fit translate-x-[-50%] translate-y-[-50%] flex-col gap-y-4 rounded bg-branco-400 p-6 outline outline-1 outline-cinza-600 focus:outline-none data-[state=open]:animate-contentShow">
+        <Dialog.Content className="max-w-[min(768px, 80vw)] fixed left-[50%] top-[50%] flex max-h-[85vh] w-fit translate-x-[-50%] translate-y-[-50%] flex-col gap-y-4 overflow-y-auto rounded bg-branco-400 p-6 outline outline-1 outline-cinza-600 focus:outline-none data-[state=open]:animate-contentShow">
           <Dialog.Title className="m-0 text-lg font-medium">
             Justificativas não processadas
           </Dialog.Title>
