@@ -66,12 +66,10 @@ export const ModalJustificativasNaoProcessadas = ({
           />
         </Dialog.Trigger>
       ) : (
-        <Botao
-          className="h-[36px] border-none px-10 py-2 leading-tight !text-branco-400 hover:!outline-preto-400 disabled:opacity-75 md:whitespace-nowrap"
-          texto="Nenhuma justificativa não processada"
-          variante="editar"
-          disabled
-        />
+        <div className="flex items-center gap-x-2 whitespace-nowrap px-4">
+          <Icone.Confirmar className="[&>path]:fill-cinza-600" />
+          Todas as justificativas foram processadas.
+        </div>
       )}
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-preto-400/25 data-[state=open]:animate-overlayShow" />
@@ -85,8 +83,8 @@ export const ModalJustificativasNaoProcessadas = ({
           {justificativas.length === 0 && (
             <>
               <hr />
-              <div className="flex items-center gap-x-2 text-verde-300">
-                <Icone.Confirmar />
+              <div className="flex items-center gap-x-2 whitespace-nowrap">
+                <Icone.Confirmar className="[&>path]:fill-cinza-600" />
                 Todas as justificativas foram processadas.
               </div>
             </>
