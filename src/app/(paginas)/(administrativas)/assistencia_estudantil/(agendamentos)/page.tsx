@@ -1,39 +1,40 @@
 "use client";
 
-import { buscarAgendamentos } from "@/app/actions/nutricionista";
-import { Botao } from "@/app/elementos/basicos/Botao";
-import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
+import React, { useMemo } from "react";
+import { parseAsString, useQueryStates } from "nuqs";
+import { useQuery } from "@tanstack/react-query";
+import * as Form from "@radix-ui/react-form";
+
 import { Secao } from "@/app/elementos/basicos/Secao";
-import { Badge } from "@elementos/basicos/Badge";
+import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
+import { Botao } from "@/app/elementos/basicos/Botao";
+import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
+import { createColumnHelper } from "@tanstack/react-table";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { ModalConfirmarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento";
 import { ModalRemoverAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalRemoverAgendamento";
-import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import * as Form from "@radix-ui/react-form";
-import { useQuery } from "@tanstack/react-query";
-import { createColumnHelper } from "@tanstack/react-table";
-import * as React from "react";
-import { useMemo, useState } from "react";
 import { ModalAdicionarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { buscarAgendamentos } from "@/app/actions/nutricionista";
 import { buscarJustificativasNaoProcessadas } from "@/app/actions/assistencia_estudantil";
 import { ModalJustificativasNaoProcessadas } from "@/app/elementos/modulos/assistencia_estudantil/Agendamentos/ModalJustificativasNaoProcessadas";
 import { ModalAdicionarJustificativa } from "@/app/elementos/modulos/assistencia_estudantil/Agendamentos/ModalAdicionarJustificativa";
+import { Badge } from "@/app/elementos/basicos/Badge";
 
 export default function Agendamentos() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [datas, setDatas] = useState({
-    dataInicial: searchParams.get("dataInicial") || DatasHelper.getDataDeHoje(),
-    dataFinal: searchParams.get("dataFinal") || DatasHelper.getDataDeHoje(),
-  });
+  const [pesquisa, setPesquisa] = useQueryStates(
+    {
+      dataInicial: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
+      dataFinal: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
+    },
+    {
+      clearOnDefault: true,
+    },
+  );
 
   const { data: justificativasNaoProcessadas } = useQuery({
     queryKey: ["justificativasNaoProcessadas"],
     queryFn: async () => {
       const resposta = await buscarJustificativasNaoProcessadas();
-
       return resposta.sucesso ? resposta.resposta : [];
     },
     refetchInterval: 1000 * 60 * 5,
@@ -41,12 +42,15 @@ export default function Agendamentos() {
   });
 
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
-    queryKey: ["tabelaDeAgendamentos", datas.dataInicial, datas.dataFinal],
+    queryKey: [
+      "tabelaDeAgendamentos",
+      pesquisa.dataInicial,
+      pesquisa.dataFinal,
+    ],
     queryFn: async () => {
       const resposta = await buscarAgendamentos({
-        data_inicial: datas.dataInicial || new Date().toISOString(),
+        data_inicial: pesquisa.dataInicial || new Date().toISOString(),
       });
-
       return resposta.sucesso ? resposta.resposta : [];
     },
     initialData: [],
@@ -119,7 +123,6 @@ export default function Agendamentos() {
                       agendamento={props.row.original}
                     />
                   </div>
-                  {/* TODO: tooltip informando justificativas */}
                   {!props.row.original.absenceJustification && (
                     <div className="relative h-5 w-5">
                       <ModalConfirmarAgendamento
@@ -146,12 +149,10 @@ export default function Agendamentos() {
     const dataInicial = formData.get("dataInicial") as string;
     const dataFinal = formData.get("dataFinal") as string;
 
-    const urlAtual = new URL(window.location.href);
-    urlAtual.searchParams.set("dataInicial", dataInicial);
-    urlAtual.searchParams.set("dataFinal", dataFinal);
-
-    setDatas({ dataInicial, dataFinal });
-    router.push(urlAtual.toString());
+    setPesquisa({
+      dataInicial,
+      dataFinal,
+    });
   };
 
   return (
@@ -169,23 +170,21 @@ export default function Agendamentos() {
                 <Form.Control
                   type="date"
                   className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
-                  defaultValue={datas.dataInicial}
+                  defaultValue={pesquisa.dataInicial}
                 />
               </Form.Field>
-              <Form.Submit />
               <Form.Field name="dataFinal" className="flex flex-col gap-y-2">
                 <Form.Label className="font-bold">Data Final</Form.Label>
                 <Form.Control
                   type="date"
                   className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
-                  defaultValue={datas.dataFinal}
+                  defaultValue={pesquisa.dataFinal}
                 />
               </Form.Field>
-              <Form.Submit />
               <Botao
                 variante="adicionar"
                 texto="Buscar"
-                className="py-2 leading-tight"
+                className="h-[36px] px-10 py-2 leading-tight"
                 type="submit"
               />
             </Form.Root>
