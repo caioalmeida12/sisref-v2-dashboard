@@ -4,6 +4,13 @@ import { cookies } from "next/headers";
 import { FetchHelper } from "../lib/actions/FetchHelper";
 import { TJustificativaNaoProcessada } from "../interfaces/TJustificativaNaoProcessada";
 import { IRespostaDeAction } from "../interfaces/IRespostaDeAction";
+import { IRespostaPaginada } from "../interfaces/IRespostaPaginada";
+import {
+  TEstudanteComCurso,
+  TEstudanteComCursoSchema,
+  TEstudanteComCursoTurnoEUsuario,
+  TEstudanteComCursoTurnoEUsuarioSchema,
+} from "../interfaces/TEstudante";
 
 /**
  * Este módulo contém todas as actions relacionadas à página de assistência estudantil.
@@ -75,3 +82,30 @@ export async function justificarAusencia(
 
   return { sucesso: true, resposta: resposta.resposta };
 }
+
+/**
+ * Busca todos os registros de estudante.
+ */
+export const buscarEstudantes = async (): Promise<
+  IRespostaDeAction<TEstudanteComCursoTurnoEUsuario>
+> => {
+  const resposta = await FetchHelper.get<
+    IRespostaPaginada<TEstudanteComCursoTurnoEUsuario>
+  >({
+    rota: "/student/",
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+  });
+
+  if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
+
+  const estudantes = resposta.resposta[0].data.flatMap((estudante) => {
+    const formatar = TEstudanteComCursoTurnoEUsuarioSchema.safeParse(estudante);
+
+    formatar.success === false && console.error(formatar.error.errors);
+
+    return formatar.success ? [formatar.data] : [];
+  });
+
+  return { sucesso: true, resposta: estudantes };
+};
