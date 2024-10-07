@@ -343,7 +343,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
     >
       <option value="">All</option>
       {sortedUniqueValues.map((value) => (
-        //dynamically generated select options from faceted values feature
+        // dynamically generated select options from faceted values feature
         <option value={value} key={value}>
           {value}
         </option>
@@ -353,8 +353,8 @@ function Filter({ column }: { column: Column<any, unknown> }) {
     <>
       {/* Autocomplete suggestions from faceted values feature */}
       <datalist id={column.id + "list"}>
-        {sortedUniqueValues.map((value: any) => (
-          <option value={value} key={value} />
+        {sortedUniqueValues.map((value, index) => (
+          <option value={value} key={index} />
         ))}
       </datalist>
       <DebouncedInput
