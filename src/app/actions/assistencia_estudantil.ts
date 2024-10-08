@@ -114,12 +114,14 @@ export const buscarEstudantes = async (): Promise<
 /**
  * Cria um novo estudante.
  */
-export const criarEstudante = async (formData: FormData): Promise<IRespostaDeAction<unknown>> => {
+export const criarEstudante = async (
+  formData: FormData,
+): Promise<IRespostaDeAction<unknown>> => {
   const resposta = await FetchHelper.post({
     rota: "/student/",
     cookies: cookies(),
     rotaParaRedirecionarCasoFalhe: null,
-    body: formData,
+    body: Object.fromEntries(formData),
   });
 
   if (!resposta.sucesso) {
@@ -127,7 +129,7 @@ export const criarEstudante = async (formData: FormData): Promise<IRespostaDeAct
   }
 
   return { sucesso: true, resposta: resposta.resposta };
-}
+};
 
 /**
  * Busca todos os cursos disponíveis.
@@ -151,7 +153,7 @@ export const buscarCursos = async (): Promise<IRespostaDeAction<TCurso>> => {
   });
 
   return { sucesso: true, resposta: cursos };
-}
+};
 
 /**
  * Busca todos os turnos disponíveis.
@@ -172,4 +174,4 @@ export const buscarTurnos = async (): Promise<IRespostaDeAction<TTurno>> => {
   });
 
   return { sucesso: true, resposta: turnos };
-}
+};

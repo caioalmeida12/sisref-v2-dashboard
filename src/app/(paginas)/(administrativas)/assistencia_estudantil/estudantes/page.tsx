@@ -11,7 +11,10 @@ import { Botao } from "@/app/elementos/basicos/Botao";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { buscarCursos, buscarEstudantes } from "@/app/actions/assistencia_estudantil";
+import {
+  buscarCursos,
+  buscarEstudantes,
+} from "@/app/actions/assistencia_estudantil";
 import { ModalAdicionarEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalAdicionarEstudante";
 import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
@@ -55,7 +58,7 @@ export default function Estudantes() {
         size: 750,
       }),
       colunasHelper.accessor("user", {
-        cell: (props) => props.getValue()[0].email,
+        cell: (props) => props.getValue()[0] && props.getValue()[0].email,
         header: "Email",
       }),
       colunasHelper.accessor("course.description", {
@@ -76,7 +79,11 @@ export default function Estudantes() {
         header: "Vencimento",
       }),
       colunasHelper.accessor("observation", {
-        cell: (props) => props.getValue(),
+        cell: (props) => (
+          <div className="line-clamp-1 hover:line-clamp-none">
+            {props.getValue()}
+          </div>
+        ),
         header: "Observação",
       }),
     ],
@@ -88,7 +95,7 @@ export default function Estudantes() {
       <Secao className="mx-auto flex max-w-[1440px] flex-col gap-y-4">
         <CabecalhoDeSecao titulo="Estudantes" />
         <Secao className="flex flex-wrap gap-y-2">
-          <div className="flex items-end gap-x-4">
+          <div className="ml-auto flex items-end gap-x-4">
             <ModalAdicionarEstudante />
           </div>
         </Secao>
