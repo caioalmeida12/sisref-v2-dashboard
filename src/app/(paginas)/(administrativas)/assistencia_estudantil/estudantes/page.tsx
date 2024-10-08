@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { parseAsString, useQueryStates } from "nuqs";
+import { parseAsString, parseAsInteger, useQueryStates } from "nuqs";
 import { useQuery } from "@tanstack/react-query";
 import * as Form from "@radix-ui/react-form";
 
@@ -18,28 +18,57 @@ import {
 import { ModalAdicionarEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalAdicionarEstudante";
 import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
+import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
+import { TEstudanteComCursoTurnoEUsuario } from "@/app/interfaces/TEstudante";
 
 export default function Estudantes() {
   const [pesquisa, setPesquisa] = useQueryStates(
     {
       dataInicial: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
       dataFinal: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
+      page: parseAsInteger.withDefault(1),
+      per_page: parseAsInteger.withDefault(10),
     },
     {
       clearOnDefault: true,
     },
   );
 
-  const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
-    queryKey: ["buscarEstudantes"],
-    queryFn: async () => {
-      const resposta = await buscarEstudantes();
-      return resposta.sucesso ? resposta.resposta : [];
-    },
-    initialData: [],
-  });
+  const dadosPadrao = useMemo(
+    () =>
+      ({
+        current_page: 1,
+        data: [],
+        first_page_url: "",
+        from: 1,
+        last_page: 1,
+        last_page_url: "",
+        links: [],
+        next_page_url: "",
+      }) satisfies IRespostaPaginada<TEstudanteComCursoTurnoEUsuario>,
+    [],
+  );
 
-  const colunasHelper = createColumnHelper<(typeof dadosDaTabela)[number]>();
+  const { data: dadosDaTabelaPaginados, isFetching: isLoadingDadosDaTabela } =
+    useQuery({
+      queryKey: ["buscarEstudantes"],
+      queryFn: async () => {
+        const resposta = await buscarEstudantes({
+          pagina: pesquisa.page,
+          por_pagina: pesquisa.per_page,
+        });
+
+        return resposta.sucesso ? resposta.resposta : [dadosPadrao];
+      },
+      initialData: [dadosPadrao],
+    });
+
+  const dadosDaTabela = useMemo(
+    () => dadosDaTabelaPaginados[0].data,
+    [dadosDaTabelaPaginados],
+  );
+
+  const colunasHelper = createColumnHelper<TEstudanteComCursoTurnoEUsuario>();
 
   const colunas = useMemo(
     () => [
@@ -70,8 +99,8 @@ export default function Estudantes() {
         ),
         header: "Curso",
       }),
-      colunasHelper.accessor("shift.description", {
-        cell: (props) => props.getValue(),
+      colunasHelper.accessor("shift", {
+        cell: (props) => props.getValue()?.description ?? "",
         header: "Turno",
       }),
       colunasHelper.accessor("dateValid", {
@@ -105,6 +134,11 @@ export default function Estudantes() {
             dados={dadosDaTabela ?? []}
             estaCarregando={isLoadingDadosDaTabela}
             ordenacaoPadrao={[{ id: "id", desc: true }]}
+            paginacaoNoServidor={{
+              page: pesquisa.page,
+              per_page: pesquisa.per_page,
+              respostaPaginada: dadosDaTabelaPaginados[0],
+            }}
           />
         </Secao>
       </Secao>

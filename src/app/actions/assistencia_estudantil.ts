@@ -89,26 +89,26 @@ export async function justificarAusencia(
 /**
  * Busca todos os registros de estudante.
  */
-export const buscarEstudantes = async (): Promise<
-  IRespostaDeAction<TEstudanteComCursoTurnoEUsuario>
+export const buscarEstudantes = async ({
+  pagina,
+  por_pagina,
+}: {
+  pagina: number;
+  por_pagina: number;
+}): Promise<
+  IRespostaDeAction<IRespostaPaginada<TEstudanteComCursoTurnoEUsuario>>
 > => {
   const resposta = await FetchHelper.get<
     IRespostaPaginada<TEstudanteComCursoTurnoEUsuario>
   >({
-    rota: "/student/",
+    rota: `/student/?page=${pagina}&perPage=${por_pagina}`,
     cookies: cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
   if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
 
-  const estudantes = resposta.resposta[0].data.flatMap((estudante) => {
-    const formatar = TEstudanteComCursoTurnoEUsuarioSchema.safeParse(estudante);
-
-    return formatar.success ? [formatar.data] : [];
-  });
-
-  return { sucesso: true, resposta: estudantes };
+  return { sucesso: true, resposta: resposta.resposta };
 };
 
 /**
@@ -145,9 +145,6 @@ export const buscarCursos = async (): Promise<IRespostaDeAction<TCurso>> => {
 
   const cursos = resposta.resposta[0].data.flatMap((curso) => {
     const formatar = TCursoSchema.safeParse(curso);
-
-    formatar.error?.errors && console.log(curso);
-    formatar.error?.errors && console.log(formatar.error.errors);
 
     return formatar.success ? [formatar.data] : [];
   });

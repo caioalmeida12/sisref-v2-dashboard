@@ -19,6 +19,10 @@ import {
   RowData,
 } from "@tanstack/react-table";
 import Skeleton from "react-loading-skeleton";
+import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
+import Link from "next/link";
+import { createSerializer, parseAsInteger, useQueryState } from "nuqs";
+import { useSearchParams } from "next/navigation";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 declare module "@tanstack/react-table" {
@@ -34,6 +38,11 @@ interface ITabelaDeCrudProps<TipoDeDado> {
   estaCarregando?: boolean;
   ordenacaoPadrao?: { id: string; desc: boolean }[];
   filtros?: ColumnFiltersState;
+  paginacaoNoServidor?: {
+    per_page: number;
+    page: number;
+    respostaPaginada: IRespostaPaginada<TipoDeDado>;
+  };
 }
 
 export function TabelaDeCrud<TipoDeDado>({
@@ -42,6 +51,7 @@ export function TabelaDeCrud<TipoDeDado>({
   estaCarregando,
   ordenacaoPadrao,
   filtros,
+  paginacaoNoServidor,
 }: ITabelaDeCrudProps<TipoDeDado>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     filtros ?? [],
@@ -93,6 +103,9 @@ export function TabelaDeCrud<TipoDeDado>({
     debugHeaders: true,
     debugColumns: false,
     debugAll: false,
+    manualPagination: typeof paginacaoNoServidor !== "undefined",
+    rowCount: paginacaoNoServidor?.per_page,
+    pageCount: paginacaoNoServidor?.page,
   });
 
   return (
@@ -221,67 +234,179 @@ export function TabelaDeCrud<TipoDeDado>({
         </tbody>
       </table>
       <div className="h-2" />
-      <div className="flex items-center gap-2">
-        <button
-          className="rounded border p-1"
-          onClick={() => table.setPageIndex(0)}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </button>
-        <button
-          className="rounded border p-1"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </button>
-        <button
-          className="rounded border p-1"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </button>
-        <button
-          className="rounded border p-1"
-          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </button>
-        <span className="flex items-center gap-1">
-          <div>Página</div>
-          <strong>
-            {table.getState().pagination.pageIndex + 1} de{" "}
-            {table.getPageCount()}
-          </strong>
-        </span>
-        <span className="flex items-center gap-1">
-          | Ir para página:
-          <input
-            type="number"
-            defaultValue={table.getState().pagination.pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              table.setPageIndex(page);
-            }}
-            className="w-16 rounded border p-1"
-          />
-        </span>
-        <select
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => {
-            table.setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 25, 50, 100, dados.length].map((pageSize, index) => (
-            <option key={index} value={pageSize}>
-              {pageSize === dados.length ? "Todos" : `Mostrar ${pageSize}`}
-            </option>
-          ))}
-        </select>
+      {paginacaoNoServidor
+        ? ServerSidePagination(paginacaoNoServidor)
+        : ClientSidePagination(table as any)}
+    </div>
+  );
+}
+
+function ServerSidePagination(
+  paginacaoNoServidor: NonNullable<
+    ITabelaDeCrudProps<any>["paginacaoNoServidor"]
+  >,
+) {
+  const serialize = createSerializer({
+    page: parseAsInteger,
+    per_page: parseAsInteger,
+  });
+
+  const first_page_number =
+    paginacaoNoServidor.respostaPaginada.first_page_url.split("page=")[1] ?? "";
+
+  const last_page_number = paginacaoNoServidor.respostaPaginada.last_page;
+
+  const next_page_number =
+    paginacaoNoServidor.respostaPaginada.current_page + 1 > last_page_number
+      ? last_page_number
+      : paginacaoNoServidor.respostaPaginada.current_page + 1;
+
+  const previous_page_number =
+    paginacaoNoServidor.respostaPaginada.current_page - 1 < 1
+      ? 1
+      : paginacaoNoServidor.respostaPaginada.current_page - 1;
+
+  return (
+    <div className="flex items-center gap-2">
+      <div
+        className="rounded border p-1"
+        onClick={() => {
+          window.location.href = serialize({
+            page: Number(first_page_number),
+          });
+        }}
+      >
+        {"<<"}
       </div>
+      <div
+        className="rounded border p-1"
+        onClick={() => {
+          window.location.href = serialize({
+            page: Number(previous_page_number),
+          });
+        }}
+      >
+        {"<"}
+      </div>
+      <div
+        className="rounded border p-1"
+        onClick={() => {
+          window.location.href = serialize({
+            page: Number(next_page_number),
+          });
+        }}
+      >
+        {">"}
+      </div>
+      <div
+        className="rounded border p-1"
+        onClick={() => {
+          window.location.href = serialize({
+            page: Number(last_page_number),
+          });
+        }}
+      >
+        {">>"}
+      </div>
+      <span className="flex items-center gap-1">
+        <div>Página</div>
+        <strong>
+          {paginacaoNoServidor.respostaPaginada.current_page} de{" "}
+          {last_page_number}
+        </strong>
+      </span>
+      <span className="flex items-center gap-1">
+        | Ir para página:
+        <input
+          type="number"
+          defaultValue={paginacaoNoServidor.respostaPaginada.current_page}
+          onChange={(e) => {
+            const page = e.target.value ? Number(e.target.value) : 1;
+            window.location.href = serialize({ page });
+          }}
+          className="w-16 rounded border p-1"
+        />
+      </span>
+      <select
+        value={paginacaoNoServidor.per_page}
+        onChange={(e) => {
+          window.location.href = serialize({
+            page: 1,
+            per_page: Number(e.target.value),
+          });
+        }}
+      >
+        {[10, 25, 50, 100, 500, 1000, 10000].map((pageSize, index) => (
+          <option key={index} value={pageSize}>
+            {`Mostrar ${pageSize}`}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+function ClientSidePagination(table: ReturnType<typeof useReactTable>) {
+  return (
+    <div className="flex items-center gap-2">
+      <button
+        className="rounded border p-1"
+        onClick={() => table.setPageIndex(0)}
+        disabled={!table.getCanPreviousPage()}
+      >
+        {"<<"}
+      </button>
+      <button
+        className="rounded border p-1"
+        onClick={() => table.previousPage()}
+        disabled={!table.getCanPreviousPage()}
+      >
+        {"<"}
+      </button>
+      <button
+        className="rounded border p-1"
+        onClick={() => table.nextPage()}
+        disabled={!table.getCanNextPage()}
+      >
+        {">"}
+      </button>
+      <button
+        className="rounded border p-1"
+        onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+        disabled={!table.getCanNextPage()}
+      >
+        {">>"}
+      </button>
+      <span className="flex items-center gap-1">
+        <div>Página</div>
+        <strong>
+          {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
+        </strong>
+      </span>
+      <span className="flex items-center gap-1">
+        | Ir para página:
+        <input
+          type="number"
+          defaultValue={table.getState().pagination.pageIndex + 1}
+          onChange={(e) => {
+            const page = e.target.value ? Number(e.target.value) - 1 : 0;
+            table.setPageIndex(page);
+          }}
+          className="w-16 rounded border p-1"
+        />
+      </span>
+      <select
+        value={table.getState().pagination.pageSize}
+        onChange={(e) => {
+          table.setPageSize(Number(e.target.value));
+        }}
+      >
+        {[10, 25, 50, 100, 500, 1000, 10000].map((pageSize, index) => (
+          <option key={index} value={pageSize}>
+            {`Mostrar ${pageSize}`}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }
