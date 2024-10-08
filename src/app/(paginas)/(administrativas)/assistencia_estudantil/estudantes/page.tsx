@@ -11,19 +11,10 @@ import { Botao } from "@/app/elementos/basicos/Botao";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { ModalConfirmarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento";
-import { ModalRemoverAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalRemoverAgendamento";
-import { ModalAdicionarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento";
-import { buscarAgendamentos } from "@/app/actions/nutricionista";
-import {
-  buscarEstudantes,
-  buscarJustificativasNaoProcessadas,
-} from "@/app/actions/assistencia_estudantil";
-import { ModalJustificativasNaoProcessadas } from "@/app/elementos/modulos/assistencia_estudantil/Agendamentos/ModalJustificativasNaoProcessadas";
-import { ModalAdicionarJustificativa } from "@/app/elementos/modulos/assistencia_estudantil/Agendamentos/ModalAdicionarJustificativa";
-import { Badge } from "@/app/elementos/basicos/Badge";
-import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
+import { buscarCursos, buscarEstudantes } from "@/app/actions/assistencia_estudantil";
+import { ModalAdicionarEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalAdicionarEstudante";
 import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
+import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 
 export default function Estudantes() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -92,25 +83,14 @@ export default function Estudantes() {
     [],
   );
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-
-    const dataInicial = formData.get("dataInicial") as string;
-    const dataFinal = formData.get("dataFinal") as string;
-
-    setPesquisa({
-      dataInicial,
-      dataFinal,
-    });
-  };
-
   return (
     <Secao className="min-w-[768px] border-none">
       <Secao className="mx-auto flex max-w-[1440px] flex-col gap-y-4">
         <CabecalhoDeSecao titulo="Estudantes" />
         <Secao className="flex flex-wrap gap-y-2">
-          <div className="flex items-end gap-x-4"></div>
+          <div className="flex items-end gap-x-4">
+            <ModalAdicionarEstudante />
+          </div>
         </Secao>
         <Secao>
           <TabelaDeCrud
