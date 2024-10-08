@@ -1,6 +1,7 @@
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import * as Select from "@radix-ui/react-select";
 import classNames from "classnames";
+import { useMemo } from "react";
 
 interface ISelectProps {
   name: string;
@@ -20,7 +21,7 @@ export const SelectGeral = ({
   estaCarregando,
   triggerClassname,
 }: ISelectProps) => {
-  const opcoesArray = opcoes();
+  const opcoesArray = useMemo(() => opcoes(), [opcoes]);
 
   return (
     <fieldset className="flex flex-col justify-start gap-y-2">
