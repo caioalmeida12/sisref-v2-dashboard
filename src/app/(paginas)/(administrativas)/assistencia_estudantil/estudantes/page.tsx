@@ -71,10 +71,10 @@ export default function Estudantes() {
         cell: (props) => props.getValue(),
         header: "Email",
       }),
-      colunasHelper.accessor("course.description", {
+      colunasHelper.accessor((student) => `${student.course.initials} - ${student.course.description}`, {
         cell: (props) => (
           <CustomTooltipWrapper
-            elementoContent={props.getValue()}
+            elementoContent={props.row.original.course.description}
             elementoTrigger={props.row.original.course.initials}
           />
         ),
