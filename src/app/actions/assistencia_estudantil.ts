@@ -89,26 +89,26 @@ export async function justificarAusencia(
 /**
  * Busca todos os registros de estudante.
  */
-export const buscarEstudantes = async ({
-  pagina,
-  por_pagina,
-}: {
-  pagina: number;
-  por_pagina: number;
-}): Promise<
-  IRespostaDeAction<IRespostaPaginada<TEstudanteComCursoTurnoEUsuario>>
+export const buscarEstudantes = async (): Promise<
+  IRespostaDeAction<TEstudanteComCursoTurnoEUsuario>
 > => {
   const resposta = await FetchHelper.get<
     IRespostaPaginada<TEstudanteComCursoTurnoEUsuario>
   >({
-    rota: `/student/?page=${pagina}&perPage=${por_pagina}`,
+    rota: `/student/`,
     cookies: cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
   if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
 
-  return { sucesso: true, resposta: resposta.resposta };
+  const estudantes = resposta.resposta[0].data.flatMap((estudante) => {
+    const formatar = TEstudanteComCursoTurnoEUsuarioSchema.safeParse(estudante);
+
+    return formatar.success ? [formatar.data] : [];
+  });
+
+  return { sucesso: true, resposta: estudantes };
 };
 
 /**

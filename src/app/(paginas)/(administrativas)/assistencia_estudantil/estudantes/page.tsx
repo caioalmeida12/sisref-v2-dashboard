@@ -34,39 +34,18 @@ export default function Estudantes() {
     },
   );
 
-  const dadosPadrao = useMemo(
-    () =>
-      ({
-        current_page: 1,
-        data: [],
-        first_page_url: "",
-        from: 1,
-        last_page: 1,
-        last_page_url: "",
-        links: [],
-        next_page_url: "",
-      }) satisfies IRespostaPaginada<TEstudanteComCursoTurnoEUsuario>,
-    [],
-  );
 
-  const { data: dadosDaTabelaPaginados, isFetching: isLoadingDadosDaTabela } =
+  const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } =
     useQuery({
       queryKey: ["buscarEstudantes"],
       queryFn: async () => {
-        const resposta = await buscarEstudantes({
-          pagina: pesquisa.page,
-          por_pagina: pesquisa.per_page,
-        });
+        const resposta = await buscarEstudantes();
 
-        return resposta.sucesso ? resposta.resposta : [dadosPadrao];
+        return resposta.sucesso ? resposta.resposta : [];
       },
-      initialData: [dadosPadrao],
+      initialData: [],
     });
 
-  const dadosDaTabela = useMemo(
-    () => dadosDaTabelaPaginados[0].data,
-    [dadosDaTabelaPaginados],
-  );
 
   const colunasHelper = createColumnHelper<TEstudanteComCursoTurnoEUsuario>();
 
@@ -86,8 +65,8 @@ export default function Estudantes() {
         header: "Nome completo",
         size: 750,
       }),
-      colunasHelper.accessor("user", {
-        cell: (props) => props.getValue()[0] && props.getValue()[0].email,
+      colunasHelper.accessor((student) => student.user[0]?.email ?? "", {
+        cell: (props) => props.getValue(),
         header: "Email",
       }),
       colunasHelper.accessor("course.description", {
@@ -99,8 +78,8 @@ export default function Estudantes() {
         ),
         header: "Curso",
       }),
-      colunasHelper.accessor("shift", {
-        cell: (props) => props.getValue()?.description ?? "",
+      colunasHelper.accessor((student) => student.shift?.description ?? "", {
+        cell: (props) => props.getValue(),
         header: "Turno",
       }),
       colunasHelper.accessor("dateValid", {
@@ -134,11 +113,6 @@ export default function Estudantes() {
             dados={dadosDaTabela ?? []}
             estaCarregando={isLoadingDadosDaTabela}
             ordenacaoPadrao={[{ id: "id", desc: true }]}
-            paginacaoNoServidor={{
-              page: pesquisa.page,
-              per_page: pesquisa.per_page,
-              respostaPaginada: dadosDaTabelaPaginados[0],
-            }}
           />
         </Secao>
       </Secao>
