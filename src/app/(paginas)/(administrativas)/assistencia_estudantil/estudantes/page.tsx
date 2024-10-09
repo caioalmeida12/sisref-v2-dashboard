@@ -20,6 +20,8 @@ import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
 import { TEstudanteComCursoTurnoEUsuario } from "@/app/interfaces/TEstudante";
+import { ModalEditarEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalEditarEstudante";
+import { ModalRemoverEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalRemoverEstudante";
 
 export default function Estudantes() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -37,7 +39,7 @@ export default function Estudantes() {
 
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } =
     useQuery({
-      queryKey: ["buscarEstudantes"],
+      queryKey: ["tabelaDeEstudantes"],
       queryFn: async () => {
         const resposta = await buscarEstudantes();
 
@@ -93,6 +95,24 @@ export default function Estudantes() {
           </div>
         ),
         header: "Observação",
+      }),
+      colunasHelper.display({
+        cell: (props) => {
+          console.log(props.row.original);
+
+          return (
+            <div className="flex justify-center gap-x-2">
+              <div className="relative h-5 w-5">
+                <ModalRemoverEstudante estudante={props.row.original} />
+              </div>
+              <div className="relative h-5 w-5">
+                <ModalEditarEstudante estudante={props.row.original} />
+              </div>
+            </div>
+          );
+        },
+        enableResizing: false,
+        header: "Ações",
       }),
     ],
     [],

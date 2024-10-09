@@ -172,3 +172,53 @@ export const buscarTurnos = async (): Promise<IRespostaDeAction<TTurno>> => {
 
   return { sucesso: true, resposta: turnos };
 };
+
+/**
+ * Edita um estudante.
+ * @param formData Os dados do estudante.
+ */
+export const editarEstudante = async (
+  formData: FormData,
+): Promise<IRespostaDeAction<unknown>> => {
+  const resposta = await FetchHelper.put({
+    rota: `/student/${formData.get("id")}`,
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+    body: Object.fromEntries(formData),
+  });
+
+  if (!resposta.sucesso) {
+    return { sucesso: false, mensagem: resposta.message };
+  }
+
+  return { sucesso: true, resposta: resposta.resposta };
+};
+
+/**
+ * Realiza uma chamada assíncrona para a API de remoção de estudante.
+ *
+ * @param formData - Os dados de estudante.
+ * @returns JSON com os campos `sucesso` e `mensagem`.
+ */
+export const removerEstudante = async ({ student_id }: { student_id?: number }) => {
+  if (!student_id)
+    return { sucesso: false, mensagem: "ID de estudante não informado" };
+
+  const resposta = await FetchHelper.delete<{ message: string }>({
+    rota: `/student/${student_id}`,
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+  });
+
+  // Se a resposta for erro e a mensagem for "O Estudante foi excluído.", retornar sucesso.
+  if (!resposta.sucesso && resposta.message == "O Estudante foi excluído.") {
+    return { sucesso: true, mensagem: resposta.message };
+  }
+
+  if (!resposta.sucesso) {
+    return { sucesso: false, mensagem: resposta.message };
+  }
+
+  // Retornar mensagem de erro genérica se a mensagem não for "O Estudante foi excluído."
+  return { sucesso: false, mensagem: resposta.resposta[0].message };
+};
