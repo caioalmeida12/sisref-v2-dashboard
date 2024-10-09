@@ -36,18 +36,15 @@ export default function Estudantes() {
     },
   );
 
+  const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
+    queryKey: ["tabelaDeEstudantes"],
+    queryFn: async () => {
+      const resposta = await buscarEstudantes();
 
-  const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } =
-    useQuery({
-      queryKey: ["tabelaDeEstudantes"],
-      queryFn: async () => {
-        const resposta = await buscarEstudantes();
-
-        return resposta.sucesso ? resposta.resposta : [];
-      },
-      initialData: [],
-    });
-
+      return resposta.sucesso ? resposta.resposta : [];
+    },
+    initialData: [],
+  });
 
   const colunasHelper = createColumnHelper<TEstudanteComCursoTurnoEUsuario>();
 
@@ -71,15 +68,19 @@ export default function Estudantes() {
         cell: (props) => props.getValue(),
         header: "Email",
       }),
-      colunasHelper.accessor((student) => `${student.course.initials} - ${student.course.description}`, {
-        cell: (props) => (
-          <CustomTooltipWrapper
-            elementoContent={props.row.original.course.description}
-            elementoTrigger={props.row.original.course.initials}
-          />
-        ),
-        header: "Curso",
-      }),
+      colunasHelper.accessor(
+        (student) =>
+          `${student.course.initials} - ${student.course.description}`,
+        {
+          cell: (props) => (
+            <CustomTooltipWrapper
+              elementoContent={props.row.original.course.description}
+              elementoTrigger={props.row.original.course.initials}
+            />
+          ),
+          header: "Curso",
+        },
+      ),
       colunasHelper.accessor((student) => student.shift?.description ?? "", {
         cell: (props) => props.getValue(),
         header: "Turno",
@@ -98,8 +99,6 @@ export default function Estudantes() {
       }),
       colunasHelper.display({
         cell: (props) => {
-          console.log(props.row.original);
-
           return (
             <div className="flex justify-center gap-x-2">
               <div className="relative h-5 w-5">

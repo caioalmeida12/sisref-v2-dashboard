@@ -70,8 +70,6 @@ export async function justificarAusencia(
   id: number,
   absenceJustification: string,
 ): Promise<IRespostaDeAction<any>> {
-  console.log(absenceJustification);
-
   const resposta = await FetchHelper.post({
     rota: `/scheduling/justification/${id}`,
     cookies: cookies(),
@@ -200,7 +198,11 @@ export const editarEstudante = async (
  * @param formData - Os dados de estudante.
  * @returns JSON com os campos `sucesso` e `mensagem`.
  */
-export const removerEstudante = async ({ student_id }: { student_id?: number }) => {
+export const removerEstudante = async ({
+  student_id,
+}: {
+  student_id?: number;
+}) => {
   if (!student_id)
     return { sucesso: false, mensagem: "ID de estudante não informado" };
 
