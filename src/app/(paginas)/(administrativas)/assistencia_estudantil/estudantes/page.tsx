@@ -12,6 +12,7 @@ import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/Tabela
 import { createColumnHelper } from "@tanstack/react-table";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import {
+  atualizarVencimentosEmMassa,
   buscarCursos,
   buscarEstudantes,
 } from "@/app/actions/assistencia_estudantil";
@@ -22,6 +23,7 @@ import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
 import { TEstudanteComCursoTurnoEUsuario } from "@/app/interfaces/TEstudante";
 import { ModalEditarEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalEditarEstudante";
 import { ModalRemoverEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalRemoverEstudante";
+import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
 
 export default function Estudantes() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -124,6 +126,27 @@ export default function Estudantes() {
         <CabecalhoDeSecao titulo="Estudantes" />
         <Secao className="flex flex-wrap gap-y-2">
           <div className="ml-auto flex items-end gap-x-4">
+            <ModalGeral
+              elementoTrigger={<>abrir</>}
+              textoTitulo="Atualização em massa"
+              textoDescricao={["Atualize a validade de vários estudantes simultaneamente.", " Informe uma data futura válida e as iniciais da matrícula."]}
+              formulario={{
+                action: atualizarVencimentosEmMassa,
+                campos: [{
+                  type: 'text',
+                  name: 'mat',
+                  label: 'Iniciais da matrícula',
+                  placeholder: 'ex: 20211'
+                }, {
+                  type: 'date',
+                  name: 'date',
+                  label: 'Nova data de vencimento',
+                  placeholder: '01/01/2030',
+                  min: "2021-12-12",
+                  max: '2100-12-30'
+                }]
+              }}
+            />
             <ModalAdicionarEstudante />
           </div>
         </Secao>

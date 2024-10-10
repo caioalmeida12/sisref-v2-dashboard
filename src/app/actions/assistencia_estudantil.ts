@@ -222,3 +222,20 @@ export const removerEstudante = async ({ student_id }: { student_id?: number }) 
   // Retornar mensagem de erro genérica se a mensagem não for "O Estudante foi excluído."
   return { sucesso: false, mensagem: resposta.resposta[0].message };
 };
+
+/**
+ * Atualiza matrículas em massa
+ * @param formData - O começo das matriculas e a nova data de vencimento
+ */
+export const atualizarVencimentosEmMassa = async (formData: FormData) => {
+  const resposta = await FetchHelper.put<{ message: string }>({
+    rota: `/student/massUpdate`,
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+    body: Object.fromEntries(formData)
+  })
+
+  if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message }
+
+  return { sucesso: true, mensagem: "Atualização feita com sucesso." }
+}
