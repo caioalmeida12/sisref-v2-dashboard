@@ -109,8 +109,6 @@ export default function Agendamentos() {
       }),
       colunasHelper.display({
         cell: (props) => {
-          console.log(props.row.original);
-
           return (
             <div className="flex justify-center gap-x-2">
               <div className="relative h-5 w-5">
