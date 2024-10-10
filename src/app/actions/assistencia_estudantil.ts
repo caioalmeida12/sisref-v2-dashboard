@@ -229,15 +229,17 @@ export const removerEstudante = async ({
  * Atualiza matrículas em massa
  * @param formData - O começo das matriculas e a nova data de vencimento
  */
-export const atualizarVencimentosEmMassa = async (formData: FormData) => {
+export const atualizarVencimentosEmMassa = async (
+  formData: FormData,
+): Promise<IRespostaDeAction<string>> => {
   const resposta = await FetchHelper.put<{ message: string }>({
-    rota: `/student/massUpdate`,
+    rota: `/student/massUpdate/`,
     cookies: cookies(),
     rotaParaRedirecionarCasoFalhe: null,
-    body: Object.fromEntries(formData)
-  })
+    body: Object.fromEntries(formData),
+  });
 
-  if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message }
+  if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
 
-  return { sucesso: true, mensagem: "Atualização feita com sucesso." }
-}
+  return { sucesso: true, resposta: ["Atualização feita com sucesso."] };
+};

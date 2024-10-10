@@ -24,20 +24,9 @@ import { TEstudanteComCursoTurnoEUsuario } from "@/app/interfaces/TEstudante";
 import { ModalEditarEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalEditarEstudante";
 import { ModalRemoverEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalRemoverEstudante";
 import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
+import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
 
 export default function Estudantes() {
-  const [pesquisa, setPesquisa] = useQueryStates(
-    {
-      dataInicial: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
-      dataFinal: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
-      page: parseAsInteger.withDefault(1),
-      per_page: parseAsInteger.withDefault(10),
-    },
-    {
-      clearOnDefault: true,
-    },
-  );
-
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
     queryKey: ["tabelaDeEstudantes"],
     queryFn: async () => {
@@ -126,24 +115,38 @@ export default function Estudantes() {
         <Secao className="flex flex-wrap gap-y-2">
           <div className="ml-auto flex items-end gap-x-4">
             <ModalGeral
-              elementoTrigger={<>abrir</>}
+              elementoTrigger={
+                <BotaoDiv
+                  texto="Atualizar vencimentos"
+                  variante="editar"
+                  className="h-[36px] border-none px-10 py-2 leading-tight !text-branco-400 hover:!outline-preto-400 md:whitespace-nowrap"
+                />
+              }
               textoTitulo="Atualização em massa"
-              textoDescricao={["Atualize a validade de vários estudantes simultaneamente.", " Informe uma data futura válida e as iniciais da matrícula."]}
+              textoDescricao={[
+                "Atualize o vencimento de vários estudantes.",
+                " Informe uma data futura válida e as iniciais da matrícula.",
+              ]}
               formulario={{
                 action: atualizarVencimentosEmMassa,
-                campos: [{
-                  type: 'text',
-                  name: 'mat',
-                  label: 'Iniciais da matrícula',
-                  placeholder: 'ex: 20211'
-                }, {
-                  type: 'date',
-                  name: 'date',
-                  label: 'Nova data de vencimento',
-                  placeholder: '01/01/2030',
-                  min: "2021-12-12",
-                  max: '2100-12-30'
-                }]
+                substantivoParaMensagemDeRetorno: "estudante",
+                queryKeysParaInvalidar: [["tabelaDeEstudantes"]],
+                campos: [
+                  {
+                    type: "text",
+                    name: "mat",
+                    label: "Iniciais da matrícula",
+                    placeholder: "ex: 20211",
+                  },
+                  {
+                    type: "date",
+                    name: "date",
+                    label: "Nova data de vencimento",
+                    placeholder: "01/01/2030",
+                    min: "2021-12-12",
+                    max: "2100-12-30",
+                  },
+                ],
               }}
             />
             <ModalAdicionarEstudante />
