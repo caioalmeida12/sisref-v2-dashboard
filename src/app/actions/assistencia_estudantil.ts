@@ -335,3 +335,73 @@ export const editarRepublica = async (
 
   return { sucesso: true, resposta: resposta.resposta };
 };
+
+/**
+ * Realiza uma chamada assíncrona para a API de remoção de curso.
+ *
+ * @param formData - Os dados de curso.
+ * @returns JSON com os campos `sucesso` e `mensagem`.
+ */
+export const removerCurso = async (formData: FormData): Promise<IRespostaDeAction<string>> => {
+  if (!formData.get("id"))
+    return { sucesso: false, mensagem: "ID de curso não informado" };
+
+  const resposta = await FetchHelper.delete<{ message: string }>({
+    rota: `/course/${formData.get("id")}`,
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+  });
+
+  // Se a resposta for erro e a mensagem for "O Curso foi deletado.", retornar sucesso.
+  if (!resposta.sucesso && resposta.message == "O Curso foi deletado.") {
+    return { sucesso: true, resposta: [resposta.message] };
+  }
+
+  if (!resposta.sucesso) {
+    return { sucesso: false, mensagem: resposta.message };
+  }
+
+  // Retornar mensagem de erro genérica se a mensagem não for "O Curso foi deletado."
+  return { sucesso: false, mensagem: resposta.resposta[0].message };
+};
+
+/**
+ * Edita um curso.
+ * @param formData Os dados do curso.
+ */
+export const editarCurso = async (
+  formData: FormData,
+): Promise<IRespostaDeAction<unknown>> => {
+  const resposta = await FetchHelper.put({
+    rota: `/course/${formData.get("id")}`,
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+    body: Object.fromEntries(formData),
+  });
+
+  if (!resposta.sucesso) {
+    return { sucesso: false, mensagem: resposta.message };
+  }
+
+  return { sucesso: true, resposta: resposta.resposta };
+};
+
+/*
+ * Cria um novo curso.
+ */
+export const criarCurso = async (
+  formData: FormData,
+): Promise<IRespostaDeAction<unknown>> => {
+  const resposta = await FetchHelper.post({
+    rota: "/course/",
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+    body: Object.fromEntries(formData),
+  });
+
+  if (!resposta.sucesso) {
+    return { sucesso: false, mensagem: resposta.message };
+  }
+
+  return { sucesso: true, resposta: resposta.resposta };
+};
