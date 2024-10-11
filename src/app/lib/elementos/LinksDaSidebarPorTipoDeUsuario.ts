@@ -54,12 +54,12 @@ export const linksDaSidebarPorTipoDeUsuario: Record<
     },
     {
       titulo: "Relatório de refeições",
-      rota: "/assistencia_estudantil/relatorioDeRefeicoes",
+      rota: "/assistencia_estudantil/relatorio-de-refeicoes",
       icone: "GraficoDeBarras",
     },
     {
       titulo: "Relatório de desperdício",
-      rota: "/assistencia_estudantil/relatorioDeDesperdicio",
+      rota: "/assistencia_estudantil/relatorio-de-desperdicio",
       icone: "Lixeira",
     },
   ],
