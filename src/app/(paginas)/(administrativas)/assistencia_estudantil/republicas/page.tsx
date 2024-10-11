@@ -18,9 +18,11 @@ import {
   buscarRefeicoes,
   buscarTabelaDeCardapios,
 } from "@/app/actions/nutricionista";
-import { buscarRepublicas, criarRepublica } from "@/app/actions/assistencia_estudantil";
+import { buscarRepublicas, criarRepublica, editarRepublica, removerRepublica } from "@/app/actions/assistencia_estudantil";
 import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
 import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
+import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
+import Icone from "@/app/elementos/basicos/Icone";
 
 export default function NutricionistaPage() {
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
@@ -48,6 +50,7 @@ export default function NutricionistaPage() {
       colunasHelper.accessor("address", {
         cell: (props) => props.getValue(),
         header: "Endereço",
+        size: 450
       }),
       colunasHelper.accessor("neighborhood", {
         cell: (props) => props.getValue(),
@@ -60,11 +63,133 @@ export default function NutricionistaPage() {
       colunasHelper.accessor("ownerRepublic", {
         cell: (props) => props.getValue(),
         header: "Responsável",
+        size: 450
       }),
       colunasHelper.accessor("valueRepublic", {
         cell: (props) => props.getValue(),
         header: "Valor",
       }),
+      colunasHelper.display({
+        cell: (props) => (
+          <div className="flex justify-center gap-x-2">
+            <div className="relative h-5 w-5 flex gap-x-2">
+              <ModalGeral
+                textoTitulo="Remover república"
+                elementoTrigger={
+                  <CustomTooltipWrapper
+                    elementoContent={"Remover república"}
+                    elementoTrigger={
+                      <div className="relative h-5 w-5 cursor-pointer">
+                        <Icone.Deletar className="absolute inset-0 block h-full w-full" />
+                      </div>
+                    }
+                  />
+                }
+                tipoDeBotaoPrincipal="remover"
+                textoDescricao={["Você está prestes a remover a república abaixo:"]}
+                elementoDescricao={(
+                  <ul className="list-disc pl-5 mt-2">
+                    <li>
+                      Descrição: <strong>{props.row.original.description}</strong>
+                    </li>
+                    <li>
+                      Endereço: <strong>{props.row.original.address}</strong>
+                    </li>
+                    <li>
+                      Bairro: <strong>{props.row.original.neighborhood}</strong>
+                    </li>
+                    <li>
+                      Cidade: <strong>{props.row.original.city}</strong>
+                    </li>
+                    <li>
+                      Responsável: <strong>{props.row.original.ownerRepublic}</strong>
+                    </li>
+                    <li>
+                      Valor: <strong>{props.row.original.valueRepublic}</strong>
+                    </li>
+                  </ul>
+                )}
+                formulario={{
+                  action: removerRepublica,
+                  campos: [{
+                    type: "hidden",
+                    value: props.row.original.id,
+                    name: 'id',
+                  }],
+                  queryKeysParaInvalidar: [["tabelaDeRepublicas"]],
+                  substantivoParaMensagemDeRetorno: "república"
+                }}
+              />
+            </div>
+            <div className="relative h-5 w-5 flex gap-x-2">
+              <ModalGeral
+                textoDescricao={["Modifique os campos abaixo para editar a república."]}
+                elementoTrigger={
+                  <CustomTooltipWrapper
+                    elementoContent={"Editar república"}
+                    elementoTrigger={
+                      <div className="relative h-5 w-5 cursor-pointer">
+                        <Icone.Editar className="absolute inset-0 block h-full w-full" />
+                      </div>
+                    }
+                  />
+                }
+                textoTitulo="Editar república"
+                tipoDeBotaoPrincipal="confirmar"
+                formulario={{
+                  action: editarRepublica,
+                  campos: [{
+                    type: "hidden",
+                    name: "id",
+                    value: props.row.original.id
+                  }, {
+                    type: "text",
+                    label: "Descrição",
+                    name: "description",
+                    placeholder: "ex: República 27",
+                    defaultValue: props.row.original.description
+                  }, {
+                    type: "text",
+                    label: "Endereço",
+                    name: "address",
+                    placeholder: "ex: Alameda José Quintino, 4",
+                    defaultValue: props.row.original.address
+                  }, {
+                    type: "text",
+                    label: "Bairro",
+                    name: "neighborhood",
+                    placeholder: "ex: Prado",
+                    defaultValue: props.row.original.neighborhood
+                  }, {
+                    type: "text",
+                    label: "Cidade",
+                    name: "city",
+                    placeholder: "ex: Cedro",
+                    defaultValue: props.row.original.city
+                  }, {
+                    type: "text",
+                    label: "Responsável",
+                    name: "ownerRepublic",
+                    placeholder: "ex: Reponsável da Silva Júnior",
+                    defaultValue: props.row.original.ownerRepublic
+                  }, {
+                    type: "number",
+                    label: "Valor",
+                    name: "valueRepublic",
+                    max: 10000,
+                    min: 0,
+                    placeholder: "ex: 300",
+                    defaultValue: props.row.original.valueRepublic
+                  }],
+                  queryKeysParaInvalidar: [["tabelaDeRepublicas"]],
+                  substantivoParaMensagemDeRetorno: "república"
+                }}
+              />
+            </div>
+          </div>
+        ),
+        header: "Ações"
+      })
     ],
     [],
   );
@@ -85,6 +210,7 @@ export default function NutricionistaPage() {
               }
               textoTitulo="Cadastrar nova república"
               textoDescricao={["Preencha os campos abaixo para cadastrar uma nova república."]}
+              tipoDeBotaoPrincipal="confirmar"
               formulario={{
                 action: criarRepublica,
                 campos: [{

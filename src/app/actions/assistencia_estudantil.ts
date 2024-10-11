@@ -287,3 +287,54 @@ export const criarRepublica = async (
 
   return { sucesso: true, resposta: resposta.resposta };
 };
+
+
+/**
+ * Realiza uma chamada assíncrona para a API de remoção de república.
+ *
+ * @param formData - Os dados de república.
+ * @returns JSON com os campos `sucesso` e `mensagem`.
+ */
+export const removerRepublica = async (formData: FormData): Promise<IRespostaDeAction<string>> => {
+  if (!formData.get("id"))
+    return { sucesso: false, mensagem: "ID de república não informado" };
+
+  const resposta = await FetchHelper.delete<{ message: string }>({
+    rota: `/republic/${formData.get("id")}`,
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+  });
+
+  // Se a resposta for erro e a mensagem for "A república foi excluída.", retornar sucesso.
+  if (!resposta.sucesso && resposta.message == "A república foi excluída.") {
+    return { sucesso: true, resposta: [resposta.message] };
+  }
+
+  if (!resposta.sucesso) {
+    return { sucesso: false, mensagem: resposta.message };
+  }
+
+  // Retornar mensagem de erro genérica se a mensagem não for "A república foi excluída."
+  return { sucesso: false, mensagem: resposta.resposta[0].message };
+};
+
+/**
+ * Edita uma república.
+ * @param formData Os dados da república.
+ */
+export const editarRepublica = async (
+  formData: FormData,
+): Promise<IRespostaDeAction<unknown>> => {
+  const resposta = await FetchHelper.put({
+    rota: `/republic/${formData.get("id")}`,
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+    body: Object.fromEntries(formData),
+  });
+
+  if (!resposta.sucesso) {
+    return { sucesso: false, mensagem: resposta.message };
+  }
+
+  return { sucesso: true, resposta: resposta.resposta };
+};

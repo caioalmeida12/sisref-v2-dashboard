@@ -22,7 +22,7 @@ type CampoGenericoDoFormulario = {
   name: string;
   label: string;
   placeholder: string;
-  defaultValue?: string;
+  defaultValue?: string | number;
   /**Por padrão, todos os campos são required. Defina como `false` para sobrescrever esse comportamento.*/
   required?: boolean;
   className?: {
@@ -60,6 +60,10 @@ type CampoRadioDoFormulario = CampoGenericoDoFormulario & {
     texto: string | number;
   }[];
 };
+type CampoHiddenDoFormulario = Pick<CampoGenericoDoFormulario, "name"> & {
+  type: "hidden",
+  value: string | number
+}
 
 type CampoDoFormulario =
   | CampoTextoDoFormulario
@@ -67,14 +71,15 @@ type CampoDoFormulario =
   | CampoDataDoFormulario
   | CampoSelectDoFormulario
   | CampoNumericoDoFormulario
-  | CampoRadioDoFormulario;
+  | CampoRadioDoFormulario
+  | CampoHiddenDoFormulario;
 
 interface IModalGeralProps {
   elementoTrigger: React.ReactNode;
   textoTitulo: string;
   textoDescricao?: string[];
-  elementoConfirmar?: React.ReactNode;
-  elementoCancelar?: React.ReactNode;
+  elementoDescricao?: React.ReactNode;
+  tipoDeBotaoPrincipal: "confirmar" | "remover";
   formulario: {
     action: (arg0: FormData) => Promise<IRespostaDeAction<unknown>>;
     queryKeysParaInvalidar: any[][];
@@ -89,8 +94,8 @@ export const ModalGeral = ({
   elementoTrigger,
   textoTitulo,
   textoDescricao,
-  elementoCancelar,
-  elementoConfirmar,
+  elementoDescricao,
+  tipoDeBotaoPrincipal
 }: IModalGeralProps) => {
   const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
   const queryClient = useQueryClient();
@@ -134,6 +139,7 @@ export const ModalGeral = ({
             {textoDescricao?.map((linha, index) => (
               <span key={index}>{linha}</span>
             ))}
+            {elementoDescricao ? elementoDescricao : null}
           </Dialog.Description>
           <Form.Root
             className="mt-2 flex flex-col gap-y-4"
@@ -354,36 +360,47 @@ export const ModalGeral = ({
                   </Form.Field>
                 );
               }
+
+              if (campo.type == "hidden") {
+                return (
+                  <Form.Field name={campo.name} className="hidden" >
+                    <Form.Control type="hidden" value={campo.value} ></Form.Control>
+                  </Form.Field>
+                )
+              }
             })}
             <div className="flex flex-col items-center justify-end gap-y-2">
               <div
                 className="hidden text-center"
                 ref={mensagemDeRespostaRef}
               ></div>
-              {elementoConfirmar ? (
-                elementoConfirmar
-              ) : (
-                <Form.Submit className="contents">
-                  <BotaoDiv
-                    texto="Confirmar"
-                    variante="adicionar"
-                    className="mt-2"
-                    disabled={isPending}
-                  />
-                </Form.Submit>
-              )}
-              {elementoCancelar ? (
-                elementoConfirmar
-              ) : (
-                <Dialog.Close className="contents">
-                  <BotaoDiv
-                    texto="Cancelar"
-                    variante="remover"
-                    className="border-none bg-cinza-600 !text-branco-400 outline-none hover:!outline-cinza-600 focus:!outline-cinza-600"
-                    disabled={isPending}
-                  />
-                </Dialog.Close>
-              )}
+              <Form.Submit className="contents">
+                {
+                  tipoDeBotaoPrincipal == "confirmar" ? (
+                    <BotaoDiv
+                      texto="Confirmar"
+                      variante="adicionar"
+                      className="mt-2"
+                      disabled={isPending}
+                    />
+                  ) : (
+                    <BotaoDiv
+                      texto="Remover"
+                      variante="remover"
+                      className="mt-2 outline-vermelho-400"
+                      disabled={isPending}
+                    />
+                  )
+                }
+              </Form.Submit>
+              <Dialog.Close className="contents">
+                <BotaoDiv
+                  texto="Cancelar"
+                  variante="remover"
+                  className="border-none bg-cinza-600 !text-branco-400 outline-none !outline-offset-0 hover:!outline-cinza-600 focus:!outline-cinza-600"
+                  disabled={isPending}
+                />
+              </Dialog.Close>
             </div>
             <Dialog.Close asChild>
               <button
