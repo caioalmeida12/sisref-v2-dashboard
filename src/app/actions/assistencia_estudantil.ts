@@ -267,3 +267,23 @@ export const buscarRepublicas = async (): Promise<
 
   return { sucesso: true, resposta: formatadas };
 };
+
+/*
+ * Cria uma nova república.
+ */
+export const criarRepublica = async (
+  formData: FormData,
+): Promise<IRespostaDeAction<unknown>> => {
+  const resposta = await FetchHelper.post({
+    rota: "/republic/",
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+    body: Object.fromEntries(formData),
+  });
+
+  if (!resposta.sucesso) {
+    return { sucesso: false, mensagem: resposta.message };
+  }
+
+  return { sucesso: true, resposta: resposta.resposta };
+};

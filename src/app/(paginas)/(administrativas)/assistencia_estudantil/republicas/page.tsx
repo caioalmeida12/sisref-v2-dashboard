@@ -18,7 +18,9 @@ import {
   buscarRefeicoes,
   buscarTabelaDeCardapios,
 } from "@/app/actions/nutricionista";
-import { buscarRepublicas } from "@/app/actions/assistencia_estudantil";
+import { buscarRepublicas, criarRepublica } from "@/app/actions/assistencia_estudantil";
+import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
+import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
 
 export default function NutricionistaPage() {
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
@@ -71,8 +73,58 @@ export default function NutricionistaPage() {
     <Secao className="min-w-[768px] border-none">
       <Secao className="mx-auto flex max-w-[1440px] flex-col gap-y-4">
         <CabecalhoDeSecao titulo="Repúblicas" />
-        <Secao className="flex flex-wrap gap-y-2">
-          <div className="flex items-end gap-x-4"></div>
+        <Secao className="flex flex-wrap gap-y-2 justify-end">
+          <div className="flex items-end gap-x-4">
+            <ModalGeral
+              elementoTrigger={
+                <BotaoDiv
+                  texto="Cadastrar república"
+                  variante="adicionar"
+                  className="h-[36px] border-none px-10 py-2 leading-tight !text-branco-400 hover:!outline-preto-400 md:whitespace-nowrap"
+                />
+              }
+              textoTitulo="Cadastrar nova república"
+              textoDescricao={["Preencha os campos abaixo para cadastrar uma nova república."]}
+              formulario={{
+                action: criarRepublica,
+                campos: [{
+                  type: "text",
+                  label: "Descrição",
+                  name: "description",
+                  placeholder: "ex: República 27",
+                }, {
+                  type: "text",
+                  label: "Endereço",
+                  name: "address",
+                  placeholder: "ex: Alameda José Quintino, 4"
+                }, {
+                  type: "text",
+                  label: "Bairro",
+                  name: "neighborhood",
+                  placeholder: "ex: Prado"
+                }, {
+                  type: "text",
+                  label: "Cidade",
+                  name: "city",
+                  placeholder: "ex: Cedro"
+                }, {
+                  type: "text",
+                  label: "Responsável",
+                  name: "ownerRepublic",
+                  placeholder: "ex: Reponsável da Silva Júnior"
+                }, {
+                  type: "number",
+                  label: "Valor",
+                  name: "valueRepublic",
+                  max: 10000,
+                  min: 0,
+                  placeholder: "ex: 300"
+                }],
+                queryKeysParaInvalidar: [["tabelaDeRepublicas"]],
+                substantivoParaMensagemDeRetorno: "república"
+              }}
+            />
+          </div>
         </Secao>
         <Secao>
           <TabelaDeCrud
