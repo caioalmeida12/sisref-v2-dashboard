@@ -1,23 +1,12 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { parseAsString, useQueryStates } from "nuqs";
 import { useQuery } from "@tanstack/react-query";
-import * as Form from "@radix-ui/react-form";
 
 import { Secao } from "@/app/elementos/basicos/Secao";
 import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
-import { Botao } from "@/app/elementos/basicos/Botao";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import { createColumnHelper } from "@tanstack/react-table";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { ModalAdicionarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalAdicionarCardapio";
-import { ModalRemoverCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalRemoverCardapio";
-import { ModalEditarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalEditarCardapio";
-import {
-  buscarRefeicoes,
-  buscarTabelaDeCardapios,
-} from "@/app/actions/nutricionista";
 import { buscarRepublicas, criarRepublica, editarRepublica, removerRepublica } from "@/app/actions/assistencia_estudantil";
 import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
 import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";

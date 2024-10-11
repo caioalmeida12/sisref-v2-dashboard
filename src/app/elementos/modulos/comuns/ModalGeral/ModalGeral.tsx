@@ -4,14 +4,8 @@ import React, { useMemo } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta";
-import { Botao } from "@elementos//basicos/Botao";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as Form from "@radix-ui/react-form";
-import {
-  buscarCursos,
-  buscarTurnos,
-  criarEstudante,
-} from "@/app/actions/assistencia_estudantil";
 import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
 import { SelectGeral } from "@/app/elementos/componentes/SelectGeral";
 import classNames from "classnames";
@@ -330,40 +324,12 @@ export const ModalGeral = ({
               }
 
               if (campo.type == "radio") {
-                return (
-                  <Form.Field
-                    name="semRegular"
-                    className="flex flex-col gap-y-1"
-                  >
-                    <Form.Label className="font-medium" htmlFor="semRegular">
-                      Calendário do semestre
-                    </Form.Label>
-                    <div className="flex gap-x-4">
-                      {useMemo(() => campo.opcoes(), [campo.opcoes]).map(
-                        (opcao) => {
-                          return (
-                            <div className="flex gap-x-2">
-                              <Form.Control
-                                type="radio"
-                                id={String(opcao.texto)}
-                                name={campo.name}
-                                value={opcao.valor}
-                              />
-                              <Form.Label htmlFor={String(opcao.texto)}>
-                                {opcao.texto}
-                              </Form.Label>
-                            </div>
-                          );
-                        },
-                      )}
-                    </div>
-                  </Form.Field>
-                );
+                return <CampoRadioDoFormulario {...campo} key={campo.name} />
               }
 
               if (campo.type == "hidden") {
                 return (
-                  <Form.Field name={campo.name} className="hidden" >
+                  <Form.Field name={campo.name} className="hidden" key={campo.name}>
                     <Form.Control type="hidden" value={campo.value} ></Form.Control>
                   </Form.Field>
                 )
@@ -417,3 +383,39 @@ export const ModalGeral = ({
     </Dialog.Root>
   );
 };
+
+
+const CampoRadioDoFormulario = (campo: CampoRadioDoFormulario) => {
+  const opcoes = useMemo(() => campo.opcoes(), [campo.opcoes])
+
+  return (
+    <Form.Field
+      name="semRegular"
+      className="flex flex-col gap-y-1"
+      key={campo.name}
+    >
+      <Form.Label className="font-medium" htmlFor="semRegular">
+        Calendário do semestre
+      </Form.Label>
+      <div className="flex gap-x-4">
+        {opcoes.map(
+          (opcao, index) => {
+            return (
+              <div className="flex gap-x-2" key={index}>
+                <Form.Control
+                  type="radio"
+                  id={String(opcao.texto)}
+                  name={campo.name}
+                  value={opcao.valor}
+                />
+                <Form.Label htmlFor={String(opcao.texto)}>
+                  {opcao.texto}
+                </Form.Label>
+              </div>
+            );
+          },
+        )}
+      </div>
+    </Form.Field>
+  );
+}

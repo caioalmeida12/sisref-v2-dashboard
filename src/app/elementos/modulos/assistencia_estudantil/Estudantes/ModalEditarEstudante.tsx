@@ -12,9 +12,8 @@ import {
     buscarTurnos,
     editarEstudante,
 } from "@/app/actions/assistencia_estudantil";
-import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
 import { SelectGeral } from "@/app/elementos/componentes/SelectGeral";
-import { TEstudante, TEstudanteComCursoTurnoEUsuario } from "@/app/interfaces/TEstudante";
+import { TEstudanteComCursoTurnoEUsuario } from "@/app/interfaces/TEstudante";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 import Icone from "@/app/elementos/basicos/Icone";
 

@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  Column,
   ColumnDef,
   ColumnFiltersState,
   ColumnResizeDirection,
@@ -20,9 +19,6 @@ import {
 } from "@tanstack/react-table";
 import Skeleton from "react-loading-skeleton";
 import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
-import Link from "next/link";
-import { createSerializer, parseAsInteger, useQueryState } from "nuqs";
-import { useSearchParams } from "next/navigation";
 import { PaginacaoNoServidor } from "./PaginacaoNoServidor";
 import { PaginacaoNoCliente } from "./PaginacaoNoCliente";
 import { Filtro } from "./Filtro";
@@ -165,7 +161,7 @@ export function TabelaDeCrud<TipoDeDado>({
                         style={{
                           transform:
                             columnResizeMode === "onEnd" &&
-                            header.column.getIsResizing()
+                              header.column.getIsResizing()
                               ? `translateX(${(table.options.columnResizeDirection === "rtl" ? -1 : 1) * (table.getState().columnSizingInfo.deltaOffset ?? 0)}px)`
                               : "",
                         }}

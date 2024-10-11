@@ -1,25 +1,19 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { parseAsString, parseAsInteger, useQueryStates } from "nuqs";
 import { useQuery } from "@tanstack/react-query";
-import * as Form from "@radix-ui/react-form";
 
 import { Secao } from "@/app/elementos/basicos/Secao";
 import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
-import { Botao } from "@/app/elementos/basicos/Botao";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import { createColumnHelper } from "@tanstack/react-table";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import {
   atualizarVencimentosEmMassa,
-  buscarCursos,
   buscarEstudantes,
 } from "@/app/actions/assistencia_estudantil";
 import { ModalAdicionarEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalAdicionarEstudante";
 import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
-import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
 import { TEstudanteComCursoTurnoEUsuario } from "@/app/interfaces/TEstudante";
 import { ModalEditarEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalEditarEstudante";
 import { ModalRemoverEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalRemoverEstudante";

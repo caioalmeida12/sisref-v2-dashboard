@@ -6,14 +6,11 @@ import { TJustificativaNaoProcessada } from "../interfaces/TJustificativaNaoProc
 import { IRespostaDeAction } from "../interfaces/IRespostaDeAction";
 import { IRespostaPaginada } from "../interfaces/IRespostaPaginada";
 import {
-  TEstudanteComCurso,
-  TEstudanteComCursoSchema,
   TEstudanteComCursoTurnoEUsuario,
   TEstudanteComCursoTurnoEUsuarioSchema,
 } from "../interfaces/TEstudante";
 import { TCurso, TCursoSchema } from "../interfaces/TCurso";
 import { TTurno, TTurnoSchema } from "../interfaces/TTurno";
-import { TCampus, TCampusSchema } from "../interfaces/TCampus";
 import { TRepublica, TRepublicaSchema } from "../interfaces/TRepublica";
 
 /**
