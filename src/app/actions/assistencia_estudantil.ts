@@ -14,6 +14,7 @@ import {
 import { TCurso, TCursoSchema } from "../interfaces/TCurso";
 import { TTurno, TTurnoSchema } from "../interfaces/TTurno";
 import { TCampus, TCampusSchema } from "../interfaces/TCampus";
+import { TRepublica, TRepublicaSchema } from "../interfaces/TRepublica";
 
 /**
  * Este módulo contém todas as actions relacionadas à página de assistência estudantil.
@@ -242,4 +243,27 @@ export const atualizarVencimentosEmMassa = async (
   if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
 
   return { sucesso: true, resposta: ["Atualização feita com sucesso."] };
+};
+
+/**
+ * Busca todas as repúblicas
+ */
+export const buscarRepublicas = async (): Promise<
+  IRespostaDeAction<TRepublica>
+> => {
+  const resposta = await FetchHelper.get<IRespostaPaginada<TRepublica>>({
+    rota: "/republic",
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+  });
+
+  if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
+
+  const formatadas = resposta.resposta[0].data.flatMap((republica) => {
+    const formatar = TRepublicaSchema.safeParse(republica);
+
+    return formatar.success ? [formatar.data] : [];
+  });
+
+  return { sucesso: true, resposta: formatadas };
 };
