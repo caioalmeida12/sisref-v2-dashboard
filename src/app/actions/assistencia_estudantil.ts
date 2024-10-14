@@ -405,3 +405,73 @@ export const criarCurso = async (
 
   return { sucesso: true, resposta: resposta.resposta };
 };
+
+/**
+ * Realiza uma chamada assíncrona para a API de remoção de turno.
+ *
+ * @param formData - Os dados de turno.
+ * @returns JSON com os campos `sucesso` e `mensagem`.
+ */
+export const removerTurno = async (formData: FormData): Promise<IRespostaDeAction<string>> => {
+  if (!formData.get("id"))
+    return { sucesso: false, mensagem: "ID de turno não informado" };
+
+  const resposta = await FetchHelper.delete<{ message: string }>({
+    rota: `/shift/${formData.get("id")}`,
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+  });
+
+  // Se a resposta for erro e a mensagem for "O Turno foi excluído.", retornar sucesso.
+  if (!resposta.sucesso && resposta.message == "O Turno foi excluído.") {
+    return { sucesso: true, resposta: [resposta.message] };
+  }
+
+  if (!resposta.sucesso) {
+    return { sucesso: false, mensagem: resposta.message };
+  }
+
+  // Retornar mensagem de erro genérica se a mensagem não for "O Turno foi excluído.
+  return { sucesso: false, mensagem: resposta.resposta[0].message };
+};
+
+/*
+ * Cria um novo curso.
+ */
+export const criarTurno = async (
+  formData: FormData,
+): Promise<IRespostaDeAction<unknown>> => {
+  const resposta = await FetchHelper.post({
+    rota: "/shift/",
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+    body: Object.fromEntries(formData),
+  });
+
+  if (!resposta.sucesso) {
+    return { sucesso: false, mensagem: resposta.message };
+  }
+
+  return { sucesso: true, resposta: resposta.resposta };
+};
+
+/**
+ * Edita um turno.
+ * @param formData Os dados do turno.
+ */
+export const editarTurno = async (
+  formData: FormData,
+): Promise<IRespostaDeAction<unknown>> => {
+  const resposta = await FetchHelper.put({
+    rota: `/shift/${formData.get("id")}`,
+    cookies: cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+    body: Object.fromEntries(formData),
+  });
+
+  if (!resposta.sucesso) {
+    return { sucesso: false, mensagem: resposta.message };
+  }
+
+  return { sucesso: true, resposta: resposta.resposta };
+};
