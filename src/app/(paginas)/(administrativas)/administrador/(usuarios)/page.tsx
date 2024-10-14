@@ -13,8 +13,10 @@ import Icone from "@/app/elementos/basicos/Icone";
 import {
   buscarUsuarios,
   editarUsuario,
+  registrarUsuario,
   removerUsuario,
 } from "@/app/actions/administrador";
+import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
 
 export default function NutricionistaPage() {
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
@@ -212,85 +214,76 @@ export default function NutricionistaPage() {
     <Secao className="min-w-[768px] border-none">
       <Secao className="mx-auto flex max-w-[1440px] flex-col gap-y-4">
         <CabecalhoDeSecao titulo="Usuários" />
-        {/* <Secao className="flex flex-wrap gap-y-2 justify-end">
-                    <div className="flex items-end gap-x-4">
-                        <ModalGeral
-                            elementoTrigger={
-                                <BotaoDiv
-                                    texto="Cadastrar usuário"
-                                    variante="adicionar"
-                                    className="h-[36px] border-none px-10 py-2 leading-tight !text-branco-400 hover:!outline-preto-400 md:whitespace-nowrap"
-                                />
-                            }
-                            textoTitulo="Cadastrar o usuário"
-                            textoDescricao={["Preencha os campos abaixo para cadastrar um novo usuário."]}
-                            tipoDeBotaoPrincipal="confirmar"
-                            formulario={{
-                                action: criarCurso,
-                                campos: [{
-                                    type: "text",
-                                    label: "Nome",
-                                    name: "name",
-                                    placeholder: "Nome do usuário",
-                                }, {
-                                    type: "text",
-                                    label: "Email",
-                                    name: "email",
-                                    placeholder: "Email do usuário",
-                                }, {
-                                    type: "select",
-                                    name: "type",
-                                    estaCarregando: false,
-                                    label: "Tipo",
-                                    placeholder: "STUDENT",
-                                    opcoes: () => [{
-                                        texto: "Estudante",
-                                        valor: "STUDENT"
-                                    }, {
-                                        texto: "Nutricionista",
-                                        valor: "NUTRI"
-                                    }, {
-                                        texto: "Assistência Estudantil",
-                                        valor: "ASSIS_ESTU"
-                                    }, {
-                                        texto: "Recepcionista",
-                                        valor: "RECEPCAO"
-                                    }, {
-                                        texto: "Administrador",
-                                        valor: "ADMIN"
-                                    }],
-                                    defaultValue: "STUDENT"
-                                }, {
-                                    type: "select",
-                                    label: "Campus",
-                                    name: "campus_id",
-                                    placeholder: "Campus do usuário",
-                                    estaCarregando: isLoadingCampi,
-                                    opcoes: () => campi.map(campus => ({ texto: campus.description, valor: campus.id }))
-                                }, {
-                                    type: "text",
-                                    label: "Login",
-                                    name: "login",
-                                    placeholder: "Login do usuário",
-                                }, {
-                                    type: "radio",
-                                    label: "Situação",
-                                    name: "active",
-                                    placeholder: "ex: Ativo, Inativo",
-                                    opcoes: () => [{
-                                        texto: "Ativo",
-                                        valor: 1
-                                    }, {
-                                        texto: "Inativo",
-                                        valor: 0
-                                    }],
-                                }],
-                                queryKeysParaInvalidar: [["tabelaDeUsuarios"]],
-                                substantivoParaMensagemDeRetorno: "usuário"
-                            }}
-                        />
-                    </div>
-                </Secao> */}
+        <Secao className="flex flex-wrap justify-end gap-y-2">
+          <div className="flex items-end gap-x-4">
+            <ModalGeral
+              elementoTrigger={
+                <BotaoDiv
+                  texto="Cadastrar usuário"
+                  variante="adicionar"
+                  className="h-[36px] border-none px-10 py-2 leading-tight !text-branco-400 hover:!outline-preto-400 md:whitespace-nowrap"
+                />
+              }
+              textoTitulo="Cadastrar usuário"
+              textoDescricao={[
+                "Preencha os campos abaixo para cadastrar um novo usuário.",
+              ]}
+              tipoDeBotaoPrincipal="confirmar"
+              formulario={{
+                action: registrarUsuario,
+                campos: [
+                  {
+                    type: "text",
+                    label: "Nome",
+                    name: "name",
+                    placeholder: "ex: Usuário da Silva Sousa",
+                  },
+                  {
+                    type: "text",
+                    label: "Email",
+                    name: "email",
+                    placeholder: "ex: sousa.usuario@ifce.edu.br",
+                  },
+                  {
+                    type: "select",
+                    label: "Tipo",
+                    name: "type",
+                    estaCarregando: false,
+                    opcoes: () => [
+                      {
+                        texto: "Estudante",
+                        valor: "STUDENT",
+                      },
+                      {
+                        texto: "Recepção",
+                        valor: "RECEPCAO",
+                      },
+                      {
+                        texto: "Nutricionista",
+                        valor: "NUTRI",
+                      },
+                      {
+                        texto: "Assistência Estudantil",
+                        valor: "ASSIS_ESTU",
+                      },
+                      {
+                        texto: "Administrador",
+                        valor: "ADMIN",
+                      },
+                    ],
+                  },
+                  {
+                    type: "hidden",
+                    name: "campus_id",
+                    value: 1,
+                  },
+                ],
+                queryKeysParaInvalidar: [["tabelaDeUsuarios"]],
+                substantivoParaMensagemDeRetorno: "usuário",
+              }}
+            />
+          </div>
+        </Secao>
         <Secao>
           <TabelaDeCrud
             colunas={colunas}
