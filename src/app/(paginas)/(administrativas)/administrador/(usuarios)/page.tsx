@@ -37,10 +37,12 @@ export default function NutricionistaPage() {
       colunasHelper.accessor("name", {
         cell: (props) => props.getValue(),
         header: "Nome",
+        size: 550,
       }),
       colunasHelper.accessor("email", {
         cell: (props) => props.getValue(),
         header: "Email",
+        size: 250,
       }),
       colunasHelper.accessor("type", {
         cell: (props) => props.getValue(),
