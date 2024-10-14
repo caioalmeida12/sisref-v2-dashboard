@@ -39,7 +39,10 @@ type CampoNumericoDoFormulario = CampoGenericoDoFormulario & {
   min: number;
   max: number;
 };
-type CampoSelectDoFormulario = CampoGenericoDoFormulario & {
+type CampoSelectDoFormulario = Omit<
+  CampoGenericoDoFormulario,
+  "placeholder"
+> & {
   type: "select";
   opcoes: () => {
     valor: string | number;
@@ -55,9 +58,9 @@ type CampoRadioDoFormulario = CampoGenericoDoFormulario & {
   }[];
 };
 type CampoHiddenDoFormulario = Pick<CampoGenericoDoFormulario, "name"> & {
-  type: "hidden",
-  value: string | number
-}
+  type: "hidden";
+  value: string | number;
+};
 
 type CampoDoFormulario =
   | CampoTextoDoFormulario
@@ -89,7 +92,7 @@ export const ModalGeral = ({
   textoTitulo,
   textoDescricao,
   elementoDescricao,
-  tipoDeBotaoPrincipal
+  tipoDeBotaoPrincipal,
 }: IModalGeralProps) => {
   const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
   const queryClient = useQueryClient();
@@ -324,15 +327,22 @@ export const ModalGeral = ({
               }
 
               if (campo.type == "radio") {
-                return <CampoRadioDoFormulario {...campo} key={campo.name} />
+                return <CampoRadioDoFormulario {...campo} key={campo.name} />;
               }
 
               if (campo.type == "hidden") {
                 return (
-                  <Form.Field name={campo.name} className="hidden" key={campo.name}>
-                    <Form.Control type="hidden" value={campo.value} ></Form.Control>
+                  <Form.Field
+                    name={campo.name}
+                    className="hidden"
+                    key={campo.name}
+                  >
+                    <Form.Control
+                      type="hidden"
+                      value={campo.value}
+                    ></Form.Control>
                   </Form.Field>
-                )
+                );
               }
             })}
             <div className="flex flex-col items-center justify-end gap-y-2">
@@ -341,23 +351,21 @@ export const ModalGeral = ({
                 ref={mensagemDeRespostaRef}
               ></div>
               <Form.Submit className="contents">
-                {
-                  tipoDeBotaoPrincipal == "confirmar" ? (
-                    <BotaoDiv
-                      texto="Confirmar"
-                      variante="adicionar"
-                      className="mt-2"
-                      disabled={isPending}
-                    />
-                  ) : (
-                    <BotaoDiv
-                      texto="Remover"
-                      variante="remover"
-                      className="mt-2 outline-vermelho-400"
-                      disabled={isPending}
-                    />
-                  )
-                }
+                {tipoDeBotaoPrincipal == "confirmar" ? (
+                  <BotaoDiv
+                    texto="Confirmar"
+                    variante="adicionar"
+                    className="mt-2"
+                    disabled={isPending}
+                  />
+                ) : (
+                  <BotaoDiv
+                    texto="Remover"
+                    variante="remover"
+                    className="mt-2 outline-vermelho-400"
+                    disabled={isPending}
+                  />
+                )}
               </Form.Submit>
               <Dialog.Close className="contents">
                 <BotaoDiv
@@ -384,9 +392,8 @@ export const ModalGeral = ({
   );
 };
 
-
 const CampoRadioDoFormulario = (campo: CampoRadioDoFormulario) => {
-  const opcoes = useMemo(() => campo.opcoes(), [campo.opcoes])
+  const opcoes = useMemo(() => campo.opcoes(), [campo.opcoes]);
 
   return (
     <Form.Field
@@ -398,24 +405,22 @@ const CampoRadioDoFormulario = (campo: CampoRadioDoFormulario) => {
         Calendário do semestre
       </Form.Label>
       <div className="flex gap-x-4">
-        {opcoes.map(
-          (opcao, index) => {
-            return (
-              <div className="flex gap-x-2" key={index}>
-                <Form.Control
-                  type="radio"
-                  id={String(opcao.texto)}
-                  name={campo.name}
-                  value={opcao.valor}
-                />
-                <Form.Label htmlFor={String(opcao.texto)}>
-                  {opcao.texto}
-                </Form.Label>
-              </div>
-            );
-          },
-        )}
+        {opcoes.map((opcao, index) => {
+          return (
+            <div className="flex gap-x-2" key={index}>
+              <Form.Control
+                type="radio"
+                id={String(opcao.texto)}
+                name={campo.name}
+                value={opcao.valor}
+              />
+              <Form.Label htmlFor={String(opcao.texto)}>
+                {opcao.texto}
+              </Form.Label>
+            </div>
+          );
+        })}
       </div>
     </Form.Field>
   );
-}
+};
