@@ -110,12 +110,12 @@ export const linksDaSidebarPorTipoDeUsuario: Record<
   ADMIN: [
     {
       titulo: "Usuários",
-      rota: "?pagina=usuarios",
+      rota: "/administrador",
       icone: "Usuario",
     },
     {
       titulo: "Campi",
-      rota: "?pagina=campi",
+      rota: "/administrador/campi",
       icone: "Casa",
     },
   ],
