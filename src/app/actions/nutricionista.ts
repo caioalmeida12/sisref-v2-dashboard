@@ -291,16 +291,16 @@ export async function buscarTabelaDeCardapios({
       return refeicaoEncontrada
         ? refeicaoEncontrada
         : {
-            meal: cardapio,
-            menu: {
-              agendado: false,
-              description: "Não cadastrado",
-              campus_id,
-              date: data,
-              id: 0,
-              permission: 0,
-            },
-          };
+          meal: cardapio,
+          menu: {
+            agendado: false,
+            description: "Não cadastrado",
+            campus_id,
+            date: data,
+            id: 0,
+            permission: 0,
+          },
+        };
     },
   );
 
@@ -372,16 +372,18 @@ export async function deprecated_criarRelatorioDeDesperdicio(
 /**
  * Realiza uma chamada assíncrona para a API de agendamentos.
  *
- * @param formData - Os dados do formulário de agendamento.
+ * @param formData - Os dados do formulário de agendamento. O campo `data_inicial` é obrigatório. O campo `data_final` é opcional. Caso não seja passado, assumirá o valor de `data_inicial`.
  * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: TRefeicao[] }.
  */
 export async function buscarAgendamentos({
   data_inicial,
+  data_final
 }: {
   data_inicial: string;
+  data_final?: string
 }): Promise<IRespostaDeAction<TAgendamento>> {
   const resposta = await FetchHelper.get<IRespostaPaginada<TAgendamento>>({
-    rota: `/scheduling/list-by-date?page=1&date=${data_inicial}`,
+    rota: `/scheduling/list-by-date?page=1&date=${data_inicial}&final_date=${data_final ?? data_inicial}`,
     cookies: cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
