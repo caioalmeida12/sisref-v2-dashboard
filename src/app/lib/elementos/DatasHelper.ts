@@ -131,6 +131,18 @@ export class DatasHelper {
   }
 
   /**
+   * Retorna a data base adicionada de n dias
+   * @param data A data de referência no formato yyyy-MM-dd
+   * @param dias_para_adicionar - Quantos dias adicionar à data base
+   * @returns Data base adicionada de dias_para_adicionar no formato yyyy-MM-dd
+   */
+  static getDataNDiasDepois(data: string, dias_para_adicionar: number): string {
+    const dataAtual = new Date(data);
+    dataAtual.setDate(dataAtual.getDate() + dias_para_adicionar);
+    return dataAtual.toISOString().split("T")[0];
+  }
+
+  /**
    * Retorna o mês anterior à data fornecida
    * @param data A data de referência no formato yyyy-MM-dd
    * @returns Data do mês anterior no formato yyyy-MM-dd
