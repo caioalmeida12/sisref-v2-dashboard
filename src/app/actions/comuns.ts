@@ -7,19 +7,6 @@ import { FetchHelper } from "../lib/actions/FetchHelper";
 import { IInformacoesDeLogin } from "../lib/middlewares/IInformacoesDeLogin";
 
 /**
- * Realiza o logout do usuário. Remove todos os cookies e redireciona para a página de login.
- */
-export async function logout() {
-  cookies()
-    .getAll()
-    .forEach((cookie) => {
-      cookies().delete(cookie.name);
-    });
-
-  return redirecionarViaAction();
-}
-
-/**
  * Realiza uma chamada assíncrona para a API de login.
  *
  * @param formData - Os dados do formulário de login.
