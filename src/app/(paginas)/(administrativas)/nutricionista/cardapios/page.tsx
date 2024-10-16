@@ -11,13 +11,16 @@ import { Botao } from "@/app/elementos/basicos/Botao";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { ModalAdicionarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalAdicionarCardapio";
-import { ModalRemoverCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalRemoverCardapio";
-import { ModalEditarCardapio } from "@/app/elementos/modulos/nutricionista/Cardapios/ModalEditarCardapio";
 import {
   buscarRefeicoes,
   buscarTabelaDeCardapios,
+  criarCardapio,
+  editarCardapio,
+  removerCardapio,
 } from "@/app/actions/nutricionista";
+import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
+import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
+import Icone from "@/app/elementos/basicos/Icone";
 
 export default function Page() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -79,19 +82,154 @@ export default function Page() {
         header: "Cardápio",
       }),
       colunasHelper.display({
-        cell: (info) =>
-          info.row.original.meal.id && info.row.original.menu.id != 0 ? (
+        cell: (props) =>
+          props.row.original.meal.id && props.row.original.menu.id != 0 ? (
             <div className="flex justify-center gap-x-2">
-              <div className="relative h-5 w-5">
-                <ModalRemoverCardapio refeicao_e_cardapio={info.row.original} />
-              </div>
-              <div className="relative h-5 w-5">
-                <ModalEditarCardapio refeicao_e_cardapio={info.row.original} />
-              </div>
+              <ModalGeral
+                textoTitulo="Remover cardápio"
+                tipoDeBotaoPrincipal="remover"
+                textoDescricao={[
+                  "Tem certeza que deseja remover este cardápio?",
+                ]}
+                elementoDescricao={
+                  <ul className="mt-2 list-disc pl-5">
+                    <li>
+                      ID: <strong>{props.row.original.meal.id}</strong>
+                    </li>
+                    <li>
+                      Refeição:{" "}
+                      <strong>{props.row.original.meal.description}</strong>
+                    </li>
+                    <li>
+                      Cardápio:{" "}
+                      <strong>{props.row.original.menu.description}</strong>
+                    </li>
+                    <li>
+                      Data: <strong>{props.row.original.menu.date}</strong>
+                    </li>
+                    <li>
+                      ID do Menu: <strong>{props.row.original.menu.id}</strong>
+                    </li>
+                  </ul>
+                }
+                formulario={{
+                  action: removerCardapio,
+                  queryKeysParaInvalidar: [
+                    ["refeicoes", props.row.original.menu.date],
+                    ["tabelaDeCardapios"],
+                  ],
+                  substantivoParaMensagemDeRetorno: "cardápio",
+                  campos: [
+                    {
+                      type: "hidden",
+                      name: "menu_id",
+                      value: props.row.original.menu.id,
+                    },
+                  ],
+                }}
+                elementoTrigger={
+                  <CustomTooltipWrapper
+                    elementoContent="Remover cardápio"
+                    elementoTrigger={
+                      <div className="relative h-5 w-5 cursor-pointer">
+                        <Icone.Deletar className="absolute inset-0 block h-full w-full" />
+                      </div>
+                    }
+                  />
+                }
+              />
+              <ModalGeral
+                textoTitulo="Editar cardápio"
+                tipoDeBotaoPrincipal="confirmar"
+                textoDescricao={[
+                  "Modifique o campo abaixo para editar o cardápio.",
+                ]}
+                formulario={{
+                  action: editarCardapio,
+                  queryKeysParaInvalidar: [
+                    ["refeicoes", props.row.original.menu.date],
+                    ["tabelaDeCardapios"],
+                  ],
+                  substantivoParaMensagemDeRetorno: "cardápio",
+                  campos: [
+                    {
+                      type: "text",
+                      label: "Descrição",
+                      name: "description",
+                      placeholder: "Ex: Pão com ovos + suco de acerola",
+                      defaultValue: props.row.original.menu.description,
+                    },
+                    {
+                      type: "hidden",
+                      name: "date",
+                      value: props.row.original.menu.date,
+                    },
+                    {
+                      type: "hidden",
+                      name: "meal_id",
+                      value: props.row.original.meal.id,
+                    },
+                    {
+                      type: "hidden",
+                      value: props.row.original.menu.id,
+                      name: "menu_id",
+                    },
+                  ],
+                }}
+                elementoTrigger={
+                  <CustomTooltipWrapper
+                    elementoContent="Editar cardápio"
+                    elementoTrigger={
+                      <div className="relative h-5 w-5 cursor-pointer">
+                        <Icone.Editar className="absolute inset-0 block h-full w-full" />
+                      </div>
+                    }
+                  />
+                }
+              />
             </div>
           ) : (
             <div className="flex justify-center gap-x-2">
-              <ModalAdicionarCardapio refeicao_e_cardapio={info.row.original} />
+              <ModalGeral
+                textoTitulo="Adicionar cardápio"
+                tipoDeBotaoPrincipal="confirmar"
+                textoDescricao={[
+                  "Preencha o campo abaixo para adicionar o cardápio",
+                ]}
+                formulario={{
+                  action: criarCardapio,
+                  queryKeysParaInvalidar: [["tabelaDeCardapios"]],
+                  substantivoParaMensagemDeRetorno: "cardápio",
+                  campos: [
+                    {
+                      type: "text",
+                      label: "Descrição",
+                      name: "description",
+                      placeholder: "ex: Pão com ovos; suco de goiaba",
+                    },
+                    {
+                      type: "hidden",
+                      name: "date",
+                      value: pesquisa.dataInicial,
+                    },
+                    {
+                      type: "hidden",
+                      name: "meal_id",
+                      value: props.row.original.meal.id,
+                    },
+                  ],
+                }}
+                elementoTrigger={
+                  <CustomTooltipWrapper
+                    elementoContent="Adicionar cardápio"
+                    elementoTrigger={
+                      <div className="relative h-5 w-5 cursor-pointer">
+                        <Icone.Adicionar className="absolute inset-0 block h-full w-full" />
+                      </div>
+                    }
+                  />
+                }
+              />
             </div>
           ),
         header: "Ações",

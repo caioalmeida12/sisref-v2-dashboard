@@ -90,7 +90,9 @@ export async function criarRefeição(formData: FormData) {
  * @param formData - Os dados do formulário de criação de cardápio.
  * @returns JSON com os campos `sucesso` e `mensagem`.
  */
-export async function criarCardapio(formData: FormData) {
+export async function criarCardapio(
+  formData: FormData,
+): Promise<IRespostaDeAction<string>> {
   const resposta = await FetchHelper.post<unknown>({
     rota: "/menu",
     cookies: cookies(),
@@ -135,7 +137,7 @@ export async function criarCardapio(formData: FormData) {
     }
   }
 
-  return { sucesso: true, mensagem: "Cardápio criado com sucesso." };
+  return { sucesso: true, resposta: ["Cardápio criado com sucesso."] };
 }
 
 /**
@@ -144,7 +146,9 @@ export async function criarCardapio(formData: FormData) {
  * @param formData - Os dados do formulário de criação de cardápio.
  * @returns JSON com os campos `sucesso` e `mensagem`.
  */
-export async function editarCardapio(formData: FormData) {
+export async function editarCardapio(
+  formData: FormData,
+): Promise<IRespostaDeAction<string>> {
   const resposta = await FetchHelper.put<unknown>({
     rota: `/menu/${formData.get("menu_id")}`,
     cookies: cookies(),
@@ -187,7 +191,7 @@ export async function editarCardapio(formData: FormData) {
     }
   }
 
-  return { sucesso: true, mensagem: "Cardápio editado com sucesso." };
+  return { sucesso: true, resposta: ["Cardápio editado com sucesso."] };
 }
 
 /**
@@ -196,19 +200,21 @@ export async function editarCardapio(formData: FormData) {
  * @param formData - Os dados do formulário de criação de cardápio.
  * @returns JSON com os campos `sucesso` e `mensagem`.
  */
-export const removerCardapio = async ({ menu_id }: { menu_id?: number }) => {
-  if (!menu_id)
+export const removerCardapio = async (
+  formData: FormData,
+): Promise<IRespostaDeAction<string>> => {
+  if (!formData.get("menu_id"))
     return { sucesso: false, mensagem: "ID do cardápio não informado" };
 
   const resposta = await FetchHelper.delete<{ message: string }>({
-    rota: `/menu/${menu_id}`,
+    rota: `/menu/${formData.get("menu_id")}`,
     cookies: cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
   // Se a resposta for erro e a mensagem for "O cardápio foi excluído.", retornar sucesso.
   if (!resposta.sucesso && resposta.message == "O cardápio foi excluído.") {
-    return { sucesso: true, mensagem: resposta.message };
+    return { sucesso: true, resposta: [resposta.message] };
   }
 
   if (!resposta.sucesso) {
@@ -291,16 +297,16 @@ export async function buscarTabelaDeCardapios({
       return refeicaoEncontrada
         ? refeicaoEncontrada
         : {
-          meal: cardapio,
-          menu: {
-            agendado: false,
-            description: "Não cadastrado",
-            campus_id,
-            date: data,
-            id: 0,
-            permission: 0,
-          },
-        };
+            meal: cardapio,
+            menu: {
+              agendado: false,
+              description: "Não cadastrado",
+              campus_id,
+              date: data,
+              id: 0,
+              permission: 0,
+            },
+          };
     },
   );
 
@@ -377,10 +383,10 @@ export async function deprecated_criarRelatorioDeDesperdicio(
  */
 export async function buscarAgendamentos({
   data_inicial,
-  data_final
+  data_final,
 }: {
   data_inicial: string;
-  data_final?: string
+  data_final?: string;
 }): Promise<IRespostaDeAction<TAgendamento>> {
   const resposta = await FetchHelper.get<IRespostaPaginada<TAgendamento>>({
     rota: `/scheduling/list-by-date?page=1&date=${data_inicial}&final_date=${data_final ?? data_inicial}`,
