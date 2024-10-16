@@ -414,28 +414,31 @@ export async function buscarAgendamentos({
 /**
  * Realiza uma chamada assíncrona para a API de remoção de agendamento.
  *
- * @param id - O ID do agendamento a ser removido.
+ * @param formData - Os dados do agendamento a ser removido, constando o id
  * @returns JSON com os campos `sucesso` e `mensagem`.
  */
-export async function removerAgendamento({ id }: { id?: number }) {
-  if (!id) return { sucesso: false, mensagem: "ID da refeição não informado" };
+export async function removerAgendamento(
+  formData: FormData,
+): Promise<IRespostaDeAction<string>> {
+  if (!formData.get("id"))
+    return { sucesso: false, mensagem: "ID da refeição não informado" };
 
   const resposta = await FetchHelper.delete<{ message: string }>({
-    rota: `/scheduling/${id}`,
+    rota: `/scheduling/${formData.get("id")}`,
     cookies: cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
   // Se a resposta for erro e a mensagem for "O Agendamento foi excluído.", retornar sucesso.
   if (!resposta.sucesso && resposta.message == "O Agendamento foi excluído.") {
-    return { sucesso: true, mensagem: resposta.message };
+    return { sucesso: true, resposta: [resposta.message] };
   }
 
   if (!resposta.sucesso) {
     return { sucesso: false, mensagem: resposta.message };
   }
 
-  return { sucesso: true, mensagem: "Agendamento removido com sucesso." };
+  return { sucesso: true, resposta: ["Agendamento removido com sucesso."] };
 }
 
 /**
@@ -446,28 +449,18 @@ export async function removerAgendamento({ id }: { id?: number }) {
  * @param date - A data do agendamento.
  * @returns JSON com os campos `sucesso` e `mensagem`.
  */
-export async function confirmarAgendamento({
-  student_id,
-  meal_id,
-  date,
-}: {
-  student_id: number;
-  meal_id: number;
-  date: string;
-}) {
+export async function confirmarAgendamento(
+  formData: FormData,
+): Promise<IRespostaDeAction<string>> {
   const resposta = await FetchHelper.post<unknown>({
     rota: "/confirm-meals",
     cookies: cookies(),
-    body: {
-      student_id,
-      meal_id,
-      date,
-    },
+    body: Object.fromEntries(formData),
   });
 
   if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
 
-  return { sucesso: true, mensagem: "Agendamento confirmado com sucesso." };
+  return { sucesso: true, resposta: ["Agendamento confirmado com sucesso."] };
 }
 
 /**
@@ -476,7 +469,9 @@ export async function confirmarAgendamento({
  * @param formData - Os dados do formulário de agendamento.
  * @returns JSON com os campos { sucesso: false, mensagem: string } ou { sucesso: true, resposta: TAgendamento }.
  */
-export async function criarAgendamento(formData: FormData) {
+export async function criarAgendamento(
+  formData: FormData,
+): Promise<IRespostaDeAction<string>> {
   const resposta = await FetchHelper.post<TAgendamento>({
     rota: "/scheduling",
     cookies: cookies(),
@@ -489,7 +484,7 @@ export async function criarAgendamento(formData: FormData) {
 
   if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
 
-  return { sucesso: true, resposta: resposta.resposta[0] };
+  return { sucesso: true, resposta: ["Reserva feita com sucesso"] };
 }
 
 /**

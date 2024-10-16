@@ -11,14 +11,20 @@ import { Botao } from "@/app/elementos/basicos/Botao";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { ModalConfirmarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento";
-import { ModalRemoverAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalRemoverAgendamento";
-import { ModalAdicionarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalAdicionarAgendamento";
-import { buscarAgendamentos } from "@/app/actions/nutricionista";
+import {
+  buscarAgendamentos,
+  buscarRefeicoes,
+  confirmarAgendamento,
+  criarAgendamento,
+  removerAgendamento,
+} from "@/app/actions/nutricionista";
 import { buscarJustificativasNaoProcessadas } from "@/app/actions/assistencia_estudantil";
 import { ModalJustificativasNaoProcessadas } from "@/app/elementos/modulos/assistencia_estudantil/Agendamentos/ModalJustificativasNaoProcessadas";
-import { ModalAdicionarJustificativa } from "@/app/elementos/modulos/assistencia_estudantil/Agendamentos/ModalAdicionarJustificativa";
 import { Badge } from "@/app/elementos/basicos/Badge";
+import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
+import Icone from "@/app/elementos/basicos/Icone";
+import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
+import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
 
 export default function Agendamentos() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -30,6 +36,16 @@ export default function Agendamentos() {
       clearOnDefault: true,
     },
   );
+
+  const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
+    initialData: [],
+    queryKey: ["tabelaDeRefeicoes"],
+    queryFn: async () => {
+      const resposta = await buscarRefeicoes();
+
+      return resposta.sucesso ? resposta.resposta : [];
+    },
+  });
 
   const { data: justificativasNaoProcessadas } = useQuery({
     queryKey: ["justificativasNaoProcessadas"],
@@ -108,31 +124,134 @@ export default function Agendamentos() {
         header: "Curso",
       }),
       colunasHelper.display({
-        cell: (props) => {
-          return (
-            <div className="flex justify-center gap-x-2">
-              <div className="relative h-5 w-5">
-                <ModalRemoverAgendamento agendamento={props.row.original} />
-              </div>
-              {!props.row.original.wasPresent && (
-                <>
-                  <div className="relative h-5 w-5">
-                    <ModalAdicionarJustificativa
-                      agendamento={props.row.original}
-                    />
-                  </div>
-                  {!props.row.original.absenceJustification && (
-                    <div className="relative h-5 w-5">
-                      <ModalConfirmarAgendamento
-                        agendamento={props.row.original}
-                      />
-                    </div>
-                  )}
-                </>
-              )}
+        cell: (props) => (
+          <div className="flex justify-center gap-x-2">
+            <div className="relative h-5 w-5">
+              <ModalGeral
+                textoTitulo="Remover agendamento"
+                elementoTrigger={
+                  <CustomTooltipWrapper
+                    elementoContent="Remover agendamento"
+                    elementoTrigger={
+                      <div className="relative h-5 w-5 cursor-pointer">
+                        <Icone.Deletar className="absolute inset-0 block h-full w-full" />
+                      </div>
+                    }
+                  />
+                }
+                tipoDeBotaoPrincipal="remover"
+                textoDescricao={[
+                  "Você está prestes a remover o agendamento a seguir",
+                ]}
+                elementoDescricao={
+                  <ul className="mt-2 list-disc pl-5">
+                    <li>
+                      ID: <strong>{props.row.original.id}</strong>
+                    </li>
+                    <li>
+                      Estudante:{" "}
+                      <strong>{props.row.original.student.name}</strong>
+                    </li>
+                    <li>
+                      Cardápio:{" "}
+                      <strong>{props.row.original.menu.description}</strong>
+                    </li>
+                    <li>
+                      Refeição e Data:{" "}
+                      <strong>
+                        {props.row.original.meal.description} (
+                        {DatasHelper.converterParaFormatoBrasileiro(
+                          props.row.original.date,
+                        )}
+                        )
+                      </strong>
+                    </li>
+                  </ul>
+                }
+                formulario={{
+                  action: removerAgendamento,
+                  queryKeysParaInvalidar: [["tabelaDeAgendamentos"]],
+                  substantivoParaMensagemDeRetorno: "agendamento",
+                  campos: [
+                    {
+                      type: "hidden",
+                      name: "id",
+                      value: props.row.original.id,
+                    },
+                  ],
+                }}
+              />
             </div>
-          );
-        },
+            {!props.row.original.wasPresent && (
+              <div className="relative h-5 w-5">
+                <ModalGeral
+                  textoTitulo="Confirmar agendamento"
+                  elementoTrigger={
+                    <CustomTooltipWrapper
+                      elementoContent="Confirmar agendamento"
+                      elementoTrigger={
+                        <div className="relative h-5 w-5 cursor-pointer">
+                          <Icone.Confirmar className="absolute inset-0 block h-full w-full" />
+                        </div>
+                      }
+                    />
+                  }
+                  tipoDeBotaoPrincipal="confirmar"
+                  textoDescricao={[
+                    "Você está prestes a confirmar o agendamento a seguir:",
+                  ]}
+                  elementoDescricao={
+                    <ul className="mt-2 list-disc pl-5">
+                      <li>
+                        ID: <strong>{props.row.original.id}</strong>
+                      </li>
+                      <li>
+                        Estudante:{" "}
+                        <strong>{props.row.original.student.name}</strong>
+                      </li>
+                      <li>
+                        Cardápio:{" "}
+                        <strong>{props.row.original.menu.description}</strong>
+                      </li>
+                      <li>
+                        Refeição e Data:{" "}
+                        <strong>
+                          {props.row.original.meal.description} (
+                          {DatasHelper.converterParaFormatoBrasileiro(
+                            props.row.original.date,
+                          )}
+                          )
+                        </strong>
+                      </li>
+                    </ul>
+                  }
+                  formulario={{
+                    action: confirmarAgendamento,
+                    queryKeysParaInvalidar: [["tabelaDeAgendamentos"]],
+                    substantivoParaMensagemDeRetorno: "agendamento",
+                    campos: [
+                      {
+                        type: "hidden",
+                        name: "date",
+                        value: props.row.original.menu.date,
+                      },
+                      {
+                        type: "hidden",
+                        name: "student_id",
+                        value: props.row.original.student_id,
+                      },
+                      {
+                        type: "hidden",
+                        name: "meal_id",
+                        value: props.row.original.meal.id,
+                      },
+                    ],
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        ),
         enableResizing: false,
         header: "Ações",
       }),
@@ -191,7 +310,58 @@ export default function Agendamentos() {
             <ModalJustificativasNaoProcessadas
               justificativas={justificativasNaoProcessadas}
             />
-            <ModalAdicionarAgendamento />
+            <ModalGeral
+              textoTitulo="Reservar para estudante"
+              elementoTrigger={
+                <BotaoDiv
+                  className="h-[36px] bg-azul-400 px-10 py-2 leading-tight"
+                  texto="Reservar para estudante"
+                  variante="adicionar"
+                />
+              }
+              textoDescricao={[
+                "Preencha os campos abaixo para reservar para estudante",
+              ]}
+              tipoDeBotaoPrincipal="confirmar"
+              formulario={{
+                action: criarAgendamento,
+                queryKeysParaInvalidar: [["tabelaDeAgendamentos"]],
+                substantivoParaMensagemDeRetorno: "agendamento",
+                campos: [
+                  {
+                    type: "number",
+                    name: "student_id",
+                    max: 20_000,
+                    min: 1,
+                    label: "Código de estudante",
+                    placeholder: "ex: 2153",
+                  },
+                  {
+                    type: "select",
+                    estaCarregando: isLoadingRefeicoes,
+                    label: "Refeição",
+                    name: "meal_id",
+                    opcoes: () =>
+                      nomesDasRefeicoes.map((refeicao) => ({
+                        texto: refeicao.description,
+                        valor: refeicao.id,
+                      })),
+                  },
+                  {
+                    type: "date",
+                    label: "Data do cardápio",
+                    max: DatasHelper.getDataNDiasDepois(
+                      DatasHelper.getDataDeHoje(),
+                      7,
+                    ),
+                    min: DatasHelper.getDataDeHoje(),
+                    name: "date",
+                    placeholder: `ex: ${DatasHelper.getDataDeHoje()}`,
+                    defaultValue: DatasHelper.getDataDeHoje(),
+                  },
+                ],
+              }}
+            />
           </div>
         </Secao>
         <Secao>

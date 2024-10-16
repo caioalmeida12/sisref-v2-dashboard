@@ -9,10 +9,16 @@ import { Secao } from "@/app/elementos/basicos/Secao";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
 import * as Form from "@radix-ui/react-form";
 import { createColumnHelper } from "@tanstack/react-table";
-import { buscarAgendamentos } from "@/app/actions/nutricionista";
+import {
+  buscarAgendamentos,
+  confirmarAgendamento,
+  removerAgendamento,
+} from "@/app/actions/nutricionista";
 import { useQuery } from "@tanstack/react-query";
-import { ModalConfirmarAgendamento } from "@/app/elementos/modulos/nutricionista/Agendamentos/ModalConfirmarAgendamento";
 import { Badge } from "@/app/elementos/basicos/Badge";
+import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
+import Icone from "@/app/elementos/basicos/Icone";
+import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
 
 export default function RecepcaoPage() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -41,22 +47,25 @@ export default function RecepcaoPage() {
 
   const colunas = useMemo(
     () => [
+      colunasHelper.accessor("id", {
+        cell: (props) => props.getValue(),
+        header: "ID",
+        meta: { filterVariant: "range" },
+      }),
       colunasHelper.accessor("student.id", {
-        id: "codigoOuMatricula",
         cell: (props) => props.getValue(),
         header: "Código",
-        meta: { filterVariant: "range" },
+      }),
+      colunasHelper.accessor("student.name", {
+        cell: (props) => <p className="text-left">{props.getValue()}</p>,
+        header: "Estudante",
+        size: 750,
       }),
       colunasHelper.accessor("meal.description", {
         cell: (props) => (
           <div className="whitespace-nowrap">{props.getValue()}</div>
         ),
         header: "Refeição",
-      }),
-      colunasHelper.accessor("student.name", {
-        cell: (props) => <p className="text-left">{props.getValue()}</p>,
-        header: "Estudante",
-        size: 750,
       }),
       colunasHelper.accessor("menu.description", {
         cell: (props) => (
@@ -88,12 +97,129 @@ export default function RecepcaoPage() {
       colunasHelper.display({
         cell: (props) => (
           <div className="flex justify-center gap-x-2">
-            {!props.row.original.wasPresent ? (
+            <div className="relative h-5 w-5">
+              <ModalGeral
+                textoTitulo="Remover agendamento"
+                elementoTrigger={
+                  <CustomTooltipWrapper
+                    elementoContent="Remover agendamento"
+                    elementoTrigger={
+                      <div className="relative h-5 w-5 cursor-pointer">
+                        <Icone.Deletar className="absolute inset-0 block h-full w-full" />
+                      </div>
+                    }
+                  />
+                }
+                tipoDeBotaoPrincipal="remover"
+                textoDescricao={[
+                  "Você está prestes a remover o agendamento a seguir",
+                ]}
+                elementoDescricao={
+                  <ul className="mt-2 list-disc pl-5">
+                    <li>
+                      ID: <strong>{props.row.original.id}</strong>
+                    </li>
+                    <li>
+                      Estudante:{" "}
+                      <strong>{props.row.original.student.name}</strong>
+                    </li>
+                    <li>
+                      Cardápio:{" "}
+                      <strong>{props.row.original.menu.description}</strong>
+                    </li>
+                    <li>
+                      Refeição e Data:{" "}
+                      <strong>
+                        {props.row.original.meal.description} (
+                        {DatasHelper.converterParaFormatoBrasileiro(
+                          props.row.original.date,
+                        )}
+                        )
+                      </strong>
+                    </li>
+                  </ul>
+                }
+                formulario={{
+                  action: removerAgendamento,
+                  queryKeysParaInvalidar: [["tabelaDeAgendamentos"]],
+                  substantivoParaMensagemDeRetorno: "agendamento",
+                  campos: [
+                    {
+                      type: "hidden",
+                      name: "id",
+                      value: props.row.original.id,
+                    },
+                  ],
+                }}
+              />
+            </div>
+            {!props.row.original.wasPresent && (
               <div className="relative h-5 w-5">
-                <ModalConfirmarAgendamento agendamento={props.row.original} />
+                <ModalGeral
+                  textoTitulo="Confirmar agendamento"
+                  elementoTrigger={
+                    <CustomTooltipWrapper
+                      elementoContent="Confirmar agendamento"
+                      elementoTrigger={
+                        <div className="relative h-5 w-5 cursor-pointer">
+                          <Icone.Confirmar className="absolute inset-0 block h-full w-full" />
+                        </div>
+                      }
+                    />
+                  }
+                  tipoDeBotaoPrincipal="confirmar"
+                  textoDescricao={[
+                    "Você está prestes a confirmar o agendamento a seguir:",
+                  ]}
+                  elementoDescricao={
+                    <ul className="mt-2 list-disc pl-5">
+                      <li>
+                        ID: <strong>{props.row.original.id}</strong>
+                      </li>
+                      <li>
+                        Estudante:{" "}
+                        <strong>{props.row.original.student.name}</strong>
+                      </li>
+                      <li>
+                        Cardápio:{" "}
+                        <strong>{props.row.original.menu.description}</strong>
+                      </li>
+                      <li>
+                        Refeição e Data:{" "}
+                        <strong>
+                          {props.row.original.meal.description} (
+                          {DatasHelper.converterParaFormatoBrasileiro(
+                            props.row.original.date,
+                          )}
+                          )
+                        </strong>
+                      </li>
+                    </ul>
+                  }
+                  formulario={{
+                    action: confirmarAgendamento,
+                    queryKeysParaInvalidar: [["tabelaDeAgendamentos"]],
+                    substantivoParaMensagemDeRetorno: "agendamento",
+                    campos: [
+                      {
+                        type: "hidden",
+                        name: "date",
+                        value: props.row.original.menu.date,
+                      },
+                      {
+                        type: "hidden",
+                        name: "student_id",
+                        value: props.row.original.student_id,
+                      },
+                      {
+                        type: "hidden",
+                        name: "meal_id",
+                        value: props.row.original.meal.id,
+                      },
+                    ],
+                  }}
+                />
               </div>
-            ) : (
-              <div className="relative h-5 w-5">OK</div>
             )}
           </div>
         ),
