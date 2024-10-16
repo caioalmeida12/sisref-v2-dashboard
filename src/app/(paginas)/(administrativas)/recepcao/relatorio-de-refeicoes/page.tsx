@@ -15,7 +15,7 @@ import { buscarRelatorioDeRefeicoes } from "@/app/actions/nutricionista";
 import { StatusDaRefeicao } from "@/app/elementos/basicos/StatusDaRefeicao";
 import { TRelatorioDeRefeicoes } from "@/app/interfaces/TRelatorioDeRefeicoes";
 
-export default function NutricionistaPage() {
+export default function Page() {
   const [pesquisa, setPesquisa] = useQueryStates(
     {
       dataInicial: parseAsString.withDefault(DatasHelper.getDataDeHoje()),

@@ -13,7 +13,7 @@ import { ModalRemoverRefeicao } from "@/app/elementos/modulos/nutricionista/Refe
 import { ModalEditarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalEditarRefeicao";
 import { buscarRefeicoes } from "@/app/actions/nutricionista";
 
-export default function NutricionistaPage() {
+export default function Page() {
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
     queryKey: ["tabelaDeRefeicoes"],
     queryFn: async () => {

@@ -18,7 +18,7 @@ import {
 } from "@/app/actions/administrador";
 import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
 
-export default function NutricionistaPage() {
+export default function Page() {
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
     queryKey: ["tabelaDeUsuarios"],
     queryFn: async () => {

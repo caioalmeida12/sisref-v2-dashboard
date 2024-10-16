@@ -19,7 +19,7 @@ import {
   buscarTabelaDeCardapios,
 } from "@/app/actions/nutricionista";
 
-export default function NutricionistaPage() {
+export default function Page() {
   const [pesquisa, setPesquisa] = useQueryStates(
     {
       dataInicial: parseAsString.withDefault(DatasHelper.getDataDeHoje()),

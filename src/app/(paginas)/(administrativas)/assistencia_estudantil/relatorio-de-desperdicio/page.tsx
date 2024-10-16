@@ -17,7 +17,7 @@ import { ModalAdicionarRelatorioDeDesperdicio } from "@/app/elementos/modulos/nu
 import { ModalRemoverRelatorioDeDesperdicio } from "@/app/elementos/modulos/nutricionista/RelatoriosDeDesperdicio/ModalRemoverRelatorioDeDesperdicio";
 import { ModalEditarRelatorioDeDesperdicio } from "@/app/elementos/modulos/nutricionista/RelatoriosDeDesperdicio/ModalEditarRelatorioDeDesperdicio";
 
-export default function NutricionistaPage() {
+export default function Page() {
   const [pesquisa, setPesquisa] = useQueryStates(
     {
       dataInicial: parseAsString.withDefault(DatasHelper.getDataDeHoje()),

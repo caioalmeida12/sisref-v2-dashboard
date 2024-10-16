@@ -18,7 +18,7 @@ import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapp
 import Icone from "@/app/elementos/basicos/Icone";
 import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
 
-export default function NutricionistaPage() {
+export default function Page() {
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
     queryKey: ["tabelaDeTurnos"],
     queryFn: async () => {
