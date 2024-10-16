@@ -124,21 +124,21 @@ export default function NutricionistaPage() {
               onSubmit={handleSubmit}
             >
               <Form.Field name="dataInicial" className="flex flex-col gap-y-2">
-                <Form.Label className="font-bold">Data Inicial</Form.Label>
+                <Form.Label className="font-bold">Data para busca</Form.Label>
                 <Form.Control
                   type="date"
                   className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
                   defaultValue={pesquisa.dataInicial}
                 />
               </Form.Field>
-              <Form.Field name="dataFinal" className="flex flex-col gap-y-2">
+              {/* <Form.Field name="dataFinal" className="flex flex-col gap-y-2">
                 <Form.Label className="font-bold">Data Final</Form.Label>
                 <Form.Control
                   type="date"
                   className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
                   defaultValue={pesquisa.dataFinal}
                 />
-              </Form.Field>
+              </Form.Field> */}
               <Botao
                 variante="adicionar"
                 texto="Buscar"
