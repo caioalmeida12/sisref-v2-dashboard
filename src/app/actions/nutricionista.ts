@@ -207,13 +207,8 @@ export const removerCardapio = async (
     return { sucesso: false, mensagem: "ID do cardápio não informado" };
 
   const resposta = await FetchHelper.delete<{ message: string }>({
-<<<<<<< HEAD
     rota: `/menu/${formData.get("menu_id")}`,
-    cookies: cookies(),
-=======
-    rota: `/menu/${menu_id}`,
     cookies: await cookies(),
->>>>>>> c99736e (feat(next/react): atualizacao para Next 15  RC2 e React 19)
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -429,13 +424,8 @@ export async function removerAgendamento(
     return { sucesso: false, mensagem: "ID da refeição não informado" };
 
   const resposta = await FetchHelper.delete<{ message: string }>({
-<<<<<<< HEAD
     rota: `/scheduling/${formData.get("id")}`,
-    cookies: cookies(),
-=======
-    rota: `/scheduling/${id}`,
     cookies: await cookies(),
->>>>>>> c99736e (feat(next/react): atualizacao para Next 15  RC2 e React 19)
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -464,17 +454,8 @@ export async function confirmarAgendamento(
 ): Promise<IRespostaDeAction<string>> {
   const resposta = await FetchHelper.post<unknown>({
     rota: "/confirm-meals",
-<<<<<<< HEAD
-    cookies: cookies(),
-    body: Object.fromEntries(formData),
-=======
     cookies: await cookies(),
-    body: {
-      student_id,
-      meal_id,
-      date,
-    },
->>>>>>> c99736e (feat(next/react): atualizacao para Next 15  RC2 e React 19)
+    body: Object.fromEntries(formData),
   });
 
   if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };

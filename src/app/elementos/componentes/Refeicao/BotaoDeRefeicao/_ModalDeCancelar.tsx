@@ -11,7 +11,7 @@ interface ModalProps {
 }
 
 export const _ModalDeCancelar: React.FC<ModalProps> = ({ meal_id, date }) => {
-  const refBotaoFechar = useRef(null);
+  const refBotaoFechar = useRef<any>(null);
 
   return (
     <Dialog.Root>
