@@ -11,10 +11,10 @@ name: ESLint
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   eslint:
@@ -31,19 +31,19 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
       - name: Install ESLint
         run: |
-          npm install eslint@8.57.0
-          npm install @microsoft/eslint-formatter-sarif@2.1.7
+          npm install eslint@8.57.0 --legacy-peer-deps
+          npm install @microsoft/eslint-formatter-sarif@2.1.7 --legacy-peer-deps
 
       - name: Run ESLint
         run: npm run lint-ci
-        continue-on-error: true 
+        continue-on-error: true
 
       - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v3
