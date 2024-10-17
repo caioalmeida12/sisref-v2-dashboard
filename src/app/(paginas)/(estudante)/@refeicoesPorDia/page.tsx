@@ -11,7 +11,6 @@ export default function RefeicoesPorDiaParallelPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const searchParams = use(props.searchParams!);
-  const params = use(props.params);
   return (
     <CustomQueryClientProvider>
       <RefeicoesPorDia

@@ -13,11 +13,8 @@ import {
 } from "@/app/interfaces/TRefeicao";
 import { Botao } from "../../basicos/Botao";
 import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta";
-import { cancelarRefeicao, reservarRefeicao } from "@/app/actions/estudante";
+import { reservarRefeicao } from "@/app/actions/estudante";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { ModalGeral } from "../../modulos/comuns/ModalGeral/ModalGeral";
-import { BotaoDiv } from "../../basicos/BotaoDiv";
-import { IRespostaDeAction } from "@/app/interfaces/IRespostaDeAction";
 import { ModalCancelarRefeicao } from "./ModalCancelarRefeicao";
 
 const elementoStatusRefeicaoPorTextoStatusRefeicao = {
@@ -104,8 +101,8 @@ const RefeicaoCurta = (props: TRefeicaoECardapio) => {
 };
 
 const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
-  if ("turno" in props) return <RefeicaoCurta {...props} />;
-  const [botaoDesativado, setBotaoDesativado] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_botaoDesativado, setBotaoDesativado] = useState(true);
   const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
 
   useEffect(() => {
@@ -140,6 +137,8 @@ const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
       atualizarMensagem(resposta);
     },
   });
+
+  if ("turno" in props) return <RefeicaoCurta {...props} />;
 
   const StatusRefeicao =
     elementoStatusRefeicaoPorTextoStatusRefeicao[pegarStatusDaRefeicao(props)];

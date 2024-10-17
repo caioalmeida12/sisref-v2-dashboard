@@ -9,7 +9,6 @@ export default function HistoricoDeRefeicoesParallelPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const searchParams = use(props.searchParams!);
-  const params = use(props.params);
   return (
     <CustomQueryClientProvider>
       <HistoricoDeRefeicoes
