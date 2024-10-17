@@ -17,6 +17,7 @@ import { TRefeicao, TRefeicaoECardapioSchema } from "../interfaces/TRefeicao";
 import { IRespostaPaginada } from "../interfaces/IRespostaPaginada";
 import { TRefeicaoDoHistoricoSchema } from "../interfaces/TRefeicaoDoHistorico";
 import { TBuscarRefeicoesAutorizadasSchema } from "../interfaces/TBuscarRefeicoesAutorizadas";
+import { IRespostaDeAction } from "../interfaces/IRespostaDeAction";
 
 /**
  * Busca as refeições disponíveis para o dia solicitado. Se não for passado nenhum parâmetro, a data atual será utilizada.
@@ -72,18 +73,19 @@ export const cancelarRefeicao = async ({
 }: {
   meal_id?: number;
   date?: string;
-}) => {
+}): Promise<IRespostaDeAction<string>> => {
   const resposta = await FetchHelper.put<unknown>({
-    rota: "/login",
+    rota: "/student/schedulings/cancel",
     cookies: await cookies(),
     body: { meal_id, date },
+    rotaParaRedirecionarCasoFalhe: null,
   });
 
   if (!resposta.sucesso) {
     return { sucesso: false, mensagem: resposta.message };
   }
 
-  return { sucesso: true, mensagem: "Reserva cancelada com sucesso" };
+  return { sucesso: true, resposta: ["Reserva cancelada com sucesso"] };
 };
 
 /**

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HorarioDaRefeicao } from "@elementos/basicos/HorarioDaRefeicao";
 import { NomeDaRefeicao } from "@elementos/basicos/NomeDaRefeicao";
 import { Secao } from "@elementos/basicos/Secao";
@@ -6,12 +6,19 @@ import { StatusDaRefeicao } from "@elementos/basicos/StatusDaRefeicao";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { pegarStatusDaRefeicao } from "@/app/lib/elementos/Refeicao";
 import Skeleton from "react-loading-skeleton";
-import { BotaoDeRefeicao } from "./BotaoDeRefeicao";
 import {
   TCardapio,
   TRefeicao,
   TRefeicaoECardapio,
 } from "@/app/interfaces/TRefeicao";
+import { Botao } from "../../basicos/Botao";
+import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta";
+import { cancelarRefeicao, reservarRefeicao } from "@/app/actions/estudante";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { ModalGeral } from "../../modulos/comuns/ModalGeral/ModalGeral";
+import { BotaoDiv } from "../../basicos/BotaoDiv";
+import { IRespostaDeAction } from "@/app/interfaces/IRespostaDeAction";
+import { ModalCancelarRefeicao } from "./ModalCancelarRefeicao";
 
 const elementoStatusRefeicaoPorTextoStatusRefeicao = {
   disponivel: (
@@ -98,6 +105,41 @@ const RefeicaoCurta = (props: TRefeicaoECardapio) => {
 
 const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
   if ("turno" in props) return <RefeicaoCurta {...props} />;
+  const [botaoDesativado, setBotaoDesativado] = useState(true);
+  const { atualizarMensagem, mensagemDeRespostaRef } = useMensagemDeResposta();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setBotaoDesativado(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const queryClient = useQueryClient();
+
+  const { mutate: reservar } = useMutation({
+    mutationFn: () =>
+      reservarRefeicao({ meal_id: props.meal.id, date: props.menu.date }),
+    mutationKey: ["reservarRefeicao", props.meal.id, props.menu.date],
+    onMutate: () => {
+      atualizarMensagem({ mensagem: "Reservando..." });
+    },
+    onError: (error) => {
+      atualizarMensagem({ mensagem: error.message, sucesso: false });
+    },
+    onSuccess: (resposta) => {
+      queryClient.invalidateQueries({
+        queryKey: ["refeicoesPorDia"],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["historicoDeRefeicoes"],
+      });
+
+      atualizarMensagem(resposta);
+    },
+  });
 
   const StatusRefeicao =
     elementoStatusRefeicaoPorTextoStatusRefeicao[pegarStatusDaRefeicao(props)];
@@ -130,18 +172,17 @@ const RefeicaoLonga = (props: TRefeicaoECardapio, comBotao: boolean) => {
         )}
       </p>
       {comBotao && textoStatus === "disponivel" && (
-        <div className="mt-2">
-          <BotaoDeRefeicao.Reservar
-            meal_id={props.meal.id}
-            date={props.menu.date}
+        <div className="mt-2 flex flex-col gap-y-2">
+          <div className="hidden" ref={mensagemDeRespostaRef}></div>
+          <Botao
+            texto="Reservar"
+            variante="adicionar"
+            onClick={() => reservar()}
           />
         </div>
       )}
       {comBotao && textoStatus === "reservado" && (
-        <BotaoDeRefeicao.BotaoDeAbrir
-          meal_id={props.meal.id}
-          date={props.menu.date}
-        />
+        <ModalCancelarRefeicao date={props.menu.date} meal_id={props.meal.id} />
       )}
     </Secao>
   );
