@@ -73,11 +73,11 @@ export const requerAutorizacaoMiddleware = async (req: NextRequest) => {
   if (rotasQueNaoRequeremAutenticacao.includes(pathname))
     return NextResponse.next();
 
-  const validado = validarTokenDosCookies();
+  const validado = await validarTokenDosCookies();
   // Se a verificação do token falhar, redireciona para a página de login
   if (!validado.sub) return redirecionarViaMiddleware();
 
-  const tipoDeUsuario = cookies().get("classification")?.value;
+  const tipoDeUsuario = (await cookies()).get("classification")?.value;
 
   // Se não houver classificação, redireciona para a página de login
   if (!tipoDeUsuario) return redirecionarViaMiddleware();

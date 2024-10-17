@@ -31,7 +31,7 @@ export async function buscarRefeicoesPorDia({
 }) {
   const resposta = await FetchHelper.get<TRefeicao>({
     rota: `/all/menus-today?date=${data}`,
-    cookies: cookies(),
+    cookies: await cookies(),
   });
 
   if (!resposta.sucesso) {
@@ -75,7 +75,7 @@ export const cancelarRefeicao = async ({
 }) => {
   const resposta = await FetchHelper.put<unknown>({
     rota: "/login",
-    cookies: cookies(),
+    cookies: await cookies(),
     body: { meal_id, date },
   });
 
@@ -94,7 +94,7 @@ export const cancelarRefeicao = async ({
 export async function buscarRefeicoesAutorizadas() {
   const resposta = await FetchHelper.get<unknown>({
     rota: `/student/schedulings/allows-meal-by-day`,
-    cookies: cookies(),
+    cookies: await cookies(),
   });
 
   if (!resposta.sucesso)
@@ -127,7 +127,7 @@ export const buscarTickets = async (tipo: keyof typeof urlPorTipoDeTicket) => {
 
   const resposta = await FetchHelper.get<IRespostaPaginada<unknown>>({
     rota: API_URL,
-    cookies: cookies(),
+    cookies: await cookies(),
   });
 
   if (!resposta.sucesso) {
@@ -149,7 +149,7 @@ export const buscarTickets = async (tipo: keyof typeof urlPorTipoDeTicket) => {
 export const buscarTicketsSemJustificativa = async () => {
   const resposta = await FetchHelper.get<TRefeicao>({
     rota: "/student/schedulings/not-used-without-justification",
-    cookies: cookies(),
+    cookies: await cookies(),
   });
 
   if (!resposta.sucesso) {
@@ -179,7 +179,7 @@ export const reservarRefeicao = async ({
 }) => {
   const resposta = await FetchHelper.post<unknown>({
     rota: "/student/schedulings/new",
-    cookies: cookies(),
+    cookies: await cookies(),
     body: { meal_id, date },
   });
 
@@ -217,12 +217,12 @@ export const justificarRefeicao = async ({
     return { sucesso: false, mensagem: "Justificativa inválida" };
   }
 
-  const auth = cookies().get("authorization")?.value;
+  const auth = (await cookies()).get("authorization")?.value;
   if (!auth) return redirecionarViaAction();
 
   const resposta = await FetchHelper.put<TRefeicao>({
     rota: `/student/schedulings/student-justification/${ticket_id}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     body: { studentJustification: justificativa.label },
   });
 
@@ -244,7 +244,7 @@ export const buscarRelatorioDeDesperdicio = async ({
 }) => {
   const resposta = await FetchHelper.get<IRelatorioDeDesperdicio>({
     rota: `/report/list-waste?date=${data}`,
-    cookies: cookies(),
+    cookies: await cookies(),
   });
 
   if (!resposta.sucesso) {
@@ -267,7 +267,7 @@ export const buscarEstudante = async (
 ): Promise<TEstudanteComCurso> => {
   const resposta = await FetchHelper.get<TEstudanteComCurso>({
     rota: `/all/show-student/${sub}`,
-    cookies: cookies(),
+    cookies: await cookies(),
   });
 
   if (!resposta.sucesso) {

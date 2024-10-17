@@ -8,7 +8,7 @@ import { TRefeicao } from "@/app/interfaces/TRefeicao";
 export default async function Home() {
   const ticketsSemJustificativa = await FetchHelper.get<TRefeicao>({
     rota: "/student/schedulings/not-used-without-justification",
-    cookies: cookies(),
+    cookies: await cookies(),
   });
 
   return (

@@ -16,7 +16,7 @@ import { IInformacoesDeLogin } from "../lib/middlewares/IInformacoesDeLogin";
 export async function login(formData: FormData) {
   const resposta = await FetchHelper.post<IInformacoesDeLogin>({
     rota: "/login",
-    cookies: cookies(),
+    cookies: await cookies(),
     body: Object.fromEntries(formData),
   });
 
@@ -31,8 +31,8 @@ export async function login(formData: FormData) {
     ...(resposta.resposta[0] as any),
   };
 
-  cookies().set("authorization", `Bearer ${informacoesLogin.access_token}`);
-  cookies().set("classification", informacoesLogin.classification);
+  (await cookies()).set("authorization", `Bearer ${informacoesLogin.access_token}`);
+  (await cookies()).set("classification", informacoesLogin.classification);
 
   const redirecionar = {
     ADMIN: "/administrador",

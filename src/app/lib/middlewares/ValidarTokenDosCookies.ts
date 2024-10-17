@@ -7,8 +7,8 @@ import { redirecionarViaMiddleware } from "./RedirecionarViaMiddleware";
  * Valida o token do usuário a partir do cookie de autorização
  * @returns ITokenDecodificado
  */
-export const validarTokenDosCookies = (): ITokenDecodificado => {
-  const bearer = cookies().get("authorization");
+export const validarTokenDosCookies = async (): Promise<ITokenDecodificado> => {
+  const bearer = (await cookies()).get("authorization");
   if (!bearer) return redirecionarViaMiddleware();
 
   const token = bearer.value.split(" ")[1];

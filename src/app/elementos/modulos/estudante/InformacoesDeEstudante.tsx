@@ -181,7 +181,7 @@ export const InformacoesDeEstudante = async ({
 }: {
   versaoMobileCompleta?: boolean;
 }) => {
-  const validado = validarTokenDosCookies();
+  const validado = await validarTokenDosCookies();
 
   const informacoesDeEstudante = await buscarEstudante(validado.sub);
 

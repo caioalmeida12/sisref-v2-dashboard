@@ -21,7 +21,7 @@ export const Sidebar = async () => {
 
   const campus = await buscarCampus(String(usuario.campus_id));
 
-  const tipo_de_usuario = cookies().get("classification")
+  const tipo_de_usuario = (await cookies()).get("classification")
     ?.value as IInformacoesDeLogin["classification"];
 
   const links = linksDaSidebarPorTipoDeUsuario[tipo_de_usuario];

@@ -10,7 +10,7 @@ import { IRespostaPaginada } from "../interfaces/IRespostaPaginada";
 export const buscarCampus = async (id: string) => {
   const resposta = await FetchHelper.get<TCampus>({
     rota: `/all/campus/`,
-    cookies: cookies(),
+    cookies: await cookies(),
   });
 
   if (!resposta.sucesso)
@@ -29,7 +29,7 @@ export const buscarCampus = async (id: string) => {
 export const buscarCampi = async (): Promise<IRespostaDeAction<TCampus>> => {
   const resposta = await FetchHelper.get<IRespostaPaginada<TCampus>>({
     rota: `/campus/`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null
   });
 

@@ -31,7 +31,7 @@ import { IRespostaDeAction } from "../interfaces/IRespostaDeAction";
 export async function criarRefeição(formData: FormData) {
   const resposta = await FetchHelper.post<unknown>({
     rota: "/meal",
-    cookies: cookies(),
+    cookies: await cookies(),
     body: {
       description: formData.get("description"),
       date: formData.get("date"),
@@ -95,7 +95,7 @@ export async function criarCardapio(
 ): Promise<IRespostaDeAction<string>> {
   const resposta = await FetchHelper.post<unknown>({
     rota: "/menu",
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: {
       description: formData.get("description"),
@@ -151,7 +151,7 @@ export async function editarCardapio(
 ): Promise<IRespostaDeAction<string>> {
   const resposta = await FetchHelper.put<unknown>({
     rota: `/menu/${formData.get("menu_id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: {
       description: formData.get("description"),
@@ -207,8 +207,13 @@ export const removerCardapio = async (
     return { sucesso: false, mensagem: "ID do cardápio não informado" };
 
   const resposta = await FetchHelper.delete<{ message: string }>({
+<<<<<<< HEAD
     rota: `/menu/${formData.get("menu_id")}`,
     cookies: cookies(),
+=======
+    rota: `/menu/${menu_id}`,
+    cookies: await cookies(),
+>>>>>>> c99736e (feat(next/react): atualizacao para Next 15  RC2 e React 19)
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -276,7 +281,7 @@ export async function buscarTabelaDeCardapios({
     resposta: any[];
   }>({
     rota: `/menu/all-by-date?campus_id=${campus_id}&date=${data}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -321,7 +326,7 @@ export async function buscarTabelaDeCardapios({
 export async function buscarRefeicoes(): Promise<IRespostaDeAction<TRefeicao>> {
   const resposta = await FetchHelper.get<TRefeicao[]>({
     rota: "/meal/all",
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -360,7 +365,7 @@ export async function deprecated_criarRelatorioDeDesperdicio(
 ) {
   const resposta = await FetchHelper.post<unknown>({
     rota: "/report/add-waste-report",
-    cookies: cookies(),
+    cookies: await cookies(),
     body: {
       date: formData.get("date"),
       content: formData.get("content"),
@@ -390,7 +395,7 @@ export async function buscarAgendamentos({
 }): Promise<IRespostaDeAction<TAgendamento>> {
   const resposta = await FetchHelper.get<IRespostaPaginada<TAgendamento>>({
     rota: `/scheduling/list-by-date?page=1&date=${data_inicial}&final_date=${data_final ?? data_inicial}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -424,8 +429,13 @@ export async function removerAgendamento(
     return { sucesso: false, mensagem: "ID da refeição não informado" };
 
   const resposta = await FetchHelper.delete<{ message: string }>({
+<<<<<<< HEAD
     rota: `/scheduling/${formData.get("id")}`,
     cookies: cookies(),
+=======
+    rota: `/scheduling/${id}`,
+    cookies: await cookies(),
+>>>>>>> c99736e (feat(next/react): atualizacao para Next 15  RC2 e React 19)
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -454,8 +464,17 @@ export async function confirmarAgendamento(
 ): Promise<IRespostaDeAction<string>> {
   const resposta = await FetchHelper.post<unknown>({
     rota: "/confirm-meals",
+<<<<<<< HEAD
     cookies: cookies(),
     body: Object.fromEntries(formData),
+=======
+    cookies: await cookies(),
+    body: {
+      student_id,
+      meal_id,
+      date,
+    },
+>>>>>>> c99736e (feat(next/react): atualizacao para Next 15  RC2 e React 19)
   });
 
   if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
@@ -474,7 +493,7 @@ export async function criarAgendamento(
 ): Promise<IRespostaDeAction<string>> {
   const resposta = await FetchHelper.post<TAgendamento>({
     rota: "/scheduling",
-    cookies: cookies(),
+    cookies: await cookies(),
     body: {
       student_id: formData.get("student_id"),
       meal_id: formData.get("meal_id"),
@@ -498,7 +517,7 @@ export async function removerRefeicao({ id }: { id?: number }) {
 
   const resposta = await FetchHelper.delete<{ message: string }>({
     rota: `/meal/${id}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -523,7 +542,7 @@ export async function removerRefeicao({ id }: { id?: number }) {
 export async function criarRefeicao(formData: FormData) {
   const resposta = await FetchHelper.post<TRefeicao>({
     rota: "/meal",
-    cookies: cookies(),
+    cookies: await cookies(),
     body: {
       description: formData.get("description"),
       timeStart: formData.get("timeStart"),
@@ -548,7 +567,7 @@ export async function criarRefeicao(formData: FormData) {
 export async function editarRefeicao(formData: FormData) {
   const resposta = await FetchHelper.put<unknown>({
     rota: `/meal/${formData.get("meal_id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     body: {
       description: formData.get("description"),
       timeStart: formData.get("timeStart"),
@@ -592,7 +611,7 @@ export async function buscarRelatorioDeRefeicoes({
     IRespostaPaginada<TRelatorioDeRefeicoes>
   >({
     rota: `/report/list-scheduling?start_date=${data_inicial}&end_date=${data_final}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -629,7 +648,7 @@ export async function buscarRelatorioDeDesperdicio({
 
   const resposta = await FetchHelper.get<IRelatorioDeDesperdicio>({
     rota: `/food-waste?start_date=${data_inicial}&end_date=${data_final}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -652,7 +671,7 @@ export async function buscarRelatorioDeDesperdicio({
 export async function criarRelatorioDeDesperdicio(formData: FormData) {
   const resposta = await FetchHelper.post<unknown>({
     rota: "/food-waste",
-    cookies: cookies(),
+    cookies: await cookies(),
     body: {
       total_food_waste: formData.get("total_food_waste"),
       menu_id: formData.get("menu_id"),
@@ -683,7 +702,7 @@ export async function removerRelatorioDeDesperdicio({ id }: { id?: number }) {
 
   const resposta = await FetchHelper.delete<{ message: string }>({
     rota: `/food-waste/${id}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -708,7 +727,7 @@ export async function removerRelatorioDeDesperdicio({ id }: { id?: number }) {
 export async function editarRelatorioDeDesperdicio(formData: FormData) {
   const resposta = await FetchHelper.put<unknown>({
     rota: `/food-waste/${formData.get("id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     body: {
       total_food_waste: formData.get("total_food_waste"),
       menu_id: formData.get("menu_id"),

@@ -33,7 +33,7 @@ const buscarTickets = async (
 
   const resposta = await FetchHelper.get<IRespostaPaginada<unknown>>({
     rota: API_URL,
-    cookies: cookies(),
+    cookies: await cookies(),
   });
 
   if (!resposta.sucesso) {

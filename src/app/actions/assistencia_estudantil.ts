@@ -25,7 +25,7 @@ export async function buscarJustificativasNaoProcessadas(): Promise<
 > {
   const resposta = await FetchHelper.get({
     rota: "/scheduling/unprocessed-justifications",
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -49,7 +49,7 @@ export async function buscarJustificativasNaoProcessadas(): Promise<
 export async function marcarJustificativaComoProcessada(id: number) {
   const resposta = await FetchHelper.put({
     rota: `/scheduling/processed-justifications/${id}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: {},
   });
@@ -70,7 +70,7 @@ export async function justificarAusencia(
 ): Promise<IRespostaDeAction<any>> {
   const resposta = await FetchHelper.post({
     rota: `/scheduling/justification/${id}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: {
       absenceJustification,
@@ -92,7 +92,7 @@ export const buscarEstudantes = async (): Promise<
     IRespostaPaginada<TEstudanteComCursoTurnoEUsuario>
   >({
     rota: `/student/`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -115,7 +115,7 @@ export const criarEstudante = async (
 ): Promise<IRespostaDeAction<unknown>> => {
   const resposta = await FetchHelper.post({
     rota: "/student/",
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: Object.fromEntries(formData),
   });
@@ -133,7 +133,7 @@ export const criarEstudante = async (
 export const buscarCursos = async (): Promise<IRespostaDeAction<TCurso>> => {
   const resposta = await FetchHelper.get<IRespostaPaginada<TCurso>>({
     rota: "/course/",
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -154,7 +154,7 @@ export const buscarCursos = async (): Promise<IRespostaDeAction<TCurso>> => {
 export const buscarTurnos = async (): Promise<IRespostaDeAction<TTurno>> => {
   const resposta = await FetchHelper.get<IRespostaPaginada<TTurno>>({
     rota: "/shift/",
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -178,7 +178,7 @@ export const editarEstudante = async (
 ): Promise<IRespostaDeAction<unknown>> => {
   const resposta = await FetchHelper.put({
     rota: `/student/${formData.get("id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: Object.fromEntries(formData),
   });
@@ -206,7 +206,7 @@ export const removerEstudante = async ({
 
   const resposta = await FetchHelper.delete<{ message: string }>({
     rota: `/student/${student_id}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -232,7 +232,7 @@ export const atualizarVencimentosEmMassa = async (
 ): Promise<IRespostaDeAction<string>> => {
   const resposta = await FetchHelper.put<{ message: string }>({
     rota: `/student/massUpdate/`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: Object.fromEntries(formData),
   });
@@ -250,7 +250,7 @@ export const buscarRepublicas = async (): Promise<
 > => {
   const resposta = await FetchHelper.get<IRespostaPaginada<TRepublica>>({
     rota: "/republic",
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -273,7 +273,7 @@ export const criarRepublica = async (
 ): Promise<IRespostaDeAction<unknown>> => {
   const resposta = await FetchHelper.post({
     rota: "/republic/",
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: Object.fromEntries(formData),
   });
@@ -298,7 +298,7 @@ export const removerRepublica = async (formData: FormData): Promise<IRespostaDeA
 
   const resposta = await FetchHelper.delete<{ message: string }>({
     rota: `/republic/${formData.get("id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -324,7 +324,7 @@ export const editarRepublica = async (
 ): Promise<IRespostaDeAction<unknown>> => {
   const resposta = await FetchHelper.put({
     rota: `/republic/${formData.get("id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: Object.fromEntries(formData),
   });
@@ -348,7 +348,7 @@ export const removerCurso = async (formData: FormData): Promise<IRespostaDeActio
 
   const resposta = await FetchHelper.delete<{ message: string }>({
     rota: `/course/${formData.get("id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -374,7 +374,7 @@ export const editarCurso = async (
 ): Promise<IRespostaDeAction<unknown>> => {
   const resposta = await FetchHelper.put({
     rota: `/course/${formData.get("id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: Object.fromEntries(formData),
   });
@@ -394,7 +394,7 @@ export const criarCurso = async (
 ): Promise<IRespostaDeAction<unknown>> => {
   const resposta = await FetchHelper.post({
     rota: "/course/",
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: Object.fromEntries(formData),
   });
@@ -418,7 +418,7 @@ export const removerTurno = async (formData: FormData): Promise<IRespostaDeActio
 
   const resposta = await FetchHelper.delete<{ message: string }>({
     rota: `/shift/${formData.get("id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -443,7 +443,7 @@ export const criarTurno = async (
 ): Promise<IRespostaDeAction<unknown>> => {
   const resposta = await FetchHelper.post({
     rota: "/shift/",
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: Object.fromEntries(formData),
   });
@@ -464,7 +464,7 @@ export const editarTurno = async (
 ): Promise<IRespostaDeAction<unknown>> => {
   const resposta = await FetchHelper.put({
     rota: `/shift/${formData.get("id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: Object.fromEntries(formData),
   });

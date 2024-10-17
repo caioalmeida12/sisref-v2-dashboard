@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,12 +23,29 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@/components/*": ["./src/app/elementos/componentes/*"],
-      "@elementos/*": ["./src/app/elementos/*"],
-      "@lib/*": ["./src/app/lib/*"],
+      "@/*": [
+        "./src/*"
+      ],
+      "@/components/*": [
+        "./src/app/elementos/componentes/*"
+      ],
+      "@elementos/*": [
+        "./src/app/elementos/*"
+      ],
+      "@lib/*": [
+        "./src/app/lib/*"
+      ]
     },
+    "target": "ES2017"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(paginas)/(estudante)/layout.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/(paginas)/(estudante)/layout.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

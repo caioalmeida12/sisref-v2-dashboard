@@ -14,7 +14,7 @@ export const buscarUsuarios = async (): Promise<
 > => {
   const resposta = await FetchHelper.get<IRespostaPaginada<TUsuario>>({
     rota: "/user/",
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -43,7 +43,7 @@ export const removerUsuario = async (
 
   const resposta = await FetchHelper.delete<{ message: string }>({
     rota: `/user/${formData.get("id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -68,7 +68,7 @@ export const editarUsuario = async (
 ): Promise<IRespostaDeAction<unknown>> => {
   const resposta = await FetchHelper.put({
     rota: `/user/${formData.get("id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: Object.fromEntries(formData),
   });
@@ -88,7 +88,7 @@ export const criarCampus = async (
 ): Promise<IRespostaDeAction<unknown>> => {
   const resposta = await FetchHelper.post({
     rota: "/campus/",
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: Object.fromEntries(formData),
   });
@@ -111,7 +111,7 @@ export const editarCampus = async (
 ): Promise<IRespostaDeAction<unknown>> => {
   const resposta = await FetchHelper.put({
     rota: `/campus/${formData.get("id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: Object.fromEntries(formData),
   });
@@ -137,7 +137,7 @@ export const removerCampus = async (
 
   const resposta = await FetchHelper.delete<{ message: string }>({
     rota: `/campus/${formData.get("id")}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 
@@ -162,7 +162,7 @@ export const registrarUsuario = async (
 ): Promise<IRespostaDeAction<unknown>> => {
   const resposta = await FetchHelper.post({
     rota: "/register/",
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
     body: Object.fromEntries(formData),
   });

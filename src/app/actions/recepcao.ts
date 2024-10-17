@@ -65,7 +65,7 @@ export async function buscarTabelaDeCardapios({
     resposta: any[];
   }>({
     rota: `/all/menus-by-date?date=${data}`,
-    cookies: cookies(),
+    cookies: await cookies(),
     rotaParaRedirecionarCasoFalhe: null,
   });
 

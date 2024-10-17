@@ -13,7 +13,7 @@ export const requerAutenticacaoMiddleware = async (req: NextRequest) => {
   if (rotasQueNaoRequeremAutenticacao.includes(pathname))
     return NextResponse.next();
 
-  const validado = validarTokenDosCookies();
+  const validado = await validarTokenDosCookies();
 
   try {
     const fetchAuth = await fetch(
