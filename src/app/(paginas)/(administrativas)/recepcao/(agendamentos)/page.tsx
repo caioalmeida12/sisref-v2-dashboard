@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { parseAsString, useQueryStates } from "nuqs";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { Botao } from "@/app/elementos/basicos/Botao";
@@ -11,6 +11,7 @@ import * as Form from "@radix-ui/react-form";
 import { createColumnHelper } from "@tanstack/react-table";
 import {
   buscarAgendamentos,
+  buscarRefeicoes,
   confirmarAgendamento,
   removerAgendamento,
 } from "@/app/actions/nutricionista";
@@ -19,17 +20,21 @@ import { Badge } from "@/app/elementos/basicos/Badge";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 import Icone from "@/app/elementos/basicos/Icone";
 import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
+import { SelectGeral } from "@/app/elementos/componentes/SelectGeral";
 
 export default function RecepcaoPage() {
   const [pesquisa, setPesquisa] = useQueryStates(
     {
       data: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
       codigoOuMatricula: parseAsString.withDefault(""),
+      refeicao: parseAsString.withDefault(""),
     },
     {
       clearOnDefault: true,
     },
   );
+
+  const inputCodigoOuMatriculaRef = useRef<HTMLInputElement>(null);
 
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
     queryKey: ["tabelaDeAgendamentos", pesquisa.data],
@@ -43,6 +48,16 @@ export default function RecepcaoPage() {
     initialData: [],
   });
 
+  const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
+    initialData: [],
+    queryKey: ["tabelaDeRefeicoes"],
+    queryFn: async () => {
+      const resposta = await buscarRefeicoes();
+
+      return resposta.sucesso ? resposta.resposta : [];
+    },
+  });
+
   const colunasHelper = createColumnHelper<(typeof dadosDaTabela)[number]>();
 
   const colunas = useMemo(
@@ -53,6 +68,7 @@ export default function RecepcaoPage() {
         meta: { filterVariant: "range" },
       }),
       colunasHelper.accessor("student.id", {
+        id: "codigoOuMatricula",
         cell: (props) => props.getValue(),
         header: "Código",
       }),
@@ -62,6 +78,7 @@ export default function RecepcaoPage() {
         size: 750,
       }),
       colunasHelper.accessor("meal.description", {
+        id: "refeicao",
         cell: (props) => (
           <div className="whitespace-nowrap">{props.getValue()}</div>
         ),
@@ -156,6 +173,13 @@ export default function RecepcaoPage() {
             {!props.row.original.wasPresent && (
               <div className="relative h-5 w-5">
                 <ModalGeral
+                  abertoPorPadrao={
+                    props.row.original.student.id ==
+                      Number(pesquisa.codigoOuMatricula) &&
+                    props.row.original.meal.description ==
+                      decodeURIComponent(pesquisa.refeicao)
+                  }
+                  desfocarBotaoPrincipal={true}
                   textoTitulo="Confirmar agendamento"
                   elementoTrigger={
                     <CustomTooltipWrapper
@@ -227,7 +251,7 @@ export default function RecepcaoPage() {
         header: "Ações",
       }),
     ],
-    [],
+    [pesquisa.refeicao, pesquisa.codigoOuMatricula],
   );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -235,18 +259,35 @@ export default function RecepcaoPage() {
     const formData = new FormData(event.currentTarget);
     const data = formData.get("data") as string;
     const codigoOuMatricula = formData.get("codigoOuMatricula") as string;
+    const refeicao = formData.get("refeicao") as string;
 
     setPesquisa({
       data,
       codigoOuMatricula,
+      refeicao: refeicao == "todas" ? "" : refeicao,
     });
+
+    const agendamentoFoiEncontrado = dadosDaTabela.filter((agendamento) => {
+      return (
+        agendamento.student.id == Number(pesquisa.codigoOuMatricula) &&
+        agendamento.meal.description == decodeURIComponent(pesquisa.refeicao)
+      );
+    });
+
+    if (!agendamentoFoiEncontrado.length) {
+      inputCodigoOuMatriculaRef.current?.focus();
+      inputCodigoOuMatriculaRef.current?.select();
+    }
   };
 
   const handleReset = () => {
     setPesquisa({
       data: pesquisa.data,
       codigoOuMatricula: "",
+      refeicao: "",
     });
+
+    inputCodigoOuMatriculaRef.current?.focus();
   };
 
   return (
@@ -271,6 +312,7 @@ export default function RecepcaoPage() {
                     type="number"
                     className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
                     placeholder="Ex: 2153"
+                    ref={inputCodigoOuMatriculaRef}
                     defaultValue={
                       pesquisa.codigoOuMatricula.length
                         ? pesquisa.codigoOuMatricula
@@ -295,6 +337,25 @@ export default function RecepcaoPage() {
                   defaultValue={pesquisa.data}
                 />
               </Form.Field>
+              <SelectGeral
+                label="Refeição"
+                name="refeicao"
+                opcoes={() => {
+                  const opcoes = nomesDasRefeicoes.map((refeicao) => ({
+                    texto: refeicao.description,
+                    valor: encodeURIComponent(refeicao.description),
+                  }));
+
+                  if (opcoes.length)
+                    opcoes.push({
+                      texto: "Todas as refeições",
+                      valor: "todas",
+                    });
+
+                  return opcoes;
+                }}
+                estaCarregando={isLoadingRefeicoes}
+              />
               <Botao
                 variante="adicionar"
                 texto="Buscar"
@@ -318,7 +379,11 @@ export default function RecepcaoPage() {
             filtros={[
               {
                 id: "codigoOuMatricula",
-                value: [pesquisa.codigoOuMatricula, pesquisa.codigoOuMatricula],
+                value: [pesquisa.codigoOuMatricula],
+              },
+              {
+                id: "refeicao",
+                value: [decodeURIComponent(pesquisa.refeicao)],
               },
             ]}
           />
