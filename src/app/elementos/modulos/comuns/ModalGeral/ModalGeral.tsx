@@ -77,6 +77,8 @@ interface IModalGeralProps {
   textoDescricao?: string[];
   elementoDescricao?: React.ReactNode;
   tipoDeBotaoPrincipal: "confirmar" | "remover";
+  abertoPorPadrao?: boolean;
+  desfocarBotaoPrincipal?: boolean;
   formulario: {
     action: (arg0: FormData) => Promise<IRespostaDeAction<unknown>>;
     queryKeysParaInvalidar: any[][];
@@ -93,6 +95,8 @@ export const ModalGeral = ({
   textoDescricao,
   elementoDescricao,
   tipoDeBotaoPrincipal,
+  abertoPorPadrao,
+  desfocarBotaoPrincipal,
 }: IModalGeralProps) => {
   const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
   const queryClient = useQueryClient();
@@ -124,7 +128,7 @@ export const ModalGeral = ({
   });
 
   return (
-    <Dialog.Root>
+    <Dialog.Root defaultOpen={abertoPorPadrao}>
       <Dialog.Trigger className="contents">{elementoTrigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-preto-400/25 data-[state=open]:animate-overlayShow" />
@@ -350,6 +354,15 @@ export const ModalGeral = ({
                 className="hidden text-center"
                 ref={mensagemDeRespostaRef}
               ></div>
+              {/* O primeiro botão submit de um formulário sempre é focado, por padrão;
+               Para desfocar o botão principal, basta que haja outro botão antes dele. */}
+              {desfocarBotaoPrincipal ? (
+                <button
+                  type="submit"
+                  className="fixed"
+                  onKeyDown={(e) => e.preventDefault()}
+                ></button>
+              ) : null}
               <Form.Submit className="contents">
                 {tipoDeBotaoPrincipal == "confirmar" ? (
                   <BotaoDiv
