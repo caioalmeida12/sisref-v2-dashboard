@@ -97,7 +97,7 @@ export const linksDaSidebarPorTipoDeUsuario: Record<
       icone: "GarfoEFaca",
     },
     {
-      titulo: "Desperdício",
+      titulo: "Relatório de desperdício",
       rota: "/recepcao/relatorio-de-desperdicio",
       icone: "Lixeira",
     },
