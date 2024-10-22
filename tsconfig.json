@@ -26,7 +26,7 @@
       "@/*": [
         "./src/*"
       ],
-      "@/components/*": [
+      "@/componentes/*": [
         "./src/app/elementos/componentes/*"
       ],
       "@elementos/*": [
