@@ -105,7 +105,12 @@ export default function Page() {
                       <strong>{props.row.original.menu.description}</strong>
                     </li>
                     <li>
-                      Data: <strong>{props.row.original.menu.date}</strong>
+                      Data:{" "}
+                      <strong>
+                        {DatasHelper.converterParaFormatoBrasileiro(
+                          props.row.original.menu.date,
+                        )}
+                      </strong>
                     </li>
                     <li>
                       ID do Menu: <strong>{props.row.original.menu.id}</strong>
