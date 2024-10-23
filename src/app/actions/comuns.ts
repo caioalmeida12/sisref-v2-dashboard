@@ -5,6 +5,7 @@ import { redirecionarViaAction } from "../lib/actions/RedirecionarViaAction";
 import { redirect } from "next/navigation";
 import { FetchHelper } from "../lib/actions/FetchHelper";
 import { IInformacoesDeLogin } from "../lib/middlewares/IInformacoesDeLogin";
+import { IRespostaDeAction } from "../interfaces/IRespostaDeAction";
 
 /**
  * Realiza uma chamada assíncrona para a API de login.
@@ -31,7 +32,10 @@ export async function login(formData: FormData) {
     ...(resposta.resposta[0] as any),
   };
 
-  (await cookies()).set("authorization", `Bearer ${informacoesLogin.access_token}`);
+  (await cookies()).set(
+    "authorization",
+    `Bearer ${informacoesLogin.access_token}`,
+  );
   (await cookies()).set("classification", informacoesLogin.classification);
 
   const redirecionar = {
@@ -48,4 +52,18 @@ export async function login(formData: FormData) {
     );
 
   return redirecionarViaAction(redirecionar[informacoesLogin.classification]);
+}
+
+export async function buscarHorarioNoServidor(): Promise<
+  IRespostaDeAction<string>
+> {
+  const resposta = await FetchHelper.get<string>({
+    rota: "/horario",
+    cookies: await cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+  });
+
+  if (!resposta.sucesso) return { sucesso: false, mensagem: "não encontrado" };
+
+  return { sucesso: true, resposta: resposta.resposta };
 }
