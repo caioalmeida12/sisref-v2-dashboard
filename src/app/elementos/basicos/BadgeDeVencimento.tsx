@@ -28,7 +28,7 @@ export const BadgeDeVencimento = ({
             className,
           )}
         >
-          {data}
+          {DatasHelper.converterParaFormatoBrasileiro(data)}
         </span>
       }
       elementoContent={
