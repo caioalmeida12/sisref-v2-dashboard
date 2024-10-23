@@ -56,15 +56,15 @@ export default function RecepcaoPage() {
         size: 750,
       }),
       colunasHelper.accessor("total_food_waste", {
-        cell: (info) => info.getValue(),
+        cell: (info) => `${info.getValue()}kg`,
         header: "Rejeito total",
       }),
       colunasHelper.accessor("reject_per_person", {
-        cell: (info) => info.getValue(),
+        cell: (info) => `${info.getValue()}g`,
         header: "Rejeito por pessoa",
       }),
       colunasHelper.accessor("ingestion_percentage", {
-        cell: (info) => info.getValue(),
+        cell: (info) => `${info.getValue()}%`,
         header: "Porcentagem de resto",
       }),
       colunasHelper.accessor("waste_date", {
@@ -73,7 +73,7 @@ export default function RecepcaoPage() {
         header: "Data",
       }),
       colunasHelper.accessor("people_fed", {
-        cell: (info) => info.getValue(),
+        cell: (info) => `${info.getValue()} pessoas`,
         header: "Poderia alimentar",
       }),
       colunasHelper.accessor("classification", {
