@@ -10,6 +10,7 @@ import { Logout } from "@elementos/basicos/Logout";
 import Link from "next/link";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { buscarCampus } from "@/app/actions/campus";
+import { HorarioNoServidorSidebarAdministrativa } from "./HorarioNoServidorSidebarAdministrativa";
 
 // export const Sidebar = async ({ token_decodificado }: { token_decodificado: ITokenDecodificado }) => {
 export const Sidebar = async () => {
@@ -86,6 +87,9 @@ export const Sidebar = async () => {
           ),
         )}
       </NavigationMenu.Root>
+      <div className="mt-auto">
+        <HorarioNoServidorSidebarAdministrativa />
+      </div>
     </div>
   );
 };
