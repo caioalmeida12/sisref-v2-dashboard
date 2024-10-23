@@ -136,11 +136,13 @@ export const ModalGeral = ({
           <Dialog.Title className="m-0 text-lg font-medium">
             {textoTitulo}
           </Dialog.Title>
-          <Dialog.Description>
-            {textoDescricao?.map((linha, index) => (
-              <span key={index}>{linha}</span>
-            ))}
-            {elementoDescricao ? elementoDescricao : null}
+          <Dialog.Description asChild>
+            <div>
+              {textoDescricao?.map((linha, index) => (
+                <span key={index}>{linha}</span>
+              ))}
+              {elementoDescricao ? elementoDescricao : null}
+            </div>
           </Dialog.Description>
           <Form.Root
             className="mt-2 flex flex-col gap-y-4"
