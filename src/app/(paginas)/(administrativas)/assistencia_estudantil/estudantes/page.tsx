@@ -124,7 +124,7 @@ export default function Estudantes() {
               ]}
               formulario={{
                 action: atualizarVencimentosEmMassa,
-                substantivoParaMensagemDeRetorno: "estudante",
+                substantivoParaMensagemDeRetorno: "atualização",
                 queryKeysParaInvalidar: [["tabelaDeEstudantes"]],
                 campos: [
                   {
