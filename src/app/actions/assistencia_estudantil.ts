@@ -237,6 +237,12 @@ export const atualizarVencimentosEmMassa = async (
     body: Object.fromEntries(formData),
   });
 
+  if (
+    !resposta.sucesso &&
+    resposta.message == "Atualização realizada com sucesso."
+  )
+    return { sucesso: true, resposta: ["Atualização feita com sucesso."] };
+
   if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
 
   return { sucesso: true, resposta: ["Atualização feita com sucesso."] };
@@ -285,14 +291,15 @@ export const criarRepublica = async (
   return { sucesso: true, resposta: resposta.resposta };
 };
 
-
 /**
  * Realiza uma chamada assíncrona para a API de remoção de república.
  *
  * @param formData - Os dados de república.
  * @returns JSON com os campos `sucesso` e `mensagem`.
  */
-export const removerRepublica = async (formData: FormData): Promise<IRespostaDeAction<string>> => {
+export const removerRepublica = async (
+  formData: FormData,
+): Promise<IRespostaDeAction<string>> => {
   if (!formData.get("id"))
     return { sucesso: false, mensagem: "ID de república não informado" };
 
@@ -342,7 +349,9 @@ export const editarRepublica = async (
  * @param formData - Os dados de curso.
  * @returns JSON com os campos `sucesso` e `mensagem`.
  */
-export const removerCurso = async (formData: FormData): Promise<IRespostaDeAction<string>> => {
+export const removerCurso = async (
+  formData: FormData,
+): Promise<IRespostaDeAction<string>> => {
   if (!formData.get("id"))
     return { sucesso: false, mensagem: "ID de curso não informado" };
 
@@ -412,7 +421,9 @@ export const criarCurso = async (
  * @param formData - Os dados de turno.
  * @returns JSON com os campos `sucesso` e `mensagem`.
  */
-export const removerTurno = async (formData: FormData): Promise<IRespostaDeAction<string>> => {
+export const removerTurno = async (
+  formData: FormData,
+): Promise<IRespostaDeAction<string>> => {
   if (!formData.get("id"))
     return { sucesso: false, mensagem: "ID de turno não informado" };
 
