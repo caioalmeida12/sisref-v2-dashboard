@@ -20,7 +20,7 @@ import { ModalEditarRelatorioDeDesperdicio } from "@/app/elementos/modulos/nutri
 export default function Page() {
   const [pesquisa, setPesquisa] = useQueryStates(
     {
-      dataInicial: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
+      dataInicial: parseAsString.withDefault("2020-01-01"),
       dataFinal: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
     },
     {
@@ -76,7 +76,8 @@ export default function Page() {
         header: "Porcentagem de resto",
       }),
       colunasHelper.accessor("waste_date", {
-        cell: (info) => info.getValue(),
+        cell: (info) =>
+          DatasHelper.converterParaFormatoBrasileiro(info.getValue()),
         header: "Data",
       }),
       colunasHelper.accessor("people_fed", {
