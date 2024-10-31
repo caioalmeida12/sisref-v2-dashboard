@@ -3,6 +3,8 @@ import { Navbar } from "@/app/elementos/modulos/comuns/Navbar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import React from "react";
+import { SidebarProvider } from "@/app/elementos/shadcn/components/ui/sidebar";
+import { SidebarEstudante } from "@/app/elementos/modulos/estudante/Sidebar/SidebarEstudante";
 
 interface EstudanteLayoutProps {
   children: React.ReactNode;
@@ -32,47 +34,49 @@ export default function EstudanteLayout({
     <>
       <SpeedInsights />
       <Analytics />
-      <Navbar
-        navItems={[
-          {
-            titulo: "Refeições",
-            rota: "?pagina=refeicoesPorDia",
-          },
-          {
-            titulo: "Histórico de refeições",
-            rota: "?pagina=historicoDeRefeicoes",
-          },
-          // {
-          //     titulo: 'Restrições alimentares', rota: '?pagina=restricoesAlimentares',
-          // },
-          {
-            titulo: "Refeições autorizadas",
-            rota: "?pagina=refeicoesAutorizadas",
-          },
-          {
-            titulo: "Dropdown",
-            isDropdown: true,
-            itens: [
-              { titulo: "Item 1", rota: "#" },
-              { titulo: "Item 2", rota: "#" },
-              { titulo: "Item 3", rota: "#" },
-            ],
-          },
-        ]}
-      />
-
-      <main className="mx-auto my-8 grid w-full max-w-screen-xl gap-y-8 px-6 lg:grid lg:grid-cols-12 lg:gap-x-8">
-        <div className="col-left flex flex-col gap-y-8">
-          {children}
-          {/* {restricoesAlimentares} */}
-          {refeicoesAutorizadas}
-        </div>
-        <div className="col-right flex flex-col gap-y-8 lg:row-span-3 lg:row-start-1">
-          {refeicoesPorDia}
-          {historicoDeRefeicoes}
-        </div>
-      </main>
-      <Footer />
+      <SidebarProvider className="contents">
+        <Navbar
+          navItems={[
+            {
+              titulo: "Refeições",
+              rota: "?pagina=refeicoesPorDia",
+            },
+            {
+              titulo: "Histórico de refeições",
+              rota: "?pagina=historicoDeRefeicoes",
+            },
+            // {
+            //     titulo: 'Restrições alimentares', rota: '?pagina=restricoesAlimentares',
+            // },
+            {
+              titulo: "Refeições autorizadas",
+              rota: "?pagina=refeicoesAutorizadas",
+            },
+            {
+              titulo: "Dropdown",
+              isDropdown: true,
+              itens: [
+                { titulo: "Item 1", rota: "#" },
+                { titulo: "Item 2", rota: "#" },
+                { titulo: "Item 3", rota: "#" },
+              ],
+            },
+          ]}
+        />
+        <SidebarEstudante />
+        <main className="mx-auto my-8 grid w-full max-w-screen-xl gap-y-8 px-6 lg:grid lg:grid-cols-12 lg:gap-x-8">
+          <div className="col-left flex flex-col gap-y-8">
+            {children}
+            {/* {restricoesAlimentares} */}
+            {refeicoesAutorizadas}
+          </div>
+          <div className="col-right flex flex-col gap-y-8 lg:row-span-3 lg:row-start-1">
+            {refeicoesPorDia}
+            {historicoDeRefeicoes}
+          </div>
+        </main>
+        <Footer />
+      </SidebarProvider>
     </>
   );
 }

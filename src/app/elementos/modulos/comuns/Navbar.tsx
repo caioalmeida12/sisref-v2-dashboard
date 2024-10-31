@@ -6,14 +6,16 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { INavbarProps } from "@/app/interfaces/INavbarProps";
 import Link from "next/link";
 import { Logout } from "@elementos/basicos/Logout";
-import { MenuDrawer } from "@elementos/componentes/MenuDrawer";
 import Icone from "@elementos/basicos/Icone";
+import { useSidebar } from "../../shadcn/components/ui/sidebar";
 
 export const Navbar = ({ navItems }: INavbarProps) => {
+  const { toggleSidebar } = useSidebar();
+
   return (
     <NavigationMenu.Root className="sticky top-0 z-10 bg-verde-400 font-medium text-branco-400">
       <div className="mx-auto flex max-w-screen-xl items-center justify-between px-6 py-4">
-        <MenuDrawer navItems={navItems} />
+        <Icone.Menu onClick={toggleSidebar} />
         <NavigationMenu.List className="hidden flex-wrap justify-center gap-x-8 gap-y-2 md:flex">
           <NavbarNavigation navItems={navItems} />
         </NavigationMenu.List>
