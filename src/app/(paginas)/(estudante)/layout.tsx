@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import React from "react";
 import { SidebarProvider } from "@/app/elementos/shadcn/components/ui/sidebar";
 import { SidebarEstudante } from "@/app/elementos/modulos/estudante/Sidebar/SidebarEstudante";
+import { linksDaSidebarPorTipoDeUsuario } from "@/app/lib/elementos/LinksDaSidebarPorTipoDeUsuario";
 
 interface EstudanteLayoutProps {
   children: React.ReactNode;
@@ -35,34 +36,7 @@ export default function EstudanteLayout({
       <SpeedInsights />
       <Analytics />
       <SidebarProvider className="contents">
-        <Navbar
-          navItems={[
-            {
-              titulo: "Refeições",
-              rota: "?pagina=refeicoesPorDia",
-            },
-            {
-              titulo: "Histórico de refeições",
-              rota: "?pagina=historicoDeRefeicoes",
-            },
-            // {
-            //     titulo: 'Restrições alimentares', rota: '?pagina=restricoesAlimentares',
-            // },
-            {
-              titulo: "Refeições autorizadas",
-              rota: "?pagina=refeicoesAutorizadas",
-            },
-            {
-              titulo: "Dropdown",
-              isDropdown: true,
-              itens: [
-                { titulo: "Item 1", rota: "#" },
-                { titulo: "Item 2", rota: "#" },
-                { titulo: "Item 3", rota: "#" },
-              ],
-            },
-          ]}
-        />
+        <Navbar navItems={linksDaSidebarPorTipoDeUsuario["STUDENT"]} />
         <SidebarEstudante />
         <main className="mx-auto my-8 grid w-full max-w-screen-xl gap-y-8 px-6 lg:grid lg:grid-cols-12 lg:gap-x-8">
           <div className="col-left flex flex-col gap-y-8">

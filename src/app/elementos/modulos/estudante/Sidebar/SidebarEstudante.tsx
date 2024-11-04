@@ -36,7 +36,7 @@ export async function SidebarEstudante() {
 
   return (
     <Sidebar>
-      <SidebarContent className="relative flex-col gap-y-6 border-none bg-verde-400 px-2 py-4 text-branco-400 outline-none">
+      <SidebarContent className="relative flex-col gap-y-4 border-none bg-preto-300 px-4 py-4 text-branco-400 outline-none">
         <SidebarGroup>
           <Image
             src={ifce_logo_horizontal_branco}
@@ -53,24 +53,29 @@ export async function SidebarEstudante() {
         </SidebarGroup>
         <SidebarGroup>
           <div className="flex justify-between gap-x-8">
-            <p className="flex place-items-center gap-x-2">
-              <Icone.Usuario />
-              {stringParaCamelCase(informacoesDeEstudante.name)}
+            <p className="inline-flex place-items-center items-start gap-x-2">
+              <span className="mt-1">
+                <Icone.Usuario />
+              </span>
+              <span className="leading-tight">
+                {stringParaCamelCase(informacoesDeEstudante.name)}
+              </span>
             </p>
             <Logout />
           </div>
         </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-lg text-branco-400">
-            Sisref - IFCE {informacoesDoCampus.description}
-          </SidebarGroupLabel>
+        <SidebarGroup className="rounded bg-verde-400">
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) =>
                 item.isDropdown ? null : (
                   <SidebarMenuItem key={item.titulo}>
                     <SidebarMenuButton asChild>
-                      <Link href={item.rota}>
+                      {/* TODO: link mobile com texto preto */}
+                      <Link
+                        href={item.rota}
+                        className="hover:bg-branco-400/10 hover:text-branco-400"
+                      >
                         {React.createElement(Icone[item.icone] as any)}
                         <span>{item.titulo}</span>
                       </Link>
