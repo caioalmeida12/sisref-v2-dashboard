@@ -35,7 +35,7 @@ export default function EstudanteLayout({
     <>
       <SpeedInsights />
       <Analytics />
-      <SidebarProvider className="contents">
+      <SidebarProvider className="contents" defaultOpen={false}>
         <Navbar navItems={linksDaSidebarPorTipoDeUsuario["STUDENT"]} />
         <SidebarEstudante />
         <main className="mx-auto my-8 grid w-full max-w-screen-xl gap-y-8 px-6 lg:grid lg:grid-cols-12 lg:gap-x-8">

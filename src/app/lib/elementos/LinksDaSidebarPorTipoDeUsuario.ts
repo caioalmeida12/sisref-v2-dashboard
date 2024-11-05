@@ -7,17 +7,17 @@ export const linksDaSidebarPorTipoDeUsuario: Record<
   STUDENT: [
     {
       titulo: "Refeições",
-      rota: "?pagina=refeicoesPorDia",
+      rota: "refeicoesPorDia",
       icone: "Refeicao",
     },
     {
       titulo: "Histórico de refeições",
-      rota: "?pagina=historicoDeRefeicoes",
+      rota: "historicoDeRefeicoes",
       icone: "Ampulheta",
     },
     {
       titulo: "Refeições autorizadas",
-      rota: "?pagina=refeicoesAutorizadas",
+      rota: "refeicoesAutorizadas",
       icone: "GarfoEFaca",
     },
   ],
