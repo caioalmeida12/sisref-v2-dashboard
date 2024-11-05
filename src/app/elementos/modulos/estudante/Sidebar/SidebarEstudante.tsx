@@ -1,26 +1,25 @@
+import { buscarCampus } from "@/app/actions/campus";
+import { buscarEstudante } from "@/app/actions/estudante";
+import ifce_logo_horizontal_branco from "@/app/elementos/assets/img/ifce_logo_horizontal_branco.png";
+import Icone from "@/app/elementos/basicos/Icone";
+import { Logout } from "@/app/elementos/basicos/Logout";
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/app/elementos/shadcn/components/ui/sidebar";
-import { SidebarEstudanteBotaoFechar } from "./SidebarEstudanteBotaoFechar";
 import { linksDaSidebarPorTipoDeUsuario } from "@/app/lib/elementos/LinksDaSidebarPorTipoDeUsuario";
-import Icone from "@/app/elementos/basicos/Icone";
-import React from "react";
-import { buscarCampus } from "@/app/actions/campus";
-import { buscarEstudante } from "@/app/actions/estudante";
+import { stringParaCamelCase } from "@/app/lib/elementos/StringParaCamelCase";
 import { validarTokenDosCookies } from "@/app/lib/middlewares/ValidarTokenDosCookies";
 import Image from "next/image";
-import { stringParaCamelCase } from "@/app/lib/elementos/StringParaCamelCase";
-import ifce_logo_horizontal_branco from "@/app/elementos/assets/img/ifce_logo_horizontal_branco.png";
-import { Logout } from "@/app/elementos/basicos/Logout";
 import Link from "next/link";
+import React from "react";
+import { SidebarEstudanteBotaoFechar } from "./SidebarEstudanteBotaoFechar";
+import SidebarEstudanteLink from "./SidebarEstudanteLink";
 
 // Menu items.
 const items = linksDaSidebarPorTipoDeUsuario["STUDENT"];
@@ -71,14 +70,7 @@ export async function SidebarEstudante() {
                 item.isDropdown ? null : (
                   <SidebarMenuItem key={item.titulo}>
                     <SidebarMenuButton asChild>
-                      {/* TODO: link mobile com texto preto */}
-                      <Link
-                        href={item.rota}
-                        className="hover:bg-branco-400/10 hover:text-branco-400"
-                      >
-                        {React.createElement(Icone[item.icone] as any)}
-                        <span>{item.titulo}</span>
-                      </Link>
+                      <SidebarEstudanteLink item={item} />
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ),
