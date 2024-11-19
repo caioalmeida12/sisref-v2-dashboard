@@ -43,7 +43,8 @@ export const HistoricoDeRefeicoes = ({
 
   return (
     <Secao
-      className={`${forcarExibicao ? "flex" : "hidden"} flex-col gap-y-4 lg:flex`}
+      className={`${forcarExibicao ? "flex" : "hidden"} scroll-m-16 flex-col gap-y-4 lg:flex`}
+      id="historicoDeRefeicoes"
     >
       <CabecalhoDeSecao titulo="Histórico de Refeições" />
       <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-4">

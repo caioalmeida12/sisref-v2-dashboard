@@ -66,7 +66,8 @@ export const RefeicoesAutorizadas = async ({
         <InformacoesDeEstudante versaoMobileCompleta />
       </div>
       <Secao
-        className={`${forcarExibicao ? "flex" : "hidden"} col-left flex-col gap-y-4 lg:flex`}
+        className={`${forcarExibicao ? "flex" : "hidden"} col-left scroll-m-16 flex-col gap-y-4 lg:flex`}
+        id="refeicoesAutorizadas"
       >
         <CabecalhoDeSecao titulo="Refeições autorizadas" />
         {Object.values(refeicoes).map((refeicao, index) => (

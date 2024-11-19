@@ -67,7 +67,8 @@ export const RefeicoesPorDia = ({
 
   return (
     <Secao
-      className={`${forcarExibicao ? "flex" : "hidden"} flex-col gap-y-4 lg:grid lg:grid-cols-2 lg:gap-4`}
+      className={`${forcarExibicao ? "flex" : "hidden"} scroll-m-16 flex-col gap-y-4 lg:grid lg:grid-cols-2 lg:gap-4`}
+      id="refeicoesPorDia"
     >
       <Slider
         texto={`Refeições para ${textoData}`}
