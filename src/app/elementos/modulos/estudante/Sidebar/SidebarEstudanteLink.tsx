@@ -18,7 +18,7 @@ export default function SidebarEstudanteLink({
       <Link
         href={isMobile ? `?pagina=${item.rota}` : `#${item.rota}`}
         onClick={() => setOpen(false)}
-        className="flex gap-x-2 hover:bg-branco-400/10 hover:text-branco-400"
+        className="flex items-center gap-x-2 rounded px-2 py-1 hover:bg-branco-400/10 hover:text-branco-400"
       >
         {React.createElement(Icone[item.icone] as any)}
         <span>{item.titulo}</span>
