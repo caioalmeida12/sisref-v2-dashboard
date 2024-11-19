@@ -16,8 +16,6 @@ import { linksDaSidebarPorTipoDeUsuario } from "@/app/lib/elementos/LinksDaSideb
 import { stringParaCamelCase } from "@/app/lib/elementos/StringParaCamelCase";
 import { validarTokenDosCookies } from "@/app/lib/middlewares/ValidarTokenDosCookies";
 import Image from "next/image";
-import Link from "next/link";
-import React from "react";
 import { SidebarEstudanteBotaoFechar } from "./SidebarEstudanteBotaoFechar";
 import SidebarEstudanteLink from "./SidebarEstudanteLink";
 
