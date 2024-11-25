@@ -102,6 +102,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -127,4 +128,9 @@
   .col-right {
     @apply lg:col-start-5 lg:col-span-8;
   }
+}
+
+/* Gambiarra utilizada para retirar o outline da sidebar de estudante */
+#radix-\:r3\: {
+  outline: none !important;
 }
