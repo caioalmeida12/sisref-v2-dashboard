@@ -13,11 +13,7 @@ import { CustomTooltipWrapper } from "@elementos/basicos/CustomTooltipWrapper";
 import { buscarRefeicoesPorDia } from "@/app/actions/estudante";
 import { TRefeicao, TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
 
-export const RefeicoesPorDia = ({
-  forcarExibicao = false,
-}: {
-  forcarExibicao?: boolean;
-}) => {
+export const RefeicoesPorDia = () => {
   const [dataDaPesquisa, setDataDaPesquisa] = useState(
     new Date().toISOString().split("T")[0],
   );
@@ -67,7 +63,7 @@ export const RefeicoesPorDia = ({
 
   return (
     <Secao
-      className={`${forcarExibicao ? "flex" : "hidden"} scroll-m-16 flex-col gap-y-4 lg:grid lg:grid-cols-2 lg:gap-4`}
+      className="flex scroll-m-16 flex-col gap-y-4 lg:grid lg:grid-cols-2 lg:gap-4"
       id="refeicoesPorDia"
     >
       <Slider

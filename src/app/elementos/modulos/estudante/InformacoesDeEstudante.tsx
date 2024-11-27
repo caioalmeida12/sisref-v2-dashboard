@@ -1,17 +1,18 @@
-import React from "react";
+"use client"
 
+import { buscarCampus } from "@/app/actions/campus";
+import { buscarEstudante } from "@/app/actions/estudante";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { stringParaCamelCase } from "@/app/lib/elementos/StringParaCamelCase";
+import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao";
 import { CabecalhoPrincipal } from "@elementos/basicos/CabecalhoPrincipal";
 import { Secao } from "@elementos/basicos/Secao";
 import { CampoDeSecao } from "@elementos/componentes/CampoDeSecao";
-import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao";
-import { validarTokenDosCookies } from "@/app/lib/middlewares/ValidarTokenDosCookies";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { stringParaCamelCase } from "@/app/lib/elementos/StringParaCamelCase";
-import { buscarCampus } from "@/app/actions/campus";
-import { buscarEstudante } from "@/app/actions/estudante";
-import { TEstudanteComCurso } from "../../../interfaces/TEstudante";
 import { TCampus } from "../../../interfaces/TCampus";
+import { TEstudanteComCurso } from "../../../interfaces/TEstudante";
+import { useNavegacaoDaPaginaDeEstudante } from "@/app/lib/elementos/NavegacaoDaPaginaDeEstudante";
 
 interface InformacoesDeEstudanteProps {
   estudante: TEstudanteComCurso;
@@ -176,20 +177,48 @@ const MobileCompleta = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
   );
 };
 
-export const InformacoesDeEstudante = async ({
-  versaoMobileCompleta = false,
-}: {
-  versaoMobileCompleta?: boolean;
-}) => {
-  const validado = await validarTokenDosCookies();
+export const InformacoesDeEstudante = () => {
+  const [navegacao] = useNavegacaoDaPaginaDeEstudante()
 
-  const informacoesDeEstudante = await buscarEstudante(validado.sub);
+  const { data: informacoesDeEstudante } = useQuery({
+    queryKey: ["informacoesDeEstudante"],
+    queryFn: buscarEstudante,
+    initialData: {
+      active: false,
+      campus_id: 0,
+      course: {
+        campus_id: 0,
+        description: "Carregando...",
+        id: 0,
+        initials: "NE"
+      },
+      course_id: 0,
+      dateValid: "Carregando...",
+      id: 0.0000,
+      mat: "Carregando...",
+      name: "Carregando...",
+      observation: "Carregando...",
+      photo: null,
+      republic: true,
+      block: true,
+      semRegular: 0,
+      shift_id: 1
+    }
+  })
 
-  const informacoesDoCampus = await buscarCampus(
-    String(informacoesDeEstudante.campus_id),
-  );
+  const { data: informacoesDoCampus } = useQuery({
+    queryKey: ["informacoesDoCampus", informacoesDeEstudante],
+    queryFn: async () => await buscarCampus(
+      String(informacoesDeEstudante?.campus_id),
+    ),
+    initialData: {
+      description: "Carregando...",
+      id: 0
+    }
+  })
 
-  if (versaoMobileCompleta)
+  // TODO: impedir querenderize duas vezes
+  if (navegacao.isMobile && navegacao.pagina == "refeicoesAutorizadas")
     return (
       <MobileCompleta
         estudante={informacoesDeEstudante}

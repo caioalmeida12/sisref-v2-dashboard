@@ -6,6 +6,7 @@ import React from "react";
 import { SidebarProvider } from "@/app/elementos/shadcn/components/ui/sidebar";
 import { SidebarEstudante } from "@/app/elementos/modulos/estudante/Sidebar/SidebarEstudante";
 import { linksDaSidebarPorTipoDeUsuario } from "@/app/lib/elementos/LinksDaSidebarPorTipoDeUsuario";
+import { CustomQueryClientProvider } from "@/app/lib/elementos/CustomQueryProviderWrapper";
 
 interface EstudanteLayoutProps {
   children: React.ReactNode;
@@ -35,22 +36,16 @@ export default function EstudanteLayout({
     <>
       <SpeedInsights />
       <Analytics />
-      <SidebarProvider className="contents" defaultOpen={false}>
-        <Navbar navItems={linksDaSidebarPorTipoDeUsuario["STUDENT"]} />
-        <SidebarEstudante />
-        <main className="mx-auto my-8 grid w-full max-w-screen-xl gap-y-8 px-6 lg:grid lg:grid-cols-12 lg:gap-x-8">
-          <div className="col-left flex flex-col gap-y-8">
+      <CustomQueryClientProvider>
+        <SidebarProvider className="contents" defaultOpen={false}>
+          <Navbar navItems={linksDaSidebarPorTipoDeUsuario["STUDENT"]} />
+          <SidebarEstudante />
+          <main className="mx-auto my-8 grid w-full max-w-screen-xl gap-y-8 px-6 lg:grid lg:grid-cols-12 lg:gap-x-8">
             {children}
-            {/* {restricoesAlimentares} */}
-            {refeicoesAutorizadas}
-          </div>
-          <div className="col-right flex flex-col gap-y-8 lg:row-span-3 lg:row-start-1">
-            {refeicoesPorDia}
-            {historicoDeRefeicoes}
-          </div>
-        </main>
-        <Footer />
-      </SidebarProvider>
+          </main>
+          <Footer />
+        </SidebarProvider>
+      </CustomQueryClientProvider>
     </>
   );
 }

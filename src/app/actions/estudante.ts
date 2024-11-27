@@ -18,6 +18,7 @@ import { IRespostaPaginada } from "../interfaces/IRespostaPaginada";
 import { TRefeicaoDoHistoricoSchema } from "../interfaces/TRefeicaoDoHistorico";
 import { TBuscarRefeicoesAutorizadasSchema } from "../interfaces/TBuscarRefeicoesAutorizadas";
 import { IRespostaDeAction } from "../interfaces/IRespostaDeAction";
+import { validarTokenDosCookies } from "../lib/middlewares/ValidarTokenDosCookies";
 
 /**
  * Busca as refeições disponíveis para o dia solicitado. Se não for passado nenhum parâmetro, a data atual será utilizada.
@@ -261,14 +262,14 @@ export const buscarRelatorioDeDesperdicio = async ({
 /**
  *  Busca as informações de estudante.
  *
- * @param sub o sub de estudante, obtido no token decodificado
  * @returns Um objeto contendo as informações de estudante com curso incluso.
  */
 export const buscarEstudante = async (
-  sub: string,
 ): Promise<TEstudanteComCurso> => {
+  const validado = await validarTokenDosCookies();
+
   const resposta = await FetchHelper.get<TEstudanteComCurso>({
-    rota: `/all/show-student/${sub}`,
+    rota: `/all/show-student/${validado.sub}`,
     cookies: await cookies(),
   });
 

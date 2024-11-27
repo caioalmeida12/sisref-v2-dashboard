@@ -1,10 +1,13 @@
+"use client"
+
 import React from "react";
 import { Secao } from "@elementos/basicos/Secao";
 import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao";
-import { RefeicaoAutorizada } from "@elementos//componentes/RefeicaoAutorizada";
+import { RefeicaoAutorizada } from "@elementos/componentes/RefeicaoAutorizada";
 import { InformacoesDeEstudante } from "./InformacoesDeEstudante";
 import { buscarRefeicoesAutorizadas } from "@/app/actions/estudante";
 import { TBuscarRefeicoesAutorizadas } from "@/app/interfaces/TBuscarRefeicoesAutorizadas";
+import { useQuery } from "@tanstack/react-query";
 
 const pegarOsDiasDaSemanaAutorizados = (
   refeicoesAutorizadas: TBuscarRefeicoesAutorizadas[],
@@ -29,12 +32,12 @@ const pegarOsDiasDaSemanaAutorizados = (
   return diasQueSaoAutorizados;
 };
 
-export const RefeicoesAutorizadas = async ({
-  forcarExibicao = false,
-}: {
-  forcarExibicao?: boolean;
-}) => {
-  const refeicoesAutorizadas = await buscarRefeicoesAutorizadas();
+export const RefeicoesAutorizadas = () => {
+  const { data: refeicoesAutorizadas = [] } = useQuery({
+    queryKey: ["refeicoesAutorizadas"],
+    queryFn: buscarRefeicoesAutorizadas,
+    initialData: [],
+  });
 
   type RefeicoesMap = {
     [K in 1 | 2 | 3 | 4]?: {
@@ -62,11 +65,11 @@ export const RefeicoesAutorizadas = async ({
 
   return (
     <>
-      <div className={`${forcarExibicao ? "block lg:hidden" : "hidden"}`}>
+      <div className="block lg:hidden" >
         <InformacoesDeEstudante versaoMobileCompleta />
       </div>
       <Secao
-        className={`${forcarExibicao ? "flex" : "hidden"} col-left scroll-m-16 flex-col gap-y-4 lg:flex`}
+        className="flex col-left scroll-m-16 flex-col gap-y-4 lg:flex"
         id="refeicoesAutorizadas"
       >
         <CabecalhoDeSecao titulo="Refeições autorizadas" />
