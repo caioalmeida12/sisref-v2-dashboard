@@ -12,11 +12,7 @@ import Skeleton from "react-loading-skeleton";
 
 const TEMPO_DE_CARREGAMENTO = 2000;
 
-export const RestricoesAlimentares = ({
-  forcarExibicao = false,
-}: {
-  forcarExibicao?: boolean;
-}) => {
+export const RestricoesAlimentares = () => {
   const [restricoes, setRestricoes] = useState<string[]>([]);
   const [carregando, setCarregando] = useState(true);
 
@@ -47,7 +43,7 @@ export const RestricoesAlimentares = ({
 
   return (
     <div
-      className={`${forcarExibicao ? "flex" : "hidden"} flex-col gap-4 lg:flex`}
+      className={`flex flex-col gap-4 lg:flex`} id="restricoesAlimentares"
     >
       <TextoDescritivo />
       <Secao className="flex flex-col gap-4">

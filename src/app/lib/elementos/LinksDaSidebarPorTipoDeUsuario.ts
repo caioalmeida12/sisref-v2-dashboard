@@ -6,7 +6,7 @@ export const linksDaSidebarPorTipoDeUsuario: Record<
 > = {
   STUDENT: [
     {
-      titulo: "Refeições",
+      titulo: "Refeições para hoje",
       rota: "refeicoesPorDia",
       icone: "Refeicao",
     },
@@ -20,6 +20,11 @@ export const linksDaSidebarPorTipoDeUsuario: Record<
       rota: "refeicoesAutorizadas",
       icone: "GarfoEFaca",
     },
+    {
+      titulo: "Restrições alimentares",
+      rota: "restricoesAlimentares",
+      icone: "RestricaoAlimentar"
+    }
   ],
   ASSIS_ESTU: [
     {

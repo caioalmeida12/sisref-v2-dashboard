@@ -13,11 +13,7 @@ import { IRespostaDeAction } from "@/app/interfaces/IRespostaDeAction";
 
 const QUANTOS_TICKETS_MOSTRAR = 10;
 
-export const HistoricoDeRefeicoes = ({
-  forcarExibicao = false,
-}: {
-  forcarExibicao?: boolean;
-}) => {
+export const HistoricoDeRefeicoes = () => {
   const {
     data: ticketsMaisRecentes,
     isFetching,
@@ -43,7 +39,7 @@ export const HistoricoDeRefeicoes = ({
 
   return (
     <Secao
-      className={`${forcarExibicao ? "flex" : "hidden"} scroll-m-16 flex-col gap-y-4 lg:flex`}
+      className="flex scroll-m-16 flex-col gap-y-4 lg:flex"
       id="historicoDeRefeicoes"
     >
       <CabecalhoDeSecao titulo="Histórico de Refeições" />
