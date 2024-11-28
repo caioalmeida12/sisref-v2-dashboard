@@ -18,7 +18,7 @@ export const RestricoesAlimentares = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      setRestricoes(["Glúten", "Lactose", "Frutos do mar"]);
+      // setRestricoes(["Glúten", "Lactose", "Frutos do mar"]);
 
       setCarregando(false);
     }, TEMPO_DE_CARREGAMENTO);
@@ -42,9 +42,7 @@ export const RestricoesAlimentares = () => {
   };
 
   return (
-    <div
-      className={`flex flex-col gap-4 lg:flex`} id="restricoesAlimentares"
-    >
+    <div className={`flex flex-col gap-4 lg:flex`} id="restricoesAlimentares">
       <TextoDescritivo />
       <Secao className="flex flex-col gap-4">
         <CabecalhoDeSecao titulo="Suas restrições alimentares" />
@@ -59,11 +57,17 @@ export const RestricoesAlimentares = () => {
             />
           ))
         )}
-        <Botao
+        {restricoes.length == 0 ? (
+          <p className="text-justify">
+            Você não possui restrições alimentares cadastradas. Caso queira
+            adicionar alguma, entre em contato com a pessoa nutricionista.
+          </p>
+        ) : null}
+        {/* <Botao
           texto="Adicionar"
           variante="adicionar"
           onClick={handleAdicionarRestricao}
-        />
+        /> */}
       </Secao>
     </div>
   );
