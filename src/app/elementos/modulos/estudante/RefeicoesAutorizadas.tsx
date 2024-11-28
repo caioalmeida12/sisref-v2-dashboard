@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import { Secao } from "@elementos/basicos/Secao";
@@ -65,11 +65,11 @@ export const RefeicoesAutorizadas = () => {
 
   return (
     <>
-      <div className="block lg:hidden" >
-        <InformacoesDeEstudante versaoMobileCompleta />
+      <div className="block lg:hidden">
+        <InformacoesDeEstudante />
       </div>
       <Secao
-        className="flex col-left scroll-m-16 flex-col gap-y-4 lg:flex"
+        className="col-left flex scroll-m-16 flex-col gap-y-4 lg:flex"
         id="refeicoesAutorizadas"
       >
         <CabecalhoDeSecao titulo="Refeições autorizadas" />

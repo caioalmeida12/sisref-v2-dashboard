@@ -6,14 +6,10 @@ import { CustomQueryClientProvider } from "@/app/lib/elementos/CustomQueryProvid
 import { linksDaSidebarPorTipoDeUsuario } from "@/app/lib/elementos/LinksDaSidebarPorTipoDeUsuario";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import React from "react";
+import React, { Suspense } from "react";
 
 interface EstudanteLayoutProps {
   children: React.ReactNode;
-  refeicoesPorDia: React.ReactNode;
-  restricoesAlimentares: React.ReactNode;
-  historicoDeRefeicoes: React.ReactNode;
-  refeicoesAutorizadas: React.ReactNode;
 }
 
 /**
@@ -36,7 +32,7 @@ export default function EstudanteLayout({ children }: EstudanteLayoutProps) {
           <Navbar navItems={linksDaSidebarPorTipoDeUsuario["STUDENT"]} />
           <SidebarEstudante />
           <main className="mx-auto my-8 grid w-full max-w-screen-xl gap-y-8 px-6 lg:grid lg:grid-cols-12 lg:gap-x-8">
-            {children}
+            <Suspense fallback={<div>Carregando...</div>}>{children}</Suspense>
           </main>
           <Footer />
         </SidebarProvider>
