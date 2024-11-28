@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useLayoutEffect } from "react";
 import { HistoricoDeRefeicoes } from "@/app/elementos/modulos/estudante/HistoricoDeRefeicoes";
 import { InformacoesDeEstudante } from "@/app/elementos/modulos/estudante/InformacoesDeEstudante";
 import { RefeicoesAutorizadas } from "@/app/elementos/modulos/estudante/RefeicoesAutorizadas";
 import { RefeicoesPorDia } from "@/app/elementos/modulos/estudante/RefeicoesPorDia";
 import { RestricoesAlimentares } from "@/app/elementos/modulos/estudante/RestricoesAlimentares/RestricoesAlimentares";
 import { useNavegacaoDaPaginaDeEstudante } from "@/app/lib/elementos/NavegacaoDaPaginaDeEstudante";
+import { useLayoutEffect } from "react";
 
 export default function Home() {
   const [navegacao, setNavegacao] = useNavegacaoDaPaginaDeEstudante();

@@ -1,12 +1,12 @@
 import { Footer } from "@/app/elementos/componentes/Footer";
 import { Navbar } from "@/app/elementos/modulos/comuns/Navbar";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/react";
-import React from "react";
-import { SidebarProvider } from "@/app/elementos/shadcn/components/ui/sidebar";
 import { SidebarEstudante } from "@/app/elementos/modulos/estudante/Sidebar/SidebarEstudante";
-import { linksDaSidebarPorTipoDeUsuario } from "@/app/lib/elementos/LinksDaSidebarPorTipoDeUsuario";
+import { SidebarProvider } from "@/app/elementos/shadcn/components/ui/sidebar";
 import { CustomQueryClientProvider } from "@/app/lib/elementos/CustomQueryProviderWrapper";
+import { linksDaSidebarPorTipoDeUsuario } from "@/app/lib/elementos/LinksDaSidebarPorTipoDeUsuario";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import React from "react";
 
 interface EstudanteLayoutProps {
   children: React.ReactNode;
@@ -26,12 +26,7 @@ interface EstudanteLayoutProps {
  * Rotas dinâmicas: https://nextjs.org/docs/routing/dynamic-routes
  * Rotas paralelas: https://nextjs.org/docs/app/building-your-application/routing/parallel-routes
  */
-export default function EstudanteLayout({
-  children,
-  refeicoesPorDia,
-  historicoDeRefeicoes,
-  refeicoesAutorizadas,
-}: EstudanteLayoutProps) {
+export default function EstudanteLayout({ children }: EstudanteLayoutProps) {
   return (
     <>
       <SpeedInsights />
