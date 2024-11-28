@@ -2,13 +2,12 @@
 
 import React from "react";
 
-import { useEffect, useState } from "react";
-import { Botao } from "@elementos/basicos/Botao";
 import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao";
-import { Secao } from "@elementos/basicos/Secao";
-import { TextoDescritivo } from "./TextoDescritivo";
 import { RestricaoAlimentar } from "@elementos/basicos/RestricaoAlimentar";
+import { Secao } from "@elementos/basicos/Secao";
+import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
+import { TextoDescritivo } from "./TextoDescritivo";
 
 const TEMPO_DE_CARREGAMENTO = 2000;
 
@@ -23,15 +22,6 @@ export const RestricoesAlimentares = () => {
       setCarregando(false);
     }, TEMPO_DE_CARREGAMENTO);
   }, []);
-
-  const handleAdicionarRestricao = () => {
-    const restricao = prompt(
-      "Digite a restrição alimentar que deseja adicionar",
-    );
-    if (!restricao) return;
-
-    setRestricoes([...restricoes, restricao]);
-  };
 
   const handleRemoverRestricao = (e: React.MouseEvent) => {
     const restricao =

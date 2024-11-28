@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 import { MouseEventHandler } from "react";
 import Icone from "./Icone";
 
@@ -10,10 +8,7 @@ interface RestricaoAlimentarProps {
   onRemove?: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const RestricaoAlimentar = ({
-  texto,
-  onRemove,
-}: RestricaoAlimentarProps) => {
+export const RestricaoAlimentar = ({ texto }: RestricaoAlimentarProps) => {
   return (
     <div className="item-center relative flex justify-between rounded border-[1px] border-cinza-600 p-4">
       <div className="relative flex items-center gap-2">
