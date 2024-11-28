@@ -14,7 +14,6 @@ import {
 } from "@/app/elementos/shadcn/components/ui/sidebar";
 import { linksDaSidebarPorTipoDeUsuario } from "@/app/lib/elementos/LinksDaSidebarPorTipoDeUsuario";
 import { stringParaCamelCase } from "@/app/lib/elementos/StringParaCamelCase";
-import { validarTokenDosCookies } from "@/app/lib/middlewares/ValidarTokenDosCookies";
 import Image from "next/image";
 import { SidebarEstudanteBotaoFechar } from "./SidebarEstudanteBotaoFechar";
 import SidebarEstudanteLink from "./SidebarEstudanteLink";
@@ -23,9 +22,7 @@ import SidebarEstudanteLink from "./SidebarEstudanteLink";
 const items = linksDaSidebarPorTipoDeUsuario["STUDENT"];
 
 export async function SidebarEstudante() {
-  const validado = await validarTokenDosCookies();
-
-  const informacoesDeEstudante = await buscarEstudante(validado.sub);
+  const informacoesDeEstudante = await buscarEstudante();
 
   const informacoesDoCampus = await buscarCampus(
     String(informacoesDeEstudante.campus_id),

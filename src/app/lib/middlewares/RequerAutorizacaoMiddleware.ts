@@ -90,7 +90,7 @@ export const requerAutorizacaoMiddleware = async (req: NextRequest) => {
     return redirecionarViaMiddleware(rotasPermitidas?.at(0));
 
   if (tipoDeUsuario === "STUDENT") {
-    const dadosDeEstudante = await buscarEstudante(validado.sub);
+    const dadosDeEstudante = await buscarEstudante();
     if (!dadosDeEstudante) return redirecionarViaMiddleware();
   }
 
