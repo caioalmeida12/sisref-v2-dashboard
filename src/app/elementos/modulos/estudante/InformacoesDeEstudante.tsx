@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { buscarCampus } from "@/app/actions/campus";
 import { buscarEstudante } from "@/app/actions/estudante";
@@ -178,7 +178,7 @@ const MobileCompleta = ({ estudante, campus }: InformacoesDeEstudanteProps) => {
 };
 
 export const InformacoesDeEstudante = () => {
-  const [navegacao] = useNavegacaoDaPaginaDeEstudante()
+  const [navegacao] = useNavegacaoDaPaginaDeEstudante();
 
   const { data: informacoesDeEstudante } = useQuery({
     queryKey: ["informacoesDeEstudante"],
@@ -190,11 +190,11 @@ export const InformacoesDeEstudante = () => {
         campus_id: 0,
         description: "Carregando...",
         id: 0,
-        initials: "NE"
+        initials: "NE",
       },
       course_id: 0,
       dateValid: "Carregando...",
-      id: 0.0000,
+      id: 0.0,
       mat: "Carregando...",
       name: "Carregando...",
       observation: "Carregando...",
@@ -202,22 +202,20 @@ export const InformacoesDeEstudante = () => {
       republic: true,
       block: true,
       semRegular: 0,
-      shift_id: 1
-    }
-  })
+      shift_id: 1,
+    },
+  });
 
   const { data: informacoesDoCampus } = useQuery({
     queryKey: ["informacoesDoCampus", informacoesDeEstudante],
-    queryFn: async () => await buscarCampus(
-      String(informacoesDeEstudante?.campus_id),
-    ),
+    queryFn: async () =>
+      await buscarCampus(String(informacoesDeEstudante?.campus_id)),
     initialData: {
       description: "Carregando...",
-      id: 0
-    }
-  })
+      id: 0,
+    },
+  });
 
-  // TODO: impedir querenderize duas vezes
   if (navegacao.isMobile && navegacao.pagina == "refeicoesAutorizadas")
     return (
       <MobileCompleta
