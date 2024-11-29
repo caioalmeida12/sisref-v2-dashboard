@@ -25,6 +25,7 @@ import { validarTokenDosCookies } from "../lib/middlewares/ValidarTokenDosCookie
  *
  * @param data Data no formato "YYYY-MM-DD"
  * @returns Um array de objetos contendo as refeições disponíveis para o dia solicitado.
+ * @deprecated Substituido pela versao de route handler
  */
 export async function buscarRefeicoesPorDia({
   data = new Date().toISOString().split("T")[0],
@@ -124,6 +125,7 @@ const urlPorTipoDeTicket = {
  *
  * @param tipo Tipo de ticket a ser buscado. Pode ser `a-ser-utilizado`, `utilizado`, `cancelado` ou `nao-utilizado`.
  * @returns Um array de objetos contendo os tickets de refeição.
+ * @deprecated Substituido pela versao de route handler
  */
 export const buscarTickets = async (tipo: keyof typeof urlPorTipoDeTicket) => {
   const API_URL = `/student/schedulings${urlPorTipoDeTicket[tipo]}?page=1`;
@@ -264,8 +266,7 @@ export const buscarRelatorioDeDesperdicio = async ({
  *
  * @returns Um objeto contendo as informações de estudante com curso incluso.
  */
-export const buscarEstudante = async (
-): Promise<TEstudanteComCurso> => {
+export const buscarEstudante = async (): Promise<TEstudanteComCurso> => {
   const validado = await validarTokenDosCookies();
 
   const resposta = await FetchHelper.get<TEstudanteComCurso>({
