@@ -2,7 +2,6 @@
 
 import { CabecalhoDeSecao } from "@elementos/basicos/CabecalhoDeSecao";
 import { Secao } from "@elementos/basicos/Secao";
-import Skeleton from "react-loading-skeleton";
 import { TextoDescritivo } from "./TextoDescritivo";
 
 export const RestricoesAlimentares = () => {
