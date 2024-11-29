@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { IRespostaDeAction } from "@/app/interfaces/IRespostaDeAction";
+import { TRefeicao, TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { CustomTooltipWrapper } from "@elementos/basicos/CustomTooltipWrapper";
+import { Secao } from "@elementos/basicos/Secao";
 import {
   Refeicao,
   RefeicaoLoading,
 } from "@elementos/componentes/Refeicao/Refeicao";
 import { Slider } from "@elementos/componentes/Slider";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { Secao } from "@elementos/basicos/Secao";
 import { useQuery } from "@tanstack/react-query";
-import { CustomTooltipWrapper } from "@elementos/basicos/CustomTooltipWrapper";
-import { buscarRefeicoesPorDia } from "@/app/actions/estudante";
-import { TRefeicao, TRefeicaoECardapio } from "@/app/interfaces/TRefeicao";
+import { useEffect, useState } from "react";
 
 export const RefeicoesPorDia = () => {
   const [dataDaPesquisa, setDataDaPesquisa] = useState(
@@ -27,7 +27,21 @@ export const RefeicoesPorDia = () => {
 
   const { data: refeicoesEncontradas, isLoading } = useQuery({
     queryKey: ["refeicoesPorDia", dataDaPesquisa],
-    queryFn: () => buscarRefeicoesPorDia({ data: dataDaPesquisa }),
+    queryFn: async () => {
+      // este componente não utiliza o `buscarRefeicoesPorDia` do arquivo `estudante.ts` por questões de performance
+      // explicadas no arquivo `historico-de-refeicoes/route.ts`
+      const resposta = await fetch(
+        `/api/refeicoes-por-dia?data=${dataDaPesquisa}`,
+      );
+
+      if (!resposta.ok) {
+        return [];
+      }
+
+      const json: IRespostaDeAction<TRefeicaoECardapio> = await resposta.json();
+
+      return json.sucesso ? json.resposta : [];
+    },
   });
 
   useEffect(() => {
