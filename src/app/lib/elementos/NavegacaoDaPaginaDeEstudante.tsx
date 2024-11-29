@@ -6,7 +6,7 @@ export const useNavegacaoDaPaginaDeEstudante = () => {
   return useQueryStates(
     {
       pagina: parseAsString.withDefault("refeicoesPorDia"),
-      isMobile: parseAsBoolean.withDefault(false),
+      isMobile: parseAsBoolean.withDefault(true),
     },
     {
       clearOnDefault: true,
