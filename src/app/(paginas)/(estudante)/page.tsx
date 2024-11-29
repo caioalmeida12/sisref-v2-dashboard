@@ -15,7 +15,6 @@ export default function Home() {
     const handleResize = () =>
       setNavegacao({ isMobile: window.innerWidth < 1024 });
     handleResize();
-    alert("hey");
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
