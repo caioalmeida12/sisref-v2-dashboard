@@ -14,10 +14,9 @@ export default function Home() {
   useLayoutEffect(() => {
     const handleResize = () =>
       setNavegacao({ isMobile: window.innerWidth < 1024 });
-    window.addEventListener("load", handleResize);
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener("load", handleResize);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
