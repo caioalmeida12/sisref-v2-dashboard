@@ -18,8 +18,9 @@ export const TEstudanteSchema = z.object({
   dateValid: z.string(),
   semRegular: z.number(),
   hasKey: z.number().transform(Boolean),
-  cabinet: z.number().nullable().default(null),
-  key: z.number().nullable().default(null),
+  // Esses valores de máximo e mínimo foram hardcoded pelo backend, quando houver atualização lá, tem que fazer manual aqui
+  cabinet: z.number().min(1).max(44).nullable().default(null),
+  key: z.number().min(1).max(12).nullable().default(null),
 });
 
 export const TEstudanteComCursoSchema = TEstudanteSchema.extend({
