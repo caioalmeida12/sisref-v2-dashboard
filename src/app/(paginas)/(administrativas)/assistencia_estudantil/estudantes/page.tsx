@@ -19,6 +19,7 @@ import { ModalEditarEstudante } from "@/app/elementos/modulos/assistencia_estuda
 import { ModalRemoverEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalRemoverEstudante";
 import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
 import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
+import Icone from "@/app/elementos/basicos/Icone";
 
 export default function Estudantes() {
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
@@ -49,6 +50,52 @@ export default function Estudantes() {
         header: "Nome completo",
         size: 750,
       }),
+      colunasHelper.accessor(
+        (student) =>
+          student.key && student.cabinet
+            ? `${student.cabinet} ${student.key}`
+            : "Não informado",
+        {
+          cell: (props) => {
+            if (props.getValue() == "Não informado")
+              return (
+                <CustomTooltipWrapper
+                  elementoTrigger={"N/I"}
+                  elementoContent={"Não informado"}
+                />
+              );
+
+            const [armario, chave] = props.getValue().split(" ");
+
+            return (
+              <div>
+                {!armario || !chave ? (
+                  <span className="w-full">N/A</span>
+                ) : (
+                  <>
+                    <CustomTooltipWrapper
+                      elementoContent={`Armário ${armario}, chave ${chave}`}
+                      elementoTrigger={
+                        <div className="flex flex-nowrap items-center justify-center gap-x-2 whitespace-nowrap">
+                          <div className="flex items-center gap-x-1">
+                            <Icone.Armario />
+                            {armario}
+                          </div>
+                          <div className="flex items-center gap-x-1">
+                            <Icone.Chave />
+                            {chave}
+                          </div>
+                        </div>
+                      }
+                    />
+                  </>
+                )}
+              </div>
+            );
+          },
+          header: "Armário / Chave",
+        },
+      ),
       colunasHelper.accessor((student) => student.user[0]?.email ?? "", {
         cell: (props) => props.getValue(),
         header: "Email",

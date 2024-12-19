@@ -22,7 +22,9 @@ export type IIconesDisponiveis =
   | "EstudanteComChapeu"
   | "Ampulheta"
   | "GraficoDeBarras"
-  | "Lixeira";
+  | "Lixeira"
+  | "Chave"
+  | "Armario";
 
 export interface IIconeDropdownProps extends HTMLAttributes<HTMLElement> {
   variante?: "sem-circulo";

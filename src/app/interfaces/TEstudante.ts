@@ -17,6 +17,9 @@ export const TEstudanteSchema = z.object({
   active: z.number().transform(Boolean),
   dateValid: z.string(),
   semRegular: z.number(),
+  hasKey: z.number().transform(Boolean),
+  cabinet: z.number().nullable().default(null),
+  key: z.number().nullable().default(null),
 });
 
 export const TEstudanteComCursoSchema = TEstudanteSchema.extend({
