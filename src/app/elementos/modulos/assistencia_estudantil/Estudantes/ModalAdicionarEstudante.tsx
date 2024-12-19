@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta";
@@ -17,6 +17,17 @@ import { SelectGeral } from "@/app/elementos/componentes/SelectGeral";
 
 export const ModalAdicionarEstudante = () => {
   const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
+  const [hasKey, setHasKey] = useState(false);
+
+  const handleHasKeyField = () => {
+    const keyInput = document.getElementById("key") as HTMLInputElement | null;
+    const cabinetInput = document.getElementById(
+      "cabinet",
+    ) as HTMLInputElement | null;
+
+    setHasKey(Boolean(keyInput?.value && cabinetInput?.value));
+  };
+
   const queryClient = useQueryClient();
 
   const { data: cursos, isFetching: isLoadingCursos } = useQuery({
@@ -122,6 +133,32 @@ export const ModalAdicionarEstudante = () => {
                 name="email"
               />
             </Form.Field>
+            <div className="flex gap-x-2">
+              <Form.Field name="cabinet" className="flex flex-col gap-y-1">
+                <Form.Label className="font-medium" htmlFor="cabinet">
+                  Armário
+                </Form.Label>
+                <Form.Control
+                  className="h-[34px] w-full rounded px-2 py-1 outline outline-1"
+                  id="cabinet"
+                  placeholder="ex: 1"
+                  name="cabinet"
+                  onChange={handleHasKeyField}
+                />
+              </Form.Field>
+              <Form.Field name="key" className="flex flex-col gap-y-1">
+                <Form.Label className="font-medium" htmlFor="key">
+                  Chave
+                </Form.Label>
+                <Form.Control
+                  className="h-[34px] w-full rounded px-2 py-1 outline outline-1"
+                  id="key"
+                  placeholder="ex: 1"
+                  name="key"
+                  onChange={handleHasKeyField}
+                />
+              </Form.Field>
+            </div>
             <Form.Field name="semRegular" className="flex flex-col gap-y-1">
               <Form.Label className="font-medium" htmlFor="semRegular">
                 Calendário do semestre
@@ -179,6 +216,12 @@ export const ModalAdicionarEstudante = () => {
                 }))
               }
               estaCarregando={isLoadingTurnos}
+            />
+            <input
+              type="hidden"
+              name="hasKey"
+              value={hasKey ? 1 : 0}
+              readOnly
             />
             <div className="flex flex-col items-center justify-end gap-y-2">
               <div className="text-center" ref={mensagemDeRespostaRef}></div>
