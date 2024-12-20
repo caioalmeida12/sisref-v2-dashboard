@@ -12,6 +12,7 @@ interface ISelectProps {
   }[];
   estaCarregando?: boolean;
   triggerClassname?: string;
+  defaultValue?: string | number;
 }
 
 export const SelectGeral = ({
@@ -20,6 +21,7 @@ export const SelectGeral = ({
   opcoes,
   estaCarregando,
   triggerClassname,
+  defaultValue,
 }: ISelectProps) => {
   const opcoesArray = useMemo(() => opcoes(), [opcoes]);
 
@@ -28,7 +30,10 @@ export const SelectGeral = ({
       <label className="font-medium" htmlFor={name}>
         {label}
       </label>
-      <Select.Root name={name}>
+      <Select.Root
+        name={name}
+        defaultValue={defaultValue ? String(defaultValue) : undefined}
+      >
         <Select.Trigger
           className={classNames(
             "flex h-fit min-h-[34px] min-w-[250px] items-center overflow-hidden rounded px-2 py-1 text-left outline outline-1 outline-preto-400 disabled:cursor-not-allowed disabled:text-cinza-600",
