@@ -220,6 +220,7 @@ export const ModalEditarEstudante: React.FC<ModalProps> = ({ estudante }) => {
                 }))
               }
               estaCarregando={isLoadingCursos}
+              defaultValue={estudante.course.id}
             />
             <SelectGeral
               label="Turno"
@@ -231,6 +232,7 @@ export const ModalEditarEstudante: React.FC<ModalProps> = ({ estudante }) => {
                 }))
               }
               estaCarregando={isLoadingTurnos}
+              defaultValue={estudante.shift?.id}
             />
             <input type="hidden" name="id" value={estudante.id} readOnly />
             <input
