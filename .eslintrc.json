@@ -2,9 +2,13 @@
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",
-    "@tanstack/eslint-plugin-query"
+    "@tanstack/eslint-plugin-query",
+    "react-hooks"
   ],
-  "extends": "next/core-web-vitals",
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:react-hooks/recommended"
+  ],
   "rules": {
     "@typescript-eslint/no-unused-vars": [
       "warn",
@@ -14,7 +18,8 @@
         "ignoreRestSiblings": false
       }
     ],
-    "react-hooks/exhaustive-deps": "off",
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

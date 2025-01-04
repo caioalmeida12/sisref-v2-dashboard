@@ -18,10 +18,11 @@ import {
   RowData,
 } from "@tanstack/react-table";
 import Skeleton from "react-loading-skeleton";
-import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
 import { PaginacaoNoServidor } from "./PaginacaoNoServidor";
 import { PaginacaoNoCliente } from "./PaginacaoNoCliente";
 import { Filtro } from "./Filtro";
+import { IRequisicaoPaginadaQueryStates } from "@/app/interfaces/IRespostaPaginadaQueryStates";
+import { SetValues, Values } from "nuqs";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 declare module "@tanstack/react-table" {
@@ -38,9 +39,8 @@ export interface ITabelaDeCrudProps<TipoDeDado> {
   ordenacaoPadrao?: { id: string; desc: boolean }[];
   filtros?: ColumnFiltersState;
   paginacaoNoServidor?: {
-    per_page: number;
-    page: number;
-    respostaPaginada: IRespostaPaginada<TipoDeDado>;
+    paginacao: Values<IRequisicaoPaginadaQueryStates>;
+    setPaginacao: SetValues<IRequisicaoPaginadaQueryStates>;
   };
 }
 
@@ -103,8 +103,8 @@ export function TabelaDeCrud<TipoDeDado>({
     debugColumns: false,
     debugAll: false,
     manualPagination: typeof paginacaoNoServidor !== "undefined",
-    rowCount: paginacaoNoServidor?.per_page,
-    pageCount: paginacaoNoServidor?.page,
+    rowCount: paginacaoNoServidor?.paginacao.per_page,
+    pageCount: paginacaoNoServidor?.paginacao.page,
   });
 
   return (
@@ -161,7 +161,7 @@ export function TabelaDeCrud<TipoDeDado>({
                         style={{
                           transform:
                             columnResizeMode === "onEnd" &&
-                              header.column.getIsResizing()
+                            header.column.getIsResizing()
                               ? `translateX(${(table.options.columnResizeDirection === "rtl" ? -1 : 1) * (table.getState().columnSizingInfo.deltaOffset ?? 0)}px)`
                               : "",
                         }}
@@ -234,7 +234,10 @@ export function TabelaDeCrud<TipoDeDado>({
       </table>
       <div className="h-2" />
       {paginacaoNoServidor
-        ? PaginacaoNoServidor(paginacaoNoServidor)
+        ? PaginacaoNoServidor({
+            paginacaoNoServidor,
+            desligarNavegacao: Boolean(estaCarregando),
+          })
         : PaginacaoNoCliente(table as any)}
     </div>
   );

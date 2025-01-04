@@ -12,6 +12,8 @@ import {
 import { TCurso, TCursoSchema } from "../interfaces/TCurso";
 import { TTurno, TTurnoSchema } from "../interfaces/TTurno";
 import { TRepublica, TRepublicaSchema } from "../interfaces/TRepublica";
+import { IResquisicaoPaginada } from "../interfaces/IRequisicaoPaginada";
+import { respostaPaginadaPadrao } from "../lib/actions/RespostaPaginadaPadrao"
 
 /**
  * Este módulo contém todas as actions relacionadas à página de assistência estudantil.
@@ -105,6 +107,25 @@ export const buscarEstudantes = async (): Promise<
   });
 
   return { sucesso: true, resposta: estudantes };
+};
+
+/**
+ * Busca todos os registros de estudante.
+ */
+export const buscarEstudantesComPaginacao = async (
+  paginacao: IResquisicaoPaginada,
+): Promise<IRespostaPaginada<TEstudanteComCursoTurnoEUsuario>> => {
+  const resposta = await FetchHelper.get<
+    IRespostaPaginada<TEstudanteComCursoTurnoEUsuario>
+  >({
+    rota: `/student?page=${paginacao.page}&perPage=${paginacao.per_page}`,
+    cookies: await cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+  });
+
+  if (!resposta.sucesso) return respostaPaginadaPadrao
+
+  return resposta.resposta[0];
 };
 
 /**

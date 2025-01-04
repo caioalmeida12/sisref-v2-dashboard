@@ -9,7 +9,7 @@ import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/Tabela
 import { createColumnHelper } from "@tanstack/react-table";
 import {
   atualizarVencimentosEmMassa,
-  buscarEstudantes,
+  buscarEstudantesComPaginacao,
 } from "@/app/actions/assistencia_estudantil";
 import { ModalAdicionarEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalAdicionarEstudante";
 import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
@@ -20,16 +20,36 @@ import { ModalRemoverEstudante } from "@/app/elementos/modulos/assistencia_estud
 import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
 import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
 import Icone from "@/app/elementos/basicos/Icone";
+import { parseAsInteger, useQueryStates } from "nuqs";
+import { IRequisicaoPaginadaQueryStates } from "@/app/interfaces/IRespostaPaginadaQueryStates";
+import { respostaPaginadaPadrao } from "@/app/lib/actions/RespostaPaginadaPadrao";
 
 export default function Estudantes() {
-  const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
-    queryKey: ["tabelaDeEstudantes"],
-    queryFn: async () => {
-      const resposta = await buscarEstudantes();
+  const [paginacao, setPaginacao] =
+    useQueryStates<IRequisicaoPaginadaQueryStates>({
+      last_page: parseAsInteger.withDefault(1),
+      per_page: parseAsInteger.withDefault(50),
+      page: parseAsInteger.withDefault(1),
+      total: parseAsInteger.withDefault(50),
+    });
 
-      return resposta.sucesso ? resposta.resposta : [];
+  const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
+    queryKey: ["tabelaDeEstudantes", paginacao.page],
+    queryFn: async () => {
+      const resposta = await buscarEstudantesComPaginacao(paginacao);
+
+      if (!resposta) return respostaPaginadaPadrao;
+
+      setPaginacao({
+        last_page: resposta.last_page,
+        page: resposta.current_page,
+        total: resposta.total,
+        per_page: resposta.per_page,
+      });
+
+      return resposta;
     },
-    initialData: [],
+    initialData: respostaPaginadaPadrao,
   });
 
   const colunasHelper = createColumnHelper<TEstudanteComCursoTurnoEUsuario>();
@@ -146,7 +166,7 @@ export default function Estudantes() {
         header: "Ações",
       }),
     ],
-    [],
+    [colunasHelper],
   );
 
   return (
@@ -197,9 +217,13 @@ export default function Estudantes() {
         <Secao>
           <TabelaDeCrud
             colunas={colunas}
-            dados={dadosDaTabela ?? []}
+            dados={dadosDaTabela.data}
             estaCarregando={isLoadingDadosDaTabela}
             ordenacaoPadrao={[{ id: "id", desc: true }]}
+            paginacaoNoServidor={{
+              paginacao,
+              setPaginacao,
+            }}
           />
         </Secao>
       </Secao>
