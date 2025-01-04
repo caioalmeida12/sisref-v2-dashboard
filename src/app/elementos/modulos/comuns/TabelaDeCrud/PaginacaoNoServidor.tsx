@@ -1,100 +1,125 @@
-import { createSerializer, parseAsInteger } from "nuqs";
 import { ITabelaDeCrudProps } from "./TabelaDeCrud";
+import { debounce } from "lodash";
 
-export function PaginacaoNoServidor(
+export function PaginacaoNoServidor({
+  paginacaoNoServidor,
+  desligarNavegacao,
+}: {
   paginacaoNoServidor: NonNullable<
     ITabelaDeCrudProps<any>["paginacaoNoServidor"]
-  >,
-) {
-  const serialize = createSerializer({
-    page: parseAsInteger,
-    per_page: parseAsInteger,
-  });
+  >;
+  desligarNavegacao: boolean;
+}) {
+  const first_page_number = 1;
 
-  const first_page_number =
-    paginacaoNoServidor.respostaPaginada.first_page_url.split("page=")[1] ?? "";
-
-  const last_page_number = paginacaoNoServidor.respostaPaginada.last_page;
+  const last_page_number = paginacaoNoServidor.paginacao.last_page;
 
   const next_page_number =
-    paginacaoNoServidor.respostaPaginada.current_page + 1 > last_page_number
+    paginacaoNoServidor.paginacao.page + 1 > last_page_number
       ? last_page_number
-      : paginacaoNoServidor.respostaPaginada.current_page + 1;
+      : paginacaoNoServidor.paginacao.page + 1;
 
   const previous_page_number =
-    paginacaoNoServidor.respostaPaginada.current_page - 1 < 1
+    paginacaoNoServidor.paginacao.page - 1 < 1
       ? 1
-      : paginacaoNoServidor.respostaPaginada.current_page - 1;
+      : paginacaoNoServidor.paginacao.page - 1;
+
+  const setPaginacao = ({
+    page,
+    per_page,
+  }: {
+    page: number;
+    per_page?: number;
+  }) => {
+    const cappedPage = Math.max(
+      1,
+      Math.min(page, paginacaoNoServidor.paginacao.last_page),
+    );
+    paginacaoNoServidor.setPaginacao({
+      ...paginacaoNoServidor.paginacao,
+      page: cappedPage,
+      per_page: per_page || paginacaoNoServidor.paginacao.per_page,
+    });
+  };
+
+  const debouncedSetPaginacao = debounce(setPaginacao, 500, {
+    leading: false,
+    trailing: true,
+  });
 
   return (
     <div className="flex items-center gap-2">
-      <div
+      <button
         className="rounded border p-1"
-        onClick={() => {
-          window.location.href = serialize({
-            page: Number(first_page_number),
-          });
-        }}
+        onClick={() =>
+          !desligarNavegacao &&
+          debouncedSetPaginacao({ page: first_page_number })
+        }
+        disabled={desligarNavegacao}
       >
         {"<<"}
-      </div>
-      <div
+      </button>
+      <button
         className="rounded border p-1"
-        onClick={() => {
-          window.location.href = serialize({
-            page: Number(previous_page_number),
-          });
-        }}
+        onClick={() =>
+          !desligarNavegacao &&
+          debouncedSetPaginacao({ page: previous_page_number })
+        }
+        disabled={desligarNavegacao}
       >
         {"<"}
-      </div>
-      <div
+      </button>
+      <button
         className="rounded border p-1"
-        onClick={() => {
-          window.location.href = serialize({
-            page: Number(next_page_number),
-          });
-        }}
+        onClick={() =>
+          !desligarNavegacao &&
+          debouncedSetPaginacao({ page: next_page_number })
+        }
+        disabled={desligarNavegacao}
       >
         {">"}
-      </div>
-      <div
+      </button>
+      <button
         className="rounded border p-1"
-        onClick={() => {
-          window.location.href = serialize({
-            page: Number(last_page_number),
-          });
-        }}
+        onClick={() =>
+          !desligarNavegacao &&
+          debouncedSetPaginacao({ page: last_page_number })
+        }
+        disabled={desligarNavegacao}
       >
         {">>"}
-      </div>
+      </button>
       <span className="flex items-center gap-1">
         <div>Página</div>
         <strong>
-          {paginacaoNoServidor.respostaPaginada.current_page} de{" "}
-          {last_page_number}
+          {paginacaoNoServidor.paginacao.page} de {last_page_number}
         </strong>
       </span>
       <span className="flex items-center gap-1">
         | Ir para página:
         <input
           type="number"
-          defaultValue={paginacaoNoServidor.respostaPaginada.current_page}
+          defaultValue={paginacaoNoServidor.paginacao.page}
+          min={1}
+          max={paginacaoNoServidor.paginacao.last_page}
           onChange={(e) => {
             const page = e.target.value ? Number(e.target.value) : 1;
-            window.location.href = serialize({ page });
+            !desligarNavegacao && debouncedSetPaginacao({ page });
           }}
           className="w-16 rounded border p-1"
+          disabled={desligarNavegacao}
         />
       </span>
       <select
-        value={paginacaoNoServidor.per_page}
-        onChange={(e) => {
-          window.location.href = serialize({
+        value={paginacaoNoServidor.paginacao.per_page}
+        onChange={(e) =>
+          !desligarNavegacao &&
+          setPaginacao({
             page: 1,
             per_page: Number(e.target.value),
-          });
-        }}
+          })
+        }
+        disabled={desligarNavegacao}
       >
         {[10, 25, 50, 100, 500, 1000, 10000].map((pageSize, index) => (
           <option key={index} value={pageSize}>

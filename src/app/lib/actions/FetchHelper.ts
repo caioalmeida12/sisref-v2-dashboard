@@ -4,13 +4,13 @@ import { redirecionarViaAction } from "./RedirecionarViaAction";
 
 type RespostaDaAPI<T> =
   | {
-      sucesso: false;
-      message: string;
-    }
+    sucesso: false;
+    message: string;
+  }
   | {
-      sucesso: true;
-      resposta: Array<T>;
-    };
+    sucesso: true;
+    resposta: Array<T>;
+  };
 
 /**
  * Verifica se a resposta da API foi um erro. Para isso, verifica se o objeto é um objeto json e se possui a chave `message`.
