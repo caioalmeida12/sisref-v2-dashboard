@@ -14,7 +14,11 @@ import {
 import { ModalAdicionarEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalAdicionarEstudante";
 import { BadgeDeVencimento } from "@/app/elementos/basicos/BadgeDeVencimento";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
-import { TEstudanteComCursoTurnoEUsuario } from "@/app/interfaces/TEstudante";
+import {
+  TEstudanteComCursoSchema,
+  TEstudanteComCursoTurnoEUsuario,
+  TEstudanteComCursoTurnoEUsuarioSchema,
+} from "@/app/interfaces/TEstudante";
 import { ModalEditarEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalEditarEstudante";
 import { ModalRemoverEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalRemoverEstudante";
 import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
@@ -23,6 +27,9 @@ import Icone from "@/app/elementos/basicos/Icone";
 import { parseAsInteger, useQueryStates } from "nuqs";
 import { IRequisicaoPaginadaQueryStates } from "@/app/interfaces/IRespostaPaginadaQueryStates";
 import { respostaPaginadaPadrao } from "@/app/lib/actions/RespostaPaginadaPadrao";
+import { FetchRouteHandler } from "@/app/lib/actions/FetchRouteHandler";
+import { IRespostaDeAction } from "@/app/interfaces/IRespostaDeAction";
+import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
 
 export default function Estudantes() {
   const [paginacao, setPaginacao] =
@@ -36,10 +43,18 @@ export default function Estudantes() {
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
     queryKey: ["tabelaDeEstudantes", paginacao.page],
     queryFn: async () => {
-      const resposta = await buscarEstudantesComPaginacao(paginacao);
+      const respostaInicial = await FetchRouteHandler.get(
+        "/student",
+        paginacao,
+      );
+      if (!respostaInicial.ok) return respostaPaginadaPadrao;
 
-      if (!resposta) return respostaPaginadaPadrao;
+      const json = (await respostaInicial.json()) as IRespostaDeAction<
+        IRespostaPaginada<unknown>
+      >;
+      if (!json.sucesso) return respostaPaginadaPadrao;
 
+      const [resposta] = json.resposta;
       setPaginacao({
         last_page: resposta.last_page,
         page: resposta.current_page,
@@ -47,7 +62,13 @@ export default function Estudantes() {
         per_page: resposta.per_page,
       });
 
-      return resposta;
+      return {
+        ...resposta,
+        data: resposta.data.flatMap((ent) => {
+          const parsed = TEstudanteComCursoTurnoEUsuarioSchema.safeParse(ent);
+          return parsed.success ? parsed.data : [];
+        }),
+      };
     },
     initialData: respostaPaginadaPadrao,
   });
