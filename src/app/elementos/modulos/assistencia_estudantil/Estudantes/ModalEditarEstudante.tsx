@@ -46,7 +46,7 @@ export const ModalEditarEstudante: React.FC<ModalProps> = ({ estudante }) => {
   });
 
   const { data: turnos, isFetching: isLoadingTurnos } = useQuery({
-    queryKey: ["tabelaDeTurnos"],
+    queryKey: ["tabelaDeTurnos", "semPaginacao"],
     queryFn: async () => {
       const resposta = await buscarTurnos();
       return resposta.sucesso ? resposta.resposta : [];
