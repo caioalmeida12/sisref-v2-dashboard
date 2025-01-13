@@ -11,8 +11,11 @@ async function fetchComPaginacao<T>(
   paginacao: Pick<IRespostaPaginada<T>, "current_page" | "per_page">,
   cookies: ReadonlyRequestCookies
 ): Promise<IRespostaPaginada<T>> {
+  const separador = rota.includes('?') ? '&' : '?';
+  const urlPaginada = `${rota}${separador}page=${paginacao.current_page}&perPage=${paginacao.per_page}`;
+
   const resposta = await FetchHelper.get<IRespostaPaginada<T>>({
-    rota: `${rota}?page=${paginacao.current_page}&perPage=${paginacao.per_page}`,
+    rota: urlPaginada,
     cookies: cookies,
     rotaParaRedirecionarCasoFalhe: null,
   });
@@ -28,7 +31,8 @@ export async function GET(req: NextRequest): Promise<NextResponse<IRespostaDeAct
     per_page: parseInt(req.nextUrl.searchParams.get("perPage") || "10"),
   };
 
-  const rota = req.nextUrl.searchParams.get("path");
+  const searchParams = new URLSearchParams(req.nextUrl.search);
+  const rota = searchParams.get("path");
 
   if (!rota) {
     return NextResponse.json({
@@ -37,7 +41,12 @@ export async function GET(req: NextRequest): Promise<NextResponse<IRespostaDeAct
     });
   }
 
-  const resposta = await fetchComPaginacao<unknown>(encodeURI(rota), paginacao, await cookies());
+  searchParams.delete("path");
+  searchParams.delete("page");
+  searchParams.delete("perPage");
+
+  const urlFinal = `${rota}${searchParams.toString() ? '?' + searchParams.toString() : ''}`;
+  const resposta = await fetchComPaginacao<unknown>(encodeURI(urlFinal), paginacao, await cookies());
 
   return NextResponse.json({
     sucesso: true,
