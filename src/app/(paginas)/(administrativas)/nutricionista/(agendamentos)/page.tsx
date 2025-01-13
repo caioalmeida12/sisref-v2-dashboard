@@ -1,61 +1,111 @@
 "use client";
 
+import * as Form from "@radix-ui/react-form";
+import { useQuery } from "@tanstack/react-query";
+import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
+import React, { useMemo } from "react";
+
+import { buscarJustificativasNaoProcessadas } from "@/app/actions/assistencia_estudantil";
 import {
-  buscarAgendamentos,
   buscarRefeicoes,
   confirmarAgendamento,
   criarAgendamento,
   removerAgendamento,
 } from "@/app/actions/nutricionista";
+import { Badge } from "@/app/elementos/basicos/Badge";
 import { Botao } from "@/app/elementos/basicos/Botao";
+import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
 import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
-import { Secao } from "@/app/elementos/basicos/Secao";
-import { Badge } from "@elementos/basicos/Badge";
-import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import * as Form from "@radix-ui/react-form";
-import { useQuery } from "@tanstack/react-query";
-import { createColumnHelper } from "@tanstack/react-table";
-import * as React from "react";
-import { useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 import Icone from "@/app/elementos/basicos/Icone";
-import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
+import { Secao } from "@/app/elementos/basicos/Secao";
+import { ModalJustificativasNaoProcessadas } from "@/app/elementos/modulos/assistencia_estudantil/Agendamentos/ModalJustificativasNaoProcessadas";
+import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
+import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
+import { IRespostaDeAction } from "@/app/interfaces/IRespostaDeAction";
+import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
+import { IRequisicaoPaginadaQueryStates } from "@/app/interfaces/IRespostaPaginadaQueryStates";
+import { TAgendamentoSchema } from "@/app/interfaces/TAgendamento";
+import { FetchRouteHandler } from "@/app/lib/actions/FetchRouteHandler";
+import { respostaPaginadaPadrao } from "@/app/lib/actions/RespostaPaginadaPadrao";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { createColumnHelper } from "@tanstack/react-table";
 
 export default function Agendamentos() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [datas, setDatas] = useState({
-    dataInicial: searchParams.get("dataInicial") || DatasHelper.getDataDeHoje(),
-    dataFinal: searchParams.get("dataFinal") || DatasHelper.getDataDeHoje(),
-  });
+  const [pesquisa, setPesquisa] = useQueryStates(
+    {
+      dataInicial: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
+      dataFinal: parseAsString.withDefault(DatasHelper.getDataDeHoje()),
+    },
+    {
+      clearOnDefault: true,
+    },
+  );
+
+  const [paginacao, setPaginacao] =
+    useQueryStates<IRequisicaoPaginadaQueryStates>({
+      last_page: parseAsInteger.withDefault(1),
+      per_page: parseAsInteger.withDefault(50),
+      page: parseAsInteger.withDefault(1),
+      total: parseAsInteger.withDefault(50),
+    });
 
   const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
     initialData: [],
     queryKey: ["tabelaDeRefeicoes"],
     queryFn: async () => {
       const resposta = await buscarRefeicoes();
-
       return resposta.sucesso ? resposta.resposta : [];
     },
   });
 
-  const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
-    queryKey: ["tabelaDeAgendamentos", datas.dataInicial, datas.dataFinal],
+  const { data: justificativasNaoProcessadas } = useQuery({
+    queryKey: ["justificativasNaoProcessadas"],
     queryFn: async () => {
-      const resposta = await buscarAgendamentos({
-        data_inicial: datas.dataInicial || new Date().toISOString(),
-      });
-
+      const resposta = await buscarJustificativasNaoProcessadas();
       return resposta.sucesso ? resposta.resposta : [];
     },
+    refetchInterval: 1000 * 60 * 5,
     initialData: [],
   });
 
-  const colunasHelper = createColumnHelper<(typeof dadosDaTabela)[number]>();
+  const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
+    queryKey: ["tabelaDeAgendamentos", paginacao.page, pesquisa],
+    queryFn: async () => {
+      const respostaInicial = await FetchRouteHandler.get(
+        "/scheduling/list-by-date",
+        paginacao,
+        `date=${pesquisa.dataInicial}&final_date=${pesquisa.dataFinal ?? pesquisa.dataInicial}`,
+      );
+
+      if (!respostaInicial.ok) return respostaPaginadaPadrao;
+
+      const json = (await respostaInicial.json()) as IRespostaDeAction<
+        IRespostaPaginada<unknown>
+      >;
+      if (!json.sucesso) return respostaPaginadaPadrao;
+
+      const [resposta] = json.resposta;
+      setPaginacao({
+        last_page: resposta.last_page,
+        page: resposta.current_page,
+        total: resposta.total,
+        per_page: resposta.per_page,
+      });
+
+      return {
+        ...resposta,
+        data: resposta.data.flatMap((ent) => {
+          const parsed = TAgendamentoSchema.safeParse(ent);
+          return parsed.success ? parsed.data : [];
+        }),
+      };
+    },
+    initialData: respostaPaginadaPadrao,
+  });
+
+  const colunasHelper =
+    createColumnHelper<(typeof dadosDaTabela.data)[number]>();
 
   const colunas = useMemo(
     () => [
@@ -249,12 +299,10 @@ export default function Agendamentos() {
     const dataInicial = formData.get("dataInicial") as string;
     const dataFinal = formData.get("dataFinal") as string;
 
-    const urlAtual = new URL(window.location.href);
-    urlAtual.searchParams.set("dataInicial", dataInicial);
-    urlAtual.searchParams.set("dataFinal", dataFinal);
-
-    setDatas({ dataInicial, dataFinal });
-    router.push(urlAtual.toString());
+    setPesquisa({
+      dataInicial,
+      dataFinal,
+    });
   };
 
   return (
@@ -272,28 +320,21 @@ export default function Agendamentos() {
                 <Form.Control
                   type="date"
                   className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
-                  defaultValue={datas.dataInicial}
+                  defaultValue={pesquisa.dataInicial}
                 />
               </Form.Field>
-              <Form.Submit />
-              {/* <Form.Field name="dataFinal" className="flex flex-col gap-y-2">
-                <Form.Label className="font-bold">Data Final</Form.Label>
-                <Form.Control
-                  type="date"
-                  className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
-                  defaultValue={datas.dataFinal}
-                />
-              </Form.Field> */}
-              <Form.Submit />
               <Botao
                 variante="adicionar"
                 texto="Buscar"
-                className="py-2 leading-tight"
+                className="h-[36px] px-10 py-2 leading-tight"
                 type="submit"
               />
             </Form.Root>
           </div>
-          <div className="ml-auto mt-auto">
+          <div className="ml-auto mt-auto flex gap-x-2">
+            <ModalJustificativasNaoProcessadas
+              justificativas={justificativasNaoProcessadas}
+            />
             <ModalGeral
               textoTitulo="Reservar para estudante"
               elementoTrigger={
@@ -351,9 +392,13 @@ export default function Agendamentos() {
         <Secao>
           <TabelaDeCrud
             colunas={colunas}
-            dados={dadosDaTabela ?? []}
+            dados={dadosDaTabela.data}
             estaCarregando={isLoadingDadosDaTabela}
             ordenacaoPadrao={[{ id: "id", desc: true }]}
+            paginacaoNoServidor={{
+              paginacao,
+              setPaginacao,
+            }}
           />
         </Secao>
       </Secao>
