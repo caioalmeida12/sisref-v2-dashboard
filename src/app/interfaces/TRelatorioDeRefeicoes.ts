@@ -27,7 +27,7 @@ export const TRelatorioDeRefeicoesSchema = z.object({
   student_id: z.number(),
   ticketCode: z.string().nullable(),
   time: z.string(),
-  user_id: z.string().nullable(),
+  user_id: z.preprocess(String, z.string().nullable()),
   wasPresent: z.number(),
 });
 
