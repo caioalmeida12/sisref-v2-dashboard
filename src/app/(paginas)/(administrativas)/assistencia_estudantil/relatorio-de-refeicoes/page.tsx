@@ -76,7 +76,6 @@ export default function Page() {
         ...resposta,
         data: resposta.data.flatMap((ent) => {
           const parsed = TRelatorioDeRefeicoesSchema.safeParse(ent);
-          parsed.success == false ? console.log(parsed.error) : null;
 
           return parsed.success ? parsed.data : [];
         }),
