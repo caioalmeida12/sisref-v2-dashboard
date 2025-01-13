@@ -84,7 +84,6 @@ export default function Agendamentos() {
         IRespostaPaginada<unknown>
       >;
       if (!json.sucesso) return respostaPaginadaPadrao;
-      console.log("passou", json);
 
       const [resposta] = json.resposta;
       setPaginacao({
