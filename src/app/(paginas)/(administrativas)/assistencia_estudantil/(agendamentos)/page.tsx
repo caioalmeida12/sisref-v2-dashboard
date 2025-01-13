@@ -1,30 +1,35 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { parseAsString, useQueryStates } from "nuqs";
-import { useQuery } from "@tanstack/react-query";
 import * as Form from "@radix-ui/react-form";
+import { useQuery } from "@tanstack/react-query";
+import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
+import React, { useMemo } from "react";
 
-import { Secao } from "@/app/elementos/basicos/Secao";
-import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
-import { Botao } from "@/app/elementos/basicos/Botao";
-import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import { createColumnHelper } from "@tanstack/react-table";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { buscarJustificativasNaoProcessadas } from "@/app/actions/assistencia_estudantil";
 import {
-  buscarAgendamentos,
   buscarRefeicoes,
   confirmarAgendamento,
   criarAgendamento,
   removerAgendamento,
 } from "@/app/actions/nutricionista";
-import { buscarJustificativasNaoProcessadas } from "@/app/actions/assistencia_estudantil";
-import { ModalJustificativasNaoProcessadas } from "@/app/elementos/modulos/assistencia_estudantil/Agendamentos/ModalJustificativasNaoProcessadas";
 import { Badge } from "@/app/elementos/basicos/Badge";
+import { Botao } from "@/app/elementos/basicos/Botao";
+import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
+import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 import Icone from "@/app/elementos/basicos/Icone";
+import { Secao } from "@/app/elementos/basicos/Secao";
+import { ModalJustificativasNaoProcessadas } from "@/app/elementos/modulos/assistencia_estudantil/Agendamentos/ModalJustificativasNaoProcessadas";
 import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
-import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
+import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
+import { IRespostaDeAction } from "@/app/interfaces/IRespostaDeAction";
+import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
+import { IRequisicaoPaginadaQueryStates } from "@/app/interfaces/IRespostaPaginadaQueryStates";
+import { TAgendamentoSchema } from "@/app/interfaces/TAgendamento";
+import { FetchRouteHandler } from "@/app/lib/actions/FetchRouteHandler";
+import { respostaPaginadaPadrao } from "@/app/lib/actions/RespostaPaginadaPadrao";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { createColumnHelper } from "@tanstack/react-table";
 
 export default function Agendamentos() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -37,12 +42,19 @@ export default function Agendamentos() {
     },
   );
 
+  const [paginacao, setPaginacao] =
+    useQueryStates<IRequisicaoPaginadaQueryStates>({
+      last_page: parseAsInteger.withDefault(1),
+      per_page: parseAsInteger.withDefault(50),
+      page: parseAsInteger.withDefault(1),
+      total: parseAsInteger.withDefault(50),
+    });
+
   const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
     initialData: [],
     queryKey: ["tabelaDeRefeicoes"],
     queryFn: async () => {
       const resposta = await buscarRefeicoes();
-
       return resposta.sucesso ? resposta.resposta : [];
     },
   });
@@ -58,21 +70,43 @@ export default function Agendamentos() {
   });
 
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
-    queryKey: [
-      "tabelaDeAgendamentos",
-      pesquisa.dataInicial,
-      pesquisa.dataFinal,
-    ],
+    queryKey: ["tabelaDeAgendamentos", paginacao.page, pesquisa],
     queryFn: async () => {
-      const resposta = await buscarAgendamentos({
-        data_inicial: pesquisa.dataInicial || new Date().toISOString(),
+      const respostaInicial = await FetchRouteHandler.get(
+        "/scheduling/list-by-date",
+        paginacao,
+        `date=${pesquisa.dataInicial}&final_date=${pesquisa.dataFinal ?? pesquisa.dataInicial}`,
+      );
+
+      if (!respostaInicial.ok) return respostaPaginadaPadrao;
+
+      const json = (await respostaInicial.json()) as IRespostaDeAction<
+        IRespostaPaginada<unknown>
+      >;
+      if (!json.sucesso) return respostaPaginadaPadrao;
+      console.log("passou", json);
+
+      const [resposta] = json.resposta;
+      setPaginacao({
+        last_page: resposta.last_page,
+        page: resposta.current_page,
+        total: resposta.total,
+        per_page: resposta.per_page,
       });
-      return resposta.sucesso ? resposta.resposta : [];
+
+      return {
+        ...resposta,
+        data: resposta.data.flatMap((ent) => {
+          const parsed = TAgendamentoSchema.safeParse(ent);
+          return parsed.success ? parsed.data : [];
+        }),
+      };
     },
-    initialData: [],
+    initialData: respostaPaginadaPadrao,
   });
 
-  const colunasHelper = createColumnHelper<(typeof dadosDaTabela)[number]>();
+  const colunasHelper =
+    createColumnHelper<(typeof dadosDaTabela.data)[number]>();
 
   const colunas = useMemo(
     () => [
@@ -290,14 +324,6 @@ export default function Agendamentos() {
                   defaultValue={pesquisa.dataInicial}
                 />
               </Form.Field>
-              {/* <Form.Field name="dataFinal" className="flex flex-col gap-y-2">
-                <Form.Label className="font-bold">Data Final</Form.Label>
-                <Form.Control
-                  type="date"
-                  className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
-                  defaultValue={pesquisa.dataFinal}
-                />
-              </Form.Field> */}
               <Botao
                 variante="adicionar"
                 texto="Buscar"
@@ -367,9 +393,13 @@ export default function Agendamentos() {
         <Secao>
           <TabelaDeCrud
             colunas={colunas}
-            dados={dadosDaTabela ?? []}
+            dados={dadosDaTabela.data}
             estaCarregando={isLoadingDadosDaTabela}
             ordenacaoPadrao={[{ id: "id", desc: true }]}
+            paginacaoNoServidor={{
+              paginacao,
+              setPaginacao,
+            }}
           />
         </Secao>
       </Secao>
