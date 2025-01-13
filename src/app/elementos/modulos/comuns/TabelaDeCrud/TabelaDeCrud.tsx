@@ -81,7 +81,7 @@ export function TabelaDeCrud<TipoDeDado>({
     data: dados,
     columns: colunas,
     state: {
-      columnFilters,
+      // columnFilters,
       sorting,
       pagination,
     },
@@ -89,15 +89,15 @@ export function TabelaDeCrud<TipoDeDado>({
     columnResizeDirection,
     getCoreRowModel: getCoreRowModel(),
     onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(), //client-side filtering
+    // getFilteredRowModel: getFilteredRowModel(), //client-side filtering
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onPaginationChange: setPagination,
     getPaginationRowModel: getPaginationRowModel(),
     enableColumnResizing: true,
-    getFacetedRowModel: getFacetedRowModel(), // client-side faceting
-    getFacetedUniqueValues: getFacetedUniqueValues(), // generate unique values for select filter/autocomplete
-    getFacetedMinMaxValues: getFacetedMinMaxValues(), // generate min/max values for range filter
+    // getFacetedRowModel: getFacetedRowModel(), // client-side faceting
+    // getFacetedUniqueValues: getFacetedUniqueValues(), // generate unique values for select filter/autocomplete
+    // getFacetedMinMaxValues: getFacetedMinMaxValues(), // generate min/max values for range filter
     debugTable: false,
     debugHeaders: true,
     debugColumns: false,
@@ -177,9 +177,9 @@ export function TabelaDeCrud<TipoDeDado>({
                     colSpan={header.colSpan}
                     className="group relative h-1 cursor-pointer px-[0.125em] [&:first-of-type]:pl-0 [&:last-of-type]:pr-0"
                   >
-                    {header.column.getCanFilter() ? (
+                    {/* {header.column.getCanFilter() ? (
                       <Filtro column={header.column} />
-                    ) : null}
+                    ) : null} */}
                   </th>
                 ))}
               </tr>
