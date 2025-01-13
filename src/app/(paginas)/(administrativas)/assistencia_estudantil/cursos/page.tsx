@@ -1,34 +1,72 @@
 "use client";
 
-import React, { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 
-import { createColumnHelper } from "@tanstack/react-table";
 import {
-  buscarCursos,
   criarCurso,
   editarCurso,
   removerCurso,
 } from "@/app/actions/assistencia_estudantil";
-import { Secao } from "@/app/elementos/basicos/Secao";
+import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
 import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
-import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 import Icone from "@/app/elementos/basicos/Icone";
-import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
+import { Secao } from "@/app/elementos/basicos/Secao";
+import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
+import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
+import { IRespostaDeAction } from "@/app/interfaces/IRespostaDeAction";
+import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
+import { IRequisicaoPaginadaQueryStates } from "@/app/interfaces/IRespostaPaginadaQueryStates";
+import { TCursoSchema } from "@/app/interfaces/TCurso";
+import { FetchRouteHandler } from "@/app/lib/actions/FetchRouteHandler";
+import { respostaPaginadaPadrao } from "@/app/lib/actions/RespostaPaginadaPadrao";
+import { createColumnHelper } from "@tanstack/react-table";
+import { parseAsInteger, useQueryStates } from "nuqs";
 
 export default function Page() {
+  const [paginacao, setPaginacao] =
+    useQueryStates<IRequisicaoPaginadaQueryStates>({
+      last_page: parseAsInteger.withDefault(1),
+      per_page: parseAsInteger.withDefault(50),
+      page: parseAsInteger.withDefault(1),
+      total: parseAsInteger.withDefault(50),
+    });
+
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
-    queryKey: ["tabelaDeCursos"],
+    queryKey: ["tabelaDeCursos", paginacao],
     queryFn: async () => {
-      const resposta = await buscarCursos();
-      return resposta.sucesso ? resposta.resposta : [];
+      const respostaInicial = await FetchRouteHandler.get("/course", paginacao);
+
+      if (!respostaInicial.ok) return respostaPaginadaPadrao;
+
+      const json = (await respostaInicial.json()) as IRespostaDeAction<
+        IRespostaPaginada<unknown>
+      >;
+      if (!json.sucesso) return respostaPaginadaPadrao;
+      console.log("passou", json);
+
+      const [resposta] = json.resposta;
+      setPaginacao({
+        last_page: resposta.last_page,
+        page: resposta.current_page,
+        total: resposta.total,
+        per_page: resposta.per_page,
+      });
+
+      return {
+        ...resposta,
+        data: resposta.data.flatMap((ent) => {
+          const parsed = TCursoSchema.safeParse(ent);
+          return parsed.success ? parsed.data : [];
+        }),
+      };
     },
-    initialData: [],
+    initialData: respostaPaginadaPadrao,
   });
 
-  const colunasHelper = createColumnHelper<(typeof dadosDaTabela)[number]>();
+  const colunasHelper =
+    createColumnHelper<(typeof dadosDaTabela.data)[number]>();
 
   const colunas = useMemo(
     () => [
@@ -188,9 +226,13 @@ export default function Page() {
         <Secao>
           <TabelaDeCrud
             colunas={colunas}
-            dados={dadosDaTabela ?? []}
+            dados={dadosDaTabela.data}
             estaCarregando={isLoadingDadosDaTabela}
             ordenacaoPadrao={[{ id: "id", desc: true }]}
+            paginacaoNoServidor={{
+              paginacao,
+              setPaginacao,
+            }}
           />
         </Secao>
       </Secao>
