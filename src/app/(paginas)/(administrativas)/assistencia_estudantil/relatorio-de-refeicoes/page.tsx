@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { parseAsString, useQueryStates } from "nuqs";
+import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
 import * as Form from "@radix-ui/react-form";
 
 import { Secao } from "@/app/elementos/basicos/Secao";
@@ -13,7 +13,16 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import { buscarRelatorioDeRefeicoes } from "@/app/actions/nutricionista";
 import { StatusDaRefeicao } from "@/app/elementos/basicos/StatusDaRefeicao";
-import { TRelatorioDeRefeicoes } from "@/app/interfaces/TRelatorioDeRefeicoes";
+import {
+  TRelatorioDeRefeicoes,
+  TRelatorioDeRefeicoesSchema,
+} from "@/app/interfaces/TRelatorioDeRefeicoes";
+import { respostaPaginadaPadrao } from "@/app/lib/actions/RespostaPaginadaPadrao";
+import { IRespostaDeAction } from "@/app/interfaces/IRespostaDeAction";
+import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
+import { IRequisicaoPaginadaQueryStates } from "@/app/interfaces/IRespostaPaginadaQueryStates";
+import { TAgendamentoSchema } from "@/app/interfaces/TAgendamento";
+import { FetchRouteHandler } from "@/app/lib/actions/FetchRouteHandler";
 
 export default function Page() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -26,20 +35,54 @@ export default function Page() {
     },
   );
 
+  const [paginacao, setPaginacao] =
+    useQueryStates<IRequisicaoPaginadaQueryStates>({
+      last_page: parseAsInteger.withDefault(1),
+      per_page: parseAsInteger.withDefault(50),
+      page: parseAsInteger.withDefault(1),
+      total: parseAsInteger.withDefault(50),
+    });
+
   const {
     data: dadosDaTabela,
     isFetching: isLoadingDadosDaTabela,
     refetch,
   } = useQuery({
-    queryKey: ["relatorioDeRefeicoes", pesquisa],
+    queryKey: ["relatorioDeRefeicoes", pesquisa, paginacao],
     queryFn: async () => {
-      const resposta = await buscarRelatorioDeRefeicoes({
-        data_inicial: pesquisa.dataInicial,
-        data_final: pesquisa.dataFinal,
+      const respostaInicial = await FetchRouteHandler.get(
+        "/report/list-scheduling",
+        paginacao,
+        `start_date=${pesquisa.dataInicial}&end_date=${pesquisa.dataFinal ?? pesquisa.dataInicial}`,
+      );
+
+      if (!respostaInicial.ok) return respostaPaginadaPadrao;
+
+      const json = (await respostaInicial.json()) as IRespostaDeAction<
+        IRespostaPaginada<unknown>
+      >;
+      if (!json.sucesso) return respostaPaginadaPadrao;
+
+      const [resposta] = json.resposta;
+
+      setPaginacao({
+        last_page: resposta.last_page,
+        page: resposta.current_page,
+        total: resposta.total,
+        per_page: resposta.per_page,
       });
-      return resposta.sucesso ? resposta.resposta : [];
+
+      return {
+        ...resposta,
+        data: resposta.data.flatMap((ent) => {
+          const parsed = TRelatorioDeRefeicoesSchema.safeParse(ent);
+          parsed.success == false ? console.log(parsed.error) : null;
+
+          return parsed.success ? parsed.data : [];
+        }),
+      };
     },
-    initialData: [],
+    initialData: respostaPaginadaPadrao,
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -53,7 +96,8 @@ export default function Page() {
     refetch();
   };
 
-  const colunasHelper = createColumnHelper<(typeof dadosDaTabela)[number]>();
+  const colunasHelper =
+    createColumnHelper<(typeof dadosDaTabela.data)[number]>();
 
   const colunas = useMemo(
     () => [
@@ -71,7 +115,8 @@ export default function Page() {
         header: "Refeição",
       }),
       colunasHelper.accessor("date", {
-        cell: (props) => props.getValue(),
+        cell: (props) =>
+          DatasHelper.converterParaFormatoBrasileiro(props.getValue()),
         header: "Data",
       }),
       colunasHelper.accessor("initials", {
@@ -201,8 +246,12 @@ export default function Page() {
         <Secao>
           <TabelaDeCrud
             colunas={colunas}
-            dados={dadosDaTabela ?? []}
+            dados={dadosDaTabela.data}
             estaCarregando={isLoadingDadosDaTabela}
+            paginacaoNoServidor={{
+              paginacao,
+              setPaginacao,
+            }}
           />
         </Secao>
       </Secao>
