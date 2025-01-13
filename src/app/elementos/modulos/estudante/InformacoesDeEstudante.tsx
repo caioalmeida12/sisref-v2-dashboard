@@ -203,6 +203,9 @@ export const InformacoesDeEstudante = () => {
       block: true,
       semRegular: 0,
       shift_id: 1,
+      hasKey: false,
+      cabinet: null,
+      key: null,
     },
   });
 
