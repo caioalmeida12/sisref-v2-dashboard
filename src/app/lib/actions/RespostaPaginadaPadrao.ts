@@ -1,7 +1,7 @@
 import { IRespostaPaginada } from "../../interfaces/IRespostaPaginada"
 export const respostaPaginadaPadrao = {
     current_page: 1,
-    data: [],
+    data: [] as any[],
     first_page_url: "",
     from: null,
     last_page: 1,
