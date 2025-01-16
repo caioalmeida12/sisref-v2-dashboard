@@ -6,8 +6,10 @@ import { TJustificativaNaoProcessada } from "../interfaces/TJustificativaNaoProc
 import { IRespostaDeAction } from "../interfaces/IRespostaDeAction";
 import { IRespostaPaginada } from "../interfaces/IRespostaPaginada";
 import {
+  TEstudante,
   TEstudanteComCursoTurnoEUsuario,
   TEstudanteComCursoTurnoEUsuarioSchema,
+  TEstudanteSchema,
 } from "../interfaces/TEstudante";
 import { TCurso, TCursoSchema } from "../interfaces/TCurso";
 import { TTurno, TTurnoSchema } from "../interfaces/TTurno";
@@ -108,6 +110,33 @@ export const buscarEstudantes = async (): Promise<
 
   return { sucesso: true, resposta: estudantes };
 };
+
+export const buscarEstudantesPorCodigo = async (matricula: string): Promise<
+  IRespostaDeAction<TEstudante>
+> => {
+  const resposta = await FetchHelper.get<
+    IRespostaPaginada<TEstudanteComCursoTurnoEUsuario>
+  >({
+    rota: `/all/students-by-mat-or-cod?mat=${matricula}`,
+    cookies: await cookies(),
+    rotaParaRedirecionarCasoFalhe: null,
+  });
+
+  if (!resposta.sucesso) return { sucesso: false, mensagem: resposta.message };
+
+  const estudantes = resposta.resposta.flatMap((estudante) => {
+    const formatar = TEstudanteSchema.safeParse(estudante);
+
+    return formatar.success ? [formatar.data] : [];
+  });
+
+  return { sucesso: true, resposta: estudantes };
+};
+
+/**
+ * Busca registros de estudante com base em matrícula 
+ */
+
 
 /**
  * Busca todos os registros de estudante.
