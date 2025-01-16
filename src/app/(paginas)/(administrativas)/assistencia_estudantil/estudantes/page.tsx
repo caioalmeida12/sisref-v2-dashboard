@@ -187,12 +187,12 @@ export default function Estudantes() {
       }),
       colunasHelper.accessor(
         (student) =>
-          `${student.course.initials} - ${student.course.description}`,
+          `${student.course?.initials ?? ""} - ${student.course?.description ?? ""}`,
         {
           cell: (props) => (
             <CustomTooltipWrapper
-              elementoContent={props.row.original.course.description}
-              elementoTrigger={props.row.original.course.initials}
+              elementoContent={props.row.original.course?.description ?? ""}
+              elementoTrigger={props.row.original.course?.initials ?? ""}
             />
           ),
           header: "Curso",
@@ -321,12 +321,8 @@ export default function Estudantes() {
 function transformarEstudante(estudante: any): TEstudanteComCursoTurnoEUsuario {
   return {
     ...estudante,
-    shift: {
-      campus_id: 1,
-      description: "",
-      id: 1,
-    },
-    user: [{}],
-    course: { initials: "", description: "" },
+    shift: estudante.shift ?? { campus_id: 1, description: "", id: 1 },
+    user: estudante.user ?? [{}],
+    course: estudante.course ?? { initials: "", description: "" },
   };
 }
