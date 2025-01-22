@@ -524,4 +524,19 @@ Icone.Chave = () => (
   </svg>
 );
 
+Icone.RefeicoesAutorizadas = (props: React.SVGAttributes<SVGElement>) => (
+  <svg
+    className={props.className}
+    width="14"
+    height="14"
+    viewBox="0 0 14 14"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12.4444 0H1.55556C0.7 0 0 0.7 0 1.55556V12.4444C0 13.3 0.7 14 1.55556 14H12.4444C13.3 14 14 13.3 14 12.4444V1.55556C14 0.7 13.3 0 12.4444 0ZM3.11111 3.11111H4.66667V4.66667H3.11111V3.11111ZM3.11111 6.22222H4.66667V7.77778H3.11111V6.22222ZM3.11111 9.33333H4.66667V10.8889H3.11111V9.33333ZM10.8889 10.8889H6.22222V9.33333H10.8889V10.8889ZM10.8889 7.77778H6.22222V6.22222H10.8889V7.77778ZM10.8889 4.66667H6.22222V3.11111H10.8889V4.66667Z"
+      fill="#0075FF"
+    />
+  </svg>
+);
 export default Icone;
