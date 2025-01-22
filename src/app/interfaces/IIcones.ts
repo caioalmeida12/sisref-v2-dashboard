@@ -24,13 +24,14 @@ export type IIconesDisponiveis =
   | "GraficoDeBarras"
   | "Lixeira"
   | "Chave"
-  | "Armario";
+  | "Armario"
+  | "RefeicoesAutorizadas";
 
 export interface IIconeDropdownProps extends HTMLAttributes<HTMLElement> {
   variante?: "sem-circulo";
 }
-export interface IIconeFecharProps extends React.SVGProps<SVGSVGElement> {}
-export interface IIconeMenuProps extends React.SVGProps<SVGSVGElement> {}
+export interface IIconeFecharProps extends React.SVGProps<SVGSVGElement> { }
+export interface IIconeMenuProps extends React.SVGProps<SVGSVGElement> { }
 export interface IIconeRefeicaoProps extends SVGProps<SVGSVGElement> {
   variante: "manha" | "almoco" | "tarde" | "noite" | (string & {});
 }
