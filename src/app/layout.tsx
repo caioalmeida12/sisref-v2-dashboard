@@ -21,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`min-w-80 bg-cinza-400 ${fontFamily.className}`}>
+        <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script>
         {children}
       </body>
     </html>
