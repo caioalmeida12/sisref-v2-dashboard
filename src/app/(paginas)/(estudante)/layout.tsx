@@ -31,7 +31,7 @@ export default function EstudanteLayout({ children }: EstudanteLayoutProps) {
         <SidebarProvider className="contents" defaultOpen={false}>
           <Navbar navItems={linksDaSidebarPorTipoDeUsuario["STUDENT"]} />
           <SidebarEstudante />
-          <main className="mx-auto my-8 grid w-full max-w-screen-xl gap-y-8 px-6 lg:grid lg:grid-cols-12 lg:gap-x-8">
+          <main className="mx-auto my-8 grid w-full max-w-(--breakpoint-xl) gap-y-8 px-6 lg:grid lg:grid-cols-12 lg:gap-x-8">
             <Suspense fallback={<div>Carregando...</div>}>{children}</Suspense>
           </main>
           <Footer />

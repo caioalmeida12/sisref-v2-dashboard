@@ -273,7 +273,7 @@ export default function Estudantes() {
                 <BotaoDiv
                   texto="Atualizar vencimentos"
                   variante="editar"
-                  className="h-[36px] border-none px-10 py-2 leading-tight !text-branco-400 hover:!outline-preto-400 md:whitespace-nowrap"
+                  className="h-[36px] border-none px-10 py-2 leading-tight text-branco-400! hover:outline-preto-400! md:whitespace-nowrap"
                 />
               }
               tipoDeBotaoPrincipal="confirmar"

@@ -56,7 +56,7 @@ export const ModalJustificativasNaoProcessadas = ({
           <CustomTooltipWrapper
             elementoTrigger={
               <BotaoDiv
-                className="h-[36px] border-none bg-vermelho-200 px-10 py-2 leading-tight !text-branco-400 hover:!outline-preto-400 md:whitespace-nowrap"
+                className="h-[36px] border-none bg-vermelho-200 px-10 py-2 leading-tight text-branco-400! hover:outline-preto-400! md:whitespace-nowrap"
                 texto="Ver justificativas não processadas"
                 variante="remover"
               />
@@ -73,7 +73,7 @@ export const ModalJustificativasNaoProcessadas = ({
       )}
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-preto-400/25 data-[state=open]:animate-overlayShow" />
-        <Dialog.Content className="max-w-[min(768px, 80vw)] fixed left-[50%] top-[50%] flex max-h-[85vh] w-fit translate-x-[-50%] translate-y-[-50%] flex-col gap-y-4 overflow-y-auto rounded bg-branco-400 p-6 outline outline-1 outline-cinza-600 focus:outline-none data-[state=open]:animate-contentShow">
+        <Dialog.Content className="max-w-[min(768px, 80vw)] fixed left-[50%] top-[50%] flex max-h-[85vh] w-fit translate-x-[-50%] translate-y-[-50%] flex-col gap-y-4 overflow-y-auto rounded bg-branco-400 p-6 outline outline-1 outline-cinza-600 focus:outline-hidden data-[state=open]:animate-contentShow">
           <Dialog.Title className="m-0 text-lg font-medium">
             Justificativas não processadas
           </Dialog.Title>
@@ -141,7 +141,7 @@ export const ModalJustificativasNaoProcessadas = ({
           <Dialog.Close asChild>
             <button
               name="Fechar"
-              className="absolute right-2 top-2 inline-flex appearance-none items-center justify-center rounded-full p-[0.25em] hover:bg-cinza-400 focus:shadow-[0_0_0_2px] focus:shadow-cinza-400 focus:outline-none"
+              className="absolute right-2 top-2 inline-flex appearance-none items-center justify-center rounded-full p-[0.25em] hover:bg-cinza-400 focus:shadow-[0_0_0_2px] focus:shadow-cinza-400 focus:outline-hidden"
               aria-label="Fechar"
             >
               <Cross2Icon />

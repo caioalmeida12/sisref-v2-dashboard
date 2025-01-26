@@ -12,7 +12,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen flex-col">
       <SidebarProvider className="contents">
         <Navbar navItems={[]} />
-        <main className="flex flex-grow items-center justify-center bg-branco-400 p-4">
+        <main className="flex grow items-center justify-center bg-branco-400 p-4">
           <Login />
         </main>
       </SidebarProvider>

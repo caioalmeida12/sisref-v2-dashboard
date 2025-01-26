@@ -132,7 +132,7 @@ export const ModalGeral = ({
       <Dialog.Trigger className="contents">{elementoTrigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-preto-400/25 data-[state=open]:animate-overlayShow" />
-        <Dialog.Content className="min-w-[80vw]md:min-w-[450px] fixed left-[50%] top-[50%] flex max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] flex-col gap-y-2 overflow-y-auto rounded bg-branco-400 p-6 outline outline-1 outline-cinza-600 focus:outline-none data-[state=open]:animate-contentShow">
+        <Dialog.Content className="min-w-[80vw]md:min-w-[450px] fixed left-[50%] top-[50%] flex max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] flex-col gap-y-2 overflow-y-auto rounded bg-branco-400 p-6 outline outline-1 outline-cinza-600 focus:outline-hidden data-[state=open]:animate-contentShow">
           <Dialog.Title className="m-0 text-lg font-medium">
             {textoTitulo}
           </Dialog.Title>
@@ -386,7 +386,7 @@ export const ModalGeral = ({
                 <BotaoDiv
                   texto="Cancelar"
                   variante="remover"
-                  className="border-none bg-cinza-600 !text-branco-400 outline-none !outline-offset-0 hover:!outline-cinza-600 focus:!outline-cinza-600"
+                  className="border-none bg-cinza-600 text-branco-400! outline-hidden outline-offset-0! hover:outline-cinza-600! focus:outline-cinza-600!"
                   disabled={isPending}
                 />
               </Dialog.Close>
@@ -394,7 +394,7 @@ export const ModalGeral = ({
             <Dialog.Close asChild>
               <button
                 name="Fechar"
-                className="absolute right-2 top-2 inline-flex appearance-none items-center justify-center rounded-full p-[0.25em] hover:bg-cinza-400 focus:shadow-[0_0_0_2px] focus:shadow-cinza-400 focus:outline-none"
+                className="absolute right-2 top-2 inline-flex appearance-none items-center justify-center rounded-full p-[0.25em] hover:bg-cinza-400 focus:shadow-[0_0_0_2px] focus:shadow-cinza-400 focus:outline-hidden"
                 aria-label="Fechar"
               >
                 <Cross2Icon />

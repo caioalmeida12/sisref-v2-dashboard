@@ -41,7 +41,7 @@ export const TelaDeErro = ({ statusCode }: TelaDeErroProps) => {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar navItems={[]} />
-      <main className="flex-grow">
+      <main className="grow">
         <div className="flex flex-col items-center gap-64 p-12">
           <div className="flex flex-col items-center gap-12">
             <span className="text-4xl font-bold text-verde-400 md:text-5xl">

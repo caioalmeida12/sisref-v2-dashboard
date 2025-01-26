@@ -30,7 +30,7 @@ export async function SidebarEstudante() {
 
   return (
     <Sidebar>
-      <SidebarContent className="relative flex-col gap-y-4 border-none bg-preto-300 px-4 py-4 text-branco-400 outline-none">
+      <SidebarContent className="relative flex-col gap-y-4 border-none bg-preto-300 px-4 py-4 text-branco-400 outline-hidden">
         <SidebarGroup>
           <Image
             src={ifce_logo_horizontal_branco}

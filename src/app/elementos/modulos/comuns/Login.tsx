@@ -41,7 +41,7 @@ const LoginContent = () => {
 
 export const Login = () => {
   return (
-    <main className="flex h-full flex-grow flex-col items-center gap-y-8">
+    <main className="flex h-full grow flex-col items-center gap-y-8">
       <Image src={sisrefLogo} alt="Sisref" />
       <Form.Root
         className="flex w-full min-w-[256px] max-w-[400px] flex-col gap-y-4"

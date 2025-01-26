@@ -14,7 +14,7 @@ export const Navbar = ({ navItems }: INavbarProps) => {
 
   return (
     <NavigationMenu.Root className="sticky top-0 z-10 bg-verde-400 font-medium text-branco-400">
-      <div className="mx-auto flex max-w-screen-xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-(--breakpoint-xl) items-center justify-between px-6 py-4">
         <Icone.Menu onClick={toggleSidebar} />
         {isMobile ? (
           <NavigationMenu.List className="hidden flex-wrap justify-center gap-x-8 gap-y-2 md:flex">
@@ -38,7 +38,7 @@ export const NavbarNavigation = ({ navItems }: INavbarProps) => {
           {navItem.titulo}
           <Icone.Dropdown />
         </NavigationMenu.Trigger>
-        <NavigationMenu.Content className="absolute inset-x-0 top-full mt-1 flex flex-col gap-y-2 rounded bg-branco-400 p-4 py-3 shadow-sm shadow-preto-400">
+        <NavigationMenu.Content className="absolute inset-x-0 top-full mt-1 flex flex-col gap-y-2 rounded bg-branco-400 p-4 py-3 shadow-xs shadow-preto-400">
           {navItem.itens.map((item, itemIndex) => (
             <Link
               className="text-verde-400 underline-offset-[.25em] hover:underline"

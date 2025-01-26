@@ -20,7 +20,7 @@ const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
     return (
       <Select.Item
         className={classnames(
-          "data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 relative flex select-none items-center rounded pl-6 pr-8 text-[13px] leading-none data-[disabled]:pointer-events-none data-[highlighted]:outline-none",
+          "data-disabled:text-mauve8 data-highlighted:bg-violet9 data-highlighted:text-violet1 relative flex select-none items-center rounded pl-6 pr-8 text-[13px] leading-none data-disabled:pointer-events-none data-highlighted:outline-hidden",
           className,
         )}
         {...props}
@@ -42,7 +42,7 @@ const SelectRefeicao = ({ refeicoes }: { refeicoes: TRefeicao[] }) => (
   <Select.Root>
     <Select.Trigger
       disabled={refeicoes.length === 0}
-      className="inline-flex h-8 w-full flex-1 items-center rounded-[4px] bg-branco-400 px-4 py-2 leading-none shadow-[0_0_0_1px] shadow-preto-400 outline-none focus:shadow-[0_0_0_2px] focus:shadow-preto-400 disabled:cursor-not-allowed disabled:text-cinza-600"
+      className="inline-flex h-8 w-full flex-1 items-center rounded-[4px] bg-branco-400 px-4 py-2 leading-none shadow-[0_0_0_1px] shadow-preto-400 outline-hidden focus:shadow-[0_0_0_2px] focus:shadow-preto-400 disabled:cursor-not-allowed disabled:text-cinza-600"
       aria-label="Refeição"
     >
       <Select.Value placeholder="Selecione uma opção…" />

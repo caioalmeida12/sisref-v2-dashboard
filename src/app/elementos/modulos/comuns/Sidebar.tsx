@@ -61,7 +61,7 @@ export const Sidebar = async () => {
                 {link.titulo}
                 <Icone.Dropdown />
               </NavigationMenu.Trigger>
-              <NavigationMenu.Content className="absolute inset-x-0 top-full mt-1 flex flex-col gap-y-2 rounded bg-branco-400 p-4 py-3 shadow-sm shadow-preto-400">
+              <NavigationMenu.Content className="absolute inset-x-0 top-full mt-1 flex flex-col gap-y-2 rounded bg-branco-400 p-4 py-3 shadow-xs shadow-preto-400">
                 {link.itens.map((item, itemIndex) => (
                   <Link
                     replace

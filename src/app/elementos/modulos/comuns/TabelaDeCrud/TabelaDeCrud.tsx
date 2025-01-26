@@ -118,7 +118,7 @@ export function TabelaDeCrud<TipoDeDado>({
                   <th
                     key={header.id}
                     colSpan={header.colSpan}
-                    className="group relative h-1 cursor-pointer px-[0.125em] [&:first-of-type]:pl-0 [&:last-of-type]:pr-0"
+                    className="group relative h-1 cursor-pointer px-[0.125em] first-of-type:pl-0 last-of-type:pr-0"
                     onClick={() => {
                       const isDesc = sorting.find(
                         (sort) => sort.id === header.id,
@@ -175,7 +175,7 @@ export function TabelaDeCrud<TipoDeDado>({
                   <th
                     key={header.id}
                     colSpan={header.colSpan}
-                    className="group relative h-1 cursor-pointer px-[0.125em] [&:first-of-type]:pl-0 [&:last-of-type]:pr-0"
+                    className="group relative h-1 cursor-pointer px-[0.125em] first-of-type:pl-0 last-of-type:pr-0"
                   >
                     {/* {header.column.getCanFilter() ? (
                       <Filtro column={header.column} />
@@ -194,7 +194,7 @@ export function TabelaDeCrud<TipoDeDado>({
                 {colunas.map((_coluna, index) => (
                   <td
                     key={index}
-                    className="px-[.125em] [&:first-of-type]:pl-0 [&:last-of-type]:pr-0"
+                    className="px-[.125em] first-of-type:pl-0 last-of-type:pr-0"
                   >
                     <Skeleton className="h-5" />
                   </td>
@@ -202,7 +202,7 @@ export function TabelaDeCrud<TipoDeDado>({
               </tr>
             ))
           ) : dados.length === 0 || table.getRowCount() == 0 ? (
-            <tr className="hover:!bg-amarelo-200/75">
+            <tr className="hover:bg-amarelo-200/75!">
               <td
                 colSpan={colunas.length}
                 className="rounded bg-cinza-400 text-center"
@@ -214,7 +214,7 @@ export function TabelaDeCrud<TipoDeDado>({
             table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
-                className="hover:!bg-amarelo-200/75 [&:nth-of-type(odd)]:bg-cinza-400"
+                className="hover:bg-amarelo-200/75! nth-of-type-[odd]:bg-cinza-400"
               >
                 {row.getVisibleCells().map((cell) => (
                   <td
@@ -222,7 +222,7 @@ export function TabelaDeCrud<TipoDeDado>({
                     style={{
                       width: cell.column.getSize(),
                     }}
-                    className="px-2 [&:first-of-type]:rounded-bl [&:first-of-type]:rounded-tl [&:last-of-type]:rounded-br [&:last-of-type]:rounded-tr"
+                    className="px-2 first-of-type:rounded-bl first-of-type:rounded-tl last-of-type:rounded-br last-of-type:rounded-tr"
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
