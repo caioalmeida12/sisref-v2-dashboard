@@ -34,7 +34,6 @@ const diasDaSemana = [
   { key: "thursday", label: "Quinta-feira" },
   { key: "friday", label: "Sexta-feira" },
   { key: "saturday", label: "Sábado" },
-  { key: "sunday", label: "Domingo" },
 ];
 
 const refeicoes = [
