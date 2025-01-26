@@ -187,8 +187,8 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
         />
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-preto-400/25 data-[state=open]:animate-overlayShow" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] flex max-h-[85vh] w-[95vw] max-w-[1200px] translate-x-[-50%] translate-y-[-50%] flex-col gap-y-2 rounded bg-branco-400 p-6 outline outline-1 outline-cinza-600 focus:outline-none data-[state=open]:animate-contentShow">
+        <Dialog.Overlay className="bg-preto-400/25 data-[state=open]:animate-overlayShow fixed inset-0" />
+        <Dialog.Content className="bg-branco-400 outline-cinza-600 data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] flex max-h-[85vh] w-[95vw] max-w-[1200px] translate-x-[-50%] translate-y-[-50%] flex-col gap-y-2 rounded p-6 outline outline-1 focus:outline-hidden">
           <Dialog.Title className="m-0 text-lg font-medium">
             Refeições autorizadas para {estudante.name}
           </Dialog.Title>
@@ -197,14 +197,14 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
             className="flex flex-col gap-y-2"
           >
             <div className="max-w-full overflow-x-auto">
-              <table className="w-full max-w-full border border-cinza-600 text-center">
+              <table className="border-cinza-600 w-full max-w-full border text-center">
                 <thead>
                   {table.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id}>
                       {headerGroup.headers.map((header) => (
                         <th
                           key={header.id}
-                          className="border border-cinza-600 px-4 py-2"
+                          className="border-cinza-600 border px-4 py-2"
                         >
                           {flexRender(
                             header.column.columnDef.header,
@@ -221,7 +221,7 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
                       {row.getVisibleCells().map((cell) => (
                         <td
                           key={cell.id}
-                          className={`border border-cinza-600 px-4 py-2 has-[input[value="true"]]:bg-verde-300 has-[input]:bg-vermelho-200`}
+                          className={`border-cinza-600 has-[input[value="true"]]:bg-verde-300 has-[input]:bg-vermelho-200 border px-4 py-2`}
                         >
                           {cell.column.id === "nome" ? (
                             flexRender(
@@ -260,7 +260,7 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
                   <textarea
                     id="comentario"
                     {...field}
-                    className="border border-cinza-600 p-2"
+                    className="border-cinza-600 border p-2"
                   />
                 )}
               />
@@ -282,7 +282,7 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
           </form>
           <Dialog.Close>
             <div
-              className="absolute right-2 top-2 inline-flex appearance-none items-center justify-center rounded-full p-[0.25em] hover:bg-cinza-400 focus:shadow-[0_0_0_2px] focus:shadow-cinza-400 focus:outline-none"
+              className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-2 right-2 inline-flex appearance-none items-center justify-center rounded-full p-[0.25em] focus:shadow-[0_0_0_2px] focus:outline-hidden"
               aria-label="Fechar"
             >
               <Cross2Icon />

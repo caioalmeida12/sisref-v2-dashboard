@@ -323,7 +323,7 @@ export default function RecepcaoPage() {
                     <Botao
                       variante="remover"
                       texto="Limpar"
-                      className="!border-none bg-vermelho-200 py-2 leading-tight !text-branco-400 !outline-preto-400"
+                      className="border-none! bg-vermelho-200 py-2 leading-tight text-branco-400! outline-preto-400!"
                       onClick={handleReset}
                     />
                   </Form.Control>
