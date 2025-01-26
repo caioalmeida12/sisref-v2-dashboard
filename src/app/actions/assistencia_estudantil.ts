@@ -17,6 +17,7 @@ import { TRepublica, TRepublicaSchema } from "../interfaces/TRepublica";
 import { TTurno, TTurnoSchema } from "../interfaces/TTurno";
 import { FetchHelper } from "../lib/actions/FetchHelper";
 import { respostaPaginadaPadrao } from "../lib/actions/RespostaPaginadaPadrao";
+import { StudentMealData } from "../lib/elementos/HandleSudentMealData";
 
 /**
  * Este módulo contém todas as actions relacionadas à página de assistência estudantil.
@@ -564,4 +565,50 @@ export async function buscarRefeicoesAutorizadasPorEstudante(student_id: number)
   );
 
   return { sucesso: true, resposta: formatadas };
+}
+
+export async function atualizarRefeicoesAutorizadas(studentMealsData: StudentMealData[]): Promise<IRespostaDeAction<TBuscarRefeicoesAutorizadas>[]> {
+  const respostas = await Promise.allSettled(studentMealsData.map(async (studentMealData) => {
+    try {
+      const resposta = await FetchHelper.put<unknown>({
+        rota: `/allowstudenmealday/${studentMealData.meal_id}`,
+        body: studentMealData,
+        cookies: await cookies(),
+      });
+
+      if (!resposta.sucesso) {
+        console.error('Erro na resposta do FetchHelper:', resposta.message);
+        return {
+          sucesso: false as const,
+          mensagem: resposta.message
+        };
+      }
+
+      const formatar = TBuscarRefeicoesAutorizadasSchema.safeParse(resposta.resposta);
+
+      if (!formatar.success) {
+        console.error('Erro ao formatar a resposta:', formatar.error);
+      }
+
+      return formatar.success ? { sucesso: true as const, resposta: [formatar.data] } : { sucesso: false as const, mensagem: 'Erro ao formatar a resposta' };
+    } catch (error: any) {
+      console.error('Erro ao processar a refeição do estudante:', error);
+      return {
+        sucesso: false as const,
+        mensagem: error.message || 'Erro desconhecido'
+      };
+    }
+  }));
+
+  return respostas.map((res) => {
+    if (res.status === 'fulfilled') {
+      return res.value;
+    } else {
+      console.error('Erro na promessa:', res.reason);
+      return {
+        sucesso: false as const,
+        mensagem: res.reason.message || 'Erro desconhecido'
+      };
+    }
+  });
 }
