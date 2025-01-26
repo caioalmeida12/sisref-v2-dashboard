@@ -31,6 +31,7 @@ import { respostaPaginadaPadrao } from "@/app/lib/actions/RespostaPaginadaPadrao
 import * as Form from "@radix-ui/react-form";
 import { createColumnHelper } from "@tanstack/react-table";
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
+import { ModalRefeicoesAutorizadasEstudante } from "@/app/elementos/modulos/assistencia_estudantil/Estudantes/ModalRefeicoesAutorizadasEstudante";
 
 export default function Estudantes() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -51,7 +52,7 @@ export default function Estudantes() {
     });
 
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
-    queryKey: ["tabelaDeEstudantes", paginacao, pesquisa],
+    queryKey: ["tabelaDeEstudantes", paginacao.page, pesquisa.codigo],
     queryFn: async () => {
       if (pesquisa.codigo) {
         const respostaInicial: typeof respostaPaginadaPadrao & {
@@ -223,6 +224,11 @@ export default function Estudantes() {
               </div>
               <div className="relative h-5 w-5">
                 <ModalEditarEstudante estudante={props.row.original} />
+              </div>
+              <div className="relative h-5 w-5">
+                <ModalRefeicoesAutorizadasEstudante
+                  estudante={props.row.original}
+                />
               </div>
             </div>
           );

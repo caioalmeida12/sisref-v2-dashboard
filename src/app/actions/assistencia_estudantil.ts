@@ -1,21 +1,22 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { FetchHelper } from "../lib/actions/FetchHelper";
-import { TJustificativaNaoProcessada } from "../interfaces/TJustificativaNaoProcessada";
+import { IResquisicaoPaginada } from "../interfaces/IRequisicaoPaginada";
 import { IRespostaDeAction } from "../interfaces/IRespostaDeAction";
 import { IRespostaPaginada } from "../interfaces/IRespostaPaginada";
+import { TBuscarRefeicoesAutorizadas, TBuscarRefeicoesAutorizadasSchema } from "../interfaces/TBuscarRefeicoesAutorizadas";
+import { TCurso, TCursoSchema } from "../interfaces/TCurso";
 import {
   TEstudante,
   TEstudanteComCursoTurnoEUsuario,
   TEstudanteComCursoTurnoEUsuarioSchema,
   TEstudanteSchema,
 } from "../interfaces/TEstudante";
-import { TCurso, TCursoSchema } from "../interfaces/TCurso";
-import { TTurno, TTurnoSchema } from "../interfaces/TTurno";
+import { TJustificativaNaoProcessada } from "../interfaces/TJustificativaNaoProcessada";
 import { TRepublica, TRepublicaSchema } from "../interfaces/TRepublica";
-import { IResquisicaoPaginada } from "../interfaces/IRequisicaoPaginada";
-import { respostaPaginadaPadrao } from "../lib/actions/RespostaPaginadaPadrao"
+import { TTurno, TTurnoSchema } from "../interfaces/TTurno";
+import { FetchHelper } from "../lib/actions/FetchHelper";
+import { respostaPaginadaPadrao } from "../lib/actions/RespostaPaginadaPadrao";
 
 /**
  * Este módulo contém todas as actions relacionadas à página de assistência estudantil.
@@ -536,3 +537,31 @@ export const editarTurno = async (
 
   return { sucesso: true, resposta: resposta.resposta };
 };
+
+/**
+ * Busca as refeições autorizadas para o estudante com perfil de assistência estudantil.
+ *
+ * @returns Um array de objetos contendo as refeições autorizadas.
+ */
+export async function buscarRefeicoesAutorizadasPorEstudante(student_id: number): Promise<IRespostaDeAction<TBuscarRefeicoesAutorizadas>> {
+  const resposta = await FetchHelper.get<unknown>({
+    rota: `/allowstudenmealday?student_id=${student_id}`,
+    cookies: await cookies(),
+  });
+
+
+  if (!resposta.sucesso) return {
+    sucesso: false,
+    mensagem: resposta.message
+  }
+
+  const formatadas = resposta.resposta.flatMap(
+    (refeicao: any) => {
+      const formatar = TBuscarRefeicoesAutorizadasSchema.safeParse(refeicao);
+
+      return formatar.success ? [formatar.data] : [];
+    },
+  );
+
+  return { sucesso: true, resposta: formatadas };
+}
