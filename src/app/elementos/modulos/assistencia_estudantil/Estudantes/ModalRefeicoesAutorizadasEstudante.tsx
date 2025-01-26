@@ -221,7 +221,7 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
                       {row.getVisibleCells().map((cell) => (
                         <td
                           key={cell.id}
-                          className={`border-cinza-600 has-[input[value="true"]]:bg-verde-300 has-[input]:bg-vermelho-200 border px-4 py-2`}
+                          className={`border-cinza-600 has-checked:bg-verde-300 has-[input]:bg-vermelho-200 border px-4 py-2`}
                         >
                           {cell.column.id === "nome" ? (
                             flexRender(
@@ -238,7 +238,6 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
                                   type="checkbox"
                                   {...field}
                                   defaultChecked={field.value}
-                                  className="peer"
                                 />
                               )}
                             />
