@@ -1,6 +1,9 @@
 "use client";
 
-import { buscarRefeicoesAutorizadasPorEstudante } from "@/app/actions/assistencia_estudantil";
+import {
+  buscarRefeicoesAutorizadasPorEstudante,
+  atualizarRefeicoesAutorizadas,
+} from "@/app/actions/assistencia_estudantil";
 import { Botao } from "@/app/elementos/basicos/Botao";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 import Icone from "@/app/elementos/basicos/Icone";
@@ -9,7 +12,7 @@ import { TEstudanteComCursoTurnoEUsuario } from "@/app/interfaces/TEstudante";
 import { handleStudentMealData } from "@/app/lib/elementos/HandleSudentMealData";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import {
   ColumnDef,
   flexRender,
@@ -18,6 +21,7 @@ import {
 } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta";
 
 interface ModalProps {
   estudante: TEstudanteComCursoTurnoEUsuario;
@@ -46,6 +50,7 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { control, watch, handleSubmit, setValue } = useForm();
+  const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
 
   const {
     data: refeicoesAutorizadas,
@@ -123,10 +128,50 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const { mutate: handleAtualizarRefeicoes, isPending } = useMutation({
+    mutationFn: async (formattedData: any) => {
+      const responses = await atualizarRefeicoesAutorizadas(formattedData);
+      return responses;
+    },
+    onMutate: () => {
+      atualizarMensagem({ mensagem: "Atualizando refeições autorizadas..." });
+    },
+    onSuccess: (responses) => {
+      atualizarMensagem({
+        mensagem: "Refeições autorizadas atualizadas com sucesso!",
+        sucesso: true,
+      });
+
+      setTimeout(() => {
+        queryClient.invalidateQueries({
+          queryKey: ["refeicoesAutorizadas", estudante.id],
+        });
+      }, 500);
+    },
+    onError: (error) => {
+      atualizarMensagem({ mensagem: error.message, sucesso: false });
+    },
+  });
+
   const onSubmit = (data: any) => {
-    const formattedData = handleStudentMealData(data);
-    // Enviar formattedData para a API
-    console.log(formattedData);
+    const formattedData = refeicoes.map((refeicao) => {
+      const mealData: {
+        student_id: number;
+        meal_id: number;
+        comentario: string;
+        [key: string]: any;
+      } = {
+        student_id: estudante.id,
+        meal_id: refeicao.id,
+        comentario: data[`comentario-${refeicao.id}`] || "",
+      };
+      diasDaSemana.forEach((dia) => {
+        mealData[dia.key] = data[`${refeicao.id}-${dia.key}`] || false;
+      });
+      return handleStudentMealData(mealData);
+    });
+
+    handleAtualizarRefeicoes(formattedData);
   };
 
   return (
@@ -147,7 +192,10 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
           <Dialog.Title className="m-0 text-lg font-medium">
             Refeições autorizadas para {estudante.name}
           </Dialog.Title>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-y-2"
+          >
             <div className="max-w-full overflow-x-auto">
               <table className="w-full max-w-full border border-cinza-600 text-center">
                 <thead>
@@ -217,11 +265,19 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
                 )}
               />
             </div>
-            <div className="mt-4 flex justify-end gap-x-2">
-              <Dialog.Close asChild>
-                <Botao variante="editar" texto="Fechar" />
-              </Dialog.Close>
-              <Botao variante="editar" texto="Salvar" type="submit" />
+            <div className="mt-4 flex flex-col items-end gap-x-2 gap-y-2">
+              <div className="hidden" ref={mensagemDeRespostaRef}></div>
+              <div className="flex w-min gap-x-4">
+                <Dialog.Close asChild>
+                  <Botao variante="editar" texto="Fechar" />
+                </Dialog.Close>
+                <Botao
+                  variante="adicionar"
+                  texto="Salvar"
+                  type="submit"
+                  disabled={isPending}
+                />
+              </div>
             </div>
           </form>
           <Dialog.Close>

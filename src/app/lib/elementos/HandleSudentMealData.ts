@@ -1,4 +1,4 @@
-interface StudentMealData {
+export interface StudentMealData {
   student_id: number;
   meal_id: number;
   friday?: boolean;
