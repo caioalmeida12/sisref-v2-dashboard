@@ -134,10 +134,6 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
       for (const data of formattedData) {
         const resposta = await atualizarRefeicoesAutorizadas(data.id, data);
 
-        console.log({
-          data,
-        });
-
         if (!resposta.sucesso) throw new Error(resposta.mensagem);
       }
 
