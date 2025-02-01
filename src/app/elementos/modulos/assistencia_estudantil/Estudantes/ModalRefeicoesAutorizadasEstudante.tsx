@@ -1,30 +1,42 @@
 "use client";
 
 import {
-  buscarRefeicoesAutorizadasPorEstudante,
   atualizarRefeicoesAutorizadas,
+  buscarRefeicoesAutorizadasPorEstudante,
 } from "@/app/actions/assistencia_estudantil";
+import { buscarRefeicoes } from "@/app/actions/nutricionista";
 import { Botao } from "@/app/elementos/basicos/Botao";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 import Icone from "@/app/elementos/basicos/Icone";
 import { TBuscarRefeicoesAutorizadas } from "@/app/interfaces/TBuscarRefeicoesAutorizadas";
 import { TEstudanteComCursoTurnoEUsuario } from "@/app/interfaces/TEstudante";
-import { handleStudentMealData } from "@/app/lib/elementos/HandleSudentMealData";
+import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import useMensagemDeResposta from "@/app/lib/elementos/UseMensagemDeResposta";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import React, { useEffect, useMemo, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 interface ModalProps {
   estudante: TEstudanteComCursoTurnoEUsuario;
+}
+
+interface FormattedData {
+  id: number;
+  student_id: number;
+  meal_id: number;
+  comentario: string;
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
+}
+
+interface Refeicoes {
+  id: number;
+  nome: string;
 }
 
 const diasDaSemana = [
@@ -36,20 +48,25 @@ const diasDaSemana = [
   { key: "saturday", label: "Sábado" },
 ];
 
-const refeicoes = [
-  { id: 1, nome: "Lanche da Manhã" },
-  { id: 2, nome: "Almoço" },
-  { id: 3, nome: "Lanche da Tarde" },
-  { id: 4, nome: "Lanche da Noite" },
-];
-
 export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
   estudante,
 }) => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { control, watch, handleSubmit, setValue } = useForm();
+  const { control, handleSubmit, reset } = useForm();
   const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
+
+  const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
+    initialData: [],
+    queryKey: ["tabelaDeRefeicoes"],
+    queryFn: async () => {
+      const resposta = await buscarRefeicoes();
+
+      return resposta.sucesso
+        ? resposta.resposta.sort(({ id }, { id: id2 }) => id - id2).splice(0, 4)
+        : [];
+    },
+  });
 
   const {
     data: refeicoesAutorizadas,
@@ -69,73 +86,67 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
   });
 
   useEffect(() => {
-    if (isModalOpen) refetch();
-  }, [isModalOpen]);
-
-  useEffect(() => {
     if (refeicoesAutorizadas) {
-      refeicoesAutorizadas.forEach((refeicao) => {
-        diasDaSemana.forEach((dia) => {
-          setValue(
-            `${refeicao.meal_id}-${dia.key}`,
-            refeicao[dia.key as keyof TBuscarRefeicoesAutorizadas] === 1,
-          );
-        });
-        setValue(`comentario-${refeicao.meal_id}`, refeicao.comentario || "");
-      });
-    }
-  }, [refeicoesAutorizadas, setValue]);
-
-  const columns: ColumnDef<{ [key: string]: string | number }>[] =
-    React.useMemo(
-      () => [
-        {
-          header: "Refeição",
-          accessorKey: "nome",
+      const initialFormValues = refeicoesAutorizadas.reduce(
+        (acc, refeicao) => {
+          diasDaSemana.forEach((dia) => {
+            acc[`${refeicao.meal_id}-${dia.key}`] =
+              !!refeicao[dia.key as keyof typeof refeicao];
+          });
+          acc[`comentario-${refeicao.meal_id}`] = refeicao.comentario || "";
+          return acc;
         },
-        ...diasDaSemana.map((dia) => ({
-          header: dia.label,
-          accessorKey: dia.key,
-        })),
-      ],
-      [],
+        {} as Record<string, any>,
+      );
+      reset(initialFormValues);
+    }
+  }, [refeicoesAutorizadas, reset]);
+
+  const valoresDaTabela = useMemo(() => {
+    // os nomes dos inputs seguem o padrao [dia.key]-[nomeDaRefeicao.id]
+    const nomesDosInputs = diasDaSemana.flatMap((dia) =>
+      nomesDasRefeicoes.map((refeicao) => `${refeicao.id}-${dia.key}`),
     );
 
-  const data = React.useMemo(
-    () =>
-      refeicoes.map((refeicao) => {
-        const row: { [key: string]: string | number } = { nome: refeicao.nome };
+    const valoresDosInputs = refeicoesAutorizadas.reduce(
+      (acc, refeicao) => {
         diasDaSemana.forEach((dia) => {
-          const autorizada = refeicoesAutorizadas.some(
-            (ref) =>
-              ref.meal_id === refeicao.id &&
-              ref[dia.key as keyof TBuscarRefeicoesAutorizadas] !== null &&
-              typeof ref[dia.key as keyof TBuscarRefeicoesAutorizadas] ===
-                "number" &&
-              (ref[dia.key as keyof TBuscarRefeicoesAutorizadas] as number) > 0,
-          );
-          row[dia.key] = autorizada ? "Autorizada" : "Não Autorizada";
+          acc[`${refeicao.meal_id}-${dia.key}`] =
+            !!refeicao[dia.key as keyof typeof refeicao];
         });
-        return row;
-      }),
-    [refeicoesAutorizadas],
-  );
+        return acc;
+      },
+      {} as Record<string, boolean>,
+    );
 
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+    return { nomesDosInputs, valoresDosInputs };
+  }, [nomesDasRefeicoes, refeicoesAutorizadas]);
+
+  useEffect(() => {
+    if (isModalOpen) refetch();
+  }, [isModalOpen, refetch]);
 
   const { mutate: handleAtualizarRefeicoes, isPending } = useMutation({
-    mutationFn: async (formattedData: any) => {
-      const responses = await atualizarRefeicoesAutorizadas(formattedData);
-      return responses;
+    mutationFn: async (formattedData: FormattedData[]) => {
+      if (!formattedData.length)
+        throw new Error("O ID da refeição não foi fornecido");
+
+      for (const data of formattedData) {
+        const resposta = await atualizarRefeicoesAutorizadas(data.id, [data]);
+
+        if (!resposta.sucesso) throw new Error(resposta.mensagem);
+      }
+
+      queryClient.invalidateQueries({
+        queryKey: ["refeicoesAutorizadas", estudante.id],
+      });
+
+      return { sucesso: true };
     },
     onMutate: () => {
       atualizarMensagem({ mensagem: "Atualizando refeições autorizadas..." });
     },
-    onSuccess: (responses) => {
+    onSuccess: () => {
       atualizarMensagem({
         mensagem: "Refeições autorizadas atualizadas com sucesso!",
         sucesso: true,
@@ -147,39 +158,45 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
         });
       }, 500);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       atualizarMensagem({ mensagem: error.message, sucesso: false });
     },
   });
 
   const onSubmit = (data: any) => {
-    const formattedData = refeicoes.map((refeicao) => {
-      const mealData: {
-        student_id: number;
-        meal_id: number;
-        comentario: string;
-        [key: string]: any;
-      } = {
-        student_id: estudante.id,
-        meal_id: refeicao.id,
-        comentario: data[`comentario-${refeicao.id}`] || "",
-      };
-      diasDaSemana.forEach((dia) => {
-        mealData[dia.key] = data[`${refeicao.id}-${dia.key}`] || false;
-      });
-      return handleStudentMealData(mealData);
-    });
+    const formattedData: FormattedData[] = refeicoesAutorizadas.map(
+      (refeicao) => {
+        const mealData: FormattedData = {
+          id: refeicao.id, // Use the correct id of the refeicao
+          student_id: estudante.id,
+          meal_id: refeicao.meal_id,
+          comentario: data[`comentario-${refeicao.meal_id}`] || "",
+          monday: data[`${refeicao.meal_id}-monday`] || false,
+          tuesday: data[`${refeicao.meal_id}-tuesday`] || false,
+          wednesday: data[`${refeicao.meal_id}-wednesday`] || false,
+          thursday: data[`${refeicao.meal_id}-thursday`] || false,
+          friday: data[`${refeicao.meal_id}-friday`] || false,
+          saturday: data[`${refeicao.meal_id}-saturday`] || false,
+        };
+        return mealData;
+      },
+    );
 
     handleAtualizarRefeicoes(formattedData);
   };
 
   return (
     <Dialog.Root open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <Dialog.Trigger>
+      <Dialog.Trigger asChild>
         <CustomTooltipWrapper
           elementoContent={"Ver refeições autorizadas"}
           elementoTrigger={
-            <div className="relative h-5 w-5 cursor-pointer">
+            <div
+              className="relative h-5 w-5 cursor-pointer"
+              onClick={() => {
+                setIsModalOpen(true);
+              }}
+            >
               <Icone.RefeicoesAutorizadas className="absolute inset-0 block h-full w-full" />
             </div>
           }
@@ -195,60 +212,51 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-y-2"
           >
-            <div className="max-w-full overflow-x-auto">
-              <table className="border-cinza-600 w-full max-w-full border text-center">
-                <thead>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <tr key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => (
-                        <th
-                          key={header.id}
-                          className="border-cinza-600 border px-4 py-2"
-                        >
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                        </th>
-                      ))}
-                    </tr>
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
+                    Refeição
+                  </th>
+                  {diasDaSemana.map((dia) => (
+                    <th
+                      key={dia.key}
+                      className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                    >
+                      {dia.label}
+                    </th>
                   ))}
-                </thead>
-                <tbody>
-                  {table.getRowModel().rows.map((row) => (
-                    <tr key={row.id}>
-                      {row.getVisibleCells().map((cell) => (
-                        <td
-                          key={cell.id}
-                          className={`border-cinza-600 has-checked:bg-verde-300 has-[input]:bg-vermelho-200 border px-4 py-2`}
-                        >
-                          {cell.column.id === "nome" ? (
-                            flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
-                            )
-                          ) : (
-                            <Controller
-                              name={`${row.id}-${cell.column.id}`}
-                              control={control}
-                              defaultValue={cell.getValue() === "Autorizada"}
-                              render={({ field }) => (
-                                <input
-                                  type="checkbox"
-                                  {...field}
-                                  defaultChecked={field.value}
-                                />
-                              )}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 bg-white">
+                {nomesDasRefeicoes.map((refeicao, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-900">
+                      {refeicao.description}
+                    </td>
+                    {diasDaSemana.map((dia, diaIndex) => (
+                      <td
+                        key={diaIndex}
+                        className="px-6 py-4 whitespace-nowrap"
+                      >
+                        <Controller
+                          name={`${refeicao.id}-${dia.key}`}
+                          control={control}
+                          render={({ field }) => (
+                            <input
+                              type="checkbox"
+                              checked={field.value}
+                              {...field}
                             />
                           )}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="flex flex-col gap-y-2">
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="mt-4 flex flex-col gap-y-2">
               <label htmlFor="comentario">Comentário:</label>
               <Controller
                 name="comentario"
@@ -278,7 +286,7 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
               </div>
             </div>
           </form>
-          <Dialog.Close>
+          <Dialog.Close asChild>
             <div
               className="hover:bg-cinza-400 focus:shadow-cinza-400 absolute top-2 right-2 inline-flex appearance-none items-center justify-center rounded-full p-[0.25em] focus:shadow-[0_0_0_2px] focus:outline-hidden"
               aria-label="Fechar"

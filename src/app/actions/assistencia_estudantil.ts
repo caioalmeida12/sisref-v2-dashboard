@@ -567,48 +567,44 @@ export async function buscarRefeicoesAutorizadasPorEstudante(student_id: number)
   return { sucesso: true, resposta: formatadas };
 }
 
-export async function atualizarRefeicoesAutorizadas(studentMealsData: StudentMealData[]): Promise<IRespostaDeAction<TBuscarRefeicoesAutorizadas>[]> {
+export async function atualizarRefeicoesAutorizadas(id: number, studentMealsData: StudentMealData[]): Promise<IRespostaDeAction<boolean>> {
   const respostas = await Promise.allSettled(studentMealsData.map(async (studentMealData) => {
     try {
       const resposta = await FetchHelper.put<unknown>({
-        rota: `/allowstudenmealday/${studentMealData.meal_id}`,
-        body: studentMealData,
+        rota: `/allowstudenmealday/${id}`,
+        body: {
+          student_id: studentMealData.student_id,
+          meal_id: studentMealData.meal_id,
+          monday: studentMealData.monday,
+          tuesday: studentMealData.tuesday,
+          wednesday: studentMealData.wednesday,
+          thursday: studentMealData.thursday,
+          friday: studentMealData.friday,
+          saturday: studentMealData.saturday,
+          comentario: studentMealData.comentario,
+        },
         cookies: await cookies(),
       });
 
-      if (!resposta.sucesso) {
-        console.error('Erro na resposta do FetchHelper:', resposta.message);
-        return {
-          sucesso: false as const,
-          mensagem: resposta.message
-        };
-      }
-
-      const formatar = TBuscarRefeicoesAutorizadasSchema.safeParse(resposta.resposta);
-
-      if (!formatar.success) {
-        console.error('Erro ao formatar a resposta:', formatar.error);
-      }
-
-      return formatar.success ? { sucesso: true as const, resposta: [formatar.data] } : { sucesso: false as const, mensagem: 'Erro ao formatar a resposta' };
+      return resposta.sucesso;
     } catch (error: any) {
       console.error('Erro ao processar a refeição do estudante:', error);
-      return {
-        sucesso: false as const,
-        mensagem: error.message || 'Erro desconhecido'
-      };
+      return false;
     }
   }));
 
-  return respostas.map((res) => {
-    if (res.status === 'fulfilled') {
-      return res.value;
-    } else {
-      console.error('Erro na promessa:', res.reason);
-      return {
-        sucesso: false as const,
-        mensagem: res.reason.message || 'Erro desconhecido'
-      };
-    }
-  });
+  const fulfilled = respostas.filter(res => res.status === "fulfilled" && res.value === true);
+  const rejected = respostas.filter(res => res.status === "rejected" || res.value === false);
+
+  if (rejected.length) {
+    return {
+      sucesso: false,
+      mensagem: `Ocorreram falhas em ${rejected.length} refeições autorizadas. As demais ${fulfilled.length} foram salvas com sucesso!`
+    };
+  }
+
+  return {
+    sucesso: true,
+    resposta: [true]
+  };
 }
