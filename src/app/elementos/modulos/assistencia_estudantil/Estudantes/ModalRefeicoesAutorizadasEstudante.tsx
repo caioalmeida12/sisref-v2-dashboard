@@ -93,7 +93,7 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
             acc[`${refeicao.meal_id}-${dia.key}`] =
               !!refeicao[dia.key as keyof typeof refeicao];
           });
-          acc[`comentario-${refeicao.meal_id}`] = refeicao.comentario || "";
+          acc[`comentario`] = refeicao.comentario || "";
           return acc;
         },
         {} as Record<string, any>,
@@ -101,26 +101,6 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
       reset(initialFormValues);
     }
   }, [refeicoesAutorizadas, reset]);
-
-  const valoresDaTabela = useMemo(() => {
-    // os nomes dos inputs seguem o padrao [dia.key]-[nomeDaRefeicao.id]
-    const nomesDosInputs = diasDaSemana.flatMap((dia) =>
-      nomesDasRefeicoes.map((refeicao) => `${refeicao.id}-${dia.key}`),
-    );
-
-    const valoresDosInputs = refeicoesAutorizadas.reduce(
-      (acc, refeicao) => {
-        diasDaSemana.forEach((dia) => {
-          acc[`${refeicao.meal_id}-${dia.key}`] =
-            !!refeicao[dia.key as keyof typeof refeicao];
-        });
-        return acc;
-      },
-      {} as Record<string, boolean>,
-    );
-
-    return { nomesDosInputs, valoresDosInputs };
-  }, [nomesDasRefeicoes, refeicoesAutorizadas]);
 
   useEffect(() => {
     if (isModalOpen) refetch();
