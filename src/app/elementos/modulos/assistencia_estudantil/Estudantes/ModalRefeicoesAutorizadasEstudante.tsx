@@ -211,7 +211,7 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
               <tbody className="divide-y divide-gray-200 bg-white">
                 {nomesDasRefeicoes.map((refeicao, index) => (
                   <tr key={index}>
-                    <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-900">
+                    <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-900 not-first:text-center">
                       {refeicao.description}
                     </td>
                     {diasDaSemana.map((dia, diaIndex) => (
@@ -223,11 +223,13 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
                           name={`${refeicao.id}-${dia.key}`}
                           control={control}
                           render={({ field }) => (
-                            <input
-                              type="checkbox"
-                              checked={field.value}
-                              {...field}
-                            />
+                            <div className="full flex justify-center">
+                              <input
+                                type="checkbox"
+                                checked={field.value}
+                                {...field}
+                              />
+                            </div>
                           )}
                         />
                       </td>
