@@ -132,7 +132,11 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
         throw new Error("O ID da refeição não foi fornecido");
 
       for (const data of formattedData) {
-        const resposta = await atualizarRefeicoesAutorizadas(data.id, [data]);
+        const resposta = await atualizarRefeicoesAutorizadas(data.id, data);
+
+        console.log({
+          data,
+        });
 
         if (!resposta.sucesso) throw new Error(resposta.mensagem);
       }

@@ -567,44 +567,40 @@ export async function buscarRefeicoesAutorizadasPorEstudante(student_id: number)
   return { sucesso: true, resposta: formatadas };
 }
 
-export async function atualizarRefeicoesAutorizadas(id: number, studentMealsData: StudentMealData[]): Promise<IRespostaDeAction<boolean>> {
-  const respostas = await Promise.allSettled(studentMealsData.map(async (studentMealData) => {
-    try {
-      const resposta = await FetchHelper.put<unknown>({
-        rota: `/allowstudenmealday/${id}`,
-        body: {
-          student_id: studentMealData.student_id,
-          meal_id: studentMealData.meal_id,
-          monday: studentMealData.monday,
-          tuesday: studentMealData.tuesday,
-          wednesday: studentMealData.wednesday,
-          thursday: studentMealData.thursday,
-          friday: studentMealData.friday,
-          saturday: studentMealData.saturday,
-          comentario: studentMealData.comentario,
-        },
-        cookies: await cookies(),
-      });
+export async function atualizarRefeicoesAutorizadas(id: number, studentMealData: StudentMealData): Promise<IRespostaDeAction<boolean>> {
+  try {
+    const resposta = await FetchHelper.put<unknown>({
+      rota: `/allowstudenmealday/${id}`,
+      body: {
+        student_id: studentMealData.student_id,
+        meal_id: studentMealData.meal_id,
+        monday: studentMealData.monday,
+        tuesday: studentMealData.tuesday,
+        wednesday: studentMealData.wednesday,
+        thursday: studentMealData.thursday,
+        friday: studentMealData.friday,
+        saturday: studentMealData.saturday,
+        comentario: studentMealData.comentario,
+      },
+      cookies: await cookies(),
+    });
 
-      return resposta.sucesso;
-    } catch (error: any) {
-      console.error('Erro ao processar a refeição do estudante:', error);
-      return false;
+    if (!resposta.sucesso) {
+      return {
+        sucesso: false,
+        mensagem: 'Falha ao atualizar a refeição autorizada.',
+      };
     }
-  }));
 
-  const fulfilled = respostas.filter(res => res.status === "fulfilled" && res.value === true);
-  const rejected = respostas.filter(res => res.status === "rejected" || res.value === false);
-
-  if (rejected.length) {
+    return {
+      sucesso: true,
+      resposta: [true],
+    };
+  } catch (error: any) {
+    console.error('Erro ao processar a refeição do estudante:', error);
     return {
       sucesso: false,
-      mensagem: `Ocorreram falhas em ${rejected.length} refeições autorizadas. As demais ${fulfilled.length} foram salvas com sucesso!`
+      mensagem: 'Erro ao processar a refeição do estudante.',
     };
   }
-
-  return {
-    sucesso: true,
-    resposta: [true]
-  };
 }
