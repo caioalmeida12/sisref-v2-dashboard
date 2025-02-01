@@ -170,7 +170,7 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
           id: refeicao.id, // Use the correct id of the refeicao
           student_id: estudante.id,
           meal_id: refeicao.meal_id,
-          comentario: data[`comentario-${refeicao.meal_id}`] || "",
+          comentario: data[`comentario`] || "",
           monday: data[`${refeicao.meal_id}-monday`] || false,
           tuesday: data[`${refeicao.meal_id}-tuesday`] || false,
           wednesday: data[`${refeicao.meal_id}-wednesday`] || false,
