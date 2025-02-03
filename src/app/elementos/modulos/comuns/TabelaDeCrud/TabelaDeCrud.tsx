@@ -129,8 +129,8 @@ export function TabelaDeCrud<TipoDeDado>({
                     <div
                       className={
                         header.column.getCanSort()
-                          ? "flex h-full cursor-pointer select-none flex-col justify-center rounded bg-preto-400 text-branco-400"
-                          : "flex h-full flex-col justify-center rounded bg-preto-400 text-branco-400"
+                          ? "bg-preto-400 text-branco-400 flex h-full cursor-pointer flex-col justify-center rounded select-none"
+                          : "bg-preto-400 text-branco-400 flex h-full flex-col justify-center rounded"
                       }
                       onClick={header.column.getToggleSortingHandler()}
                       title={
@@ -147,17 +147,17 @@ export function TabelaDeCrud<TipoDeDado>({
                         header.column.columnDef.header,
                         header.getContext(),
                       )}
-                      {{
+                      {/* {{
                         asc: " 🔼",
                         desc: " 🔽",
-                      }[header.column.getIsSorted() as string] ?? null}
+                      }[header.column.getIsSorted() as string] ?? null} */}
                     </div>
                     {header.column.getCanResize() && (
                       <div
                         onDoubleClick={() => header.column.resetSize()}
                         onMouseDown={header.getResizeHandler()}
                         onTouchStart={header.getResizeHandler()}
-                        className={`absolute inset-y-0 right-0 w-1 cursor-col-resize touch-none select-none rounded bg-cinza-600/75 opacity-0 group-hover:opacity-100 ${table.options.columnResizeDirection} ${header.column.getIsResizing() ? "isResizing" : ""}`}
+                        className={`bg-cinza-600/75 absolute inset-y-0 right-0 w-1 cursor-col-resize touch-none rounded opacity-0 select-none group-hover:opacity-100 ${table.options.columnResizeDirection} ${header.column.getIsResizing() ? "isResizing" : ""}`}
                         style={{
                           transform:
                             columnResizeMode === "onEnd" &&
@@ -205,7 +205,7 @@ export function TabelaDeCrud<TipoDeDado>({
             <tr className="hover:bg-amarelo-200/75!">
               <td
                 colSpan={colunas.length}
-                className="rounded bg-cinza-400 text-center"
+                className="bg-cinza-400 rounded text-center"
               >
                 Nenhum dado encontrado
               </td>
@@ -222,7 +222,7 @@ export function TabelaDeCrud<TipoDeDado>({
                     style={{
                       width: cell.column.getSize(),
                     }}
-                    className="px-2 first-of-type:rounded-bl first-of-type:rounded-tl last-of-type:rounded-br last-of-type:rounded-tr"
+                    className="px-2 first-of-type:rounded-tl first-of-type:rounded-bl last-of-type:rounded-tr last-of-type:rounded-br"
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
