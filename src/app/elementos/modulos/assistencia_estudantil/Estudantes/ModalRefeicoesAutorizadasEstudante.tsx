@@ -34,11 +34,6 @@ interface FormattedData {
   saturday: boolean;
 }
 
-interface Refeicoes {
-  id: number;
-  nome: string;
-}
-
 const diasDaSemana = [
   { key: "monday", label: "Segunda-feira" },
   { key: "tuesday", label: "Terça-feira" },
@@ -53,19 +48,39 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
 }) => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { control, handleSubmit, reset } = useForm();
   const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
 
-  const { data: nomesDasRefeicoes, isLoading: isLoadingRefeicoes } = useQuery({
-    initialData: [],
-    queryKey: ["tabelaDeRefeicoes"],
-    queryFn: async () => {
-      const resposta = await buscarRefeicoes();
+  const { data: nomesDasRefeicoes = [], isLoading: isLoadingRefeicoes } =
+    useQuery({
+      queryKey: ["tabelaDeRefeicoes"],
+      queryFn: async () => {
+        const resposta = await buscarRefeicoes();
 
-      return resposta.sucesso
-        ? resposta.resposta.sort(({ id }, { id: id2 }) => id - id2).splice(0, 4)
-        : [];
-    },
+        return resposta.sucesso
+          ? resposta.resposta
+              .sort(({ id }, { id: id2 }) => id - id2)
+              .splice(0, 4)
+          : [];
+      },
+    });
+
+  const { control, handleSubmit, reset } = useForm<
+    Record<string, boolean | string>
+  >({
+    defaultValues: useMemo(() => {
+      return {
+        comentario: "",
+        ...diasDaSemana.reduce(
+          (acc, dia) => {
+            nomesDasRefeicoes.forEach((refeicao) => {
+              acc[`${refeicao.id}-${dia.key}`] = false;
+            });
+            return acc;
+          },
+          {} as Record<string, boolean>,
+        ),
+      };
+    }, [nomesDasRefeicoes]),
   });
 
   const {
@@ -226,8 +241,12 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
                             <div className="full flex justify-center">
                               <input
                                 type="checkbox"
-                                checked={field.value}
-                                {...field}
+                                checked={Boolean(field.value)}
+                                onChange={field.onChange}
+                                onBlur={field.onBlur}
+                                name={field.name}
+                                ref={field.ref}
+                                value={String(field.value)}
                               />
                             </div>
                           )}
@@ -248,6 +267,7 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
                   <textarea
                     id="comentario"
                     {...field}
+                    value={String(field.value)}
                     className="border-cinza-600 border p-2"
                   />
                 )}
