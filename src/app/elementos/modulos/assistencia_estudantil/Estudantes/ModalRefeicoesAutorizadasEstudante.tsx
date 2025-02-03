@@ -102,18 +102,31 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
 
   useEffect(() => {
     if (refeicoesAutorizadas) {
-      const initialFormValues = refeicoesAutorizadas.reduce(
+      const formValueInicial = refeicoesAutorizadas.reduce(
         (acc, refeicao) => {
           diasDaSemana.forEach((dia) => {
             acc[`${refeicao.meal_id}-${dia.key}`] =
               !!refeicao[dia.key as keyof typeof refeicao];
           });
-          acc[`comentario`] = refeicao.comentario || "";
           return acc;
         },
         {} as Record<string, any>,
       );
-      reset(initialFormValues);
+
+      const primeiroComentarioValido =
+        refeicoesAutorizadas.find(
+          (refeicao) =>
+            refeicao.comentario && refeicao.comentario.trim() !== "",
+        )?.comentario || "";
+
+      const primeiraObservacaoValida =
+        refeicoesAutorizadas.find(
+          (refeicao) => refeicao.student && refeicao.student.observation,
+        )?.student.observation || "";
+
+      formValueInicial[`comentario`] =
+        primeiroComentarioValido || primeiraObservacaoValida;
+      reset(formValueInicial);
     }
   }, [refeicoesAutorizadas, reset]);
 
