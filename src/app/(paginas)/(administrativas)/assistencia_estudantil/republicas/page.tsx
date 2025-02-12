@@ -1,22 +1,22 @@
 "use client";
 
-import React, { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 
-import { Secao } from "@/app/elementos/basicos/Secao";
-import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
-import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import { createColumnHelper } from "@tanstack/react-table";
 import {
   buscarRepublicas,
   criarRepublica,
   editarRepublica,
   removerRepublica,
 } from "@/app/actions/assistencia_estudantil";
-import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
 import { BotaoDiv } from "@/app/elementos/basicos/BotaoDiv";
+import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 import Icone from "@/app/elementos/basicos/Icone";
+import { Secao } from "@/app/elementos/basicos/Secao";
+import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
+import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
+import { createColumnHelper } from "@tanstack/react-table";
 
 export default function Page() {
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
@@ -201,7 +201,7 @@ export default function Page() {
         header: "Ações",
       }),
     ],
-    [],
+    [colunasHelper],
   );
 
   return (
@@ -215,7 +215,7 @@ export default function Page() {
                 <BotaoDiv
                   texto="Cadastrar república"
                   variante="adicionar"
-                  className="h-[36px] border-none px-10 py-2 leading-tight text-branco-400! hover:outline-preto-400! md:whitespace-nowrap"
+                  className="text-branco-400! hover:outline-preto-400! h-[36px] border-none px-10 py-2 leading-tight md:whitespace-nowrap"
                 />
               }
               textoTitulo="Cadastrar nova república"

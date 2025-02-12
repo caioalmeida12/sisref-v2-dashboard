@@ -1,26 +1,26 @@
 "use client";
 
-import React, { useMemo, useRef } from "react";
-import { parseAsString, useQueryStates } from "nuqs";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { Botao } from "@/app/elementos/basicos/Botao";
-import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
-import { Secao } from "@/app/elementos/basicos/Secao";
-import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import * as Form from "@radix-ui/react-form";
-import { createColumnHelper } from "@tanstack/react-table";
 import {
   buscarAgendamentos,
   buscarRefeicoes,
   confirmarAgendamento,
   removerAgendamento,
 } from "@/app/actions/nutricionista";
-import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/app/elementos/basicos/Badge";
+import { Botao } from "@/app/elementos/basicos/Botao";
+import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 import Icone from "@/app/elementos/basicos/Icone";
-import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
+import { Secao } from "@/app/elementos/basicos/Secao";
 import { SelectGeral } from "@/app/elementos/componentes/SelectGeral";
+import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
+import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import * as Form from "@radix-ui/react-form";
+import { useQuery } from "@tanstack/react-query";
+import { createColumnHelper } from "@tanstack/react-table";
+import { parseAsString, useQueryStates } from "nuqs";
+import React, { useMemo, useRef } from "react";
 
 export default function RecepcaoPage() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -102,7 +102,7 @@ export default function RecepcaoPage() {
         cell: (props) => (
           <Badge
             texto={props.getValue()}
-            className="min-w-max whitespace-nowrap border-none bg-verde-300"
+            className="bg-verde-300 min-w-max border-none whitespace-nowrap"
           />
         ),
         header: "Vencimento",
@@ -251,7 +251,7 @@ export default function RecepcaoPage() {
         header: "Ações",
       }),
     ],
-    [pesquisa.refeicao, pesquisa.codigoOuMatricula],
+    [colunasHelper, pesquisa.codigoOuMatricula, pesquisa.refeicao],
   );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -310,7 +310,7 @@ export default function RecepcaoPage() {
                 <div className="flex gap-x-2">
                   <Form.Control
                     type="number"
-                    className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
+                    className="outline-cinza-600 rounded px-2 py-1 outline outline-1"
                     placeholder="Ex: 2153"
                     ref={inputCodigoOuMatriculaRef}
                     defaultValue={
@@ -323,7 +323,7 @@ export default function RecepcaoPage() {
                     <Botao
                       variante="remover"
                       texto="Limpar"
-                      className="border-none! bg-vermelho-200 py-2 leading-tight text-branco-400! outline-preto-400!"
+                      className="bg-vermelho-200 text-branco-400! outline-preto-400! border-none! py-2 leading-tight"
                       onClick={handleReset}
                     />
                   </Form.Control>
@@ -333,7 +333,7 @@ export default function RecepcaoPage() {
                 <Form.Label className="font-bold">Data</Form.Label>
                 <Form.Control
                   type="date"
-                  className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
+                  className="outline-cinza-600 rounded px-2 py-1 outline outline-1"
                   defaultValue={pesquisa.data}
                 />
               </Form.Field>

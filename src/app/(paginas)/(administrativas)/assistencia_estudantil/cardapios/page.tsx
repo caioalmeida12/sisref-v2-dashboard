@@ -1,16 +1,10 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { parseAsString, useQueryStates } from "nuqs";
-import { useQuery } from "@tanstack/react-query";
 import * as Form from "@radix-ui/react-form";
+import { useQuery } from "@tanstack/react-query";
+import { parseAsString, useQueryStates } from "nuqs";
+import React, { useMemo } from "react";
 
-import { Secao } from "@/app/elementos/basicos/Secao";
-import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
-import { Botao } from "@/app/elementos/basicos/Botao";
-import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import { createColumnHelper } from "@tanstack/react-table";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
 import {
   buscarRefeicoes,
   buscarTabelaDeCardapios,
@@ -18,9 +12,15 @@ import {
   editarCardapio,
   removerCardapio,
 } from "@/app/actions/nutricionista";
+import { Botao } from "@/app/elementos/basicos/Botao";
+import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
 import { CustomTooltipWrapper } from "@/app/elementos/basicos/CustomTooltipWrapper";
 import Icone from "@/app/elementos/basicos/Icone";
+import { Secao } from "@/app/elementos/basicos/Secao";
 import { ModalGeral } from "@/app/elementos/modulos/comuns/ModalGeral/ModalGeral";
+import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { createColumnHelper } from "@tanstack/react-table";
 
 export default function Page() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -240,7 +240,7 @@ export default function Page() {
         header: "Ações",
       }),
     ],
-    [],
+    [colunasHelper, pesquisa.dataInicial],
   );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -270,7 +270,7 @@ export default function Page() {
                 <Form.Label className="font-bold">Data para busca</Form.Label>
                 <Form.Control
                   type="date"
-                  className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
+                  className="outline-cinza-600 rounded px-2 py-1 outline outline-1"
                   defaultValue={pesquisa.dataInicial}
                 />
               </Form.Field>
