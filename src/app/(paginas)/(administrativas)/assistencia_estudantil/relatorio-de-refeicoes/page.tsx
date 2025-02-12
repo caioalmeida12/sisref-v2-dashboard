@@ -120,19 +120,18 @@ export default function Page() {
         cell: (props) => props.getValue(),
         header: "Curso",
       }),
-      {
-        id: "Status",
-        accessorFn: (props: TRelatorioDeRefeicoes) => {
-          return pegarStatusDaRefeicao(props).tipo;
-        },
-        cell: (props: any) => {
-          return (
+      colunasHelper.accessor(
+        (props: TRelatorioDeRefeicoes) => pegarStatusDaRefeicao(props).tipo,
+        {
+          id: "Status",
+          cell: (props: any) => (
             <div className="flex justify-center">
               {pegarStatusDaRefeicao(props.row.original).elemento}
             </div>
-          );
+          ),
+          header: "Status",
         },
-      },
+      ),
     ],
     [colunasHelper],
   );
