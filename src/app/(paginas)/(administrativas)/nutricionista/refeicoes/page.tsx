@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 
-import { Secao } from "@/app/elementos/basicos/Secao";
-import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
-import { useQuery } from "@tanstack/react-query";
-import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import { createColumnHelper } from "@tanstack/react-table";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalAdicionarRefeicao";
-import { ModalRemoverRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalRemoverRefeicao";
-import { ModalEditarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalEditarRefeicao";
 import { buscarRefeicoes } from "@/app/actions/nutricionista";
+import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
+import { Secao } from "@/app/elementos/basicos/Secao";
+import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
+import { ModalAdicionarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalAdicionarRefeicao";
+import { ModalEditarRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalEditarRefeicao";
+import { ModalRemoverRefeicao } from "@/app/elementos/modulos/nutricionista/Refeicoes/ModalRemoverRefeicao";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { useQuery } from "@tanstack/react-query";
+import { createColumnHelper } from "@tanstack/react-table";
 
 export default function Page() {
   const { data: dadosDaTabela, isFetching: isLoadingDadosDaTabela } = useQuery({
@@ -82,7 +82,7 @@ export default function Page() {
         header: "Ações",
       }),
     ],
-    [],
+    [colunasHelper],
   );
 
   return (
@@ -90,7 +90,7 @@ export default function Page() {
       <Secao className="mx-auto flex max-w-[1440px] flex-col gap-y-4">
         <CabecalhoDeSecao titulo="Refeições" />
         <Secao className="flex flex-wrap gap-y-2">
-          <div className="ml-auto mt-auto">
+          <div className="mt-auto ml-auto">
             <ModalAdicionarRefeicao />
           </div>
         </Secao>

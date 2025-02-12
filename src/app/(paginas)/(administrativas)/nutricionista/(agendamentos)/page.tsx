@@ -147,7 +147,7 @@ export default function Agendamentos() {
         cell: (props) => (
           <Badge
             texto={props.getValue()}
-            className="min-w-max whitespace-nowrap border-none bg-verde-300"
+            className="bg-verde-300 min-w-max border-none whitespace-nowrap"
           />
         ),
         header: "Vencimento",
@@ -289,7 +289,7 @@ export default function Agendamentos() {
         header: "Ações",
       }),
     ],
-    [],
+    [colunasHelper],
   );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -319,7 +319,7 @@ export default function Agendamentos() {
                 <Form.Label className="font-bold">Data para busca</Form.Label>
                 <Form.Control
                   type="date"
-                  className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
+                  className="outline-cinza-600 rounded px-2 py-1 outline outline-1"
                   defaultValue={pesquisa.dataInicial}
                 />
               </Form.Field>
@@ -331,7 +331,7 @@ export default function Agendamentos() {
               />
             </Form.Root>
           </div>
-          <div className="ml-auto mt-auto flex gap-x-2">
+          <div className="mt-auto ml-auto flex gap-x-2">
             <ModalJustificativasNaoProcessadas
               justificativas={justificativasNaoProcessadas}
             />
@@ -339,7 +339,7 @@ export default function Agendamentos() {
               textoTitulo="Reservar para estudante"
               elementoTrigger={
                 <BotaoDiv
-                  className="h-[36px] bg-azul-400 px-10 py-2 leading-tight"
+                  className="bg-azul-400 h-[36px] px-10 py-2 leading-tight"
                   texto="Reservar para estudante"
                   variante="adicionar"
                 />

@@ -13,7 +13,7 @@ export function Filtro({ column }: { column: Column<any, unknown> }) {
         : Array.from(column.getFacetedUniqueValues().keys())
             .sort()
             .slice(0, 5000),
-    [column.getFacetedUniqueValues(), filterVariant],
+    [column, filterVariant],
   );
 
   return filterVariant === "range" ? (
@@ -32,7 +32,7 @@ export function Filtro({ column }: { column: Column<any, unknown> }) {
               ? `(${column.getFacetedMinMaxValues()?.[0]})`
               : ""
           }`}
-          className="border-1 w-full rounded border border-cinza-600"
+          className="border-cinza-600 w-full rounded border border-1"
         />
         <DebouncedInput
           type="number"
@@ -47,7 +47,7 @@ export function Filtro({ column }: { column: Column<any, unknown> }) {
               ? `(${column.getFacetedMinMaxValues()?.[1]})`
               : ""
           }`}
-          className="border-1 w-full rounded border border-cinza-600"
+          className="border-cinza-600 w-full rounded border border-1"
         />
       </div>
     </div>
@@ -77,7 +77,7 @@ export function Filtro({ column }: { column: Column<any, unknown> }) {
         value={(columnFilterValue ?? "") as string}
         onChange={(value) => column.setFilterValue(value)}
         placeholder={`Buscar... (${column.getFacetedUniqueValues().size})`}
-        className="border-1 w-full rounded border border-cinza-600"
+        className="border-cinza-600 w-full rounded border border-1"
         list={column.id + "list"}
       />
     </>
@@ -107,7 +107,7 @@ function DebouncedInput({
     }, debounce);
 
     return () => clearTimeout(timeout);
-  }, [value]);
+  }, [debounce, onChange, value]);
 
   return (
     <input

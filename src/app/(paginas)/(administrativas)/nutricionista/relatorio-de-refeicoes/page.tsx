@@ -1,28 +1,26 @@
 "use client";
 
-import React, { useMemo } from "react";
+import * as Form from "@radix-ui/react-form";
 import { useQuery } from "@tanstack/react-query";
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
-import * as Form from "@radix-ui/react-form";
+import React, { useMemo } from "react";
 
-import { Secao } from "@/app/elementos/basicos/Secao";
-import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
 import { Botao } from "@/app/elementos/basicos/Botao";
-import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import { createColumnHelper } from "@tanstack/react-table";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
-import { buscarRelatorioDeRefeicoes } from "@/app/actions/nutricionista";
+import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
+import { Secao } from "@/app/elementos/basicos/Secao";
 import { StatusDaRefeicao } from "@/app/elementos/basicos/StatusDaRefeicao";
+import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
+import { IRespostaDeAction } from "@/app/interfaces/IRespostaDeAction";
+import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
+import { IRequisicaoPaginadaQueryStates } from "@/app/interfaces/IRespostaPaginadaQueryStates";
 import {
   TRelatorioDeRefeicoes,
   TRelatorioDeRefeicoesSchema,
 } from "@/app/interfaces/TRelatorioDeRefeicoes";
-import { respostaPaginadaPadrao } from "@/app/lib/actions/RespostaPaginadaPadrao";
-import { IRespostaDeAction } from "@/app/interfaces/IRespostaDeAction";
-import { IRespostaPaginada } from "@/app/interfaces/IRespostaPaginada";
-import { IRequisicaoPaginadaQueryStates } from "@/app/interfaces/IRespostaPaginadaQueryStates";
-import { TAgendamentoSchema } from "@/app/interfaces/TAgendamento";
 import { FetchRouteHandler } from "@/app/lib/actions/FetchRouteHandler";
+import { respostaPaginadaPadrao } from "@/app/lib/actions/RespostaPaginadaPadrao";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { createColumnHelper } from "@tanstack/react-table";
 
 export default function Page() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -136,7 +134,7 @@ export default function Page() {
         },
       },
     ],
-    [],
+    [colunasHelper],
   );
 
   const pegarStatusDaRefeicao = (
@@ -221,7 +219,7 @@ export default function Page() {
                 <Form.Label className="font-bold">Data Inicial</Form.Label>
                 <Form.Control
                   type="date"
-                  className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
+                  className="outline-cinza-600 rounded px-2 py-1 outline outline-1"
                   defaultValue={pesquisa.dataInicial}
                 />
               </Form.Field>
@@ -229,7 +227,7 @@ export default function Page() {
                 <Form.Label className="font-bold">Data Final</Form.Label>
                 <Form.Control
                   type="date"
-                  className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
+                  className="outline-cinza-600 rounded px-2 py-1 outline outline-1"
                   defaultValue={pesquisa.dataFinal}
                 />
               </Form.Field>

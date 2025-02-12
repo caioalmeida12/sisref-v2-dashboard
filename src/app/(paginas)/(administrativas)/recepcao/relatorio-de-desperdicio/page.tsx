@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { parseAsString, useQueryStates } from "nuqs";
-import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import { buscarRelatorioDeDesperdicio } from "@/app/actions/nutricionista";
 import { Botao } from "@/app/elementos/basicos/Botao";
 import { CabecalhoDeSecao } from "@/app/elementos/basicos/CabecalhoDeSecao";
 import { Secao } from "@/app/elementos/basicos/Secao";
 import { TabelaDeCrud } from "@/app/elementos/modulos/comuns/TabelaDeCrud/TabelaDeCrud";
-import * as Form from "@radix-ui/react-form";
-import { createColumnHelper } from "@tanstack/react-table";
-import { buscarRelatorioDeDesperdicio } from "@/app/actions/nutricionista";
-import { useQuery } from "@tanstack/react-query";
 import { IRelatorioDeDesperdicio } from "@/app/interfaces/IRelatorioDeDesperdicio";
+import { DatasHelper } from "@/app/lib/elementos/DatasHelper";
+import * as Form from "@radix-ui/react-form";
+import { useQuery } from "@tanstack/react-query";
+import { createColumnHelper } from "@tanstack/react-table";
+import { parseAsString, useQueryStates } from "nuqs";
+import React, { useMemo } from "react";
 
 export default function RecepcaoPage() {
   const [pesquisa, setPesquisa] = useQueryStates(
@@ -81,7 +81,7 @@ export default function RecepcaoPage() {
         header: "Avaliação",
       }),
     ],
-    [],
+    [colunasHelper],
   );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -111,7 +111,7 @@ export default function RecepcaoPage() {
                 <Form.Label className="font-bold">Data Inicial</Form.Label>
                 <Form.Control
                   type="date"
-                  className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
+                  className="outline-cinza-600 rounded px-2 py-1 outline outline-1"
                   defaultValue={pesquisa.dataInicial}
                 />
               </Form.Field>
@@ -119,7 +119,7 @@ export default function RecepcaoPage() {
                 <Form.Label className="font-bold">Data Final</Form.Label>
                 <Form.Control
                   type="date"
-                  className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
+                  className="outline-cinza-600 rounded px-2 py-1 outline outline-1"
                   defaultValue={pesquisa.dataFinal}
                 />
               </Form.Field>

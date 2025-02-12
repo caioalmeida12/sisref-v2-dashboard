@@ -163,7 +163,7 @@ export default function Page() {
         header: "Ações",
       }),
     ],
-    [],
+    [colunasHelper],
   );
 
   return (
@@ -177,7 +177,7 @@ export default function Page() {
                 <BotaoDiv
                   texto="Cadastrar turno"
                   variante="adicionar"
-                  className="h-[36px] border-none px-10 py-2 leading-tight text-branco-400! hover:outline-preto-400! md:whitespace-nowrap"
+                  className="text-branco-400! hover:outline-preto-400! h-[36px] border-none px-10 py-2 leading-tight md:whitespace-nowrap"
                 />
               }
               textoTitulo="Cadastrar nova turno"

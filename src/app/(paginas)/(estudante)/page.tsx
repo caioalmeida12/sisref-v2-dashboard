@@ -19,7 +19,7 @@ export default function Home() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [setNavegacao]);
 
   return (
     <>

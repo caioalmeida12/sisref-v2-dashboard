@@ -50,19 +50,16 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { mensagemDeRespostaRef, atualizarMensagem } = useMensagemDeResposta();
 
-  const { data: nomesDasRefeicoes = [], isLoading: isLoadingRefeicoes } =
-    useQuery({
-      queryKey: ["tabelaDeRefeicoes"],
-      queryFn: async () => {
-        const resposta = await buscarRefeicoes();
+  const { data: nomesDasRefeicoes = [] } = useQuery({
+    queryKey: ["tabelaDeRefeicoes"],
+    queryFn: async () => {
+      const resposta = await buscarRefeicoes();
 
-        return resposta.sucesso
-          ? resposta.resposta
-              .sort(({ id }, { id: id2 }) => id - id2)
-              .splice(0, 4)
-          : [];
-      },
-    });
+      return resposta.sucesso
+        ? resposta.resposta.sort(({ id }, { id: id2 }) => id - id2).splice(0, 4)
+        : [];
+    },
+  });
 
   const { control, handleSubmit, reset } = useForm<
     Record<string, boolean | string>
@@ -83,11 +80,9 @@ export const ModalRefeicoesAutorizadasEstudante: React.FC<ModalProps> = ({
     }, [nomesDasRefeicoes]),
   });
 
-  const {
-    data: refeicoesAutorizadas,
-    isFetching: isLoadingRefeicoesAutorizadas,
-    refetch,
-  } = useQuery<TBuscarRefeicoesAutorizadas[]>({
+  const { data: refeicoesAutorizadas, refetch } = useQuery<
+    TBuscarRefeicoesAutorizadas[]
+  >({
     queryKey: ["refeicoesAutorizadas", estudante.id],
     queryFn: async () => {
       const resposta = await buscarRefeicoesAutorizadasPorEstudante(

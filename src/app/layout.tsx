@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Roboto_Slab } from "next/font/google";
 import "./globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import Head from "next/head";
 
 const fontFamily = Roboto_Slab({
   subsets: ["latin"],
@@ -20,8 +21,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`min-w-80 bg-cinza-400 ${fontFamily.className}`}>
-        <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script>
+      <Head>
+        <script
+          src="https://unpkg.com/react-scan/dist/auto.global.js"
+          async
+        ></script>
+      </Head>
+      <body className={`bg-cinza-400 min-w-80 ${fontFamily.className}`}>
         {children}
       </body>
     </html>

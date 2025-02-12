@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { IRequisicaoPaginadaQueryStates } from "@/app/interfaces/IRespostaPaginadaQueryStates";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -8,21 +8,16 @@ import {
   ColumnResizeMode,
   flexRender,
   getCoreRowModel,
-  getFacetedMinMaxValues,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
   RowData,
+  useReactTable,
 } from "@tanstack/react-table";
-import Skeleton from "react-loading-skeleton";
-import { PaginacaoNoServidor } from "./PaginacaoNoServidor";
-import { PaginacaoNoCliente } from "./PaginacaoNoCliente";
-import { Filtro } from "./Filtro";
-import { IRequisicaoPaginadaQueryStates } from "@/app/interfaces/IRespostaPaginadaQueryStates";
 import { SetValues, Values } from "nuqs";
+import React, { useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import { PaginacaoNoCliente } from "./PaginacaoNoCliente";
+import { PaginacaoNoServidor } from "./PaginacaoNoServidor";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 declare module "@tanstack/react-table" {
@@ -49,12 +44,12 @@ export function TabelaDeCrud<TipoDeDado>({
   dados,
   estaCarregando,
   ordenacaoPadrao,
-  filtros,
+  // filtros,
   paginacaoNoServidor,
 }: ITabelaDeCrudProps<TipoDeDado>) {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    filtros ?? [],
-  );
+  // const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+  //   filtros ?? [],
+  // );
   const [sorting, setSorting] = useState<{ id: string; desc: boolean }[]>(
     ordenacaoPadrao ?? [],
   );
@@ -65,9 +60,9 @@ export function TabelaDeCrud<TipoDeDado>({
 
   // Garante que os filtros sejam atualizados quando a propriedade `filtros` for alterada
   // Sem isso, os filtros só são atualizados quando a página é recarregada
-  useEffect(() => {
-    setColumnFilters(filtros ?? []);
-  }, [filtros]);
+  // useEffect(() => {
+  //   setColumnFilters(filtros ?? []);
+  // }, [filtros]);
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const [columnResizeMode, _setColumnResizeMode] =
@@ -88,7 +83,7 @@ export function TabelaDeCrud<TipoDeDado>({
     columnResizeMode,
     columnResizeDirection,
     getCoreRowModel: getCoreRowModel(),
-    onColumnFiltersChange: setColumnFilters,
+    // onColumnFiltersChange: setColumnFilters,
     // getFilteredRowModel: getFilteredRowModel(), //client-side filtering
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),

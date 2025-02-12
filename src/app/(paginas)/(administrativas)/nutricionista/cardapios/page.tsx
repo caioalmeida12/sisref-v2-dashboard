@@ -240,7 +240,7 @@ export default function Page() {
         header: "Ações",
       }),
     ],
-    [],
+    [colunasHelper, pesquisa.dataInicial],
   );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -270,7 +270,7 @@ export default function Page() {
                 <Form.Label className="font-bold">Data para busca</Form.Label>
                 <Form.Control
                   type="date"
-                  className="rounded px-2 py-1 outline outline-1 outline-cinza-600"
+                  className="outline-cinza-600 rounded px-2 py-1 outline outline-1"
                   defaultValue={pesquisa.dataInicial}
                 />
               </Form.Field>
