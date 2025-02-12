@@ -93,8 +93,7 @@ export default function Page() {
     refetch();
   };
 
-  const colunasHelper =
-    createColumnHelper<(typeof dadosDaTabela.data)[number]>();
+  const colunasHelper = createColumnHelper<TRelatorioDeRefeicoes>();
 
   const colunas = useMemo(
     () => [
