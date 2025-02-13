@@ -67,6 +67,11 @@ export const linksDaSidebarPorTipoDeUsuario: Record<
       rota: "/assistencia_estudantil/relatorio-de-desperdicio",
       icone: "Lixeira",
     },
+    {
+      titulo: "Atas de registro de preço",
+      rota: "/assistencia_estudantil/atas-de-registro-de-preco",
+      icone: "GraficoDeBarras"
+    }
   ],
   NUTRI: [
     {
